@@ -1,0 +1,339 @@
+---
+title: "Hexagonal Architecture using Go (Fiber)👨🏽‍💻"
+date: "15-11-2021"
+abstract: "If you really wanna improve in the development time and specially in the integration of new technology to your project definitely the Hexagonal Architecture is the best decision."
+image: "https://miro.medium.com/max/1400/1*xofqkz49chC9XliDAuH1Qw.png"
+tag: "go"
+---
+
+# Hexagonal Architecture using Go (Fiber)👨🏽‍💻
+
+<small>01/06/2022</small>
+<p>
+  If you really wanna improve in the development time and specially in the
+  integration of new technology to your project definitely the Hexagonal
+  Architecture is the best decision. I implement this architecture in some
+  languages like Java and Typescript and it’s very intuitive not happen the same
+  with Go because Go don’t have all the “OOP” tools in the language nevertheless
+  can be implemented with some variations in this language.
+</p>
+<p>
+  For this blog we will create a simple backend app using the most essential of
+  the language. first we need to know the folder structure.
+</p>
+<img
+  src="https://miro.medium.com/max/1028/1*clWgRm1Q_muvVi8XMJ50pw.png"
+  alt="folder-strcutre-go"
+></img>
+<p>
+  In Go we don’t have Class but we have Structs and this have special functions
+  can be assigned to this we will use this as a Method of a Class check the
+  differences in a Class and Struct with Methods.
+</p>
+<img src="https://miro.medium.com/max/1400/1*d0URC4Nok-MGJd5ucSD7pw.png"></img>
+<p>
+  As you see in the image Go Struct don’t have explicit constructor as
+  Typescript have so we simulated a Constructor function for create a instance
+  of User (NewPerson in the left image) and then we create a “Method” of the
+  structure (GetEmail in the left image) now we have the way for replace the
+  Classes so we can start to build our app.
+</p>
+### 1. Creating the Domains: User
+<p>
+  We will use the previous Struct used in the image but this time we will create
+  it using Github gist for make our live more easy. The domain more easy analogy
+  is basically your Models.
+</p>
+``` package domain
+
+    type User struct {
+        ID       int
+        Email    string
+        Password string
+    }
+
+    func NewPerson(id int, email string, password string) *User {
+        return &User{
+            ID:       id,
+            Email:    email,
+            Password: password,
+        }
+    }
+
+    func (u *User) GetEmail() string {
+        return u.Email
+    }
+
+```
+### 2. Creating the ports: UserRepository, UserService and UserHandlers
+<p>
+    The ports are the instructions of how a Service or Repository should behavior , in this part you say it what methods a Struct must have for be considered a Repository or Service . This part of the Software just do this is The Book Rule, the Supervisor, etc. Don’t eat your mind. Lucky for us Go have interfaces, but work a little bit different they are implicit so we don’t say this struct implements this interface we just implement the methods in the struct and automatically this struct ca be considered as a amazing member of the interface.
+
+</p>
+```
+
+    package ports
+
+    import (
+        fiber "github.com/gofiber/fiber/v2"
+    )
+
+    type UserService interface {
+        Login(email string, password string) error
+        Register(email string, password string, passwordConfirmation string) error
+    }
+
+    type UserRepository interface {
+        Login(email string, password string) error
+        Register(email string, password string) error
+    }
+
+    type UserHandlers interface {
+        Login(c *fiber.Ctx) error
+        Register(c *fiber.Ctx) error
+    }
+
+```
+### 3. Creating the services: UserService implemented
+<p>
+    Now thanks to the interface we know what methods we will need for create our UserService we need this Struct have a Login method and Register method. But this user service should communicate with the Repository right! 🤔.. so How we reach this? In the UserService struct we will use we need to add this need a property of type UserRepository for work. Trust me when we will initialize the program you will understand this part.
+</p>
+```
+
+    package services
+
+    import (
+        "errors"
+        "goHexagonalBlog/internal/core/ports"
+    )
+
+    type UserService struct {
+        userRepository ports.UserRepository
+    }
+
+    //This line is for get feedback in case we are not implementing the interface correctly
+    var _ ports.UserService = (*UserService)(nil)
+
+    func NewUserService(repository ports.UserRepository) *UserService {
+        return &UserService{
+            userRepository: repository,
+        }
+    }
+
+    func (s *UserService) Login(email string, password string) error {
+        err := s.userRepository(email, password)
+        if err != nil {
+            return err
+        }
+        return nil
+    }
+
+    func (s *UserService) Register(email string, password string, confirmPass string) error {
+        if password != confirmPass {
+            return errors.New("the passwords are not equal")
+        }
+        err := s.userRepository.Register(email, password)
+        if err != nil {
+            return err
+        }
+        return nil
+    }
+
+```
+### 4. Creating the Repositories: UserRepository
+<p>
+    The user repository struct will communicate with the database so in the creation function (NewUserRepository) we should add the Database initialization for this project we will use mongo don’t think too much about this is just for the example.
+</p>
+```
+
+    package repositories
+
+    import (
+        "context"
+        "time"
+
+        "goHexagonalBlog/internal/core/ports"
+
+        "go.mongodb.org/mongo-driver/mongo"
+        "go.mongodb.org/mongo-driver/mongo/options"
+        "go.mongodb.org/mongo-driver/mongo/readpref"
+    )
+
+    const (
+        MongoClientTimeout = 5
+    )
+
+    type UserRepository struct {
+        client     *mongo.Client
+        database   *mongo.Database
+        collection *mongo.Collection
+    }
+
+    var _ ports.IUserRepository = (*UserRepository)(nil)
+
+    func NewUserRepository(conn string) *UserRepository {
+        ctx, cancelFunc := context.WithTimeout(context.Background(), MongoClientTimeout*time.Second)
+        defer cancelFunc()
+
+        client, err := mongo.Connect(ctx, options.Client().ApplyURI(
+            conn,
+        ))
+        if err != nil {
+            return nil, err
+        }
+        err = client.Ping(ctx, readpref.Primary())
+        if err != nil {
+            return nil, err
+        }
+        return &UserRepository{
+            client:     client,
+            database:   client.Database("goHexagonalBlog"),
+            collection: client.Database("goHexagonalBlog").Collection("users"),
+        }
+    }
+
+    func (r *UserRepository) Login(email string, password string) error {
+        //Here your code for login in mongo database
+        return nil
+    }
+
+    func (r *UserRepository) Register(email string, password string) error {
+        //Here your code for save in mongo database
+        return nil
+    }
+
+```
+### 5. Creating Handlers: UserHandlers
+<p>
+    Now we need to expose our service to the handlers and this handlers to the world I will use GoFiber for this as in the other implementations we will do something similar but this time the UserHandler struct will need of the UserService, because the handlers will communicate with the services.
+</p>
+```
+
+    package handlers
+
+    import (
+        "goHexagonalBlog/internal/core/ports"
+
+        fiber "github.com/gofiber/fiber/v2"
+    )
+
+    type UserHandlers struct {
+        userService ports.UserService
+    }
+
+    var _ ports.UserHandlers = (*UserHandlers)(nil)
+
+    func NewUserHandlers(userService ports.UserService) *UserHandlers {
+        return &UserHandlers{
+            userService: userService,
+        }
+    }
+
+    func (h *UserHandlers) Login(c *fiber.Ctx) error {
+        var email string
+        var password string
+        //Extract the body and get the email and password
+        err := h.userService.Login(email, password)
+        if err != nil {
+            return err
+        }
+        return nil
+    }
+
+    func (h *UserHandlers) Register(c *fiber.Ctx) error {
+        var email string
+        var password string
+        var confirmPassword string
+
+        //Extract the body and get the email and password
+        err := h.userService.Register(email, password, confirmPassword)
+        if err != nil {
+            return err
+        }
+        return nil
+    }
+
+```
+### 6. Creating the Server: Fiber HTTPS server
+<p>
+    After we have all the Lego blocks ready wee need to create a last one for initialize our program in a HTTPS server, I will continue using Fiber for this. As in the other parts of the program I will use a Struct for make this more modular.
+</p>
+```
+
+    package server
+
+    import (
+        "goHexagonalBlog/internal/core/ports"
+        "log"
+
+        fiber "github.com/gofiber/fiber/v2"
+    )
+
+    type Server struct {
+        //We will add every new Handler here
+        userHandlers ports.IUserHandlers
+        //middlewares ports.IMiddlewares
+        //paymentHandlers ports.IPaymentHandlers
+    }
+
+    func NewServer(uHandlers ports.IUserHandlers) *Server {
+        return &Server{
+            userHandlers: uHandlers,
+            //paymentHandlers: pHandlers
+        }
+    }
+
+    func (s *Server) Initialize() {
+        app := fiber.New()
+        v1 := app.Group("/v1")
+
+        userRoutes := v1.Group("/user")
+        userRoutes.Post("/login", s.userHandlers.Login)
+        userRoutes.Post("/register", s.userHandlers.Register)
+
+        err := app.Listen(":5000")
+        if err != nil {
+            log.Fatal(err)
+        }
+    }
+
+```
+### 7. Lets the magic start!
+<p>
+    Finally we will create our main.go file and we will understand better how this work. Remember this for create our UserRepository we need a MongoConn string, for create our UserService we need a UserRepository, for create our UserHandler we need UserService and Finally for create a Server we need the handlers in this case we only need UserHandlers.
+</p>
+<medium>MongoConn:string > UserRepository > UserService > UserHandler > Server</medium>
+```
+
+    package main
+
+    import (
+        "goHexagonalBlog/internal/core/services"
+        "goHexagonalBlog/internal/handlers"
+        "goHexagonalBlog/internal/repositories"
+        "goHexagonalBlog/internal/server"
+    )
+
+    func main() {
+        mongoConn := "secret🤫"
+        //repositories
+        userRepository := repositories.NewUserRepository(mongoConn)
+        //services
+        userService := services.NewUserService(userRepository)
+        //handlers
+        userHandlers := handlers.NewUserHandlers(userService)
+        //server
+        httpServer := server.NewServer(
+            userHandlers,
+        )
+        httpServer.Initialize()
+    }
+
+```
+### 8. Enjoy the moment.
+<p>
+    Finally we have our Go app builded in Hexagonal Architecture and with Fiber, I will upload all the code to Github for use it as a template I hope you enjoy the Blog and if you like it please give me a clap 👀 that motivate me for continue writing this blogs.
+</p>
+
+<a href="https://github.com/solrac97gr/goHexagonalBlog">https://github.com/solrac97gr/goHexagonalBlog</a>
+

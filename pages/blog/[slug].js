@@ -1,9 +1,14 @@
 import { getFileBySlug, getFiles } from "../../lib/mdx";
 import { MDXRemote } from "next-mdx-remote";
-import MDXComponents from "../../components/MDXComponents"
+import MDXComponents from "../../components/MDXComponents";
+import {BlogContainer} from '../../components/BlogContainer'
 
 export default function Post({ source, frontmatter }) {
-  return <MDXRemote {...source} components={MDXComponents}/>;
+  return (
+    <BlogContainer>
+      <MDXRemote {...source} components={MDXComponents} />
+    </BlogContainer>
+  );
 }
 
 export async function getStaticProps({ params }) {
