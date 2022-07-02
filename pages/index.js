@@ -26,9 +26,11 @@ export default function Home({ posts }) {
                 key={post.title + post.date}
               >
                 <a className={styles.card}>
+                  <Image src={post.image} alt="go-wallpaper" width="500px" height="250px"></Image>
                   <h2>{post.title} &rarr;</h2>
                   <small>{post.date}</small>
-                  <p>{post.abstract}</p>
+                  <br></br>
+                  <small>{post.abstract}</small>
                 </a>
               </Link>
             );

@@ -1,50 +1,37 @@
 ---
-title: "Hexagonal Architecture using Go (Fiber)👨🏽‍💻"
+title: "Arquitectura Hexagonal usando Go (Fiber)👨🏽‍💻"
 date: "15-11-2021"
-abstract: "If you really wanna improve in the development time and specially in the integration of new technology to your project definitely the Hexagonal Architecture is the best decision."
+abstract: "Si realmente quieres mejorar en el tiempo de desarrollo y especialmente en el tiempo de integración de nuevas tecnologías en tu proyecto definitivamente la Arquitectura Hexagonal es la mejor decision."
 image: "https://miro.medium.com/max/1400/1*xofqkz49chC9XliDAuH1Qw.png"
 tag: "go"
 ---
 
-# Hexagonal Architecture using Go (Fiber)👨🏽‍💻
+# Arquitectura Hexagonal usando Go (Fiber)👨🏽‍💻
 
 <small>01/06/2022</small>
-<p>
-  If you really wanna improve in the development time and specially in the
-  integration of new technology to your project definitely the Hexagonal
-  Architecture is the best decision. I implement this architecture in some
-  languages like Java and Typescript and it’s very intuitive not happen the same
-  with Go because Go don’t have all the “OOP” tools in the language nevertheless
-  can be implemented with some variations in this language.
-</p>
-<p>
-  For this blog we will create a simple backend app using the most essential of
-  the language. first we need to know the folder structure.
-</p>
+
+Si realmente quieres mejorar en el tiempo de desarrollo y especialmente en el tiempo de integración de nuevas tecnologías en tu proyecto definitivamente la Arquitectura Hexagonal es la mejor decision. Implementar esta arquitecura en algunos otros lenguages como Java o Typescript es bastante intuitivo, con Go no ocurre lo mismo, debido a que Go no cuenta con todas las herramientras de un lenguaje orientado a objetos, sin embargo puede ser implementada con conceptos equivalentes del lenguaje.
+
+Para este blog vamos a crear un backend sencillo usando lo más escencial del lenguaje. Primero necesitamos saber la estrcutura de carpetas que vamos a usar.
+
+![folder-strcutre-go](https://miro.medium.com/max/1028/1*clWgRm1Q_muvVi8XMJ50pw.png)
+
+En Go no tenemos Clases(Class) pero contamos con Estructuras(Structs) y estás a su vez cuentan con algo llamado Reciver Functions que seran usados como equivalentes de los Métodos.
+
+Para entender mejor la diferencias revisemos este ejemplo con Typescript y Go
+
 <img
-  src="https://miro.medium.com/max/1028/1*clWgRm1Q_muvVi8XMJ50pw.png"
-  alt="folder-strcutre-go"
+  width="600px"
+  src="https://miro.medium.com/max/1400/1*d0URC4Nok-MGJd5ucSD7pw.png"
 ></img>
-<p>
-  In Go we don’t have Class but we have Structs and this have special functions
-  can be assigned to this we will use this as a Method of a Class check the
-  differences in a Class and Struct with Methods.
-</p>
-<img src="https://miro.medium.com/max/1400/1*d0URC4Nok-MGJd5ucSD7pw.png"></img>
-<p>
-  As you see in the image Go Struct don’t have explicit constructor as
-  Typescript have so we simulated a Constructor function for create a instance
-  of User (NewPerson in the left image) and then we create a “Method” of the
-  structure (GetEmail in the left image) now we have the way for replace the
-  Classes so we can start to build our app.
-</p>
-### 1. Creating the Domains: User
-<p>
-  We will use the previous Struct used in the image but this time we will create
-  it using Github gist for make our live more easy. The domain more easy analogy
-  is basically your Models.
-</p>
-``` package domain
+
+Como se puede apreciar en la imagen Go no tiene un constructor de manera explicita como Typescript asi que tenemos que simularlo creando una función que se encargue de devolvernos un Usuario (NewPerson en la imagen del lado izquierdo) y luego creamos un "Método" de la "Clase" usando Reciver Functions (GetEmail en la imagen del lado izquierdo). Ahora que tenemos la manera de remplazar las clases podemos empezar a construir nuestra App
+
+### 1. Creando los Dominios(Domains): User
+
+Vamos a usar la estructura previa, crearemos un archivo dentro de la carpeta domain (internal/core/domain) con el nombre de user.go para entender que estaría en la carpeta domain podemos decir que es analoga a la carpeta "models" o "entitys" de algunos frameworks.
+
+```package domain
 
     type User struct {
         ID       int
@@ -65,11 +52,13 @@ tag: "go"
     }
 
 ```
-### 2. Creating the ports: UserRepository, UserService and UserHandlers
-<p>
-    The ports are the instructions of how a Service or Repository should behavior , in this part you say it what methods a Struct must have for be considered a Repository or Service . This part of the Software just do this is The Book Rule, the Supervisor, etc. Don’t eat your mind. Lucky for us Go have interfaces, but work a little bit different they are implicit so we don’t say this struct implements this interface we just implement the methods in the struct and automatically this struct ca be considered as a amazing member of the interface.
 
-</p>
+### 2. Creando los puertos(Ports): UserRepository, UserService y UserHandlers
+
+Los puertos son las instructiones de como un Servicio o Repositorio debe comportarse, en esta parte le indicaremos mediante interfaces que métodos debe contener una Estructura(Clase en POO) para ser considerada un Servicio o Repositorio respectivamente.
+
+En go las interfaces trabajan de forma distinta son implicitias eso quiere decir que no tenemos que indicar que estamos implementadola en la declaración lo único que debemos hacer es agregar los métodos y Go automaticamente lo considerara una interfaz válida.
+
 ```
 
     package ports
@@ -94,10 +83,11 @@ tag: "go"
     }
 
 ```
-### 3. Creating the services: UserService implemented
-<p>
-    Now thanks to the interface we know what methods we will need for create our UserService we need this Struct have a Login method and Register method. But this user service should communicate with the Repository right! 🤔.. so How we reach this? In the UserService struct we will use we need to add this need a property of type UserRepository for work. Trust me when we will initialize the program you will understand this part.
-</p>
+
+### 3. Creando e Implementando los Servicios(Service): UserService
+
+Ahora gracias a las interfaces sabemos exactamente que métodos necesitamos crear para nuestro UserService, necesitamos en esta Estructura un método Login y uno Register. Pero para eso necesitamos comunicar Service con el Repository(Estrucura que se encargara de comunicarse con la base de datos) 🤔... así que Cómo lo lograremos? En la estrucura UserService agregaremos que como propiedad debe tener un UserRepository para poder funcionar. Este UserRepository sera requerido en nuestro constructor. [NewUserService(userRepository)]
+
 ```
 
     package services
@@ -140,10 +130,11 @@ tag: "go"
     }
 
 ```
-### 4. Creating the Repositories: UserRepository
-<p>
-    The user repository struct will communicate with the database so in the creation function (NewUserRepository) we should add the Database initialization for this project we will use mongo don’t think too much about this is just for the example.
-</p>
+
+### 4. Creando e Implementando los Repositorios(Repository): UserRepository
+
+El repositorio de usuario se comunicara directamente con la base de datos, asie que en la funcion de creación (NewUserRepository) podemos agregar la inicialización de la base de datos, para este ejemplo usaré mongo.
+
 ```
 
     package repositories
@@ -169,7 +160,7 @@ tag: "go"
         collection *mongo.Collection
     }
 
-    var _ ports.IUserRepository = (*UserRepository)(nil)
+    var _ ports.UserRepository = (*UserRepository)(nil)
 
     func NewUserRepository(conn string) *UserRepository {
         ctx, cancelFunc := context.WithTimeout(context.Background(), MongoClientTimeout*time.Second)
@@ -203,10 +194,11 @@ tag: "go"
     }
 
 ```
-### 5. Creating Handlers: UserHandlers
-<p>
-    Now we need to expose our service to the handlers and this handlers to the world I will use GoFiber for this as in the other implementations we will do something similar but this time the UserHandler struct will need of the UserService, because the handlers will communicate with the services.
-</p>
+
+### 5. Creando los Handlers: UserHandlers
+
+Ahora tenemos que exponer nuestro servicio a los handlers y estos handlers al mundo para eso usaremos GoFiber para los handlers como en las otras implementaciones haremos algo muy parecido pero esta ves UserHandlers requerira de UserService para funcionar ya que los Handlers se comunicaran con los Servicios
+
 ```
 
     package handlers
@@ -254,10 +246,11 @@ tag: "go"
     }
 
 ```
-### 6. Creating the Server: Fiber HTTPS server
-<p>
-    After we have all the Lego blocks ready wee need to create a last one for initialize our program in a HTTPS server, I will continue using Fiber for this. As in the other parts of the program I will use a Struct for make this more modular.
-</p>
+
+### 6. Creando el Servidor (Server): Fiber HTTPS server
+
+Luego de tener todas las piezas Lego lista necesitamos crear una ultima parte para inizializar nuestros programa en un servidor HTTPS, continuare usando Fiber para esto, como en las otras partes continuare usando una Estructura para hacer el programa más modular
+
 ```
 
     package server
@@ -271,12 +264,12 @@ tag: "go"
 
     type Server struct {
         //We will add every new Handler here
-        userHandlers ports.IUserHandlers
-        //middlewares ports.IMiddlewares
-        //paymentHandlers ports.IPaymentHandlers
+        userHandlers ports.UserHandlers
+        //middlewares ports.Middlewares
+        //paymentHandlers ports.PaymentHandlers
     }
 
-    func NewServer(uHandlers ports.IUserHandlers) *Server {
+    func NewServer(uHandlers ports.UserHandlers) *Server {
         return &Server{
             userHandlers: uHandlers,
             //paymentHandlers: pHandlers
@@ -298,11 +291,13 @@ tag: "go"
     }
 
 ```
-### 7. Lets the magic start!
-<p>
-    Finally we will create our main.go file and we will understand better how this work. Remember this for create our UserRepository we need a MongoConn string, for create our UserService we need a UserRepository, for create our UserHandler we need UserService and Finally for create a Server we need the handlers in this case we only need UserHandlers.
-</p>
-<medium>MongoConn:string > UserRepository > UserService > UserHandler > Server</medium>
+
+### 7. Qué comienze la mágia!
+
+Finalmente crearemos nuestro punto de entrada en la aplicación en el main.go y entenderemos mejor como esta arquitectura funciona. Recordemos que para crear nuestro UserRepository necesitamos una URL de conexión a mongo, para crear nuestro UserService necesitamos un UserRepository, para crear nuestro UserHandler necesitamos un UserService y para crear nuestro servidor necesitamos de los Hanlders.
+
+> **_MongoConn:string > UserRepository > UserService > UserHandler > Server_**
+
 ```
 
     package main
@@ -330,10 +325,11 @@ tag: "go"
     }
 
 ```
-### 8. Enjoy the moment.
-<p>
-    Finally we have our Go app builded in Hexagonal Architecture and with Fiber, I will upload all the code to Github for use it as a template I hope you enjoy the Blog and if you like it please give me a clap 👀 that motivate me for continue writing this blogs.
-</p>
 
-<a href="https://github.com/solrac97gr/goHexagonalBlog">https://github.com/solrac97gr/goHexagonalBlog</a>
+### 8. Disfrutar el momento.
 
+Ahora si tenemos nuestra aplicación de go construida usando Arquitectura Hexagonal y Fiber, Subiré el código a Github para que pueda ser usado como plantilla, espero que hayan disfrutado leyendo el articulo y si te gusto dejame un aplauso 👀 eso me motivara para seguir compartiendo contenido.
+
+<a href="https://github.com/solrac97gr/goHexagonalBlog" target="_blank" style={{color:"blue"}}>
+  https://github.com/solrac97gr/goHexagonalBlog
+</a>
