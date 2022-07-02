@@ -1,0 +1,91 @@
+---
+title: "Mi primera vez usando Rust, no muy felíz... 🦀"
+date: "18/03/2022"
+abstract: "Para probar este lenguaje de programación días atras estuve viendo algunos videos en youtube para inspirarme y tener alguna idea de que proyectos puedo hacer, luego de unos días encontre un proyecto."
+image: "https://miro.medium.com/max/1038/1*TZbUMhZG8Co1hWCVd3MpIQ.png"
+tag: "rust"
+---
+# Mi primera vez usando Rust, no muy felíz... 🦀
+
+<small>18/03/2022</small>
+
+Si exactamente eso fue click bait, Estoy muy feliz con mi primera experiencia desarrolando un pequeño script usando Rust, soy un desarrollador Backend que trabja con Go en la mayor parte del tiempo, tambien un poco de Typescript y Elixir.
+
+### El Proyecto
+
+Para probar este lenguaje de programación días atras estuve viendo algunos videos en youtube para inspirarme y tener alguna idea de que proyectos puedo hacer, luego de unos días encontre un proyecto.
+
+Este proyecto era acerca de crear un script que te organizara la carpeta de descargas en base al tipo de archivos (Tambien podiamos hacerlos por fecha), así que este script debe revisar el contenido de determinada carpeta y segun la extensión categorizarlo en otra subcarpeta, suena bastante fácil si ya lo has hecho con Python o Go.
+
+### El Lenguaje: Rust
+
+No te voy a mentir vi la oportunidad de usar un nuevo y super a la vanguardia lenguaje de programación y la aproveche. Leí sobre el rendimiento de este lenguaje y el concepto de los prestamos y lo encontre interesante.
+
+### Callate y dame el Código
+
+Si estas curioso sobre como funciona este script puedes revisarlo aquí abajo y probarlo, en mi caso para su uso programe la ejecución al momento en que abro un terminal (Muy frecuentemente). Estaré muy felíz si programadores más expertos de Rust me pueden dar sugerencias. Si tienes alguna sugerencia me puedes escribir en Twitter o hacer un Pull Request en Github
+
+```
+use std::fs;
+use std::path::Path;
+
+use std::env;
+extern crate dotenv;
+
+
+
+fn main() {
+    
+        dotenv::from_path("./.env").expect("error loading env");
+        
+        let path_to_images = env::var("PATH_IMAGES").expect("env error");
+        let path_to_videos = env::var("PATH_VIDEOS").expect("env error");
+        let path_to_audios = env::var("PATH_AUDIOS").expect("env error");
+        let path_to_documents =env::var("PATH_DOCUMENTS").expect("env error");
+        let path_to_installers = env::var("PATH_INSTALLERS").expect("env error");
+
+        for entry in fs::read_dir(env::var("FOLDER_TO_ORGANIZE").expect("env error")).unwrap() {
+            let entry = entry.unwrap();
+            let path = entry.path();
+           
+            if path.is_file() {
+                if Path::new(&path).extension() != None && Path::new(&path).file_name() != None {
+                    
+                    let path_string = Path::new(&path).to_str().unwrap();
+                    let file_name = Path::new(&path).file_name().unwrap().to_str().unwrap();
+                    let file_type= Path::new(&path).extension().unwrap();
+
+                    //IMAGES
+                    if file_type == "jpeg" ||file_type == "png" || file_type == "jpg" || file_type == "heic" {
+                        let destination_file = format!("{}/{}",path_to_images,file_name);
+                        fs::copy(path_string,destination_file).expect("copy error");
+                        
+                    }
+                    //INSTALLERS
+                    if file_type == "dmg" || file_type == "app" {
+                        let destination_file = format!("{}/{}",path_to_installers,file_name);
+                        fs::copy(path_string,destination_file).expect("copy error");
+                    }
+                    //DOCUMENTS
+                    if file_type == "pdf" || file_type == "doc" || file_type == "docx" || file_type == "ppt" || file_type == "xls"{
+                        let destination_file = format!("{}/{}",path_to_documents,file_name);
+                        fs::copy(path_string,destination_file).expect("copy error");
+                    }
+                    //VIDEOS
+                    if file_type == "mp4" || file_type == "avi" {
+                        let destination_file = format!("{}/{}",path_to_videos,file_name);
+                        fs::copy(path_string,destination_file).expect("copy error");
+                    }
+                    //AUDIOS
+                    if file_type == "mp3" {
+                        let destination_file = format!("{}/{}",path_to_audios,file_name);
+                        fs::copy(path_string,destination_file).expect("copy error");
+                    }
+
+                    fs::remove_file(path_string).expect("remove error");
+                }
+            }
+        }
+    
+}
+```
