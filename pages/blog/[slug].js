@@ -22,7 +22,7 @@ export default function Post({ source, frontmatter }) {
         <meta property="og:type" content="article" />
         <meta property="og:url" content={`${BLOG_URL}/${frontmatter.slug}`} />
         <meta property="og:image" content={frontmatter.image} />
-        <meta property="article:published_time" content={frontmatter.date} />
+        <meta property="article:published_time" content={frontmatter.published} />
         <meta property="article:tag" content={frontmatter.tag} />
         <meta property="article:author" content={`${PAGE_URL}/sobre-mi}`} />
         <meta name="twitter:title" content={frontmatter.title} />
