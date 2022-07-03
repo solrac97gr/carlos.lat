@@ -20,7 +20,7 @@ Para este blog vamos a crear un backend sencillo usando lo más escencial del le
 
 En Go no tenemos Clases(Class) pero contamos con Estructuras(Structs) y estás a su vez cuentan con algo llamado Reciver Functions que seran usados como equivalentes de los Métodos.
 
-Para entender mejor la diferencias revisemos este ejemplo con Typescript y Go
+Para entender mejor la diferencias revisemos este ejemplo con Typescript y Go:
 
 <img
   width="600px"
@@ -33,7 +33,8 @@ Como se puede apreciar en la imagen Go no tiene un constructor de manera explici
 
 Vamos a usar la estructura previa, crearemos un archivo dentro de la carpeta domain (internal/core/domain) con el nombre de user.go para entender que estaría en la carpeta domain podemos decir que es analoga a la carpeta "models" o "entitys" de algunos frameworks.
 
-```package domain
+```go
+    package domain
 
     type User struct {
         ID       int
@@ -61,8 +62,7 @@ Los puertos son las instructiones de como un Servicio o Repositorio debe comport
 
 En go las interfaces trabajan de forma distinta son implicitias eso quiere decir que no tenemos que indicar que estamos implementadola en la declaración lo único que debemos hacer es agregar los métodos y Go automaticamente lo considerara una interfaz válida.
 
-```
-
+```go
     package ports
 
     import (
@@ -90,8 +90,7 @@ En go las interfaces trabajan de forma distinta son implicitias eso quiere decir
 
 Ahora gracias a las interfaces sabemos exactamente que métodos necesitamos crear para nuestro UserService, necesitamos en esta Estructura un método Login y uno Register. Pero para eso necesitamos comunicar Service con el Repository(Estrucura que se encargara de comunicarse con la base de datos) 🤔... así que Cómo lo lograremos? En la estrucura UserService agregaremos que como propiedad debe tener un UserRepository para poder funcionar. Este UserRepository sera requerido en nuestro constructor. [NewUserService(userRepository)]
 
-```
-
+```go
     package services
 
     import (
@@ -137,8 +136,7 @@ Ahora gracias a las interfaces sabemos exactamente que métodos necesitamos crea
 
 El repositorio de usuario se comunicara directamente con la base de datos, asie que en la funcion de creación (NewUserRepository) podemos agregar la inicialización de la base de datos, para este ejemplo usaré mongo.
 
-```
-
+```go
     package repositories
 
     import (
@@ -201,8 +199,7 @@ El repositorio de usuario se comunicara directamente con la base de datos, asie 
 
 Ahora tenemos que exponer nuestro servicio a los handlers y estos handlers al mundo para eso usaremos GoFiber para los handlers como en las otras implementaciones haremos algo muy parecido pero esta ves UserHandlers requerira de UserService para funcionar ya que los Handlers se comunicaran con los Servicios
 
-```
-
+```go
     package handlers
 
     import (
@@ -253,8 +250,7 @@ Ahora tenemos que exponer nuestro servicio a los handlers y estos handlers al mu
 
 Luego de tener todas las piezas Lego lista necesitamos crear una ultima parte para inizializar nuestros programa en un servidor HTTPS, continuare usando Fiber para esto, como en las otras partes continuare usando una Estructura para hacer el programa más modular
 
-```
-
+```go
     package server
 
     import (
@@ -300,8 +296,7 @@ Finalmente crearemos nuestro punto de entrada en la aplicación en el main.go y 
 
 > **_MongoConn:string > UserRepository > UserService > UserHandler > Server_**
 
-```
-
+```go
     package main
 
     import (
@@ -332,6 +327,10 @@ Finalmente crearemos nuestro punto de entrada en la aplicación en el main.go y 
 
 Ahora si tenemos nuestra aplicación de go construida usando Arquitectura Hexagonal y Fiber, Subiré el código a Github para que pueda ser usado como plantilla, espero que hayan disfrutado leyendo el articulo y si te gusto dejame un aplauso 👀 eso me motivara para seguir compartiendo contenido.
 
-<a href="https://github.com/solrac97gr/goHexagonalBlog" target="_blank" style={{color:"blue"}}>
+<a
+  href="https://github.com/solrac97gr/goHexagonalBlog"
+  target="_blank"
+  style={{ color: "blue" }}
+>
   https://github.com/solrac97gr/goHexagonalBlog
 </a>
