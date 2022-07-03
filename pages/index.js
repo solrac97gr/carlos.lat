@@ -54,11 +54,18 @@ export default function Home({ posts }) {
                     alt="go-wallpaper"
                     width="500px"
                     height="250px"
+                    style={{
+                      overFlow: 'hidden',
+                      borderTopLeftRadius: 10,
+                      borderTopRightRadius: 10,
+                    }}
                   ></Image>
-                  <h2>{post.title} &rarr;</h2>
-                  <small>{post.date}</small>
-                  <br></br>
-                  <small>{post.abstract}</small>
+                  <div className={styles.cardcontent}>
+                    <h3>{post.title} &rarr;</h3>
+                    <small>{post.date}</small>
+                    <br></br>
+                    <p style={{ fontSize: "14px" }}>{post.abstract}</p>
+                  </div>
                 </a>
               </Link>
             );
