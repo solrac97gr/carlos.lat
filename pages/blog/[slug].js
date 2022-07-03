@@ -4,12 +4,16 @@ import MDXComponents from "../../components/MDXComponents";
 import { BlogContainer } from "../../components/BlogContainer";
 import Head from "next/head";
 import { BLOG_URL } from "../../consts";
+import { useEffect } from "react";
 
 export default function Post({ source, frontmatter }) {
+  useEffect(()=>{
+    console.log(frontmatter)
+  })
   return (
     <div>
       <Head>
-        <title>carlos97gr 👨🏽‍💻 | {frontmatter.title}</title>
+        <title>{`carlos97gr 👨🏽‍💻 | ${frontmatter.title}`}</title>
         <meta charset="UTF-8" />
         <meta name="description" content={frontmatter.abstract} />
         <meta name="keywords" content={frontmatter.tag} />
