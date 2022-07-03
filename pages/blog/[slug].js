@@ -7,9 +7,6 @@ import { BLOG_URL, PAGE_URL } from "../../consts";
 import { useEffect } from "react";
 
 export default function Post({ source, frontmatter }) {
-  useEffect(()=>{
-    console.log(frontmatter)
-  })
   return (
     <div>
       <Head>
@@ -19,6 +16,7 @@ export default function Post({ source, frontmatter }) {
         <meta name="keywords" content={frontmatter.tag} />
         <meta name="author" content={`${PAGE_URL}/sobre-mi}`} />
         <meta property="og:title" content={frontmatter.title} />
+        <meta name="og:description" content={frontmatter.abstract} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={`${BLOG_URL}/${frontmatter.slug}`} />
         <meta property="og:image" content={frontmatter.image} />
