@@ -2,7 +2,7 @@ import {BlogContainerStyle} from './index.style'
 
 export const BlogContainer = ({children}) => {
     return (
-        <BlogContainerStyle>
+        <BlogContainerStyle className='line-numbers'>
             {children}
         </BlogContainerStyle>
     )
