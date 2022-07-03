@@ -14,7 +14,7 @@ export default function Post({ source, frontmatter }) {
     <div>
       <Head>
         <title>{`carlos97gr 👨🏽‍💻 | ${frontmatter.title}`}</title>
-        <meta charset="UTF-8" />
+        <meta charSet="UTF-8" />
         <meta name="description" content={frontmatter.abstract} />
         <meta name="keywords" content={frontmatter.tag} />
         <meta name="author" content={frontmatter.author} />
