@@ -63,8 +63,6 @@ export default function Home({ posts }) {
                   <div className={styles.cardcontent}>
                     <h3>{post.title} &rarr;</h3>
                     <small>{post.date}</small>
-                    <br></br>
-                    <p style={{ fontSize: "14px" }}>{post.abstract}</p>
                   </div>
                 </a>
               </Link>
