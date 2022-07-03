@@ -26,6 +26,19 @@ export default function Home({ posts }) {
           property="og:image"
           content="https://miro.medium.com/max/1400/1*xofqkz49chC9XliDAuH1Qw.png"
         />
+        <meta
+          name="twitter:title"
+          content="carlos97gr 👨🏽‍💻 | Backend, Go, Flutter, Firebase, Rust"
+        />
+        <meta
+          name="twitter:description"
+          content="Creando contenido mientras programo."
+        />
+        <meta
+          name="twitter:image"
+          content="https://miro.medium.com/max/1400/1*xofqkz49chC9XliDAuH1Qw.png"
+        />
+        <meta name="twitter:card" content="summary_large_image" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
