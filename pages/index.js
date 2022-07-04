@@ -55,7 +55,7 @@ export default function Home({ posts }) {
                     width="500px"
                     height="250px"
                     style={{
-                      overFlow: 'hidden',
+                      overFlow: "hidden",
                       borderTopLeftRadius: 10,
                       borderTopRightRadius: 10,
                     }}
