@@ -5,16 +5,19 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "next-sitemap",
     "start": "next start",
     "export": "next export",
     "lint": "next lint",
-    "ci": "npm install && npm run build && npm run export"
+    "ci": "npm install && npm run build && npm run postbuild && npm run export"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
     "mdx-prism": "^0.3.4",
     "next": "12.2.0",
     "next-mdx-remote": "^4.0.3",
+    "next-sitemap": "^3.1.8",
+    "parse-entities": "^4.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
