@@ -2,8 +2,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: system-ui, Roboto, sans-serif;
 }
 
 a {
@@ -24,5 +23,5 @@ code {
 }
 
 small {
-  color: rgb(199, 198, 199)
+  color: rgb(199, 198, 199);
 }
