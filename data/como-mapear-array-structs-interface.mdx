@@ -1,0 +1,80 @@
+---
+title: "Mapeando un Array de Structs a un Array de Interfaces en Go 🐹"
+date: "05 de Noviembre del 2021"
+published: "2021-11-05"
+abstract: "Comenzando con el problema común de crear funciones más genéricas, me ocupé de un problema parecido una vez y es el acceso a subcampos dentro de una interfaz de map[string]interface{}."
+image: "https://miro.medium.com/max/1400/1*IHqSJ2_7CeaU675YRdLY2g.jpeg"
+tag: "go"
+author: "Carlos García"
+---
+
+# Mapeando un Array de Structs a un Array de Interfaces en Go 🐹
+
+<small>05 de Noviembre del 2021</small>
+
+<img width="100%" src="https://miro.medium.com/max/1400/1*IHqSJ2_7CeaU675YRdLY2g.jpeg"></img>
+
+En mi tiempo de programación con go, un problema recurrente es tratar de hacer que los métodos puedan funcionar con diferentes parámetros de tipos de datos, por ejemplo, lo que sucede cuando tiene un método para insertar varios documentos en MongoDB pero es la misma acción para diferentes tipos de datos. La forma lógica de resolver este problema es usar una Array de interfaz como en el siguiente ejemplo.
+
+```go
+    func SaveToMongo(documents []interface{}, collectionName string) {
+        ctx, cancelFunc := context.WithTimeout(context.Background(), 5*time.Second)
+        defer cancelFunc()
+
+        client, err := mongo.Connect(ctx, options.Client().ApplyURI(
+            MongoCon,
+        ))
+        if err != nil {
+                println(err.Error())
+        }
+    
+        collection := client.Database("test").Collection(collectionName)
+        _, err = collection.InsertMany(ctx, documents)
+        if err != nil {
+            println(err.Error())
+        }
+    }
+```
+Pero cuando intenta enviar datos a este método, por ejemplo, una array de struct, obtiene un error de tipos incompatibles.
+
+### Entonces ¿Cuál es la solución...?
+
+Para hacer que este método funcione y el método InsertMany también, en mi caso, tengo diferentes métodos que me devuelven una matriz de diferentes tipos de estructuras en el mismo método. Devuelvo esa matriz. Asigno la matriz a una []interfaz.
+
+```go
+    func GetComments() (logResultsInt []interface{}) {
+        var logResults []models.Comments
+        ...
+        for _, log := range logResults {
+            logResultsInt = append(logResultsInt, log)
+        }
+        return logResultsInt
+    }
+```
+### Conclusión
+
+Con Go podemos resolver problemas y casos en los que necesitamos usar un "tipo dinámico", incluso si es un lenguaje de tipado estático. Espero ayudar a alguien con este formato corto resolviendo pequeños problemas que tengo en mi día de trabajo.
+
+### Edición
+
+Gracias a <a style={{color:'blue'}} href="https://yael-castro.medium.com">Yael Castro</a> por esta sugerencia de una función que realiza la conversión de manera más eficiente.
+
+```go
+    package main
+
+    import "fmt"
+
+    type Empty struct{}
+
+    func toInterfaceSlice(slice ...interface{}) []interface{} {
+        return slice
+    }
+
+    func main() {
+        slice := []Empty{}
+
+        arr := toInterfaceSlice(slice)
+
+        fmt.Printf("%T", arr)
+    }
+```
