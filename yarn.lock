@@ -126,6 +126,11 @@
     "@babel/helper-validator-identifier" "^7.18.6"
     "to-fast-properties" "^2.0.0"
 
+"@corex/deepmerge@^4.0.26":
+  "integrity" "sha512-q/yVUnqckA8Do+EvAfpy7RLdumnBy9ZsducMUtZTvpdbJC7azEf1hGtnYYxm0QfphYxjwggv6XtH64prvS1W+A=="
+  "resolved" "https://registry.npmjs.org/@corex/deepmerge/-/deepmerge-4.0.29.tgz"
+  "version" "4.0.29"
+
 "@emotion/is-prop-valid@^1.1.0":
   "integrity" "sha512-RFg04p6C+1uO19uG8N+vqanzKqiM9eeV1LDOG3bmkYmuOj7NbKNlFC/4EZq5gnwAIlcC/jOT24f8Td0iax2SXA=="
   "resolved" "https://registry.npmjs.org/@emotion/is-prop-valid/-/is-prop-valid-1.1.3.tgz"
@@ -240,7 +245,7 @@
     "@types/mdx" "^2.0.0"
     "@types/react" ">=16"
 
-"@next/env@12.2.0":
+"@next/env@*", "@next/env@12.2.0":
   "integrity" "sha512-/FCkDpL/8SodJEXvx/DYNlOD5ijTtkozf4PPulYPtkPOJaMPpBSOkzmsta4fnrnbdH6eZjbwbiXFdr6gSQCV4w=="
   "resolved" "https://registry.npmjs.org/@next/env/-/env-12.2.0.tgz"
   "version" "12.2.0"
@@ -2312,7 +2317,15 @@
     "vfile" "^5.3.0"
     "vfile-matter" "^3.0.1"
 
-"next@12.2.0":
+"next-sitemap@^3.1.8":
+  "integrity" "sha512-dd9NBDk2tpRsUXjCyDh2qkROsKCLHE4AOsuefKxAkOquG5Mbck1Zv+APLiu+eBVrQXvroXrZr6zgU9thzlTowg=="
+  "resolved" "https://registry.npmjs.org/next-sitemap/-/next-sitemap-3.1.8.tgz"
+  "version" "3.1.8"
+  dependencies:
+    "@corex/deepmerge" "^4.0.26"
+    "minimist" "^1.2.6"
+
+"next@*", "next@12.2.0":
   "integrity" "sha512-B4j7D3SHYopLYx6/Ark0fenwIar9tEaZZFAaxmKjgcMMexhVJzB3jt7X+6wcdXPPMeUD6r09weUtnDpjox/vIA=="
   "resolved" "https://registry.npmjs.org/next/-/next-12.2.0.tgz"
   "version" "12.2.0"
