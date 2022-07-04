@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import Link from "next/link";
 
+const LOGO_FONT_SIZE = "23px";
+
+
 export const NavbarContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -11,8 +14,7 @@ export const NavbarContainer = styled.div`
   width: 100%; /* Full width */
   overflow: hidden;
   background-color: white;
-  -webkit-box-shadow: 5px 5px 6px 1px rgba(0, 0, 0, 0.13);
-  box-shadow: 5px 5px 6px 1px rgba(0, 0, 0, 0.13);
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.13);
   @media (max-width: 768px) {
     padding: 20px;
     justify-content: space-between;
@@ -25,14 +27,15 @@ export const NameContainer = styled(Link)`
   padding-right: 5px;
 `;
 
+
 export const FirstName = styled.span`
   font-weight: bold;
-  font-size: 21px;
+  font-size: ${LOGO_FONT_SIZE};
 `;
 
 export const LastName = styled.span`
-  font-weight: 400;
-  font-size: 21px;
+  font-weight: 300;
+  font-size: ${LOGO_FONT_SIZE};
 `;
 
 export const SocialIcon = styled.a`
