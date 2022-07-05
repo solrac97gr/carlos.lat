@@ -4,6 +4,7 @@ const nextConfig = {
   images: {
     loader: "akamai",
     path: "",
+    domains: ['firebasestorage.googleapis.com'],
   },
   trailingSlash: true,
 };

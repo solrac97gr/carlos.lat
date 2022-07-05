@@ -54,6 +54,7 @@ export default function Home({ posts }) {
                     alt="go-wallpaper"
                     width="500px"
                     height="250px"
+                    unoptimized
                     style={{
                       overFlow: "hidden",
                       borderTopLeftRadius: 10,
