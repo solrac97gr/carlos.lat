@@ -15,6 +15,7 @@ export const NavbarContainer = styled.div`
   overflow: hidden;
   background-color: white;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.13);
+  z-index:999;
   @media (max-width: 768px) {
     padding: 20px;
     justify-content: space-between;
