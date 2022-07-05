@@ -1,0 +1,116 @@
+---
+title: "Frontend o Backend: El Dilema 🤔"
+date: "07 de Julio del 2022"
+published: "2022-07-07"
+abstract: "Frontend y Backend son dos ramas del desarrollo web que se centran una en lo que es la parte visual y la otra en la parte de lógica de negocio."
+image: "https://miro.medium.com/max/1400/0*EODEF6xTWVm5hv-3"
+tag: "web Go html css JavaScript "
+author: "Carlos García"
+---
+# Frontend o Backend: El Dilema 🤔
+
+<small>07 de Julio del 2022</small>
+
+<img width="100%" src="https://miro.medium.com/max/1400/0*EODEF6xTWVm5hv-3"/>
+
+```go
+    fmt.Println("Hello World!🌎")
+```
+
+Hola mundo👋! Uno de las preguntas más comunes que escuchamos cuando entramos al mundo del desarrollo web es:
+
+> ¿Eres desarrollador Frontend o Backend?
+
+Esta pregunta hace referencia a dos de las muchas ramas del desarrollo web que existen, para que aprendas a entenderla y responderla te explicaré en este artículo a que hace referencia estos términos.
+
+## ¿Qué es un desarrollador y qué hace?
+
+Un desarrollador web en nuestro caso según wikipedia es:
+
+> Un desarrollador es un programador o una compañía comercial que se dedica a uno o más aspectos del proceso de desarrollo de software. Se trata de un ámbito más amplio de la programación algorítmica.
+
+Entonces un desarrollador valga la redundancia es alguien que se dedica al desarrollo de software (Aplicaciones, páginas web, etc).
+
+## Frontend
+
+### ¿Qué es Frontend?
+
+Frontend es una rama del desarrollo web que hace referencia a la persona que se dedica a programar la interfaz de usuario, eso implica programar la interfaz del usuario o coloquialmente llamado "lo que se ve pues"  y darle interactividad controlando el flujo de información que ingresa del usuario ya sea escribir en el teclado o hacer click con el mouse y enviarle la información si es necesaria al Backend.
+
+### ¿Qué tecnologías usan los Desarrolladores Frontend?
+
+Las herramientas básicas que todo desarrollador Frontend son las siguientes el lenguaje de estructura llamado HTML, el lenguaje de estilos llamado CSS y el lenguaje de programación llamado JavaScript ( Que nada tiene que ver con Java... 😅 en cuanto a complejidad y propósito )
+
+En cuanto a mi stack yo trabajo en Frontend con React y en estilos aun uso CSS puro o Styled Components.
+
+1. **HTML**: Se encarga de darle estructura a la página, indicándole al navegador que tipo de objeto debe representar. 
+    
+```html
+   <h1>Soy un título </h1>
+   <p>Y yo soy un párrafo.</p>
+```
+
+2. **CSS**: Es el que se en carga de darle estilo a nuestra estructura creada con el HTML. Por ejemplo podríamos indicar que queremos nuestros títulos en color azul y que nuestros párrafos tengan letra en tamaño 20.
+    
+```css
+   h1 {
+     color: blue;
+   }
+   
+   p {
+     font-size: 20px;
+   }
+```
+
+3. **JavaScript**: Es el lenguaje de programación que los desarrolladores frontend usan para darle interactividad a las páginas. Por ejemplo queremos que al abrir nuestra web salga un mensaje de quien es el creador.
+    
+```js
+   alert("página desarrollada por Carlos")
+```
+
+
+## Backend
+
+### ¿Qué es Backend?
+
+Es también una rama del desarrollo web enfocada normalmente en la lógica de negocio. Es decir que se encarga de hacer las consultas en la base de datos, procesar esa información y enviarla al frontend. Un ejemplo de procesamiento de información para que quede más claro puede ser que en nuestra base de datos tengamos guardada la fecha de cumpleaños de nuestro usuario antes de enviarle la información al frontend acerca del usuario podemos calcular su edad y enviarla al Frontend. 
+
+### ¿Qué tecnologías usan los Desarrolladores Backend?
+
+En cuanto a tecnologías que se usan en el Backend se podría tomar como lo
+más básico: Un lenguaje de programación que corra en el servidor, una base de datos y un servidor.
+
+Actualmente la web en su mayoría está construida con PHP, MySQL y Apache. Esto se debe a que muchos de los blogs construidos actualmente usan Wordpress que cuenta con esa combinación de herramientas y debido a su gran popularidad en el pasado.
+
+En cuanto a mi Stack actual yo trabajo con Go, MongoDB y Nginx. En la mayoría de mis proyectos Backend.
+
+A continuación te enseñaré cómo sería levantar un servidor usando Go con una ruta que te salude al entrar.
+
+```go
+package main
+
+import (
+    "fmt"
+    "html"
+    "log"
+    "net/http"
+)
+
+func main() {
+
+    http.HandleFunc("/hi", func(w http.ResponseWriter, r *http.Request){
+        fmt.Fprintf(w, "Hi")
+    })
+
+    log.Fatal(http.ListenAndServe(":8081", nil))
+
+}
+
+```
+
+Esto hace que nosotros al entrar al entrar a http://localhost:8081/hi obtengamos un saludo en respuesta. Claro esto solo funcionará si tú ejecutas este código dentro de tu computadora.
+
+## En conclusión
+
+Frontend y Backend son dos ramas del desarrollo web que se centran una en lo que es la parte visual y la otra en la parte de lógica de negocio.
+
