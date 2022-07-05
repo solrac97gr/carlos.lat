@@ -1,5 +1,5 @@
 import '../styles/globals.css'
-import '../styles/prism-holi-theme.css'
+import '../styles/night-owl.css'
 import {Layout} from '../components/layout'
 
 function MyApp({ Component, pageProps }) {
