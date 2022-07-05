@@ -1,18 +1,12 @@
 export const Podcast = ({ episode }) => {
   return (
-    <>
-      <a
-        href="https://twitter.com/carlosgrowth?ref_src=twsrc%5Etfw"
-        className="twitter-follow-button"
-        data-show-count="false"
-      >
-        Follow @carlosgrowth
-      </a>
-      <script
-        async
-        src="https://platform.twitter.com/widgets.js"
-        charSet="utf-8"
-      ></script>
-    </>
+    <iframe
+      src={`https://open.spotify.com/embed/episode/${episode}`}
+      width="100%"
+      height="180px"
+      frameBorder="0"
+      allowtransparency="true"
+      allow="encrypted-media"
+    />
   );
 };
