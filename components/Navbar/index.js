@@ -14,23 +14,17 @@ import { FaTwitter, FaInstagram, FaYoutube, FaLinkedin } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import { useIsMobile } from "../../hooks/useIsMobile";
 
 const size = 21;
 
 export const Navbar = () => {
   const router = useRouter();
-  const [matches, setMatches] = useState(undefined);
-
-  useEffect(() => {
-    const mediaMatch = window.matchMedia("(max-width: 768px)");
-    const handler = (e) => setMatches(e.matches);
-    mediaMatch.addListener(handler);
-    return () => mediaMatch.removeListener(handler);
-  }, []);
+  const isMobile = useIsMobile()
 
   return (
     <NavbarContainer>
-      {matches && <BurgerStyled />}
+      {isMobile&&<BurgerStyled/>}
       <NameContainer href="/">
         <a>
           <FirstName>Carlos</FirstName>
