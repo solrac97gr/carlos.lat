@@ -14,6 +14,8 @@ import {
   Tag,
   Title,
   ImageContainer,
+  PresentationContainer,
+  ExperienceContainer,
 } from "./index.style";
 import Link from "next/link";
 import Image from "next/future/image";
@@ -22,27 +24,29 @@ export const Hero = () => {
   return (
     <Container>
       <LeftColumn>
-        <Title>Hello World 🌎!</Title>
-        <SubTitle>Soy Carlos García</SubTitle>
-        <Tag>Desarrollador FullStack</Tag>
-        <Description>Desarrollo usando Go, React y Mongo ❤️</Description>
-        <Link
-          href={
-            `https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=Hola%20me%20gustar%C3%ADa%20trabajar%20contigo`
-          }
-        >
-          <LinkHero>Trabajemos juntos</LinkHero>
-        </Link>
-        <ExperienceRow>
-          <ExperienceYears>
-            <ExperienceNumber>4</ExperienceNumber>
-            <ExperienceText>años de experiencia</ExperienceText>
-          </ExperienceYears>
-          <ExperienceProjects>
-            <ExperienceNumber>14</ExperienceNumber>
-            <ExperienceText>proyectos completados</ExperienceText>
-          </ExperienceProjects>
-        </ExperienceRow>
+        <PresentationContainer>
+          <Title>Hello World 🌎!</Title>
+          <SubTitle>Soy Carlos García</SubTitle>
+          <Tag>Desarrollador FullStack</Tag>
+          <Description>Desarrollo usando Go, React y Mongo ❤️</Description>
+          <Link
+            href={`https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=Hola%20me%20gustar%C3%ADa%20trabajar%20contigo`}
+          >
+            <LinkHero>Trabajemos juntos</LinkHero>
+          </Link>
+        </PresentationContainer>
+        <ExperienceContainer>
+          <ExperienceRow>
+            <ExperienceYears>
+              <ExperienceNumber>4</ExperienceNumber>
+              <ExperienceText>años de experiencia</ExperienceText>
+            </ExperienceYears>
+            <ExperienceProjects>
+              <ExperienceNumber>14</ExperienceNumber>
+              <ExperienceText>proyectos completados</ExperienceText>
+            </ExperienceProjects>
+          </ExperienceRow>
+        </ExperienceContainer>
       </LeftColumn>
       <RightColumn>
         <ImageContainer>

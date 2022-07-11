@@ -1,7 +1,15 @@
 import styled from "styled-components";
 import Link from "next/link";
+import { BurgerMenu } from "../BurgerMenu";
 
 const LOGO_FONT_SIZE = "21px";
+
+export const BurgerStyled = styled(BurgerMenu)`
+  display: none !important;
+  @media (max-width: 768px) {
+    display:flex;
+  }
+`;
 
 export const NavbarContainer = styled.div`
   background-color: #2d2e32;
@@ -10,9 +18,9 @@ export const NavbarContainer = styled.div`
   flex-direction: row;
   justify-content: space-around;
   padding: 20px;
-  position: fixed; /* Set the navbar to fixed position */
-  top: 0; /* Position the navbar at the top of the page */
-  width: 100%; /* Full width */
+  position: fixed;
+  top: 0;
+  width: 100%;
   overflow: hidden;
   z-index: 999;
   @media (max-width: 768px) {
@@ -52,9 +60,7 @@ export const NavbarLinkContainer = styled.div`
   }
 `;
 
-export const NavbarLink = styled(Link)`
-  
-`;
+export const NavbarLink = styled(Link)``;
 
 export const NavbarLinkText = styled.a`
   color: white;

@@ -31,20 +31,25 @@ export const RightColumn = styled.div`
     width:100% ;
   }
 `;
+
+export const PresentationContainer =styled.div``;
+export const ExperienceContainer = styled.div``;
+
 export const Title = styled.h4`
   font-size: 55px;
   font-weight: 400;
   margin: 0px;
-  margin-bottom: 8px;
   @media (max-width: 768px) {
     font-size: 34px;
   }
+  margin-bottom:8px ;
 `;
 export const SubTitle = styled.h3`
   font-size: 21px;
   font-weight: 400;
   margin: 0px;
-  margin-bottom: 21px;
+  margin-bottom:8px ;
+
 `;
 export const Tag = styled.h2`
   font-size: 13px;
@@ -55,21 +60,22 @@ export const Tag = styled.h2`
   border-radius: 3px;
   color: black;
   margin: 0px;
-  margin-bottom: 21px;
+  margin-bottom:8px ;
+
 `;
 export const Description = styled.h1`
   font-size: 21px;
   font-weight: 400;
   color: #95989f;
   margin: 0px;
-  margin-bottom: 21px;
+  margin-bottom:13px ;
+
 `;
 export const LinkHero = styled.a`
   color: #63f3ab;
   text-decoration: underline;
   font-size: 21px;
   cursor: pointer;
-  margin-bottom: 55px;
 `;
 export const ExperienceRow = styled.div`
   display: flex;

@@ -45,7 +45,6 @@ export default function Blog({ posts }) {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Últimos Articulos</h1>
         <div className={styles.grid}>
           {posts.map((post) => {
             return (

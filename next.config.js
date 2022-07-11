@@ -7,11 +7,6 @@ const nextConfig = {
     domains: ["firebasestorage.googleapis.com","newporfolio-4b2a1.firebaseapp.com"],
   },
   trailingSlash: true,
-  experimental: {
-    images: {
-      allowFutureImage: true,
-    },
-  },
 };
 
 module.exports = nextConfig;
