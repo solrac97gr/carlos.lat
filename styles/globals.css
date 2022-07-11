@@ -2,12 +2,15 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: system-ui, Roboto, sans-serif;
+  font-family: 'Fira Code',system-ui, Roboto, sans-serif;
+  background-color: #393640;
+  color: white;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+  color: #63f3ab important;
 }
 
 * {
@@ -16,6 +19,7 @@ a {
 
 h1 {
   line-height: 40px;
+  color: white;
 }
 
 code {
@@ -23,12 +27,18 @@ code {
 }
 
 small {
-  color: rgb(199, 198, 199);
+  color: #95989F;
 }
 
 blockquote {
-  background-color: rgb(243 244 246);
+  background-color: #95989F;
   margin: 0;
   padding: 1em;
   border-radius: 8px;
+  color: black;
+}
+
+.isActive {
+  font-weight: 400 !important;
+  color:#63F3AB !important;
 }
