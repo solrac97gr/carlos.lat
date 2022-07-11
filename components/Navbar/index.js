@@ -4,12 +4,19 @@ import {
   FirstName,
   LastName,
   SocialIcon,
+  NavbarLinkContainer,
+  NavbarLink,
+  NavbarLinkText,
+  NavbarMobile
 } from "./index.style";
 import { FaTwitter, FaInstagram, FaYoutube, FaLinkedin } from "react-icons/fa";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
-const size = 25;
+const size = 21;
 
 export const Navbar = () => {
+  const router = useRouter();
   return (
     <NavbarContainer>
       <NameContainer href="/">
@@ -18,34 +25,48 @@ export const Navbar = () => {
           <LastName>García</LastName>
         </a>
       </NameContainer>
+      <NavbarLinkContainer>
+        <NavbarLink href={"/"}>
+          <NavbarLinkText className={router.pathname == "/" ? "isActive" : ""}>
+            {router.pathname === "/" ? "<Inicio>" : "Inicio"}
+          </NavbarLinkText>
+        </NavbarLink>
+        <NavbarLink href={"/blog"}>
+          <NavbarLinkText
+            className={router.pathname.includes("/blog") ? "isActive" : ""}
+          >
+            {router.pathname.includes("/blog") ? "<Blog>" : "Blog"}
+          </NavbarLinkText>
+        </NavbarLink>
+      </NavbarLinkContainer>
       <div>
         <SocialIcon
           href="https://twitter.com/carlosgrowth"
           target="_blank"
           rel="noreferrer"
         >
-          <FaTwitter size={size} color={"#1DA1F2"} />
+          <FaTwitter size={size} color={"#FFF"} />
         </SocialIcon>
         <SocialIcon
           href="https://www.linkedin.com/in/carlos97gr/"
           target="_blank"
           rel="noreferrer"
         >
-          <FaLinkedin size={size} color={"#0077B5"} />
+          <FaLinkedin size={size} color={"#FFF"} />
         </SocialIcon>
         <SocialIcon
           href="https://www.instagram.com/carlos97cgr/"
           target="_blank"
           rel="noreferrer"
         >
-          <FaInstagram size={size} color={" #833AB4"} />
+          <FaInstagram size={size} color={" #FFF"} />
         </SocialIcon>
         <SocialIcon
           href="https://www.youtube.com/channel/UC-xrCcsYNYMs4iIvAja0Gig"
           target="_blank"
           rel="noreferrer"
         >
-          <FaYoutube size={size} color={"#FF0000"} />
+          <FaYoutube size={size} color={"#FFF"} />
         </SocialIcon>
       </div>
     </NavbarContainer>

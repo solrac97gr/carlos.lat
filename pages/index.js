@@ -4,12 +4,15 @@ import styles from "../styles/Home.module.css";
 import { getAllFilesMetadata } from "../lib/mdx";
 import Link from "next/link";
 import { PAGE_URL } from "../consts";
+import { Hero } from "../sections/hero";
 
 export default function Home({ posts }) {
   return (
     <div className={styles.container}>
       <Head>
-        <title>carlos97gr 👨🏽‍💻 | Backend, Go, Flutter, Firebase, Rust</title>
+        <title>
+          carlos97gr 👨🏽‍💻 | Backend, Go, Flutter, Firebase, Rust y más
+        </title>
         <meta
           name="description"
           content="Creando contenido mientras programo."
@@ -43,33 +46,7 @@ export default function Home({ posts }) {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Últimos Articulos</h1>
-        <div className={styles.grid}>
-          {posts.map((post) => {
-            return (
-              <Link href={`/blog/${post.slug}`} key={post.title + post.date}>
-                <a className={styles.card}>
-                  <Image
-                    src={post.image}
-                    alt="go-wallpaper"
-                    width="500px"
-                    height="250px"
-                    unoptimized
-                    style={{
-                      overFlow: "hidden",
-                      borderTopLeftRadius: 10,
-                      borderTopRightRadius: 10,
-                    }}
-                  ></Image>
-                  <div className={styles.cardcontent}>
-                    <h3>{post.title} &rarr;</h3>
-                    <small>{post.date}</small>
-                  </div>
-                </a>
-              </Link>
-            );
-          })}
-        </div>
+        <Hero></Hero>
       </main>
     </div>
   );
