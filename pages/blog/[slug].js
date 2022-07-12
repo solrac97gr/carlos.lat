@@ -3,7 +3,7 @@ import { MDXRemote } from "next-mdx-remote";
 import MDXComponents from "../../components/MDXComponents";
 import { BlogContainer } from "../../components/BlogContainer";
 import Head from "next/head";
-import { BLOG_URL, PAGE_URL } from "../../consts";
+import { BLOG_URL, PAGE_URL } from "../../lib/consts";
 import { useEffect } from "react";
 
 export default function Post({ source, frontmatter }) {

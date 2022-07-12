@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { slide as Menu } from "react-burger-menu";
+import { useState, useEffect, useCallback } from "react";
 
 const styles = {
   bmBurgerButton: {
@@ -53,10 +54,11 @@ const styles = {
   },
 };
 
-const marginItems = 20
+const marginItems = 20;
 
 export const BurgerMenu = () => {
   const router = useRouter();
+
   return (
     <Menu styles={styles}>
       <Link href={"/"}>

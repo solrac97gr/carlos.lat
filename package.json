@@ -12,6 +12,7 @@
     "ci": "npm install && npm run build && npm run postbuild && npm run export"
   },
   "dependencies": {
+    "fs": "^0.0.1-security",
     "gray-matter": "^4.0.3",
     "mdx-prism": "^0.3.4",
     "next": "12.2.0",

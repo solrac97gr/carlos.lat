@@ -3,7 +3,7 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { getAllFilesMetadata } from "../lib/mdx";
 import Link from "next/link";
-import { PAGE_URL } from "../consts";
+import { PAGE_URL } from "../lib/consts";
 import { Hero } from "../sections/hero";
 
 export default function Home({ posts }) {
@@ -46,7 +46,7 @@ export default function Home({ posts }) {
       </Head>
 
       <main className={styles.main}>
-        <Hero></Hero>
+        <Hero numberOfPosts={posts.length}></Hero>
       </main>
     </div>
   );

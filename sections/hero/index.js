@@ -19,31 +19,40 @@ import {
 } from "./index.style";
 import Link from "next/link";
 import Image from "next/future/image";
-import { PHONE_NUMBER } from "../../consts";
-export const Hero = () => {
+import { ARTICLES_PUBLISHED, CURRENTLY_IN, NUMBER_OF_VISITED_COUNTRIES, PHONE_NUMBER, YEARS_OF_EXPERIENCE } from "../../lib/consts";
+export const Hero = ({numberOfPosts}) => {
   return (
     <Container>
       <LeftColumn>
         <PresentationContainer>
           <Title>Hello World 🌎!</Title>
-          <SubTitle>Soy Carlos García</SubTitle>
+          <SubTitle>Soy Carlos García nací en Perú 🇵🇪.</SubTitle>
           <Tag>Desarrollador FullStack</Tag>
-          <Description>Desarrollo usando Go, React y Mongo ❤️</Description>
+          <Description>Desarrollo usando Go, React y Mongo ❤️. Me encanta viajar 🛩 y actualmente estoy en {CURRENTLY_IN}.</Description>
           <Link
             href={`https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=Hola%20me%20gustar%C3%ADa%20trabajar%20contigo`}
           >
-            <LinkHero>Trabajemos juntos</LinkHero>
+            <LinkHero
+              href={`https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=Hola%20me%20gustar%C3%ADa%20trabajar%20contigo`}
+              target="_blank"
+            >
+              Trabajemos juntos
+            </LinkHero>
           </Link>
         </PresentationContainer>
         <ExperienceContainer>
           <ExperienceRow>
             <ExperienceYears>
-              <ExperienceNumber>4</ExperienceNumber>
-              <ExperienceText>años de experiencia</ExperienceText>
+              <ExperienceNumber>{YEARS_OF_EXPERIENCE}</ExperienceNumber>
+              <ExperienceText>Años de experiencia</ExperienceText>
+            </ExperienceYears>
+            <ExperienceYears>
+              <ExperienceNumber>{NUMBER_OF_VISITED_COUNTRIES}</ExperienceNumber>
+              <ExperienceText>Países visitados</ExperienceText>
             </ExperienceYears>
             <ExperienceProjects>
-              <ExperienceNumber>14</ExperienceNumber>
-              <ExperienceText>proyectos completados</ExperienceText>
+              <ExperienceNumber>{numberOfPosts}</ExperienceNumber>
+              <ExperienceText>Artículos publicados</ExperienceText>
             </ExperienceProjects>
           </ExperienceRow>
         </ExperienceContainer>
