@@ -1,0 +1,62 @@
+---
+title: "¿Cómo convertir de String a Int en Go? 🔁"
+date: "12 de Julio del 2022"
+published: "2022-07-12"
+abstract: "Frontend y Backend son dos ramas del desarrollo web que se centran una en lo que es la parte visual y la otra en la parte de lógica de negocio."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482737.png?alt=media&token=705f5ef8-da5e-4abd-9d17-a9d716b69be4"
+tag: "golang, Go "
+author: "Carlos García"
+---
+# ¿Cómo convertir de String a Int en Go? 🔁
+
+<small>12 de Julio del 2022</small>
+
+<img width="100%" src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482737.png?alt=media&token=705f5ef8-da5e-4abd-9d17-a9d716b69be4"/>
+
+Una de las cosas más importantes en lenguajes de tipado estático es realizar conversiones de tipo. Para ello Go nos ofrece distintas herramientas, en este artículo veremos específicamente conversaciones de cadenas de texto a números enteros en Go.
+
+## Convertir de String a Int en Go
+
+Para convertir de String a Int usaremos una librería nativa de los paquetes de Go `strconv`.
+
+```go
+import "strconv"
+
+i, err := strconv.Atoi("-42")
+if err != nil {
+  // Manejar el error
+}
+```
+
+## Convertir de String a Int64 en Go
+Otra conversión común es la de una String a un Int64 para ellos volveremos a usar la librería que ya usamos nativa de Go.
+```go
+import "strconv"
+
+i, err := strconv.ParseInt("-42",10,64)
+if err != nil {
+  // Manejar el error
+}
+```
+## Convertir de String a Int32 en Go
+Por último convertiremos un String a un Int32 usando la misma librería.
+```go
+import "strconv"
+
+i, err := strconv.ParseInt("-42",10,32)
+if err != nil {
+  // Manejar el error
+}
+
+```
+
+## Extra 👀
+
+Dentro de esta librería encontramos muchos otros tipos de conversaciones de cadenas hacia distintos tipos de datos cómo convertir de String a Boolean o de String a Float. Esta librería es un navaja suiza de las conversiones de String es mejor tenerla siempre a la mano ✍️ cuando se está desarrollando.
+
+```go
+b, err := strconv.ParseBool("true")
+f, err := strconv.ParseFloat("3.1415", 64)
+i, err := strconv.ParseInt("-42", 10, 64)
+u, err := strconv.ParseUint("42", 10, 64)
+```
