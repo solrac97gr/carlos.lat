@@ -10,7 +10,7 @@ import {
   NavbarMobile,
   BurgerStyled,
 } from "./index.style";
-import { FaTwitter, FaInstagram, FaYoutube, FaLinkedin } from "react-icons/fa";
+import { FaTwitter, FaInstagram, FaYoutube, FaLinkedin, FaGithub } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
@@ -66,6 +66,13 @@ export const Navbar = () => {
           rel="noreferrer"
         >
           <FaInstagram size={size} color={" #FFF"} />
+        </SocialIcon>
+        <SocialIcon
+          href="https://github.com/solrac97gr"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <FaGithub size={size} color={" #FFF"} />
         </SocialIcon>
         <SocialIcon
           href="https://www.youtube.com/channel/UC-xrCcsYNYMs4iIvAja0Gig"
