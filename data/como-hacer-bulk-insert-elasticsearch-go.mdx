@@ -1,0 +1,53 @@
+---
+title: "¿Cómo hacer bulk insert en ElasticSearch en Go? 🔎"
+date: "13 de Julio del 2022"
+published: "2022-07-13"
+abstract: "to-do"
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482734.png?alt=media&token=3da62197-fa7a-45fd-84d8-0ed2d2983cfa"
+tag: "golang, Go "
+author: "Carlos García"
+---
+# ¿Cómo hacer bulk insert en ElasticSearch en Go? 🔎
+
+<small>13 de Julio del 2022</small><EditPost path="como-hacer-bulk-insert-elasticsearch-go" />
+
+<img width="100%" alt="golang wallpaper" src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482734.png?alt=media&token=3da62197-fa7a-45fd-84d8-0ed2d2983cfa"/>
+
+Usando ElasticSearch con Go encontré un reto en específico que consistía en enviar una cantidad de información a un Index en ES para ello no encontré una documentación clara que resolviera mi duda de cómo funcionaba y en mi caso porqué fallaba.
+
+Navegando en Stackoverflow encontré una solución con algunos errores y procedí a optimizarla y arreglarla.
+
+Consistía en crear una función que se encargará de serializar la información dentro del array y luego guardar esta información ya serializada dentro de un buffer para luego enviarla.
+
+Aquí les dejo la solución en código con algunos casos específicos debido al programa que estaba realizando, tú puedes cambiarlo y adaptarlo a tu caso de negocio.
+
+```go
+func ParseToNDJson(data []domain.ElasticLog, dst *bytes.Buffer) error {
+	enc := json.NewEncoder(dst)
+	for _, element := range data {
+		if err := enc.Encode(element); err != nil {
+			if err != io.EOF {
+				return fmt.Errorf("failed to parse NDJSON: %v", err)
+			}
+			break
+		}
+	}
+	return nil
+}
+
+func (edb *ElasticDB) SetElasticData(el []domain.ElasticLog) error {
+	var body bytes.Buffer
+	if err := ParseToNDJson(el, &body); err != nil {
+		return fmt.Errorf("error encoding request: %s", err)
+	}
+	_, err := esapi.BulkRequest{
+		Index: "logs",
+		Body:  strings.NewReader(body.String()),
+	}.Do(context.Background(), edb.Client.Transport)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+```
