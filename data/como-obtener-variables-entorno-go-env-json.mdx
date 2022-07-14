@@ -1,0 +1,186 @@
+---
+title: "¿Cómo obtener variables de entorno en Go? (.env o env.json) 📝"
+date: "14 de Julio del 2022"
+published: "2022-07-14"
+abstract: "Carga tus variables de entorno usando Go desde Json o Env, conoce las ventajas y desventajas 👀"
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750679.jpg?alt=media&token=7ef5bc19-8c32-48ca-bce3-1be0a3da046c"
+tag: "golang, Go "
+author: "Carlos García"
+---
+
+# ¿Cómo obtener variables de entorno en Go? (.env o env.json)📝
+
+<small>14 Julio del 2022</small> <EditPost path="como-obtener-variables-entorno-go-env-json" />
+
+<img
+  width="100%"
+  alt="golang-wallpaper "
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750679.jpg?alt=media&token=7ef5bc19-8c32-48ca-bce3-1be0a3da046c"
+/>
+
+Hola mundo 🌎! En este artículo les explicaré cómo configurar archivos de variables de entorno con Go usando dos métodos diferentes. Uno usando un archivo `env.json` (mi favorito) y otro usando un archivo` .env`.
+
+## Obtener variables de entorno desde env.json en Go
+
+Para ello crearemos una carpeta con 4 archivos, el `main.go` , `.gitignore` , `env.example.json` y `env.json`
+
+Agregaremos a nuestro archivo `.gitignore` la siguiente línea de código:
+
+```
+env.json
+```
+
+Esto evitará que nuestro archivo de variables de entorno sea publicado en el repositorio.
+
+Ahora preparémoos el archivo de configuración json, dentro del archivo `env.example.json`
+
+```json
+{
+  "env": "develop",
+  "app_name": "My env App",
+  "database": {
+    "name": "test",
+    "user": "root",
+    "password": "12345"
+  }
+}
+```
+
+Ahora que tenemos la plantilla de configuración lista podemos copiar el contenido a nuestro `env.json` y reemplazar los valores originales.
+
+Ya tenemos todo listo del lado de las configuraciones ahora tocaría el código en Go. Creáremos una carpeta 📁 que se llame `env` y dentro de ella crearemos un archivo `env.go`, aquí crearemos nuestra estructura que recibirá las variables del JSON (`env.json`).
+
+```go
+package env
+
+import (
+	"json"
+	"log"
+	"os"
+)
+
+type EnvVariables struct {
+	Env      string      `json:"env"`
+	AppName  string      `json:"app_name"`
+	Database EnvDatabase `json:"database"`
+}
+
+type EnvDatabase struct {
+	Name     string `json:"name"`
+	User     string `json:"user"`
+	Password string `json:"password"`
+}
+
+type EnvService struct {
+	Env  EnvVariables
+	Path string
+}
+
+func NewEnvService(path string) *EnvService {
+	return &EnvService{
+		Path: path,
+	}
+}
+
+func (e *EnvService) Load() {
+	configuration := EnvVariables{}
+	configFile, err := os.Open(e.Path)
+	if err != nil {
+		log.Fatal("opening config file", err.Error())
+	}
+
+	jsonParser := json.NewDecoder(configFile)
+	if err = jsonParser.Decode(&configuration); err != nil {
+		log.Fatal("parsing config file", err.Error())
+	}
+	e.Env = configuration
+}
+
+func (e *EnvService) GetVariables() *EnvVariables {
+	return e.Env
+}
+
+```
+
+Después de tener el archivo que cargara nuestras variables de entorno a el runtime de Go vamos a conocer cómo usar este módulo desde el `main.go`
+
+```go
+package main
+
+import (
+  "github.com/solrac97g/env"
+  "github.com/solrac97g/server"
+)
+
+func main() {
+  envService := env.NewEnvService("./env.json")
+  envService.Load()
+
+  envVar:= envService.GetVariables()
+
+  //Ahora podríamos inyectar estas variables de entorno a otros servicios
+  server,err := server.NewServer(envVar)
+  if err != nil {
+    //Manejar el error
+  }
+  server.Start(8081)
+}
+
+
+
+```
+
+Este método tiene sus ventajas por ejemplo la posibilidad de agregar validación de los campos en el struct de EnvVariables y el auto completado donde sabemos que tenemos exactamente y de que tipo. Sin embargo también tiene una gran desventaja dependemos de inyectar la información en otros servicios.
+
+## Obtener variables de entorno desde .env en Go
+
+Como en el anterior proceso crearemos 4 archivos de forma inicial esta vez serán:
+
+- `.env`
+- `.env.example`
+- `.gitignore`
+- `main.go`
+
+En primer lugar dentro del `.gitignore` agregaremos la siguiente línea de código, para ignorar el archivo `.env`
+
+```yaml
+.env
+```
+
+Luego dentro del archivo `.env.example` crearemos nuestras variables.
+
+```yaml
+  DATABASE_NAME=test
+  DATABASE_USER=root
+  DATABASE_PASSWORD=12345
+```
+
+Ahora procederemos a copiar y agregar la información real a nuestro archivo `.env` para cargarlo hacia nuestro programa de Go.
+
+Para este caso usaremos una librería `godotenv` que nos ayudará a cargar nuestras variables de entorno.
+
+`go get github.com/joho/godotenv`
+
+Dentro del `main.go` pondremos lo lo siguiente
+
+```go
+package main
+
+import (
+    "github.com/joho/godotenv"
+    "os"
+)
+
+func main() {
+ err := godotenv.Load()
+ if err != nil {
+     // Manejar el error
+ }
+ databaseName := os.Getenv("DATABASE_NAME")
+}
+
+```
+
+Ahora podríamos acceder a nuestras variables de entorno usando el paquete `os` desde cualquier parte del programa.
+
+Este método es mucho más sencillo pero creo que a largo plazo te saca más del código teniendo que revisar los nombres de tus variables en el artículo `.env` y haciendo la validación más compleja.
