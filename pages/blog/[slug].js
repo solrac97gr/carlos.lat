@@ -14,7 +14,7 @@ export default function Post({ source, frontmatter }) {
         <meta charSet="UTF-8" />
         <meta name="description" content={frontmatter.abstract} />
         <meta name="keywords" content={frontmatter.tag} />
-        <meta name="author" content={`${PAGE_URL}/sobre-mi}`} />
+        <meta name="author" content={`${PAGE_URL}/sobre-mi`} />
         <meta property="og:title" content={frontmatter.title} />
         <meta name="og:description" content={frontmatter.abstract} />
         <meta property="og:type" content="article" />
