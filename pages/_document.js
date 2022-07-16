@@ -36,7 +36,7 @@ class MyDocument extends Document {
         <Head>
           <Script
             async
-            strategy="afterInteractive"
+            strategy="lazyOnload"
             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9432125869132148"
             crossOrigin="anonymous"
           ></Script>
