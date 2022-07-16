@@ -35,12 +35,6 @@ class MyDocument extends Document {
       <Html lang="es">
         <Head>
           <Script
-            async
-            strategy="lazyOnload"
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9432125869132148"
-            crossOrigin="anonymous"
-          ></Script>
-          <Script
             id="google-tag-manager"
             strategy="afterInteractive"
             dangerouslySetInnerHTML={{
