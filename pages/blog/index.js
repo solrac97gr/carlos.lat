@@ -5,8 +5,6 @@ import Image from "next/image";
 import styles from "../../styles/Home.module.css";
 import { BLOG_URL } from "../../lib/consts";
 
-
-
 export default function Blog({ posts }) {
   return (
     <div className={styles.container}>
@@ -18,10 +16,7 @@ export default function Blog({ posts }) {
         />
         <meta name="keywords" content="backend go development" />
         <meta name="author" content="Carlos García" />
-        <meta
-          property="og:title"
-          content="carlos97gr 👨🏽‍💻 | Blog"
-        />
+        <meta property="og:title" content="carlos97gr 👨🏽‍💻 | Blog" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={BLOG_URL} />
         <meta
@@ -63,7 +58,7 @@ export default function Blog({ posts }) {
                     }}
                   ></Image>
                   <div className={styles.cardcontent}>
-                    <h3>{post.title} &rarr;</h3>
+                    <h3>{post.title}</h3>
                     <small>{post.date}</small>
                   </div>
                 </a>

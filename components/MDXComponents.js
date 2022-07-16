@@ -3,6 +3,7 @@ import { Gist } from "./Gist";
 import { BlogLink } from "./BlogLink";
 import { EditPost } from "./EditPost";
 import { FolderStructure } from "./FolderStructure";
+import Image from "next/image";
 
 const components = {
   FolderStructure,
@@ -10,6 +11,7 @@ const components = {
   BlogLink,
   Podcast,
   Gist,
+  img: (props) => <Image {...props}></Image>
 };
 
 export default components;

@@ -40,7 +40,7 @@ const RenderTree = (tree) => {
   return tree.map((el) => {
     if (el.type == "file") {
       return (
-        <FileNameContainer>
+        <FileNameContainer key={el.name}>
           {RenderExtensionIcon(el.extension)}
           <FileName>{el.name}</FileName>
         </FileNameContainer>
