@@ -32,12 +32,12 @@ export const Navbar = () => {
         </a>
       </NameContainer>
       <NavbarLinkContainer>
-        <NavbarLink href={"/"}>
+        <NavbarLink href="/">
           <NavbarLinkText className={router.pathname == "/" ? "isActive" : ""}>
             {router.pathname === "/" ? "<Inicio>" : "Inicio"}
           </NavbarLinkText>
         </NavbarLink>
-        <NavbarLink href={"/blog"}>
+        <NavbarLink href="/blog">
           <NavbarLinkText
             className={router.pathname.includes("/blog") ? "isActive" : ""}
           >

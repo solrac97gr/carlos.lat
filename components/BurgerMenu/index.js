@@ -61,7 +61,7 @@ export const BurgerMenu = () => {
 
   return (
     <Menu styles={styles}>
-      <Link href={"/"}>
+      <Link href="/">
         <a
           className={router.pathname == "/" ? "isActive" : ""}
           style={{ marginBottom: marginItems }}
@@ -69,7 +69,7 @@ export const BurgerMenu = () => {
           {router.pathname === "/" ? "<Inicio>" : "Inicio"}
         </a>
       </Link>
-      <Link href={"/blog"}>
+      <Link href="/blog">
         <a
           className={router.pathname.includes("/blog") ? "isActive" : ""}
           style={{ marginBottom: marginItems }}
