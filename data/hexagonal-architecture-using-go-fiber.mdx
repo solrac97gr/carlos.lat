@@ -10,9 +10,14 @@ author: "Carlos García"
 
 # Arquitectura Hexagonal usando Go (Fiber)👨🏽‍💻
 
-<small>15 de Noviembre del 2021</small><EditPost path="hexagonal-architecture-using-go-fiber" />
+<small>15 de Noviembre del 2021</small>
+<EditPost path="hexagonal-architecture-using-go-fiber" />
 
-<img width="100%" alt="golang wallpaper" src="https://miro.medium.com/max/1400/1*xofqkz49chC9XliDAuH1Qw.png"></img>
+<img
+  width="100%"
+  alt="golang wallpaper"
+  src="https://miro.medium.com/max/1400/1*xofqkz49chC9XliDAuH1Qw.png"
+></img>
 
 ```go
       fmt.Println("Hello World 🌎")
@@ -22,19 +27,144 @@ Si realmente quieres mejorar en el tiempo de desarrollo y especialmente en el ti
 
 Para este blog vamos a crear un backend sencillo usando lo más escencial del lenguaje. Primero necesitamos saber la estrcutura de carpetas que vamos a usar.
 
-<img
-  width="50%"
-  src="https://miro.medium.com/max/1028/1*clWgRm1Q_muvVi8XMJ50pw.png"
-></img>
+<FolderStructure
+  tree={[
+    {
+      type: "folder",
+      name: "cmd",
+      content: [
+        {
+          type: "file",
+          name: "main.go",
+          extension: "go",
+        },
+      ],
+    },
+    {
+      type: "folder",
+      name: "internal",
+      content: [
+        {
+          type: "folder",
+          name: "core",
+          content: [
+            {
+              type: "folder",
+              name: "domain",
+              content: [
+                {
+                  type: "file",
+                  name: "user.go",
+                  extension: "go",
+                },
+              ],
+            },
+            {
+              type: "folder",
+              name: "ports",
+              content: [
+                {
+                  type: "file",
+                  name: "user_ports.go",
+                  extension: "go",
+                },
+              ],
+            },
+            {
+              type: "folder",
+              name: "services",
+              content: [
+                {
+                  type: "file",
+                  name: "user_services.go",
+                  extension: "go",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: "folder",
+          name: "handlers",
+          content: [
+            {
+              type: "file",
+              name: "user_handlers.go",
+              extension: "go",
+            },
+          ],
+        },
+        {
+          type: "folder",
+          name: "repositories",
+          content: [
+            {
+              type: "file",
+              name: "user_repositories.go",
+              extension: "go",
+            },
+          ],
+        },
+        {
+          type: "folder",
+          name: "server",
+          content: [
+            {
+              type: "file",
+              name: "server.go",
+              extension: "go",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: "file",
+      name: "go.mod",
+      extension: "mod",
+    },
+  ]}
+/>
 
 En Go no tenemos Clases(Class) pero contamos con Estructuras(Structs) y estás a su vez cuentan con algo llamado Reciver Functions que seran usados como equivalentes de los Métodos.
 
 Para entender mejor la diferencias revisemos este ejemplo con Typescript y Go:
 
-<img
-  width="100%"
-  src="https://miro.medium.com/max/1400/1*d0URC4Nok-MGJd5ucSD7pw.png"
-></img>
+```typescript
+   class User {
+      id: number;
+      email: string;
+      password: string;
+      constructor(id: number, email: string, password:string){
+        this.id = id;
+        this.email = email;
+        this.password = password;
+      }
+      GetEmail(): string {
+        return this.email;
+      }
+   }
+```
+```go
+  package domain
+
+  type User struct {
+    ID int
+    Email string
+    Password string
+  }
+  func NewPerson(id int, email string, password string){
+    return &User{
+      ID:id,
+      Email:email,
+      Password: password,
+    }
+  }
+  func (u *User) GetEmail() string {
+    return u.Email
+  }
+```
+
 
 Como se puede apreciar en la imagen Go no tiene un constructor de manera explicita como Typescript asi que tenemos que simularlo creando una función que se encargue de devolvernos un Usuario (NewPerson en la imagen del lado izquierdo) y luego creamos un "Método" de la "Clase" usando Reciver Functions (GetEmail en la imagen del lado izquierdo). Ahora que tenemos la manera de remplazar las clases podemos empezar a construir nuestra App
 
@@ -336,4 +466,7 @@ Finalmente crearemos nuestro punto de entrada en la aplicación en el main.go y 
 
 Ahora si tenemos nuestra aplicación de go construida usando Arquitectura Hexagonal y Fiber, Subiré el código a Github para que pueda ser usado como plantilla, espero que hayan disfrutado leyendo el articulo y si te gusto dejame un aplauso 👀 eso me motivara para seguir compartiendo contenido.
 
-<BlogLink url={"https://github.com/solrac97gr/goHexagonalBlog"} content={"Visitar el repo"}/>
+<BlogLink
+  url={"https://github.com/solrac97gr/goHexagonalBlog"}
+  content={"Visitar el repo"}
+/>
