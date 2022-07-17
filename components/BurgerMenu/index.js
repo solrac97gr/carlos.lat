@@ -83,7 +83,7 @@ export const BurgerMenu = () => {
           className={router.pathname.includes("/sobre-mi") ? "isActive" : ""}
           style={{ marginBottom: marginItems }}
         >
-          {router.pathname.includes("/sobre-mi") ? "<Sobre mi>" : "sobre-mi"}
+          {router.pathname.includes("/sobre-mi") ? "<Sobre mi>" : "Sobre mi"}
         </a>
       </Link>
     </Menu>
