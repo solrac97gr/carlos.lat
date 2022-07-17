@@ -44,6 +44,13 @@ export const Navbar = () => {
             {router.pathname.includes("/blog") ? "<Blog>" : "Blog"}
           </NavbarLinkText>
         </NavbarLink>
+        <NavbarLink href="/sobre-mi">
+          <NavbarLinkText
+            className={router.pathname.includes("/sobre-mi") ? "isActive" : ""}
+          >
+            {router.pathname.includes("/sobre-mi") ? "<Sobre mi>" : "Sobre mi"}
+          </NavbarLinkText>
+        </NavbarLink>
       </NavbarLinkContainer>
       <div>
         <SocialIcon
