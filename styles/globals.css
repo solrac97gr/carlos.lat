@@ -35,8 +35,11 @@ blockquote {
   background-color: #95989F;
   margin: 0;
   padding: 1em;
-  border-radius: 8px;
+  border-radius: 5px;
   color: black;
+  opacity: .7;
+  border-left: 8px solid #63F3AB;
+  font-style: italic;
 }
 
 .isActive {

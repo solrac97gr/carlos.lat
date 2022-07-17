@@ -433,7 +433,7 @@ Luego de tener todas las piezas Lego lista necesitamos crear una ultima parte pa
 
 Finalmente crearemos nuestro punto de entrada en la aplicación en el main.go y entenderemos mejor como esta arquitectura funciona. Recordemos que para crear nuestro UserRepository necesitamos una URL de conexión a mongo, para crear nuestro UserService necesitamos un UserRepository, para crear nuestro UserHandler necesitamos un UserService y para crear nuestro servidor necesitamos de los Hanlders.
 
-> **_MongoConn:string > UserRepository > UserService > UserHandler > Server_**
+> MongoConn:string > UserRepository > UserService > UserHandler > Server
 
 ```go
     package main
