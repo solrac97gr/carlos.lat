@@ -5,9 +5,10 @@ import {
   SiHtml5,
   SiCsswizardry,
   SiJson,
+  SiDocker,
 } from "react-icons/si";
 import { FaRust } from "react-icons/fa";
-import { BsFileEarmarkCodeFill,BsCaretDownFill } from "react-icons/bs";
+import { BsFileEarmarkCodeFill, BsCaretDownFill } from "react-icons/bs";
 import {
   Container,
   SubContainer,
@@ -31,9 +32,15 @@ const RenderExtensionIcon = (extension) => {
       return <SiHtml5 size={size} color="blue" />;
     case "css":
       return <SiCsswizardry size={size} color="orange" />;
+    case "docker":
+      return <SiDocker size={size} color="skyblue" />;
     default:
       return <BsFileEarmarkCodeFill size={size} color="gray" />;
   }
+};
+
+const ExtractExtension = (filename) => {
+  return filename === "dockerfile"?"docker":filename.split(".").pop();
 };
 
 const RenderTree = (tree) => {
@@ -41,7 +48,7 @@ const RenderTree = (tree) => {
     if (el.type == "file") {
       return (
         <FileNameContainer key={el.name}>
-          {RenderExtensionIcon(el.extension)}
+          {RenderExtensionIcon(ExtractExtension(el.name))}
           <FileName>{el.name}</FileName>
         </FileNameContainer>
       );

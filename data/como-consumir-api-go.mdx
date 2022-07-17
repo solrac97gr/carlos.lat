@@ -1,0 +1,153 @@
+---
+title: "¿Cómo consumir una API en Go? 🛰"
+date: "18 de Julio del 2022"
+published: "2022-07-18"
+abstract: "Para este blog construiremos una solución en Go que nos permita obtener desde otra API."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750705.jpg?alt=media&token=d595312d-67bd-44d2-80be-65c4c8bb6b61"
+tag: "golang, Go "
+author: "Carlos García"
+---
+
+# ¿Cómo consumir una API en Go? 🛰
+
+<small>18 de Julio del 2022</small>
+<EditPost path="como-consumir-api-go" />
+
+<img
+  width="100%"
+  alt="golang-wallpaper "
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750705.jpg?alt=media&token=d595312d-67bd-44d2-80be-65c4c8bb6b61"
+/>
+
+Un problema común dentro de Go es que muchos servicios no cuenta con un SDK construido por lo que nos toca usar su API para poder obtener la información.
+
+En este blog resolveremos este problema, usaremos el paquete request para obtener datos de una API externa y protegeremos nuestra credenciales de la app usando un env.json.
+
+Primero crearemos nuestros archivos necesarios para este tutorial.
+
+<FolderStructure
+  tree={[
+    {
+      type: "folder",
+      name: "config",
+      content: [
+        {
+          type: "file",
+          name: "config.go",
+        },
+      ],
+    },
+    {
+      type: "file",
+      name: "config.example.json",
+    },
+    {
+      type: "file",
+      name: "config.json",
+    },
+    {
+      type: "file",
+      name: "go.mod",
+    },
+    {
+      type: "file",
+      name: "main.go",
+    }
+  ]}
+/>
+
+Ahora dentro de nuestro archivo config.example.json agregaremos la estructura de nuestra configuración con datos no reales para que al publicar nuestro repositorio no puedan ser usados.
+
+```json
+{
+  "api_key": "🤫"
+}
+```
+
+Esta misma estructura la pasaremos a nuestro config.json pero con los valores reales y montaremos un pequeño servicio que cargue la configuración, si quieres aprender más a detalle sobre esto puedes visitar <BlogLink url="/blog/como-obtener-variables-entorno-go-env-json/" content="este blog"/> que habla sobre variables de entorno.
+
+```go
+	package config
+
+	import (
+		"encoding/json"
+		"os"
+	)
+
+	type Config struct {
+		Key string `json:"api_key"`
+	}
+
+	type Service struct {
+		Config Config
+	}
+
+	func (s *Service) GetAPIKey() string {
+		return s.Config.Key
+	}
+
+	func (s *Service) LoadConfigJSON() error {
+		configuration := Config{}
+		configFile, err := os.Open("./config.json")
+		if err != nil {
+			return err
+		}
+
+		jsonParser := json.NewDecoder(configFile)
+		if err = jsonParser.Decode(&configuration); err != nil {
+			return err
+		}
+		s.Config = configuration
+		return nil
+	}
+
+	func NewConfigService() *Service {
+		return &Service{}
+	}
+```
+
+Ahora si manos a la obra hacia nuestra petición, para ello usaremos el paquete net/http, específicamente el método NewRequest.
+
+Primero guardemos nuestra URL en una variable para luego usarla de forma más sencilla está la pasaremos a nuestra llamada junto con el cuerpo de nuestra petición y el método.
+
+En este caso haremos una petición de tipo Get y agregaremos unos headers que nos solicita la API que incluye las credenciales de nuestro servicio.
+
+Luego usaremos el DefaulClient de http y ejecutaremos el método Do para ejecutar nuestra petición, este nos devolverá la respuesta pero tendremos que leerla usando ioutil.RedAll con eso tendríamos nuestra data lista para ser usada.
+
+```go
+	package main
+
+	import (
+		"fmt"
+		"github.com/solrac97gr/go-consume-api/config"
+		"io/ioutil"
+		"log"
+		"net/http"
+	)
+
+	func main() {
+		configService := config.NewConfigService()
+		err := configService.LoadConfigJSON()
+		if err != nil {
+			log.Fatal("Error occurred: ", err.Error())
+		}
+
+		url := "https://currency-exchange.p.rapidapi.com/listquotes"
+
+		req, _ := http.NewRequest("GET", url, nil)
+
+		req.Header.Add("X-RapidAPI-Key", configService.GetAPIKey())
+		req.Header.Add("X-RapidAPI-Host", "currency-exchange.p.rapidapi.com")
+
+		res, _ := http.DefaultClient.Do(req)
+
+		defer res.Body.Close()
+		body, _ := ioutil.ReadAll(res.Body)
+
+		fmt.Println(res)
+		fmt.Println(string(body))
+
+	}
+```
+
+Las llamadas a API externas son muy comunes en proyectos grandes, saber cómo realizarlas es una skill básica del lenguaje, espero que les sirva este artículo y que exploren otras formas de parsear el body de la respuesta en un struct por ejemplo.
