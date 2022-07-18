@@ -1,0 +1,215 @@
+---
+title: "¿Cómo conectar Go a Mongo? 🍃"
+date: "19 de Julio del 2022"
+published: "2022-07-19"
+abstract: "Para este blog construiremos una solución en Go que nos permita obtener desde otra API."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fweb-technologies-4k-wallpaper.png?alt=media&token=e4d79b53-3452-49cd-b39e-402bf672aed9"
+tag: "golang, Go "
+author: "Carlos García"
+---
+
+# ¿Cómo conectar Go a Mongo? 🍃
+
+<small>19 de Julio del 2022</small>
+<EditPost path="como-conectar-go-mongo" />
+
+<img
+  width="100%"
+  alt="golang-wallpaper "
+  src="https://wallpaperaccess.com/full/4482765.jpg"
+/>
+
+Una de las bases de datos más populares en la actualidad es Mongo sin embargo es más conocida en el mundo de JavaScript en Go las bases de datos que suelen utilizarse son PostgreSQL y MySQL, en este artículo aprenderemos como conectarnos a una base de datos de Mongo desde Go.
+
+## Estructura de archivos
+
+Para este tutorial organizaremos nuestras fuentes de datos en la carpeta repositorios. Los demás archivos estarán ubicados en su posición normal.
+
+<FolderStructure
+  tree={[
+  {
+    type: "folder",
+    name: "config",
+    content: [
+      {
+        type: "file",
+        name: "config.go"
+      }
+    ]
+  },
+  {
+    type: "folder",
+    name: "repositories",
+    content: [
+      {
+        type: "file",
+        name: "mongo.go"
+      }
+    ]
+  },
+  {
+    type: "file",
+    name: "config.json"
+  },
+  {
+    type: "file",
+    name: ".gitignore"
+  },
+  {
+    type: "file",
+    name: "go.mod"
+  },
+  {
+    type: "file",
+    name: "main.go"
+  }
+]}
+/>
+
+Dentro de la carpeta repositorio estaría también la conexión con Redis si la tuviésemos o a una base de datos relacional como MySQL.
+
+En un siguiente artículo entraremos más a detalle haciendo un CRUD con Go, Fiber y Mongo.
+
+> 💡Tip: Al empezar un proyecto nuevo en Go 
+> ```go
+> go mod init github.com/tuUsuario/elNombreDeTuCarpeta
+> ```
+
+## Creando nuestro archivo de configuración
+
+Con Mongo tenemos la opción de conectarnos usando un URL, dentro de este vienen distintos parámetros como usuario, contraseña, servidor, etc.
+
+Podemos abordar el archivo de configuración usando los distintos parámetros por separado o usando solo la URL de conexión.
+
+Para este artículo usaremos solo la URL para simplificar lo más que podamos y concentrarnos en realizar la conexión.
+
+```json
+{
+  "mongo_conn": "https://🤫.com"
+}
+```
+
+## Obteniendo la configuración desde el archivo config.json hacia Go
+
+Para este ejemplo usaremos nuestro servicio de configuración explicado en <BlogLink url="/blog/como-obtener-variables-entorno-go-env-json/" content="el artículo"/> donde aprendemos a traer variables de configuración desde archivos JSON.
+
+```go
+  package config
+
+  import (
+    "encoding/json"
+    "os"
+  )
+
+  type Config struct {
+    MongoConn string `json:"mongo_conn"`
+  }
+
+  type ConfigService struct {
+    Config     Config
+    FilePath   string
+  }
+
+  func (s *Service) GetMongoConn() string {
+    return s.Config.MongoConn
+  }
+
+  func (s *ConfigService) LoadConfigJSON() error {
+    configuration := Config{}
+    configFile, err := os.Open("./config.json")
+    if err != nil {
+      return err
+    }
+
+    jsonParser := json.NewDecoder(configFile)
+    if err = jsonParser.Decode(&configuration);
+    err != nil {
+      return err
+    }
+    s.Config = configuration
+    return nil
+  }
+
+  func NewConfigService(path string ) *Service {
+    return &Service{
+        FilePath:path,
+    }
+  }
+```
+
+## Implementando nuestra conexión a Mongo
+
+Primero instalemos el Mongo Driver que es el paquete oficial de Mongo.
+
+```bash
+go get go.mongodb.org/mongo-driver/mongo
+```
+
+Una buena forma de empezar la conexión a Mongo es al momento de crear la instancia de este repositorio Mongo en el código podrás ver como en la función creadora se inicializa la conexión hacia Mongo.
+
+```go
+  package repositories
+
+  import (
+    "context"
+    "time"
+
+    "go.mongodb.org/mongo-driver/mongo"
+    "go.mongodb.org/mongo-driver/mongo/options"
+    "go.mongodb.org/mongo-driver/mongo/readpref"
+  )
+
+  type MongoHandler struct {
+    Client *mongo.Client
+    Config *config.ConfigService
+  }
+
+  func NewMongoHandler(config config.ConfigService) *MongoHandler{
+    ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+    defer cancel()
+    client, err := mongo.Connect(ctx, options.Client().ApplyURI(config.GetMongoConn()))
+
+    return &MongoHandler{
+      Client: client,
+      Config: config,
+  }
+
+  func (m *MongoHandler) CheckConnection() {
+    err := client.Ping(ctx, readpref.Primary())
+    if err != nil {
+      panic(err)
+    }
+  }
+
+  func (m *MongoHandler) Disconnect() {
+    err := client.Disconnect(ctx);
+    if err != nil {
+      panic(err)
+    }
+  }
+```
+
+## Usando nuestra implementación
+
+Ahora podremos usar nuestra base de datos en otros servicios por ahora comprobaremos la conexión en main.go
+
+```go
+  package main
+
+  import (
+    "github.com/solrac97gr/go-mongo-conn/config"
+    "github.com/solrac97gr/go-mongo-conn/repositories"
+  )
+
+  func main() {
+    configService := config.NewConfigService("./config.json")
+    mongoHandler := repositories.NewMongoHandler(configService)
+    defer mongoHandler.Disconnect()
+
+    mongoHandler.CheckConnection()
+  }
+```
+
+## Detalles adicionales
+
+Podemos crear distintos bases de datos de esta forma creando una interfaz que indique que cada base de datos debe tener los métodos Disconnect y CheckConnection y usar todos los métodos que necesitamos para que así nuestros servicios puedan cambiar de base de datos de manera modular.

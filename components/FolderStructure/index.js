@@ -6,6 +6,7 @@ import {
   SiCsswizardry,
   SiJson,
   SiDocker,
+  SiGit
 } from "react-icons/si";
 import { FaRust } from "react-icons/fa";
 import { BsFileEarmarkCodeFill, BsCaretDownFill } from "react-icons/bs";
@@ -34,6 +35,8 @@ const RenderExtensionIcon = (extension) => {
       return <SiCsswizardry size={size} color="orange" />;
     case "docker":
       return <SiDocker size={size} color="skyblue" />;
+    case "gitignore":
+      return <SiGit size={size} color="orange" />;
     default:
       return <BsFileEarmarkCodeFill size={size} color="gray" />;
   }
