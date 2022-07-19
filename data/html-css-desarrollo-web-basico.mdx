@@ -1,0 +1,155 @@
+---
+title: "HTML y CSS desarrollo web básico 😎"
+date: "20 de Julio del 2022"
+published: "2022-07-20"
+abstract: "El objetivo de esta artículo será crear una pequeña web con nuestro nombre y biografía, cambiando de color el fondo, estilo de letras y tamaño."
+image: "https://wallpapercave.com/wp/wp7420861.png"
+tag: "html, css, JavaScript, web"
+author: "Carlos García"
+---
+
+# HTML y CSS desarrollo web básico 😎
+
+<small>20 de Julio del 2022</small>
+<EditPost path="html-css-desarrollo-web-basico" />
+
+<img
+  width="100%"
+  alt="golang-wallpaper "
+  src="https://wallpapercave.com/wp/wp7420861.png"
+/>
+
+Para este artículo nos centraremos en escribir nuestra primera página web desde 0 para ello haremos uso del lenguaje de marcado HTML y del lenguaje de estilos CSS.
+
+El objetivo de esta artículo será crear una pequeña web con nuestro nombre y biografía, cambiando de color el fondo, estilo de letras y tamaño.
+
+Este tutorial es para usuarios no avanzados, si quieres un reto un poco más avanzado te invito a visitar mi artículo de Arquitectura Hexagonal en Go.
+
+## 1. Preparando nuestro entorno.
+
+En nuestro escritorio o carpeta de preferencia crearemos una carpeta que llamaremos "mi primera web"
+
+Dentro de esta carpeta crearemos 1 carpetas más y 2 archivos.
+
+<FolderStructure
+  tree={[
+    {
+      type: "folder",
+      name: "styles",
+      content: [
+        {
+          type: "file",
+          name: "style.css",
+        },
+      ],
+    },
+    {
+      type: "file",
+      name: "index.html",
+    },
+  ]}
+/>
+
+Esta será la estructura básica de nuestra web, los archivos script y styles no necesariamente deben estar dentro de una carpeta pero esto les ayudará a tener un mejor orden desde el inicio.
+
+## 2. Programas que usaremos.
+
+Para este tutorial usaremos dos programas Visual Studio Code y Google Chrome. Si ustedes ya están familiarizados con otro navegador como Firefox y Safari no tienen de que preocuparse e igual podrán usarlo.
+
+Abriremos nuestra carpeta donde previamente creamos todos nuestros archivos dentro de Visual Studio Code y tendremos a la mano nuestro navegador de preferencia.
+
+## 3. Desarrollando con HTML.
+
+HTML es un lenguaje de marcado que te ayudará a escribir páginas web funciona usando etiquetas especiales que nos indican a que representa un elemento, por ejemplo:
+
+```html
+<h1>Soy un Título</h1>
+<p>Soy un Párrafo</p>
+```
+
+La etiqueta h1 representa un título y la p un párrafo y de esta forma existen más etiquetas que nos ayudan a representar otros elementos como links, imágenes, tablas, etc.
+
+Ahora si manos a la obra, en nuestro archivo index.html escribiremos lo siguiente.
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mi primera página web</title>
+  </head>
+  <body>
+    <h1>Mi nombre es Carlos</h1>
+    <p>Soy un programador.</p>
+  </body>
+</html>
+```
+
+Guardaremos nuestro archivo y entraremos a nuestra carpeta donde se ubica el archivo y lo abriremos usando nuestro navegador al darle click por defecto les abrirá su navegador configurado y podrán ver su primera página web.
+
+## 4. Agregando estilos.
+
+Ahora nos toca agregar un poco de estilo a la página para eso usaremos CSS el lenguaje de estilos CSS funciona relacionando el HTML con un estilo específico y se logra así:
+
+Quiero que mis párrafos tenga una letra más grande entonces en CSS especificaré el tamaño de letra para mis párrafos.
+
+```css
+p {
+  font-size: 31px;
+}
+```
+
+También haré que mi título sea de color verde.
+
+```css
+h1 {
+  color: green;
+}
+```
+
+Y modificaremos el color de fondo de nuestro documento.
+
+```css
+body {
+  background-color: red;
+}
+```
+
+Nuestro styles.css quedaría de la siguiente forma:
+
+```css
+p {
+  font-size: 31px;
+}
+
+h1 {
+  color: green;
+}
+
+body {
+  background-color: red;
+}
+```
+
+Ahora para que nuestro HTML sepa que debe escuchar los estilos de este archivo añadiremos una nueva line a nuestro HTML.
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mi primera página web</title>
+    <link rel="stylesheet" href="styles/style.css" />
+  </head>
+  <body>
+    <h1>Mi nombre es Carlos</h1>
+    <p>Soy un programador.</p>
+  </body>
+</html>
+```
+
+Guardaremos ambos archivos para y recargaremos nuestra página en nuestro navegador.
+
+Verán como nuestra página web empieza a tener más personalidad.
+
+## 5. Te reto
+
+Ahora te reto a ti a seguir con esta página agregar tus hobbies, poner tu nombre de título , escribir una mini biografía y estilizarla como más te guste.
