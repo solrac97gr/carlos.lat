@@ -6,6 +6,9 @@ import styles from "../../styles/Home.module.css";
 import { BLOG_URL } from "../../lib/consts";
 import { BlogBanner } from "../../components/BlogBanner";
 import { useState } from "react";
+import { CategoriesFilter } from "../../components/CategoriesFilter";
+import { BlogCard } from "../../components/BlogCard";
+import { BlogGrids } from "../../components/BlogGrids";
 
 export default function Blog({ posts, lastPost, topics }) {
   const [filter, SetFilter] = useState("Todos");
@@ -21,7 +24,7 @@ export default function Blog({ posts, lastPost, topics }) {
   return (
     <div className={styles.container}>
       <Head>
-        <title>carlos97gr 👨🏽‍💻 | Blog</title>
+        <title>Blog | carlos97gr 👨🏽‍💻</title>
         <meta
           name="description"
           content="Creando contenido mientras programo."
@@ -50,150 +53,14 @@ export default function Blog({ posts, lastPost, topics }) {
         <meta name="twitter:card" content="summary_large_image" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <main className={styles.main}>
         <BlogBanner post={lastPost} />
-        <h2>Categorías</h2>
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          {topics.map((topic) => (
-            <p
-              onClick={() => handleChangeFilter(topic)}
-              style={{
-                marginRight: 5,
-                fontSize: 13,
-                fontWeight: 400,
-                padding: 5,
-                borderRadius: 3,
-                border: 1,
-                borderColor: "#63f3ab",
-                borderStyle: "solid",
-                color: "#63f3ab",
-                cursor: "pointer",
-              }}
-              key={topic}
-              className={topic === filter && "isActiveFilter"}
-            >
-              {topic}
-            </p>
-          ))}
-        </div>
-        <div className={styles.grid}>
-          {filter === "Todos"
-            ? posts.map((post) => {
-                return (
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    key={post.title + post.date}
-                  >
-                    <a className={styles.card}>
-                      <Image
-                        src={post.image}
-                        alt="go-wallpaper"
-                        width="500px"
-                        height="250px"
-                        unoptimized
-                        style={{
-                          overFlow: "hidden",
-                          borderTopLeftRadius: 10,
-                          borderTopRightRadius: 10,
-                        }}
-                      ></Image>
-                      <div className={styles.cardcontent}>
-                        <h3>{post.title}</h3>
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                          }}
-                        >
-                          {post.tag?.split(", ").map((tag) => {
-                            return (
-                              <p
-                                style={{
-                                  marginRight: 5,
-                                  fontSize: 13,
-                                  fontWeight: 400,
-                                  padding: 5,
-                                  borderRadius: 3,
-                                  border: 1,
-                                  borderColor: "#63f3ab",
-                                  borderStyle: "solid",
-                                  color: "#63f3ab",
-                                }}
-                                key={tag}
-                              >
-                                {tag}
-                              </p>
-                            );
-                          })}
-                        </div>
-
-                        <small>{post.date}</small>
-                      </div>
-                    </a>
-                  </Link>
-                );
-              })
-            : posts
-                .filter((post) => {
-                  return post.tag.split(", ").includes(filter);
-                })
-                .map((post) => {
-                  return (
-                    <Link
-                      href={`/blog/${post.slug}`}
-                      key={post.title + post.date}
-                    >
-                      <a className={styles.card}>
-                        <Image
-                          src={post.image}
-                          alt="go-wallpaper"
-                          width="500px"
-                          height="250px"
-                          unoptimized
-                          style={{
-                            overFlow: "hidden",
-                            borderTopLeftRadius: 10,
-                            borderTopRightRadius: 10,
-                          }}
-                        ></Image>
-                        <div className={styles.cardcontent}>
-                          <h3>{post.title}</h3>
-                          <div
-                            style={{
-                              display: "flex",
-                              flexDirection: "row",
-                            }}
-                          >
-                            {post.tag?.split(", ").map((tag) => {
-                              return (
-                                <p
-                                  style={{
-                                    marginRight: 5,
-                                    fontSize: 13,
-                                    fontWeight: 400,
-                                    padding: 5,
-                                    borderRadius: 3,
-                                    border: 1,
-                                    borderColor: "#63f3ab",
-                                    borderStyle: "solid",
-                                    color: "#63f3ab",
-                                  }}
-                                  key={tag}
-                                >
-                                  {tag}
-                                </p>
-                              );
-                            })}
-                          </div>
-
-                          <small>{post.date}</small>
-                        </div>
-                      </a>
-                    </Link>
-                  );
-                })}
-        </div>
+        <CategoriesFilter
+          filter={filter}
+          handleChangeFilter={handleChangeFilter}
+          topics={topics}
+        />
+        <BlogGrids filter={filter} posts={posts} />
       </main>
     </div>
   );

@@ -1,4 +1,4 @@
-import { Bio } from "../sections/bio";
+import { Bio } from "../components/Bio";
 
 export default function SobreMi() {
   return (

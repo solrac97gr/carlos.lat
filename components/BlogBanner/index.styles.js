@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Image from "next/image";
 
 export const Container = styled.div`
   width: 100%;
@@ -6,6 +7,9 @@ export const Container = styled.div`
   display: flex;
   flex-direction: row;
   min-height: 300px;
+  @media (max-width: 768px) {
+    display:none;
+  }
 `;
 
 export const LeftColumn = styled.div`
@@ -27,12 +31,16 @@ export const Tag = styled.div`
   font-weight: 400;
   padding: 5px;
   border-radius: 3px;
-  color:  #63f3ab;
-  border:1px solid  #63f3ab;
+  color: #63f3ab;
+  border: 1px solid #63f3ab;
 `;
 export const StyledA = styled.a`
   color: #63f3ab;
   text-decoration: underline;
   font-size: 21px;
   cursor: pointer;
+`;
+
+export const ImageStyled = styled(Image)`
+  border-radius: 5px;
 `;

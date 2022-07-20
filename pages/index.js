@@ -4,7 +4,7 @@ import styles from "../styles/Home.module.css";
 import { getAllFilesMetadata } from "../lib/mdx";
 import Link from "next/link";
 import { PAGE_URL } from "../lib/consts";
-import { Hero } from "../sections/hero";
+import { Hero } from "../components/Hero";
 
 export default function Home({ posts }) {
   return (
@@ -44,7 +44,6 @@ export default function Home({ posts }) {
         <meta name="twitter:card" content="summary_large_image" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <main className={styles.main}>
         <Hero numberOfPosts={posts.length}></Hero>
       </main>

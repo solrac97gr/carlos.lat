@@ -5,10 +5,10 @@ import {
   StyledA,
   LeftColumn,
   TagContainer,
-  Tag
+  Tag,
+  ImageStyled
 } from "./index.styles";
 import Link from "next/link";
-import Image from "next/image";
 import { useState } from "react";
 
 export const BlogBanner = ({ post }) => {
@@ -29,13 +29,14 @@ export const BlogBanner = ({ post }) => {
         </Link>
       </LeftColumn>
       <div style={{ width: "50%" }}>
-        <Image
+        <ImageStyled
+          alt="programming wallpaper"
           src={post.image}
           layout="responsive"
           width="80%"
           height="50%"
           unoptimized
-        ></Image>
+        ></ImageStyled>
       </div>
     </Container>
   );
