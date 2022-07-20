@@ -75,7 +75,8 @@
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  max-width: 800px;
+  padding: 10%;
+  padding-top: 3%;
 }
 
 .card {
@@ -87,7 +88,7 @@
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
   max-width: 300px;
-  min-height: 330px;
+  min-height: 360px;
   transition: all 0.2s ease-in-out;
 }
 

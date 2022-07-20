@@ -4,12 +4,27 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../../styles/Home.module.css";
 import { BLOG_URL } from "../../lib/consts";
+import { BlogBanner } from "../../components/BlogBanner";
+import { useState } from "react";
+import { CategoriesFilter } from "../../components/CategoriesFilter";
+import { BlogCard } from "../../components/BlogCard";
+import { BlogGrids } from "../../components/BlogGrids";
 
-export default function Blog({ posts }) {
+export default function Blog({ posts, lastPost, topics }) {
+  const [filter, SetFilter] = useState("Todos");
+
+  const handleChangeFilter = (topic) => {
+    if (filter === topic) {
+      SetFilter("Todos");
+    } else {
+      SetFilter(topic);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <Head>
-        <title>carlos97gr 👨🏽‍💻 | Blog</title>
+        <title>Blog | carlos97gr 👨🏽‍💻</title>
         <meta
           name="description"
           content="Creando contenido mientras programo."
@@ -38,41 +53,31 @@ export default function Blog({ posts }) {
         <meta name="twitter:card" content="summary_large_image" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <main className={styles.main}>
-        <div className={styles.grid}>
-          {posts.map((post) => {
-            return (
-              <Link href={`/blog/${post.slug}`} key={post.title + post.date}>
-                <a className={styles.card}>
-                  <Image
-                    src={post.image}
-                    alt="go-wallpaper"
-                    width="500px"
-                    height="250px"
-                    unoptimized
-                    style={{
-                      overFlow: "hidden",
-                      borderTopLeftRadius: 10,
-                      borderTopRightRadius: 10,
-                    }}
-                  ></Image>
-                  <div className={styles.cardcontent}>
-                    <h3>{post.title}</h3>
-                    <small>{post.date}</small>
-                  </div>
-                </a>
-              </Link>
-            );
-          })}
-        </div>
+        <BlogBanner post={lastPost} />
+        <CategoriesFilter
+          filter={filter}
+          handleChangeFilter={handleChangeFilter}
+          topics={topics}
+        />
+        <BlogGrids filter={filter} posts={posts} />
       </main>
     </div>
   );
 }
 export async function getStaticProps() {
   const posts = await getAllFilesMetadata();
+  const lastPost = posts[0];
+  const topics = ["Todos"];
+  posts.forEach((post) => {
+    post.tag.split(", ").forEach((topic) => {
+      if (!topics.includes(topic)) {
+        topics.push(topic);
+      }
+    });
+  });
+
   return {
-    props: { posts },
+    props: { posts, lastPost, topics },
   };
 }

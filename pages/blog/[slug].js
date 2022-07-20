@@ -10,7 +10,7 @@ export default function Post({ source, frontmatter }) {
   return (
     <div>
       <Head>
-        <title>{`carlos97gr 👨🏽‍💻 | ${frontmatter.title}`}</title>
+        <title>{`${frontmatter.title} | carlos97gr 👨🏽‍💻 `}</title>
         <meta charSet="UTF-8" />
         <meta name="description" content={frontmatter.abstract} />
         <meta name="keywords" content={frontmatter.tag} />

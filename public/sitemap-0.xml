@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url><loc>https://carlos.lat/</loc><lastmod>2022-07-11T18:27:33.117Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://carlos.lat/blog/</loc><lastmod>2022-07-11T18:27:33.117Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://carlos.lat/sobre-mi/</loc><lastmod>2022-07-11T18:27:33.117Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://carlos.lat/blog/como-acceder-subcampos/</loc><lastmod>2022-07-11T18:27:33.117Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://carlos.lat/blog/como-funciona-la-web/</loc><lastmod>2022-07-11T18:27:33.117Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://carlos.lat/blog/como-mapear-array-structs-interface/</loc><lastmod>2022-07-11T18:27:33.117Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://carlos.lat/blog/frontend-backend-dilema/</loc><lastmod>2022-07-11T18:27:33.117Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://carlos.lat/blog/hexagonal-architecture-using-go-fiber/</loc><lastmod>2022-07-11T18:27:33.117Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://carlos.lat/blog/primera-vez-usando-rust/</loc><lastmod>2022-07-11T18:27:33.117Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://carlos.lat/</loc><lastmod>2022-07-20T18:27:42.331Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://carlos.lat/blog/</loc><lastmod>2022-07-20T18:27:42.331Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://carlos.lat/sobre-mi/</loc><lastmod>2022-07-20T18:27:42.331Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://carlos.lat/blog/como-acceder-subcampos/</loc><lastmod>2022-07-20T18:27:42.331Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://carlos.lat/blog/como-conectar-go-mongo/</loc><lastmod>2022-07-20T18:27:42.331Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://carlos.lat/blog/como-consumir-api-go/</loc><lastmod>2022-07-20T18:27:42.331Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://carlos.lat/blog/como-convertir-string-int-go/</loc><lastmod>2022-07-20T18:27:42.331Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://carlos.lat/blog/como-crear-clase-go/</loc><lastmod>2022-07-20T18:27:42.331Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://carlos.lat/blog/como-ejecutar-aplicacion-go-docker/</loc><lastmod>2022-07-20T18:27:42.331Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://carlos.lat/blog/como-funciona-la-web/</loc><lastmod>2022-07-20T18:27:42.331Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://carlos.lat/blog/como-hacer-bulk-insert-elasticsearch-go/</loc><lastmod>2022-07-20T18:27:42.331Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://carlos.lat/blog/como-mapear-array-structs-interface/</loc><lastmod>2022-07-20T18:27:42.331Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://carlos.lat/blog/como-obtener-variables-entorno-go-env-json/</loc><lastmod>2022-07-20T18:27:42.331Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://carlos.lat/blog/frontend-backend-dilema/</loc><lastmod>2022-07-20T18:27:42.331Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://carlos.lat/blog/hexagonal-architecture-using-go-fiber/</loc><lastmod>2022-07-20T18:27:42.331Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://carlos.lat/blog/html-css-desarrollo-web-basico/</loc><lastmod>2022-07-20T18:27:42.331Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://carlos.lat/blog/primera-vez-usando-rust/</loc><lastmod>2022-07-20T18:27:42.331Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 </urlset>
