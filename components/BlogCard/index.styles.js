@@ -22,9 +22,21 @@ export const Card = styled.a`
     color: #63f3ab;
     border-color: #63f3ab;
     box-shadow: 1px 1px 1px 1px;
-    transform: scale(1.1);
+    transform: scale(1.03);
   }
   cursor: pointer;
+  @media (max-width: 768px) {
+    margin: 0rem;
+    margin-bottom: 1rem;
+    max-width: none;
+    width: 100%;
+    transition: none;
+    &:hover {
+      transform: none;
+      color: inherit;
+      box-shadow: none;
+    }
+  }
 `;
 
 export const Content = styled.div`

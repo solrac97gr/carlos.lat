@@ -9,7 +9,7 @@ export const Container = styled.div`
   justify-content: space-between;
   @media (max-width: 768px) {
     flex-direction: column-reverse;
-    padding: 0 5% 0 5%;
+    padding: 0 0 0 0;
   }
 `;
 export const LeftColumn = styled.div`
