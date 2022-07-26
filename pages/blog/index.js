@@ -70,7 +70,7 @@ export async function getStaticProps() {
   const lastPost = posts[0];
   const topics = ["Todos"];
   posts.forEach((post) => {
-    post.tag.split(", ").forEach((topic) => {
+    post.tag?.split(", ").forEach((topic) => {
       if (!topics.includes(topic)) {
         topics.push(topic);
       }
