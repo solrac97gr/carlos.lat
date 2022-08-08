@@ -55,7 +55,7 @@ export const Navbar = () => {
           <NavbarLinkText
             className={router.pathname.includes("/mi-mapa") ? "isActive" : ""}
           >
-            {router.pathname.includes("/mi-mapa") ? "<Mi mapa>" : "Mi mapa"}
+            {router.pathname.includes("/mi-mapa") ? "<Mis viajes>" : "Mis viajes"}
           </NavbarLinkText>
         </NavbarLink>
         <NavbarLink href="/sobre-mi">
