@@ -10,7 +10,13 @@ import {
   NavbarMobile,
   BurgerStyled,
 } from "./index.style";
-import { FaTwitter, FaInstagram, FaYoutube, FaLinkedin, FaGithub } from "react-icons/fa";
+import {
+  FaTwitter,
+  FaInstagram,
+  FaYoutube,
+  FaLinkedin,
+  FaGithub,
+} from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
@@ -18,13 +24,14 @@ import { useIsMobile } from "../../hooks/useIsMobile";
 
 const size = 21;
 
+
 export const Navbar = () => {
   const router = useRouter();
-  const isMobile = useIsMobile()
+  const isMobile = useIsMobile();
 
   return (
     <NavbarContainer>
-      {isMobile&&<BurgerStyled/>}
+      {isMobile && <BurgerStyled />}
       <NameContainer href="/">
         <a>
           <FirstName>Carlos</FirstName>
@@ -42,6 +49,13 @@ export const Navbar = () => {
             className={router.pathname.includes("/blog") ? "isActive" : ""}
           >
             {router.pathname.includes("/blog") ? "<Blog>" : "Blog"}
+          </NavbarLinkText>
+        </NavbarLink>
+        <NavbarLink href="/mi-mapa">
+          <NavbarLinkText
+            className={router.pathname.includes("/mi-mapa") ? "isActive" : ""}
+          >
+            {router.pathname.includes("/mi-mapa") ? "<Mi mapa>" : "Mi mapa"}
           </NavbarLinkText>
         </NavbarLink>
         <NavbarLink href="/sobre-mi">
