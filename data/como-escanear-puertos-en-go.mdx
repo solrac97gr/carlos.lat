@@ -1,0 +1,126 @@
+---
+title: " ¿Cómo escanear los puertos usando Go? ⚓️"
+date: "8 de Agosto del 2022"
+published: "2022-08-08"
+abstract: "Conoce el increíble poder de go para realizar análisis web usando concurrencia"
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FFUAQvEkXoAAuQ-2.jpg-large.jpeg?alt=media&token=959951bf-5f60-4ecd-9ddf-74511f0ff3fa"
+tag: "Go "
+author: "Carlos García"
+---
+
+# ¿Cómo escanear los puertos usando Go? ⚓️
+
+<small>8 de Agosto del 2022</small>
+<EditPost path="como-escanear-puertos-en-go" />
+
+<img
+  width="100%"
+  alt="golang-wallpaper "
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FFUAQvEkXoAAuQ-2.jpg-large.jpeg?alt=media&token=959951bf-5f60-4ecd-9ddf-74511f0ff3fa"
+/>
+
+Una utilidad muy importante cuando trabajamos en el mundo de la seguridad informática es escanear los puertos actualmente muchas herramientas existen que nos permiten realizar esta tarea pero para fines prácticos aprenderemos a desarrollar nuestros propio escáner de Puertos.
+
+Usaremos Go ya que tiene una librería estándar para comunicaciones web muy buena.
+
+Empezaremos creando nuestro proyecto, crearemos nuestra carpeta y un archivo main.go seguido de esto ejecutaremos el comando go mod init para usar Go modules como nuestro gestor de dependencias.
+
+Como resultado obtendremos la siguiente estructura de carpetas.
+
+<FolderStructure
+  tree={[
+    {
+      type: "file",
+      name: "main.go",
+    },
+    {
+      type: "file",
+      name: "go.mod",
+    },
+  ]}
+/>
+
+Ahora comenzaremos a escribir nuestro programo usaremos la librería `net` de Go.
+
+## 1. Agregando parámetros para nuestro Script
+
+Empezaremos a modificar nuestro archivo `main` dentro de este inicializaremos 3 argumentos que serán necesarios para el funcionamiento del script: El Host y dos parámetros más
+
+```go
+package main
+
+import (
+	"flag"
+)
+
+var host *string
+var from *int
+var limit *int
+
+func init() {
+	host = flag.String("host", "scanme.nmap.org", "hostname to scan")
+	from = flag.Int("from", 0, "from what port we will scan")
+	limit = flag.Int("limit", 65535, "until what port we will scan")
+}
+```
+
+Ahora tenemos nuestro Host que será el sitio al que escaneáramos y nuestro rango de puertos a escanear.
+
+## 2. Scaneando los puertos usando concurrencia
+
+Go no solo es el lenguaje elegido para este blog debido a su potente librería estándar es también porque podemos sacar provecho de la concurrencia del lenguaje. Para ello usaremos la librería `sync` esta librería nos ofrece un conjunto de herramientas para trabajar con procesos concurrentes.
+
+Dentro de la librería sync usaremos un tipo llamado WaitGroup este nos ayudará junto con las go routines a que nuestro proceso principal no termine sin que todos los sub procesos terminen su trabajo.
+
+```go
+package main
+
+import (
+	"flag"
+	"fmt"
+	"net"
+	"sync"
+)
+
+var host *string
+var from *int
+var limit *int
+
+func init() {
+	host = flag.String("host", "scanme.nmap.org", "hostname to scan")
+	from = flag.Int("from", 0, "from what port we will scan")
+	limit = flag.Int("limit", 65535, "until what port we will scan")
+}
+
+func main() {
+	flag.Parse()
+	fmt.Printf("Scanning %s from port %d to %d\n", *host, *from, *limit)
+	var wg sync.WaitGroup
+	for i := *from; i < *limit; i++ {
+		wg.Add(1)
+		go func(port int) {
+			defer wg.Done()
+			conn, err := net.Dial("tcp", fmt.Sprintf("%s:%d", *host, port))
+			if err != nil {
+				return
+			}
+			conn.Close()
+			fmt.Println("Port", port, "is open")
+		}(i)
+
+	}
+	wg.Wait()
+}
+```
+
+## 3. Hora de usarlo
+
+Para esto primero les daré una recomendación en muchos países escanear un sitio web sin autorización es un delito, siempre usen este tipo de herramientas en sus propios sitios, sitios de pruebas o si lo usaran para su trabajo.
+
+Para el ejemplo usaremos los valores por defecto que tiene nuestro script.
+
+```bash
+go run main.go --host="scanme.nmap.org" --from=100 --limit=500
+```
+
+Espero que les sirva este tutorial con fines didácticos y que continúen mejorando esta herramienta como agregando un sistema de log o de cache.
