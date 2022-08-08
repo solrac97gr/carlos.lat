@@ -20,16 +20,37 @@ export default function Post({ source, frontmatter }) {
         <meta property="og:type" content="article" />
         <meta property="og:url" content={`${BLOG_URL}/${frontmatter.slug}`} />
         <meta property="og:image" content={frontmatter.image} />
-        <meta property="article:published_time" content={frontmatter.published} />
+        <meta
+          property="article:published_time"
+          content={frontmatter.published}
+        />
         <meta property="article:tag" content={frontmatter.tag} />
         <meta property="article:author" content={`${PAGE_URL}/sobre-mi`} />
         <meta name="twitter:title" content={frontmatter.title} />
         <meta name="twitter:description" content={frontmatter.abstract} />
         <meta name="twitter:image" content={frontmatter.image} />
         <meta name="twitter:card" content="summary_large_image" />
+        <script
+          src="https://giscus.app/client.js"
+          data-repo="solrac97gr/carlos.lat"
+          data-repo-id="R_kgDOHl_QEQ"
+          data-category="General"
+          data-category-id="DIC_kwDOHl_QEc4CQrs_"
+          data-mapping="title"
+          data-strict="0"
+          data-reactions-enabled="1"
+          data-emit-metadata="0"
+          data-input-position="top"
+          data-theme="dark_dimmed"
+          data-lang="es"
+          data-loading="lazy"
+          crossOrigin="anonymous"
+          async
+        ></script>
       </Head>
       <BlogContainer>
         <MDXRemote {...source} components={MDXComponents} />
+        <div className="giscus"></div>
       </BlogContainer>
     </div>
   );
