@@ -10,12 +10,14 @@ export const Container = styled.div`
   @media (max-width: 768px) {
     display:none;
   }
+  justify-content: space-between;
 `;
 
 export const LeftColumn = styled.div`
   display: flex;
   flex-direction: column;
   width: 50%;
+  margin-left: 5%;
 `;
 
 export const Title = styled.h1``;

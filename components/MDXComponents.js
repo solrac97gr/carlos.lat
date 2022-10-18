@@ -11,7 +11,9 @@ const components = {
   BlogLink,
   Podcast,
   Gist,
-  img: (props) => <Image {...props}></Image>,
+  img: (props) => <Image {...props} style={{
+    borderRadius: "5px",
+  }}></Image>,
   p: (props)=> <p style={{textAlign:"justify"}}>{props.children}</p>
 };
 
