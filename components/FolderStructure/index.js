@@ -8,9 +8,16 @@ import {
   SiDocker,
   SiGit,
 } from "react-icons/si";
+import { AiOutlineDeploymentUnit } from "react-icons/ai";
 import { FaRust } from "react-icons/fa";
-import { BsFileEarmarkCodeFill, BsCaretDownFill } from "react-icons/bs";
+import {
+  BsFileEarmarkCodeFill,
+  BsCaretDownFill,
+  BsFillTerminalFill,
+  BsFillMarkdownFill,
+} from "react-icons/bs";
 import { VscCopy } from "react-icons/vsc";
+import { FaFileCsv } from "react-icons/fa";
 import {
   Container,
   SubContainer,
@@ -18,30 +25,28 @@ import {
   FileName,
 } from "./index.styles";
 import { CopyButton } from "../CopyButton";
+import { IoIosArrowDown } from "react-icons/io";
 
 const size = 21;
 
 const RenderExtensionIcon = (extension) => {
-  switch (extension) {
-    case "go":
-      return <SiGoland size={size} color="#3AB4F2" />;
-    case "rs":
-      return <FaRust size={size} color="#DE5246" />;
-    case "js":
-      return <SiJavascript size={size} color="yellow" />;
-    case "json":
-      return <SiJson size={size} color="green" />;
-    case "html":
-      return <SiHtml5 size={size} color="blue" />;
-    case "css":
-      return <SiCsswizardry size={size} color="orange" />;
-    case "docker":
-      return <SiDocker size={size} color="skyblue" />;
-    case "gitignore":
-      return <SiGit size={size} color="orange" />;
-    default:
-      return <BsFileEarmarkCodeFill size={size} color="gray" />;
-  }
+  const icons = {
+    go: <SiGoland color="#3AB4F2" size={size} />,
+    js: <SiJavascript color="yellow" size={size} />,
+    html: <SiHtml5 color="blue" size={size} />,
+    css: <SiCsswizardry color="orange" size={size} />,
+    json: <SiJson color="green" size={size} />,
+    docker: <SiDocker color="skyblue" size={size} />,
+    gitignore: <SiGit color="orange" size={size} />,
+    rs: <FaRust color="#DE5246" size={size} />,
+    yaml: <AiOutlineDeploymentUnit color="#63f3ab" size={size} />,
+    csv: <FaFileCsv color="magenta" size={size} />,
+    md: <BsFillMarkdownFill color="orange" size={size} />,
+    sh: <BsFillTerminalFill color="red" size={size} />,
+    default: <BsFileEarmarkCodeFill color="gray" size={size} />,
+  };
+
+  return icons[extension] || icons["default"];
 };
 
 const ExtractExtension = (filename) => {
@@ -80,22 +85,36 @@ const BuildFinalScript = (prevCmd) => {
 };
 
 const RenderTree = (tree) => {
-  return tree.map((el) => {
+  const iterationHash = Math.random().toString(36).substring(7);
+  return tree?.map((el) => {
     if (el.type == "file") {
       return (
-        <FileNameContainer key={el.name}>
+        <FileNameContainer key={el.name} id={el.name}>
           {RenderExtensionIcon(ExtractExtension(el.name))}
           <FileName>{el.name}</FileName>
         </FileNameContainer>
       );
     }
     return (
-      <div key={el.name}>
+      <div key={el.name} id={el.name}>
         <FileNameContainer>
+          <IoIosArrowDown
+            size={size}
+            onClick={() => {
+              const element = document.getElementById(el.name);
+              const className = `sub-folder-${iterationHash}`;
+              const list = element.getElementsByClassName(className)
+              console.log(list)
+             list[0].classList.toggle("hidden");
+            }}
+            style={{ margin: 3, cursor: "pointer" }}
+          />
           <BsFillFolderFill color="#63f3ab" size={size} />
           <FileName>{el.name}</FileName>
         </FileNameContainer>
-        <SubContainer>{RenderTree(el.content)}</SubContainer>
+        <SubContainer className={`sub-folder-${iterationHash}`}>
+          {RenderTree(el.content)}
+        </SubContainer>
       </div>
     );
   });

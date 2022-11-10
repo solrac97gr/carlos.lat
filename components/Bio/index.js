@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ACTUAL_COMPANY, AGE,ACTUAL_CAMERA } from "../../lib/consts";
-import { Container, LinkStyled, Content } from "./index.style";
+import { Container, LinkStyled, Content } from "./index.styles";
 
 export const Bio = () => {
   return (

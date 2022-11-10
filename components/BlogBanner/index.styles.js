@@ -18,6 +18,7 @@ export const LeftColumn = styled.div`
   flex-direction: column;
   width: 50%;
   margin-left: 5%;
+  margin-right: 3%;
 `;
 
 export const Title = styled.h1``;

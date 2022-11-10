@@ -11,7 +11,7 @@ export const Container = styled.div`
 `;
 
 export const SubContainer = styled.div`
-  margin-left: 20px;
+  margin-left: 40px;
 `;
 
 export const FileNameContainer = styled.div`

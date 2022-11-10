@@ -1,4 +1,4 @@
-import { Container, Categories, Category, Title } from "./index.style";
+import { Container, Categories, Category, Title } from "./index.styles";
 export const CategoriesFilter = ({ filter, topics, handleChangeFilter }) => {
   return (
     <Container>

@@ -1,0 +1,306 @@
+---
+title: "Mi plantilla para proyectos en 2023 usando Go (Fiber y MongoDB) 👨🏽‍💻"
+date: "10 de Noviembre del 2022"
+published: "2022-11-10"
+abstract: "✅ Conocé como organizo mis proyectos en Go para escalar a nivel empresarial"
+image: "https://cdn.filestackcontent.com/p5fN19Qi7ctgFewfHFwi"
+tag: "Go, Fiber"
+author: "Carlos García"
+---
+
+# Mi plantilla para proyectos en 2023 usando Go (Fiber y MongoDB) 👨🏽‍💻
+
+<small>10 de Noviembre del 2022</small>
+<EditPost path="go-estructura-carpetas" />
+
+<img
+  width="100%"
+  alt="golang wallpaper"
+  src="https://cdn.filestackcontent.com/p5fN19Qi7ctgFewfHFwi"
+  style={{ borderRadius: "8px" }}
+></img>
+
+Ya estamos cerca al final del 2022 y esto quiere decir es un año más en el que trabaje como desarrollador Golang full time, dentro de este año de trabajo descubrí nuevas herramientas que te ayudan en el flujo de desarrollo y la documentación como tambien una nueva forma de organizar mis proyectos de manera que escalen de forma saludable.
+
+<FolderStructure
+  tree={[
+    {   
+        type:"folder",
+        name:".github",
+        content:[
+            {
+                type:"folder",
+                name:"workflows",
+                content:[
+                    {
+                        type:"file",
+                        name:"CI.yaml"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+      type: "folder",
+      name: "cmd",
+      content: [
+        {
+          type: "folder",
+          name: "http",
+          content:[
+            {
+                type:"file",
+                name:"main.go"
+            }
+          ]
+        },
+      ],
+    },
+    {
+        type:"folder",
+        name:"config",
+        content:[
+            {
+                type:"file",
+                name:"env.json"
+            }
+        ]
+    },
+    {
+        type:"folder",
+        name:"deploy",
+        content:[
+            {
+                type:"file",
+                name:"dockerfile"
+            }
+        ]
+    },
+    {
+        type:"folder",
+        name:"docs",
+        content:[
+            {
+                type:"file",
+                name:"docs.go"
+            },
+            {
+                type:"file",
+                name:"swagger.json"
+            },
+            {
+                type:"file",
+                name:"swagger.yaml"
+            }
+        ]
+    },
+    {
+        type:"folder",
+        name:"hooks",
+        content:[
+            {
+                type:"file",
+                name:"pre-commit.sh"
+            }
+        ]
+    },
+    {
+      type: "folder",
+      name: "internal",
+      content: [
+       {
+        type:"folder",
+        name:"user",
+        content:[
+            {
+                type:"folder",
+                name: "application",
+                content:[
+                    {
+                        type:"file",
+                        name: "application.go",
+                    },
+                    {
+                        type:"file",
+                        name:"create_user.go"
+                    },
+                    {
+                        type:"file",
+                        name:"create_user_test.go"
+                    },
+                ]
+            },
+            {
+                type:"folder",
+                name:"domain",
+                content:[
+                    {
+                        type:"folder",
+                        name:"models",
+                        content:[
+                            {
+                                type:"file",
+                                name:"user.go"
+                            },
+                        ]
+                    },
+                    {
+                        type:"folder",
+                        name:"ports",
+                        content:[
+                            {
+                                type:"file",
+                                name:"user_application.go"
+                            },
+                            {
+                                type:"file",
+                                name:"user_handlers.go"
+                            },
+                            {
+                                type:"file",
+                                name:"user_repository.go"
+                            },
+                        ]
+                    }
+                ]
+            },
+            {
+                type:"folder",
+                name:"infrastructure",
+                content:[
+                    {
+                        type:"folder",
+                        name:"handlers",
+                        content:[
+                            {
+                                type:"file",
+                                name:"fiber.go",
+                            },
+                            {
+                                type:"file",
+                                name:"create_user.go"
+                            },
+                            {
+                                type:"file",
+                                name:"create_user_test.go"
+                            }
+
+                        ]
+                    },
+                    {
+                        type:"folder",
+                        name:"repositories",
+                        content:[
+                            {
+                                type:"file",
+                                name:"mongo.go",
+                            },
+                            {
+                                type:"file",
+                                name:"create_user.go"
+                            },
+                            {
+                                type:"file",
+                                name:"create_user_test.go"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+       },
+      ],
+    },
+    {
+        type:"folder",
+        name:"logs",
+        content:[
+            {
+                type:"file",
+                name:"log-2023-01-01.csv"
+            }
+        ]
+    },
+    {
+        type:"folder",
+        name:"pkg",
+        content:[
+            {
+                type:"folder",
+                name:"middleware",
+                content:[
+                    {
+                        type:"folder",
+                        name:"application",
+                        content:[
+                            {
+                                type:"file",
+                                name:"middleware.go"
+                            },
+                            {
+                                type:"file",
+                                name:"authenticate.go"
+                            },
+                        ]
+                    },
+                    {
+                        type:"folder",
+                        name:"domain",
+                        content:[
+                            {
+                                type:"file",
+                                name:"request.go"
+                            },
+                            {
+                                type:"file",
+                                name:"ports.go"
+                            }
+                        ]
+
+                    },
+                    {
+                        type:"folder",
+                        name:"infrastructure"
+                    }
+
+                ]
+            },
+        ]
+    },
+    {
+        type:"folder",
+        name:"scripts",
+        content:[
+            {
+                type:"file",
+                name:"build.sh",
+            },
+            {
+                type:"file",
+                name:"generate-mocks.sh"
+            }
+        ]
+    },
+    {
+        type:"file",
+        name:".gitignore"
+    },
+    {
+      type: "file",
+      name: "go.mod",
+    },
+    {
+      type: "file",
+      name: "go.sum",
+    },
+    {
+        type:"file",
+        name:"main.go"
+    },
+    {
+        type:"file",
+        name:"README.md"
+    }
+  ]}
+/>
+

@@ -46,3 +46,7 @@ blockquote {
   font-weight: 400 !important;
   color: #63f3ab !important;
 }
+
+.hidden {
+  display: none;
+}

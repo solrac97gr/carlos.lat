@@ -9,7 +9,7 @@ import {
   NavbarLinkText,
   NavbarMobile,
   BurgerStyled,
-} from "./index.style";
+} from "./index.styles";
 import {
   FaTwitter,
   FaInstagram,
