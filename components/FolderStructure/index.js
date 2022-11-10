@@ -99,7 +99,7 @@ const RenderTree = (tree) => {
       <div key={el.name} id={el.name}>
         <FileNameContainer>
           <IoIosArrowDown
-            size={size}
+            size={size-7}
             onClick={() => {
               const element = document.getElementById(el.name);
               const className = `sub-folder-${iterationHash}`;
