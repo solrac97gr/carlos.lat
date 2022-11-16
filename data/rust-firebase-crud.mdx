@@ -90,11 +90,11 @@ struct Response {
 async fn main() {
 }
 ```
-## Inizializando un Cliente de firebase
+## Inicializando un Cliente de firebase
 
 Ahora crearemos un cliente de firebase con nuestra URL de la base de datos que usaremos para pasarlo en las funciones.
 
->Nota 📝: Si deseas usar Auth remplaza la función new por auth y agrega tu Auth token como segundo parametro
+>Nota 📝: Si deseas usar Auth remplaza la función new por auth y agrega tu Auth token como segundo parámetro
 
 ```rust
 use firebase_rs::*;
@@ -118,7 +118,7 @@ async fn main() {
 }
 ```
 
-## Crearemos dos funciones que nos ayudaran a parsear:
+## Crearemos dos funciones que nos ayudarán a parsear:
 ```rust
 // Convert a string to a Response
 fn string_to_reponse(s: &str) -> Response {
