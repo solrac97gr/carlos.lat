@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "preinstall": "npx only-allow pnpm", 
+    "preinstall": "npm i -g pnpm && npx only-allow pnpm", 
     "dev": "next dev",
     "build": "next build",
     "postbuild": "next-sitemap",
     "start": "next start",
     "export": "next export",
     "lint": "next lint",
-    "ci": "npm install && npm run build && npm run postbuild && npm run export"
+    "ci": "pnpm install && pnpm run build && pnpm run postbuild && pnpm run export"
   },
   "dependencies": {
     "fs": "^0.0.1-security",
