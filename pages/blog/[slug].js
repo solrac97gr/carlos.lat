@@ -5,6 +5,7 @@ import { BlogContainer } from "../../components/BlogContainer";
 import Head from "next/head";
 import { BLOG_URL, PAGE_URL } from "../../lib/consts";
 import { useEffect } from "react";
+import Script from "next/script";
 
 export default function Post({ source, frontmatter }) {
   return (

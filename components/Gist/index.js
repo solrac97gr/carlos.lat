@@ -1,3 +1,5 @@
+import Script from "next/script";
+
 export const Gist = ({ url }) => {
-  return <script async src={url}></script>;
+  return <Script async src={url}></Script>;
 };
