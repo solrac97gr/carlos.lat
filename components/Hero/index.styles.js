@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Image from "next/image";
 
 export const Container = styled.div`
   display: flex;
@@ -33,7 +32,9 @@ export const RightColumn = styled.div`
 `;
 
 export const PresentationContainer = styled.div``;
-export const ExperienceContainer = styled.div``;
+export const ExperienceContainer = styled.div`
+justify-content: space-between;
+`;
 
 export const Title = styled.h4`
   font-size: 55px;
@@ -92,7 +93,7 @@ export const ExperienceProjects = styled.div`
   flex-direction: row;
 `;
 export const ExperienceNumber = styled.span`
-  font-size: 45px;
+  font-size: 40px;
 `;
 export const ExperienceText = styled.div`
   width: 90px;

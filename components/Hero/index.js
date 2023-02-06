@@ -44,7 +44,7 @@ export const Hero = ({numberOfPosts}) => {
           <ExperienceRow>
             <ExperienceYears>
               <ExperienceNumber>{YEARS_OF_EXPERIENCE}</ExperienceNumber>
-              <ExperienceText>Años de experiencia</ExperienceText>
+              <ExperienceText>Años de trabajo</ExperienceText>
             </ExperienceYears>
             <ExperienceYears>
               <ExperienceNumber>{NUMBER_OF_VISITED_COUNTRIES}</ExperienceNumber>

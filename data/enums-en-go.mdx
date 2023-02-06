@@ -1,0 +1,199 @@
+---
+title: "Custom Types (Alias) y ¿Enums? en Go aprende a aprovecharlos 🐹"
+date: "06 de Febrero del 2023"
+published: "2023-02-06"
+abstract: "Conoce el potencial de los alias en Go y como sacarles el mayor provecho en tu día a día."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F1*QD-fZ5jS3GahUKP-T3EzRA.png?alt=media&token=5b3931b5-e333-481f-9e7b-788c051a0ff1"
+tag: "Go"
+author: "Carlos García"
+---
+
+# Custom Types (Alias) y ¿Enums? en Go aprende a aprovecharlos 🐹
+
+<small>06 de Febrero del 2023</small>
+<EditPost path="enums-en-go" />
+
+<img
+  width="100%"
+  alt="golang-wallpaper "
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F1*QD-fZ5jS3GahUKP-T3EzRA.png?alt=media&token=5b3931b5-e333-481f-9e7b-788c051a0ff1"
+  style={{ borderRadius: "8px" }}
+/>
+
+Una de las cosas que más me gustan de go son definitivamente el echo de crear tipos en base a los tipos básicos en lenguajes de programación muy populares como typescript puedes crear tipos de esta forma, siendo muy útil para encapsular conceptos de negocios.
+
+Por ello les daré algunas ideas de cómo usar los alias en Go.
+
+## Crear tipos para conceptos de negocio.
+
+Esto nos ayudará a dentro de nuestro código usar palabras de concepto de negocio que usaría una empresa al otorgar un requerimiento.
+
+Digamos que tienes una app de mascotas que al invitar referidos genera monedas que puedes usar dentro de la app y que luego puedes reclamar en dinero real.
+
+```go
+
+func GetBalance() float64 {}
+func GetTotal() float64 {}
+
+```
+
+Podemos ver que ambas funciones nos retornan float64 pero cual nos devuelve el balance en dólares y cuál nos devuelve el balance en monedas del juego.
+
+Para ello podemos crear tipos para cada una de estas unidades.
+
+```go
+type USD float64
+type PetCoin float64
+
+func GetBalance() PetCoin {}
+func GetTotal() USD {}
+
+```
+
+Ahora si te pregunto ¿Cuál de las funciones nos da el balance de Petcoins? Podrías determinarlo gracias a lo que retorna la función y esto también ayuda al recibir un requerimiento.
+
+> Carlos necesito que la función que obtiene el balance de Petcoins sea optimizada
+
+Nos ayuda a entender mejor los requerimientos al tener esos conceptos de negocios como parte de nuestro código.
+
+## Asegurar funciones que reciben muchos argumentos del mismo tipo
+
+Hay algo que decimos mucho los que usamos lenguajes tipados y es que es más fácil de evadir errores por los tipos y es cierto pero qué pasa cuando tenemos una función que recibe X número de argumentos todos del mismo tipo.
+
+Tienes que ser muy cuidadoso al pasar los argumentos o terminarás pasándolos en desorden y quizás no detectes el error hasta que sea muy tarde.
+
+Veamos este ejemplo:
+
+```go
+func setHeaders(IP string, Hostname string, Key string) {}
+
+func ExampleHandler(ctx *fiber.Ctx) {
+  setHeaders(ctx.Hostname(),ctx.IP(),ctx.Authorization())
+}
+
+```
+
+Como pueden notar los argumentos no están en el orden correcto sin embargo esta función ejecutará de forma normal y si no tenemos ninguna validación dentro de ella realizará su función con datos erróneos.
+
+Ahora definiremos tipos para cada uno de los argumentos.
+
+```go
+type IP string
+type Hostname string
+type Key string
+
+func setHeaders(ip IP, hostname Hostname, key Key) {}
+
+
+func ExampleHandler(ctx *fiber.Ctx) {
+  setHeaders(ctx.Hostname(),ctx.IP(),ctx.Authorization()) // error
+
+  ip:= IP(ctx.IP())
+  hostname:= Hostname(ctx.Hostname())
+  key:= Key(ctx.Authorization())
+
+  setHeaders(hostname,ip,key) // error wrong type in arguments
+
+  setHeaders(ip, hostname, key) // Correct
+}
+```
+
+Ahora nuestra función recibirá argumentos tipados de conceptos abstractos que no cuentan con un tipo de dato en el lenguaje.
+
+## Potenciar tipos de datos que no requieren ser una estructura
+
+Muchos casos tendremos que crear tipos de dato que tengan solo un dato dentro de la estructura pero que requieran de varios metodos que nos ayudan a potenciar el tipo de dato sin embargo no quremos agregarlos al tipo de dato base.
+
+```go
+type IP struct {
+  Value string
+}
+
+func NewIP(s string) IP {}
+
+func (i IP) Parse(s string) error {}
+func (i IP) Validate() error {}
+func (i IP) ToString() string {}
+```
+
+Definitivamente un tipo de dato IP es una excelente idea pero también crear una estructura es demasiado complicado, así que para poder cargar un tipo de dato común como una string podemos usar un alias de la siguiente forma
+
+```go
+package main
+
+type IP string
+
+func (i IP) Validate() error {
+  // Here validate your type
+}
+
+func (i IP) ToString() string {
+  return string(i)
+}
+
+func NewIP(s string) IP {
+  ip := IP(s)
+
+  if err:= ip.Validate(); err != nil {
+    panic(err.Error())
+  }
+  return ip
+}
+
+func main() {
+  ip:=NewIP("197.0.0.1")
+
+  println(ip.ToString())
+}
+```
+
+Esto nos abre muchas posibilidades como crear funciones que reciban solo el tipo de dato IP que no necesiten de una validación dentro del flujo ya que al crearse se valida usando un método como el validate en el ejemplo superior.
+
+```go
+func ConnectToIP(ip IP) {}
+```
+
+## Enums en Go?
+
+También gracias a los alias en Go podemos lograr simular algo muy parecido a un Enum en Go ya que de forma nativa no cuenta con este tipo de datos.
+
+```go
+type Season int
+
+const (
+  Undefined Season = iota
+  Summer    Season
+  Winter    Season
+  Autumn    Season
+  Spring    Season
+)
+
+func (s Season) String() string {
+	switch s {
+	case Summer:
+		return "summer"
+	case Autumn:
+		return "autumn"
+	case Winter:
+		return "winter"
+	case Spring:
+		return "spring"
+	}
+	return "unknown"
+}
+```
+
+De esta forma podemos simular un Enum en Go y definir un conjunto de opciones limitadas para un concepto en especifico aquí podemos apreciar de un ejemplo de cómo usaríamos nuestro Enum en el código.
+
+```go
+func ShowSeason(s Season) {
+  fmt.Println(s.String())
+}
+
+func main() {
+  ShowSeason(Winter) // "winter"
+  ShowSeason(Summer) // "summer"
+}
+```
+
+Cuéntame de que otras formas usas los alias en tus proyectos de Go y así poder continuar mejorando este articulo y agregando nuevos usos para esta increíble funcionalidad de Go.
