@@ -68,7 +68,7 @@ export const Navbar = () => {
       </NavbarLinkContainer>
       <div>
         <SocialIcon
-          href="https://twitter.com/carlosgrowth"
+          href="https://twitter.com/carlos97cgr"
           target="_blank"
           rel="noreferrer"
         >
