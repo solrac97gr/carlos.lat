@@ -1,0 +1,246 @@
+---
+title: "Como crear y publicar paquetes en Go 📂"
+date: "28 de Febrero del 2023"
+published: "2023-02-28"
+abstract: "Pública tus propios paquetes de Go y úsalos en tus otros proyectos."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgopher.png?alt=media&token=bde793b0-fa05-4a47-b26f-f74b4cbac3ce"
+tag: "Go"
+author: "Carlos García"
+---
+
+# Como crear y publicar paquetes en Go 📂
+
+<small>28 de Febrero del 2023</small>
+<EditPost path="como-crear-y-publicar-paquetes-en-go" />
+
+<img
+  width="100%"
+  alt="golang-wallpaper"
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgopher.png?alt=media&token=bde793b0-fa05-4a47-b26f-f74b4cbac3ce"
+  style={{ borderRadius: "8px" }}
+/>
+
+Una necesidad en el mundo de la programación siempre a sido reutilizar nuestro código y funciones, de hecho es una de las reglas de oro, DRY, en español esas siglas significan no te repitas a ti mismo pero muchos de nosotros nos hemos encontrado con el dilema de tener una clase tan útil en un proyecto y pensamos...
+
+> Me gustaría poder usar esta clase en este proyecto, ctrl c y ctrl v
+
+Luego pasa que uno de los proyectos se agrega una función extra a esa clase y te das cuenta que también seria buena en la otra, copias la función y los test. Este puede ser un ciclo sin fin, ya te digo puedes estar copiando y pegando funciones de la clase de forma eterna.
+
+La solución es muy sencilla volver esa clase tan útil para ti un paquete independiente con sus propios test y su propio repositorio que podremos usar en todos los proyectos que la necesiten.
+
+## Preparemos el entorno
+
+En mi caso dentro de mi proyecto de <BlogLink url="https://github.com/solrac97gr/go-jwt-auth" content="plantilla que uso"/> para el 80% de mis proyecto, tengo varios sub paquetes que aveces necesito en otros proyectos, donde decidí no usar la plantilla porque era un proyecto pequeño para usar esa plantilla, así que tomaremos uno de ellos en este caso el:
+
+> Session Manager: Lo uso normalmente para persistir la session sin depender del framework que use.
+
+Para ello comenzaremos creando nuestra carpeta
+
+```bash
+mkdir session-manager
+```
+
+Luego crearemos un repositorio público en GitHub, que sea público es muy importante en un futuro haré un nuevo artículo dónde haremos un paquete privado, copiamos el link de nuestro repositorio.
+
+Y ahora vamos a inicializar nuestro paquete de go dentro de la carpeta que creamos
+
+```bash
+go mod init github.com/user/repository-name
+```
+
+Seguido de esos inicializaremos el repositorio de Git en la carpeta que creamos.
+
+```bash
+git init
+```
+
+Ahora agregaremos dos archivos más dentro del folder el README.md y la licencia en mi caso usaré MIT.
+
+Subimos todos nuestros archivos al repositorio y ya tenemos nuestro entorno listo para comenzar con el desarrollo de nuestro paquete.
+
+## Ahora procedemos a mover nuestra entidad o entidades.
+
+Algunas recomendaciones que les puedo dejar es muevan solo lo estrictamente necesario para el funcionamiento del paquete y sus test algo crucial es tener un paquete con la mayor cantidad de Test Coverage
+
+Para mi caso moveré las interfaces, las estructuras y los tests. Cada una de ellas en archivos diferentes para poder encontrarlas de forma más fácil.
+
+También algo que suelo hacer es mover algunos workflows que uso para comprobar los tests antes de hacer un merge y ver el nivel de test coverage, estos irán a la carpeta .github
+
+Nuestro paquete quedaría de la siguiente forma.
+
+> Al archivo que denomino main.go lo uso para describir de manera general el paquete.
+
+<FolderStructure
+  tree={[
+    {
+      type: "folder",
+      name: ".github",
+      content: [
+        {
+          type: "folder",
+          name: "workflows",
+          content: [
+            {
+              type: "file",
+              name: "CI.yaml",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: "file",
+      name: "README.md",
+    },
+    {
+      type: "file",
+      name: "MIT-LICENSE.txt",
+    },
+    {
+      type: "file",
+      name: "cover-profile.sh",
+    },
+    {
+      type: "file",
+      name: "go.mod",
+    },
+    {
+      type: "file",
+      name: "go.sum",
+    },
+    {
+      type: "file",
+      name: "interfaces.go",
+    },
+    {
+      type: "file",
+      name: "main.go",
+    },
+    {
+      type: "file",
+      name: "session.go",
+    },
+    {
+      type: "file",
+      name: "session_manager.go",
+    },
+    {
+      type: "file",
+      name: "session_manager_test.go",
+    },
+
+    {
+      type: "file",
+      name: "session_test.go",
+    },
+
+]}
+/>
+
+## Agregamos documentación para nuestro paquete.
+
+En Go podemos documentar nuestro paquete gracias a godoc.org solo agregando comentarios con formato a nuestras entidades.
+
+Les daré un ejemplo de un paquete documentado usando el formato de godoc:
+
+```go
+// Package math is a package with mathematical operation
+package math
+
+const (
+  // PI is the pi number with 12 decimal's
+  PI float64 = 3.14159265359
+)
+
+// Calculator struct who will store like methods all our operations
+type Calculator struct {}
+
+// NewCalculator create a new instance of calculator
+func NewCalculator *Calculator {
+  return &Calculator{}
+}
+
+// SumInt sum a group of int
+func (c *Calculator) SumInt(numbers ...int) int{
+  total := 0
+
+  for _,n := range numbers {
+    total=total+n
+  }
+
+  return total
+}
+```
+
+Este formato hará que cuando subamos nuestro paquete godoc.org formatee nuestros comentarios y los agregue en el apartado de documentación.
+
+## Publicando nuestro paquete.
+
+Ahora a llego el momento que a mi parecer es el más interesante es ver nuestro paquete ya dentro de godoc.org para ellos debemos preparar nuestro entorno una vez subido todo nuestro avance al repositorio procederemos a crear un tag.
+
+```bash
+git tag v0.1.0
+```
+
+Luego de crearlo vamos a subir este tag a nuestro repositorio
+
+```bash
+git push origin v0.1.0
+```
+
+Y ahora indicaremos a Go que nuestro paquete esta listo para ser extraído. Debemos remplazar con el enlace de nuestro paquete y la versión que estemos publicando.
+
+```bash
+GOPROXY=proxy.golang.org go list -m github.com/solrac97gr/session-manager@v0.1.5
+```
+
+## Usar nuestro paquete en otros proyectos
+
+Una vez nuestro paquete este publicado podemos empezar a usarlo en otros proyectos para ello usaremos la directiva go get
+
+Desde otro proyecto usaremos el siguiente comando
+
+```
+go get github.com/solrac97gr/session-manager
+```
+
+Ahora solo bastara con importar nuestro paquete y usar lo que necesitemos de este en nuestros otros proyectos.
+
+```go
+package main
+
+import github.com/solrac97gr/session-manager
+
+func main() {
+  user := struct {
+    Name string
+    Age int
+  } {
+    Name: "Carlos",
+    Age:26,
+  }
+
+
+  sm := sessionmanager.NewSessionManager()
+
+  s,err :=  sm.CreateSession()
+  if err != nil {
+    panic(err)
+  }
+
+  s.Set("user",user)
+
+  sm.SetAsDefaultSession(s.SessionId())
+
+}
+```
+
+## Conclusión
+
+Go nos brinda una herramienta muy sencilla para compartir código entre nuestros proyectos y equipos que debemos aprovechar hay muchos equipos que suelen dar solución a la necesidad de compartir código usando miles de micro servicios, los micro servicios deben ser creados con mucho criterio ya que generan un gasto en infraestructura hay cosas muy pequeñas que no merece la pena hacerlas un micro servicio pero haciéndolo un paquete resolvemos la necesidad de compartir esas funcionalidades.
+Les dejo un link al paquete que separe de <BlogLink url="https://github.com/solrac97gr/go-jwt-auth" content="mi plantilla que uso este 2023"/> para programar proyectos en Go para que puedan verlo, aportar al proyecto y dejar una estrella
+
+<BlogLink
+  url="https://github.com/solrac97gr/session-manager"
+  content="Link al repositorio"
+/>{" "}
