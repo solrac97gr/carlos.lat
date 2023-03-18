@@ -1,0 +1,124 @@
+---
+title: "Genera facturas fácilmente en Go 🤑"
+date: "18 de Marzo de 2023"
+published: "2023-03-18"
+abstract: "El repositorio Payment Receipt Generator en Go te permite generar facturas de forma rápida y eficiente. Simplifica la facturación en tu negocio o como freelancer con esta herramienta automatizada."
+image: "https://cdn.filestackcontent.com/p5fN19Qi7ctgFewfHFwi"
+tag: "Go, Fiber"
+author: "Carlos García"
+---
+
+# Genera facturas fácilmente con el repositorio Payment Receipt Generator en Go
+
+<small>18 de Marzo de 2023</small>
+<EditPost path="generador-recibos-pago-en-go" />
+
+<img
+  width="100%"
+  src="https://miro.medium.com/max/1400/1*IHqSJ2_7CeaU675YRdLY2g.jpeg"
+  alt="golang wallpaper"
+  style={{ borderRadius: "8px" }}
+></img>
+
+Si tienes un negocio pequeño o trabajas como freelancer, sabes que la facturación puede ser una tarea tediosa y que consume mucho tiempo. Afortunadamente, existen herramientas disponibles que automatizan este proceso y te facilitan la vida. El repositorio Payment Receipt Generator está basado en Go y te permite generar facturas de forma rápida y eficiente. Así es como funciona:
+
+1. **Instalación:** Para utilizar Payment Receipt Generator, primero necesitas descargar e instalar el lenguaje de programación Go en tu computadora. Una vez que tienes instalado Go, puedes clonar el repositorio de GitHub y ejecutarlo en tu máquina local. Para ejectuarlo puedes ejectuar el comando
+
+   ```bash
+   go run main.go
+   ```
+
+   o puedes compilarlo y ejecutarlo como el archivo run y generar el proceso en segundo plano
+
+   ```bash
+    ./run.sh
+   ```
+
+2. **Configuración:** Payment Receipt Generator es altamente personalizable gracias a su archivo de configuración. Al editar este archivo, puedes especificar detalles como el nombre de tu negocio y dirección, así como los términos de pago, la moneda y la tasa de impuestos. Una vez que hayas configurado el generador a tu gusto, simplemente puedes ejecutarlo y dejar que haga el trabajo por ti.
+   El archivo de configuración es el siguiente:
+
+   ```json
+   {
+     "payment_details": {
+       "company": {
+         "name": "Google Inc.",
+         "address": "Amazing Garage in Sillicon Valley, United States",
+         "representative": "Mr Google",
+         "email": "mr.google@google.com",
+         "website": "https://google.com"
+       },
+
+       "issuer": {
+         "name": "Jhon Doe",
+         "address": "Amazing House in New York, United States",
+         "email": "jhon.doe@gmail.com",
+         "phone": "+51999999999",
+         "website": "https://google.com"
+       },
+
+       "works": [
+         {
+           "description": "Software Development Services",
+           "quantity": 3,
+           "unit_price": 8000,
+           "currency": "USD"
+         },
+         {
+           "description": "UX/UI Services",
+           "quantity": 2,
+           "unit_price": 900,
+           "currency": "USD"
+         },
+         {
+           "description": "Consulting Services",
+           "quantity": 5,
+           "unit_price": 500,
+           "currency": "USD"
+         },
+         {
+           "description": "Hosting Services",
+           "quantity": 2,
+           "unit_price": 100,
+           "currency": "USD"
+         },
+         {
+           "description": "Domain Registration",
+           "quantity": 9,
+           "unit_price": 10,
+           "currency": "USD"
+         }
+       ]
+     },
+     "output": {
+       "folder_path": "./out/",
+       "file_type": "pdf"
+     }
+   }
+   ```
+
+3. **Ejecución en segundo plano:** Una de las características más poderosas de Payment Receipt Generator es su capacidad para ejecutarse en segundo plano. Al configurar un cron job, puedes programar el generador para que se ejecute automáticamente en intervalos específicos, como el 15 y 30 de cada mes. Esto significa que puedes generar facturas sin tener que pensar en ello, liberando tu tiempo para otras tareas. Puedes encontrar el PID en el archivo out para cuando quieras detener el proceso puedas hacerlo usando
+
+   ```bash
+   kill -9 PID
+   ```
+
+4. **Formatos de salida:** Payment Receipt Generator puede generar facturas por el momento usando solo PDF pero puedes contribuir para agregar más formatos.
+
+5. **Ejemplo de factura:** Aquí hay un ejemplo de factura generada por Payment Receipt Generator:
+   <img
+     width="100%"
+     src="https://raw.githubusercontent.com/solrac97gr/payment-recipt-generator/main/invoice-example.png"
+     alt="invoice example"
+     style={{ borderRadius: "8px" }}
+   ></img>
+
+En resumen, Payment Receipt Generator es una herramienta poderosa para
+cualquiera que necesite generar facturas de forma rápida y eficiente. Con su
+fácil configuración, ejecución en segundo plano y formatos de salida
+personalizables, es una adición valiosa al kit de herramientas de cualquier
+pequeño negocio o freelancer. ¡Pruébalo y ve cómo puede simplificar tu proceso
+de facturación! No dudes en visitar el repositorio de GitHub para obtener más
+información. <BlogLink
+  url="https://github.com/solrac97gr/payment-recipt-generator"
+  content="Link al repositorio"
+/>
