@@ -1,0 +1,175 @@
+---
+title: "Mi futuro con Go para este 2023 🐹"
+date: "22 de Marzo del 2023"
+published: "2023-04-22"
+abstract: "El año pasado me dediqué única y exclusivamente a armar la plantilla ideal para mis proyectos, Descubre cuál es el siguiente paso 🤔."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FDO9s_gDX0AEsSe8.jpg?alt=media&token=01fd59bd-c226-4cc0-aba1-65e5f845ec48"
+tag: "golang, Go "
+author: "Carlos García"
+---
+
+# Mi futuro con Go para este 2023 🐹
+
+<small>22 de Marzo de 2023</small>
+<EditPost path="mi-futuro-en-go" />
+
+<img
+  width="100%"
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FDO9s_gDX0AEsSe8.jpg?alt=media&token=01fd59bd-c226-4cc0-aba1-65e5f845ec48"
+  alt="golang wallpaper"
+  style={{ borderRadius: "8px" }}
+></img>
+
+El año pasado me concentré en encontrar la arquitectura y distribución ideal para mis proyectos, como resultado de esto salió mi plantilla actual con la que empiezo proyectos en Go, ya qué esta tiene una base ya construida que nos incluye: login con JWT, Documentación con Swagger, Métricas, Generación de Mocks, etc. Pueden revisarla más a detalle en el siguiente link plantilla 2023.
+
+Este año me propuse a mejorar en la modularidad, en pocas palabras decidí dividir mi plantilla en pequeños paquetes que pudiese reutilizar esto debido a que usualmente tengo proyectos que ya no son solo Web si no también CLI y hay partes de mi plantilla web que me gustaría usar como el Validador o el Session Manager. Podría copiar y pegar el código a otro proyecto pero...
+
+Este es el plan
+
+1. Identificar todo posible paquete dentro de mi plantilla que pueda ser reutilizable y aplicable en otro contexto.
+2. Desarrollar un paquete que lo mimetice en su comportamiento y estructura.
+3. Documentar y Probar el paquete hasta llegar a mínimo un 90% de Coverage
+4. A finales de año actualizar mi nueva plantilla de 2024 que sea 100 modular
+
+## Ventajas de atomizar nuestros paquetes
+
+- Desde ahora los paquetes servirán a su propósito y nada más, esto quiere decir que al estar en un contexto aislado cuando estos sean modificados no interferirá un sesgo del proyecto en el que se encuentre
+
+  > (Paquete Validator en una app web) Bueno en este spring agregaremos una función para validar los campos de esta estructura que nos llegará como body de la función X, agreguémosla al validador.
+
+  Si bien es una validación ya lleva una capa de sesgo por ejemplo de que me sirve tener esa función de validación en el paquete validator que será usado solo por esa estructura específica mejor usemos las funciones básicas que tiene ya el validador para validar la estructura sin comprometer la función básica del paquete.
+
+  ```go
+  package validator
+
+  import errors
+
+  func ValidateHeadersOfBuyShoesRequest(h *HeadersShoes) error{
+    if h.authorization!= "my secret 🤫 " {
+      return errors.New("Error validating the authorization")
+    }
+  }
+
+  ```
+
+  En lugar de contaminar el paquete validator con una función tan especifica aprovecharemos cómo está construido en mi plantilla para que sea la estructura la que sea la que agrupe las reglas de validación
+
+  ```go
+  package validator
+
+  type Validator interface {
+    Struct(s EvaluableStruct) error
+  }
+
+  type EvaluableStruct interface {
+    Validate(args...interface{}) error
+  }
+
+  type ValidatorImpl struct {}
+
+  func (v *ValidatorImpl) Struct(s EvaluableStruct) error {
+    // another logic for only structs
+    return s.validate()
+  }
+  ```
+
+  ```go
+  package models
+
+  type HeadersShoesRequest struct {
+    Authorization string
+    ClientID int
+  }
+
+  // The validations are always close with the struct who validates
+  func (h *HeadersShoesRequest) Validate(args ...interface{}) error{
+    if err := validations.IsEquals(h.Authorization,args[0]); err != nil {
+      // use the generic error or be more specific for the example I will use the generic
+      return err
+    }
+
+    if err := validations.GreaterThan(ClientID,-1); err != nil {
+      return err
+    }
+  }
+
+  ```
+
+  > Considera que el paquete validations es parte del paquete validator
+
+- Prueba una sola vez ya perdí la cuenta cuantos Test hago que prueban cosas que sin exactamente lo mismo que en algún otro proyecto, por ejemplo:
+
+  > Necesitamos que el session manager también tenga los test para validar que se guardó la sesión de forma correcta en el proyecto A,B y C
+
+  ¿Donde queda entonces el DRY? Incluso si es en proyectos distintos al atomizar en paquetes pequeños que sirven a su propósito de forma clara y no hacen nada más de lo que prometen nos permiten tener Test escritos una sola vez y por tanto pondremos más atención al detalle para hacerlos de calidad, nuestra mente pensará solo en la funcionalidad de la función valga la redundancia, no habrá sesgo o ruido externo que nos confunda en el propósito de la función debido a que solo es el paquete 📦.
+
+- La facilidad de compartir paquetes entre miembros del equipo termina generando un estándar en el cómo se hacen las cosas ya que todo sus proyectos estarán armados de la base de los mismos bloques de lego. Imagínense algo así.
+
+  <img
+    width="100%"
+    src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fatomic-packages.png?alt=media&token=1791bc97-b2c4-4c56-aee8-0b2d75044b4a"
+    alt="invoice example"
+    style={{ borderRadius: "8px" }}
+  ></img>
+
+- Inicias más fáciles y menos abrupto habrá menos que preguntar te pongo un ejemplo.
+
+  > Hola Carlos, el Lunes entra un nuevo programador al equipo puedes ayudarlo con el OnBoarding técnico.
+
+  > Bienvenido X tu proyecto es Y entonces creo que para empezar podrías traer lo siguientes paquetes a tu proyecto que te serán útiles: Session Manager, Validator, Logger, Authentication, etc. La documentación se encuentra en los mismos repositorios.
+
+  Le acabamos de ahorrar probablemente una semana de trabajo en puro boilerplate y probablemente otra semana extra en solo tests.
+
+  Sin mencionar que tener un paquete que se encargue solo de la autentificación permite que una de las partes más críticas y estresantes diría yo para alguien que se une a la empresa quedaría reducido a usar un Middleware que ya fue programado y es prácticamente un "Plug and Play"
+
+- Nos permite aislar lógica de negocio crítica como lo es la autenticación en un solo responsable que se encargará de velar por la seguridad de ese paquete y al estar aislado de concentrarse en lo que importa que es hacerlo más seguro.
+- Nos permite también aislar lógica de negocio cambiante algo muy común en startups qué hay partes del negocio que siguen en estado de prueba e iteraciones pongamos de ejemplo de nuevo el paquete de autenticación
+
+  > Tenemos que agregar un nuevo cifrado a nuestras claves comuniquen a todos los proyectos sue usen autenticación que deben agregar la siguiente regla X
+
+  > Hola ¿cómo va la adición de la nueva regla? El proyecto A,B ya fue modificado pero no pueden ser lanzados debido a que el proyecto C que se conecta con el A esta aún atrasado y debemos terminar esto antes de agregar la nueva regla de seguridad
+
+  ¿Entienden más o menos lo que quiero decir? Ahora cómo sería si la autenticación fuera un paquete aislado, la charla cambiaría un poco.
+
+  > Comuniquen al encargado del paquete de autenticación que debemos agregar una nueva regla
+
+  > Hola ¿Cómo va la adición de la nueva regla de seguridad? Ya se termino de agregar se hizo un release hoy y todos los proyectos involucrados crearán una rama de su versión más estable en su proyecto y agregaron el update de forma inmediata
+
+## Como siempre no todos es color rosa
+
+Hay un riesgo elevado de caer en algo que es muy común en micro servicios que es tener 200 micro servicios y 5 personas que los mantengan definitivamente podríamos tener 200 paquetes y solo 5 personas que los mantengan.
+
+Otro punto a tener en cuenta es que creemos un paquete aislado de cada parte de nuestro proyecto , yo creo que si un paquete no es útil en al menos más del 60% de los proyectos quizás es mejor mantenerlos en los proyectos
+
+A menos que te sobren manos entonces me iría 100% a seguir otra regla ¿Este paquete soluciona un problema común de mi negocio o es una parte cambiante de mi negocio ? Si la respuesta es si es mejor tenerlo en un paquete.
+
+## Mi conclusión personal
+
+Cada uno conoce su flujo de trabajo si sientes que cada vez más tedioso iniciar un proyecto de 0 por el tiempo que le inviertes en hacer el Boilerplate inicial te darás cuenta que partes son las que más se repiten y podrás identificarlas y volverlas un paquete que te ahorrará mucho tiempo.
+
+Hay una razón por la cual los boilerplates son tan populares y suele ser por dos razones según mi punto de vista.
+
+- No saber por donde empezar.
+- Estar cansado de programar lo mismo cada que inicias un nuevo proyecto.
+
+Y generar estos paquetes atómicos te dará la libertad de solo escoger las partes que necesitas, en lo personal soy una persona que le gusta mucho programar cosas Open Source y este método me ayuda a que pequeñas partes de mis plantillas puedan ser usadas sin necesidad de usar el 100 de esta.
+
+Este año que transcurre actualmente me dedicaré a atomizar todos mis paquetes que se repiten para que el año que entra pueda usar la plantilla armada con los bloques que cree este año y crear un cliente que te deje escoger partes de la plantilla mejorando en tamaño del proyecto para el 2024.
+
+Les dejo unos links a los paquetes que ya estoy desarrollando por si quieren colaborar son cosas simples así que es ideal si quieres empezar en el mundo de open source:
+
+- <BlogLink
+    url="https://github.com/solrac97gr/session-manager"
+    content="https://github.com/solrac97gr/session-manager"
+  />
+- <BlogLink
+    url="https://github.com/solrac97gr/validator"
+    content="https://github.com/solrac97gr/validator"
+  />
+
+Y este es el link a mi plantilla actual usa Fiber, Mongo y autenticación con JWT
+
+- <BlogLink
+    url="https://github.com/solrac97gr/go-jwt-auth"
+    content="https://github.com/solrac97gr/go-jwt-auth"
+  />
