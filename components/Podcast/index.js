@@ -5,7 +5,7 @@ export const Podcast = ({ episode }) => {
       width="100%"
       height="180px"
       frameBorder="0"
-      allowtransparency="true"
+      allowTransparency="true"
       allow="encrypted-media"
     />
   );
