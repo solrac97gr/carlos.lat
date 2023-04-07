@@ -10,6 +10,8 @@ import {
   WhatsappIcon,
   LinkedinShareButton,
   LinkedinIcon,
+  EmailShareButton,
+  EmailIcon,
 } from "react-share";
 import { SocialShareContainer } from "./index.style";
 
@@ -33,36 +35,43 @@ export const SocialShareButtons = ({ post }) => {
         quote={post.abstract}
         hashtag={formatHashTags(post.tag)}
       >
-        <FacebookIcon size={iconSize} />
+        <FacebookIcon size={iconSize} round />
       </FacebookShareButton>
       <TwitterShareButton
         url={shareUrl}
         quote={post.abstract}
         hashtag={formatHashTags(post.tag)}
       >
-        <TwitterIcon size={iconSize} />
+        <TwitterIcon size={iconSize} round />
       </TwitterShareButton>
       <TelegramShareButton
         url={shareUrl}
         quote={post.abstract}
         hashtag={formatHashTags(post.tag)}
       >
-        <TelegramIcon size={iconSize} />
+        <TelegramIcon size={iconSize} round />
       </TelegramShareButton>
       <WhatsappShareButton
         url={shareUrl}
         quote={post.abstract}
         hashtag={formatHashTags(post.tag)}
       >
-        <WhatsappIcon size={iconSize} />
+        <WhatsappIcon size={iconSize} round />
       </WhatsappShareButton>
       <LinkedinShareButton
         url={shareUrl}
         quote={post.abstract}
         hashtag={formatHashTags(post.tag)}
       >
-        <LinkedinIcon size={iconSize} />
+        <LinkedinIcon size={iconSize} round />
       </LinkedinShareButton>
+      <EmailShareButton
+        url={shareUrl}
+        quote={post.abstract}
+        hashtag={formatHashTags(post.tag)}
+      >
+        <EmailIcon size={iconSize} round />
+      </EmailShareButton>
     </SocialShareContainer>
   );
 };

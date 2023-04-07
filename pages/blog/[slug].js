@@ -50,8 +50,8 @@ export default function Post({ source, frontmatter }) {
       </Head>
       <BlogContainer>
         <MDXRemote {...source} components={MDXComponents} />
-        <div className="giscus"></div>
         <SocialShareButtons post={frontmatter}></SocialShareButtons>
+        <div className="giscus"></div>
       </BlogContainer>
     </div>
   );
