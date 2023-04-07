@@ -4,8 +4,7 @@ import MDXComponents from "../../components/MDXComponents";
 import { BlogContainer } from "../../components/BlogContainer";
 import Head from "next/head";
 import { BLOG_URL, PAGE_URL } from "../../lib/consts";
-import { useEffect } from "react";
-import Script from "next/script";
+import { SocialShareButtons } from "../../components/SocialShareButtons";
 
 export default function Post({ source, frontmatter }) {
   return (
@@ -52,6 +51,7 @@ export default function Post({ source, frontmatter }) {
       <BlogContainer>
         <MDXRemote {...source} components={MDXComponents} />
         <div className="giscus"></div>
+        <SocialShareButtons post={frontmatter}></SocialShareButtons>
       </BlogContainer>
     </div>
   );

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "preinstall": "npx only-allow pnpm", 
+    "preinstall": "npx only-allow pnpm",
     "dev": "next dev",
     "build": "next build",
     "postbuild": "next-sitemap",
@@ -24,6 +24,7 @@
     "react-burger-menu": "^3.0.8",
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
+    "react-share": "^4.4.1",
     "styled-components": "^5.3.5"
   },
   "devDependencies": {
