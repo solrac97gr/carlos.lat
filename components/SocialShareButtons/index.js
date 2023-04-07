@@ -11,8 +11,9 @@ import {
   LinkedinShareButton,
   LinkedinIcon,
 } from "react-share";
+import { SocialShareContainer } from "./index.style";
 
-const iconSize = 32;
+const iconSize = 40;
 
 export const SocialShareButtons = ({ post }) => {
   const [shareUrl] = useState("https://carlos.lat/blog/" + post.slug);
@@ -26,7 +27,7 @@ export const SocialShareButtons = ({ post }) => {
   };
 
   return (
-    <div>
+    <SocialShareContainer>
       <FacebookShareButton
         url={shareUrl}
         quote={post.abstract}
@@ -62,6 +63,6 @@ export const SocialShareButtons = ({ post }) => {
       >
         <LinkedinIcon size={iconSize} />
       </LinkedinShareButton>
-    </div>
+    </SocialShareContainer>
   );
 };
