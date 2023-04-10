@@ -7,7 +7,6 @@ import {
   NavbarLinkContainer,
   NavbarLink,
   NavbarLinkText,
-  NavbarMobile,
   BurgerStyled,
 } from "./index.styles";
 import {
@@ -17,13 +16,11 @@ import {
   FaLinkedin,
   FaGithub,
 } from "react-icons/fa";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
 import { useIsMobile } from "../../hooks/useIsMobile";
+import { BuyMeCoffeeButton } from "../BuyMeCoffeeButton";
 
 const size = 21;
-
 
 export const Navbar = () => {
   const router = useRouter();
@@ -55,7 +52,9 @@ export const Navbar = () => {
           <NavbarLinkText
             className={router.pathname.includes("/mi-mapa") ? "isActive" : ""}
           >
-            {router.pathname.includes("/mi-mapa") ? "<Mis viajes>" : "Mis viajes"}
+            {router.pathname.includes("/mi-mapa")
+              ? "<Mis viajes>"
+              : "Mis viajes"}
           </NavbarLinkText>
         </NavbarLink>
         <NavbarLink href="/sobre-mi">
@@ -66,7 +65,14 @@ export const Navbar = () => {
           </NavbarLinkText>
         </NavbarLink>
       </NavbarLinkContainer>
-      <div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <SocialIcon
           href="https://twitter.com/carlos97cgr"
           target="_blank"
@@ -102,6 +108,7 @@ export const Navbar = () => {
         >
           <FaYoutube size={size} color={"#FFF"} />
         </SocialIcon>
+        <BuyMeCoffeeButton />
       </div>
     </NavbarContainer>
   );

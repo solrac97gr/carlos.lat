@@ -7,7 +7,7 @@ const LOGO_FONT_SIZE = "21px";
 export const BurgerStyled = styled(BurgerMenu)`
   display: none !important;
   @media (max-width: 768px) {
-    display:flex;
+    display: flex;
   }
 `;
 
@@ -49,6 +49,9 @@ export const LastName = styled.span`
 
 export const SocialIcon = styled.a`
   margin-right: 8px;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 export const NavbarLinkContainer = styled.div`
