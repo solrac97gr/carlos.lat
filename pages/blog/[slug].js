@@ -5,6 +5,7 @@ import { BlogContainer } from "../../components/BlogContainer";
 import Head from "next/head";
 import { BLOG_URL, PAGE_URL } from "../../lib/consts";
 import { SocialShareButtons } from "../../components/SocialShareButtons";
+import Script from "next/script";
 
 export default function Post({ source, frontmatter }) {
   return (
@@ -45,6 +46,19 @@ export default function Post({ source, frontmatter }) {
           data-lang="es"
           data-loading="lazy"
           crossOrigin="anonymous"
+          async
+        ></script>
+        <script
+          data-name="BMC-Widget"
+          data-cfasync="false"
+          src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
+          data-id="carlosgarcA"
+          data-description="Apoyame usando Buy me a coffee!"
+          data-message="Gracias por visitar mi blog!"
+          data-color="#40DCA5"
+          data-position="Right"
+          data-x_margin="18"
+          data-y_margin="18"
           async
         ></script>
       </Head>

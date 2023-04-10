@@ -108,7 +108,6 @@ export const Navbar = () => {
         >
           <FaYoutube size={size} color={"#FFF"} />
         </SocialIcon>
-        <BuyMeCoffeeButton />
       </div>
     </NavbarContainer>
   );
