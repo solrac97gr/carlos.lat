@@ -6,7 +6,7 @@ export const EditPost = ({ path }) => {
       rel="noreferrer"
       style={{ color: "#63f3ab", textDecoration: "underline" }}
     >
-      ¿Ves algún error? Corregír artículo
+      ¿Ves algún error? Corregir artículo
     </a>
   );
 };
