@@ -1,0 +1,385 @@
+---
+title: "Autenticación usando JWT con Golang [Fiber] 2023"
+date: "11 de Abril del 2023"
+published: "2023-04-11"
+abstract: "Aprende como funciona la autenticación usando JWT para el Framework Fiber e implementa una ruta protegida"
+image: "https://miro.medium.com/max/1400/1*0xwMiyD3YFwIsfk-ZREGNQ.png"
+tag: "Go"
+author: "Carlos García"
+---
+
+# Autenticación usando JWT con Golang [Fiber] 2023 🧬
+
+<small>11 de Abril del 2023</small>
+<EditPost path="golang-fiber-jwt-autenticacion-2023" />
+
+<img
+  width="100%"
+  alt="golang-wallpaper "
+  src="https://miro.medium.com/max/1400/1*0xwMiyD3YFwIsfk-ZREGNQ.png"
+  style={{ borderRadius: "8px" }}
+/>
+
+La autenticación puede ser un dolor de cabeza cuando recién se esta empezando en el mundo de la programación por ello quiero hacerles la vida un poco más fácil y enseñarles a implementarla de manera básica usando el paquete <BlogLink
+url={"https://github.com/gofiber/jwt"}
+content={"JWT de Fiber en su versión 3"}
+/> .
+
+## Preparemos el entorno:
+
+Creamos nuestra carpeta 📁 donde alojaremos nuestro proyecto y inicializaremos nuestro proyecto de go usando el comando:
+
+```bash
+go mod init github.com/solrac97gr/basic-jwt-auth
+```
+
+> No olvides remplazar **solrac97gr** por tu usuario de github.
+
+Ahora necesitamos descargar 3 paquetes que usaremos en esta guía básica:
+
+El paquete de JWT de Fiber
+
+```bash
+go get github.com/gofiber/jwt/v3
+```
+
+El paquete de JWT de Golang
+
+```bash
+go get github.com/golang-jwt/jwt/v4
+```
+
+Y por último el paquete de Fiber
+
+```bash
+go get github.com/gofiber/fiber/v2
+```
+
+## Manos al código
+
+### Models:
+
+Empezaremos por crear nuestras estructuras dentro de la carpeta **models/models.go** , puedes crearlo en archivos separados o juntos, para el ejemplo los pondré en uno solo pero en el repositorio estarán separados:
+
+```go
+package models
+
+type LoginRequest struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type LoginResponse struct {
+	Token string `json:"token"`
+}
+
+type User struct {
+	ID             int
+	Email          string
+	Password       string
+	FavoritePhrase string
+}
+```
+
+### Config
+
+Dentro de la carpeta **config/config.go** tienes como tarea extraer la firma para tu token de las variables de entorno o de algún archivo de configuración, para el ejemplo usaré una constante esto nunca lo deberías hacer ya que comprometerías la seguridad del Token.
+
+```go
+package config
+
+// The secret key used to sign the JWT, this must be a secure key and should not be stored in the code
+const Secret = "secret"
+```
+
+### Middlewares
+
+Los middlewares son herramientas dentro de la programación que nos pueden servir como preludio a acciones realizadas por nuestra API como por ejemplo validar que el usuario esta logeado o restringir el acceso a ciertos países.
+
+Fiber nos provee con un middleware de JWT que es el que inicializaremos en la carpeta **middlewares/auth.go**:
+
+```go
+package middlewares
+
+import (
+	"github.com/gofiber/fiber/v2"
+	jwtware "github.com/gofiber/jwt/v3"
+)
+
+// Middleware JWT function
+func NewAuthMiddleware(secret string) fiber.Handler {
+	return jwtware.New(jwtware.Config{
+		SigningKey: []byte(secret),
+	})
+}
+
+```
+
+### Repository
+
+Para no sobre complicar el proyecto y desviarnos del foco usaremos una función que simulará una llamada a una base de datos y nos retornara el usuario cuando la contraseña y email coincidan o un error cuando no, esto estará en la carpeta **repository/FindByCredentials.go** .
+
+```go
+package repository
+
+import (
+	"errors"
+
+	"github.com/solrac97gr/basic-jwt-auth/models"
+)
+
+// Simulate a database call
+func FindByCredentials(email, password string) (*models.User, error) {
+	// Here you would query your database for the user with the given email
+	if email == "test@mail.com" && password == "test12345" {
+		return &models.User{
+			ID:             1,
+			Email:          "test@mail.com",
+			Password:       "test12345",
+			FavoritePhrase: "Hello, World!",
+		}, nil
+	}
+
+	return nil, errors.New("user not found")
+}
+
+```
+
+### Handlers
+
+Ahora la parte importante, asumamos que nuestro usuario acaba de registrarse usando las siguientes credenciales.
+
+```json
+{
+  "email": "test@mail.com",
+  "password": "test12345"
+}
+```
+
+Crearemos el endpoint para que haga login y un endpoint protegido donde extraigamos la información almacenada en el token.
+
+Esto lo haremos en la carpeta **handlers/handlers.go**.
+
+```go
+package handlers
+
+import (
+	"time"
+
+	"github.com/gofiber/fiber/v2"
+	jtoken "github.com/golang-jwt/jwt/v4"
+	"github.com/solrac97gr/basic-jwt-auth/config"
+	"github.com/solrac97gr/basic-jwt-auth/models"
+	"github.com/solrac97gr/basic-jwt-auth/repository"
+)
+
+// Login route
+func Login(c *fiber.Ctx) error {
+	// Extract the credentials from the request body
+	loginRequest := new(models.LoginRequest)
+	if err := c.BodyParser(loginRequest); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	// Find the user by credentials
+	user, err := repository.FindByCredentials(loginRequest.Email, loginRequest.Password)
+	if err != nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	day := time.Hour * 24
+
+	// Create the JWT claims, which includes the user ID and expiry time
+	claims := jtoken.MapClaims{
+		"ID":    user.ID,
+		"email": user.Email,
+		"fav":   user.FavoritePhrase,
+		"exp":   time.Now().Add(day * 1).Unix(),
+	}
+
+	// Create token
+	token := jtoken.NewWithClaims(jtoken.SigningMethodHS256, claims)
+
+	// Generate encoded token and send it as response.
+	t, err := token.SignedString([]byte(config.Secret))
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	// Return the token
+	return c.JSON(models.LoginResponse{
+		Token: t,
+	})
+}
+
+// Protected route
+func Protected(c *fiber.Ctx) error {
+	// Get the user from the context and return it
+	user := c.Locals("user").(*jtoken.Token)
+	claims := user.Claims.(jtoken.MapClaims)
+	email := claims["email"].(string)
+	favPhrase := claims["fav"].(string)
+	return c.SendString("Welcome 👋" + email + " " + favPhrase)
+}
+
+```
+
+### Momento de unir todo
+
+Ahora en nuestro archivo **main.go** ubicado en la raíz del proyecto uniremos todas las partes y pondremos nuestra API en marcha.
+
+```go
+package main
+
+import (
+	"github.com/gofiber/fiber/v2"
+	"github.com/solrac97gr/basic-jwt-auth/config"
+	"github.com/solrac97gr/basic-jwt-auth/handlers"
+	"github.com/solrac97gr/basic-jwt-auth/middlewares"
+)
+
+func main() {
+	// Create a new Fiber instance
+	app := fiber.New()
+
+	// Create a new JWT middleware
+	// Note: This is just an example, please use a secure secret key
+	jwt := middlewares.NewAuthMiddleware(config.Secret)
+
+	// Create a Login route
+	app.Post("/login", handlers.Login)
+
+	// Create a protected route
+	app.Get("/protected", jwt, handlers.Protected)
+
+	// Listen on port 3000
+	app.Listen(":3000")
+}
+
+```
+
+## Ejecutando nuestra aplicación
+
+Para ello una vez terminamos de crear los archivos necesarios ejecutaremos el siguiente comando.
+
+```bash
+go run main.go
+```
+
+Esto nos dará como resultado lo siguiente en la consola, eso significa que nuestra app ya esta corriendo en el puerto **3000**
+
+<img
+  width="100%"
+  alt="go-jwt-auth-login"
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Ffiber-start.png?alt=media&token=3fb86282-d0e0-47a3-9607-db3092fffd93"
+  style={{ borderRadius: "8px" }}
+/>
+
+Ahora probaremos usando **postman** para ejecutar nuestras peticiones.
+
+Ejecutamos el Login y vemos que obtenemos nuestro Token 🌟
+
+<img
+  width="100%"
+  alt="go-jwt-auth-login"
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Flogin-request.png?alt=media&token=1bc6fbcb-9517-499a-aa2d-72bb0346e9ad"
+  style={{ borderRadius: "8px" }}
+/>
+
+Ahora usaremos nuestro token en la siguiente petición a la ruta protegida y listo nuestra ruta identifica que usuario esta logeado gracias a la información del token.
+
+<img
+  width="100%"
+  alt="go-jwt-auth-protected"
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fprotected-request.png?alt=media&token=a7fcdbcf-2e45-4204-8dde-5cdd94b58288"
+  style={{ borderRadius: "8px" }}
+/>
+
+Puedes descargar las peticiones de Postman <BlogLink
+url={"https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/postman-collections%2Fbasic_jwt.postman_collection.json?alt=media&token=068390c7-2fbb-4853-b290-f04ac9aca987"}
+content={"aquí"}
+/>
+
+## Así quedaría nuestro proyecto final
+
+Pueden revisar el repositorio en el siguiente enlace <BlogLink
+url={"https://github.com/solrac97gr/basic-jwt-auth"}
+content={"github.com/basic-jwt-auth"}
+/>
+
+Estatal sería la estructura de archivos.
+
+<FolderStructure
+  tree={[
+    {
+      type: "folder",
+      name: "config",
+      content: [
+        {
+          type: "file",
+          name: "config.go",
+        },
+      ],
+    },
+    {
+      type: "folder",
+      name: "handlers",
+      content: [
+        {
+          type: "file",
+          name: "handlers.go",
+        },
+      ],
+    },
+    {
+      type: "folder",
+      name: "middlewares",
+      content: [
+        {
+          type: "file",
+          name: "auth.go",
+        },
+      ],
+    },
+    {
+      type: "folder",
+      name: "models",
+      content: [
+        {
+          type: "file",
+          name: "models.go",
+        },
+      ],
+    },
+    {
+      type: "folder",
+      name: "repository",
+      content: [
+        {
+          type: "file",
+          name: "FindByCredentials.go",
+        },
+      ],
+    },
+    {
+      type: "file",
+      name: "go.mod",
+    },
+    {
+      type: "file",
+      name: "main.go",
+    },
+  ]}
+/>
+
+## Cierre
+
+De esta forma podemos autenticar usuarios usando JWT en Go Fiber, sin embargo la estructura de este proyecto tiene muchos puntos de mejora que abordo en <BlogLink
+url={"https://carlos.lat/blog/plantilla-proyecto-2023/"}
+content={"este artículo"}
+/> y que puedes revisar para hacer algo más robusto usando arquitectura hexagonal y DDD.
