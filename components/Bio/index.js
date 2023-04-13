@@ -22,7 +22,7 @@ export const Bio = () => {
         href="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/pdf%2FProfile.pdf?alt=media&token=821db37a-f291-4ef0-a5d2-5a65e71509b1"
         target="_blank"
       >
-        Descargar CV
+        Descargar resumen
       </LinkStyled>
       <ReserveMeeting />
     </Container>
