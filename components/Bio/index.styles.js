@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 20%;
+  padding: 15%;
   @media (max-width: 768px) {
     padding: 20% 5% 20% 5%;
   }
@@ -16,5 +16,4 @@ export const LinkStyled = styled.a`
   cursor: pointer;
 `;
 
-export const Content = styled.p`
-`;
+export const Content = styled.p``;
