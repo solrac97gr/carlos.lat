@@ -5,7 +5,7 @@ import { BlogContainer } from "../../components/BlogContainer";
 import Head from "next/head";
 import { BLOG_URL, PAGE_URL } from "../../lib/consts";
 import { SocialShareButtons } from "../../components/SocialShareButtons";
-import Script from "next/script";
+import { NewsletterSubscribe } from "../../components/NewsletterSubscribe";
 
 export default function Post({ source, frontmatter }) {
   return (
@@ -64,6 +64,7 @@ export default function Post({ source, frontmatter }) {
       </Head>
       <BlogContainer>
         <MDXRemote {...source} components={MDXComponents} />
+        <NewsletterSubscribe />
         <SocialShareButtons post={frontmatter}></SocialShareButtons>
         <div className="giscus"></div>
       </BlogContainer>
