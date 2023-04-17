@@ -14,6 +14,7 @@ import {
   EmailIcon,
 } from "react-share";
 import { SocialShareContainer } from "./index.style";
+import { logEvent } from "../../lib/analytics";
 
 const iconSize = 40;
 
@@ -31,6 +32,9 @@ export const SocialShareButtons = ({ post }) => {
   return (
     <SocialShareContainer>
       <FacebookShareButton
+        onClick={() => {
+          logEvent("Button", "Share on Facebook");
+        }}
         url={shareUrl}
         quote={post.abstract}
         hashtag={formatHashTags(post.tag)}
@@ -38,6 +42,9 @@ export const SocialShareButtons = ({ post }) => {
         <FacebookIcon size={iconSize} round />
       </FacebookShareButton>
       <TwitterShareButton
+        onClick={() => {
+          logEvent("Button", "Share on Twitter");
+        }}
         url={shareUrl}
         quote={post.abstract}
         hashtag={formatHashTags(post.tag)}
@@ -45,6 +52,9 @@ export const SocialShareButtons = ({ post }) => {
         <TwitterIcon size={iconSize} round />
       </TwitterShareButton>
       <TelegramShareButton
+        onClick={() => {
+          logEvent("Button", "Share on Telegram");
+        }}
         url={shareUrl}
         quote={post.abstract}
         hashtag={formatHashTags(post.tag)}
@@ -52,6 +62,9 @@ export const SocialShareButtons = ({ post }) => {
         <TelegramIcon size={iconSize} round />
       </TelegramShareButton>
       <WhatsappShareButton
+        onClick={() => {
+          logEvent("Button", "Share on Whatsapp");
+        }}
         url={shareUrl}
         quote={post.abstract}
         hashtag={formatHashTags(post.tag)}
@@ -59,6 +72,9 @@ export const SocialShareButtons = ({ post }) => {
         <WhatsappIcon size={iconSize} round />
       </WhatsappShareButton>
       <LinkedinShareButton
+        onClick={() => {
+          logEvent("Button", "Share on Linkedin");
+        }}
         url={shareUrl}
         quote={post.abstract}
         hashtag={formatHashTags(post.tag)}
@@ -66,6 +82,9 @@ export const SocialShareButtons = ({ post }) => {
         <LinkedinIcon size={iconSize} round />
       </LinkedinShareButton>
       <EmailShareButton
+        onClick={() => {
+          logEvent("Button", "Share on Email");
+        }}
         url={shareUrl}
         quote={post.abstract}
         hashtag={formatHashTags(post.tag)}

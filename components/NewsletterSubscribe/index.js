@@ -9,6 +9,7 @@ import {
   NewsLetterFormButton,
   NewsletterFormSpan,
 } from "./index.style";
+import { logEvent } from "../../lib/analytics";
 
 export const NewsletterSubscribe = () => {
   const MAILCHIMP_URL =
@@ -44,12 +45,13 @@ const NewsletterForm = ({ status, message, onValidated }) => {
     setError(null);
 
     if (!email) {
-      setError("Please enter a valid email address");
+      setError("Ingresa un correo electrónico válido.");
       return null;
     }
 
     const isFormValidated = onValidated({ EMAIL: email });
 
+    logEvent("Button", "Subscribe to Newsletter");
     // On success return true
     return email && email.indexOf("@") > -1 && isFormValidated;
   };

@@ -12,11 +12,9 @@ import { AiOutlineDeploymentUnit } from "react-icons/ai";
 import { FaRust } from "react-icons/fa";
 import {
   BsFileEarmarkCodeFill,
-  BsCaretDownFill,
   BsFillTerminalFill,
   BsFillMarkdownFill,
 } from "react-icons/bs";
-import { VscCopy } from "react-icons/vsc";
 import { FaFileCsv } from "react-icons/fa";
 import {
   Container,
@@ -128,7 +126,6 @@ export const FolderStructure = ({ tree }) => {
         onClick={() => {
           const text = BuildFinalScript(BuildCommand(tree, ""));
           navigator.clipboard.writeText(text);
-          alert("Comando copiado al portapapeles");
         }}
       />
     </Container>

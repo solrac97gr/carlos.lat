@@ -5,9 +5,11 @@ import { EditPost } from "./EditPost";
 import { FolderStructure } from "./FolderStructure";
 import { SocialShareButtons } from "./SocialShareButtons";
 import { NewsletterSubscribe } from "./NewsletterSubscribe";
+import { CodeSnipet } from "./CodeSnipet";
 import Image from "next/image";
 
 const components = {
+  CodeSnipet,
   NewsletterSubscribe,
   SocialShareButtons,
   FolderStructure,

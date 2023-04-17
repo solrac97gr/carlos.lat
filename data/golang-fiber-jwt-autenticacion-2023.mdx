@@ -29,9 +29,7 @@ content={"JWT de Fiber en su versión 3"}
 
 Creamos nuestra carpeta 📁 donde alojaremos nuestro proyecto y inicializaremos nuestro proyecto de go usando el comando:
 
-```bash
-go mod init github.com/solrac97gr/basic-jwt-auth
-```
+<CodeSnipet language={"bash"} code={"go mod init github.com/solrac97gr/basic-jwt-auth"} />
 
 > No olvides remplazar **solrac97gr** por tu usuario de github.
 
@@ -39,21 +37,15 @@ Ahora necesitamos descargar 3 paquetes que usaremos en esta guía básica:
 
 El paquete de JWT de Fiber
 
-```bash
-go get github.com/gofiber/jwt/v3
-```
+<CodeSnipet language={"bash"} code={"go get github.com/gofiber/jwt/v3"} />
 
 El paquete de JWT de Golang
 
-```bash
-go get github.com/golang-jwt/jwt/v4
-```
+<CodeSnipet language={"bash"} code={"go get github.com/golang-jwt/jwt/v4"} />
 
 Y por último el paquete de Fiber
 
-```bash
-go get github.com/gofiber/fiber/v2
-```
+<CodeSnipet language={"bash"} code={"go get github.com/gofiber/fiber/v2"} />
 
 ## Manos al código
 
@@ -61,16 +53,16 @@ go get github.com/gofiber/fiber/v2
 
 Empezaremos por crear nuestras estructuras dentro de la carpeta **models/models.go** , puedes crearlo en archivos separados o juntos, para el ejemplo los pondré en uno solo pero en el repositorio estarán separados:
 
-```go
+<CodeSnipet route={"./models/models.go"} language={"go"} code={`
 package models
 
 type LoginRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string \`json:"email"\`
+	Password string \`json:"password"\`
 }
 
 type LoginResponse struct {
-	Token string `json:"token"`
+	Token string \`json:"token"\`
 }
 
 type User struct {
@@ -79,18 +71,19 @@ type User struct {
 	Password       string
 	FavoritePhrase string
 }
-```
+`} />
+
 
 ### Config
 
 Dentro de la carpeta **config/config.go** tienes como tarea extraer la firma para tu token de las variables de entorno o de algún archivo de configuración, para el ejemplo usaré una constante esto nunca lo deberías hacer ya que comprometerías la seguridad del Token.
 
-```go
+<CodeSnipet route={"./config/config.go"} language={"go"} code={`
 package config
 
 // The secret key used to sign the JWT, this must be a secure key and should not be stored in the code
 const Secret = "secret"
-```
+`} />
 
 ### Middlewares
 
@@ -98,7 +91,7 @@ Los middlewares son herramientas dentro de la programación que nos pueden servi
 
 Fiber nos provee con un middleware de JWT que es el que inicializaremos en la carpeta **middlewares/auth.go**:
 
-```go
+<CodeSnipet route={"./middlewares/auth.go"} language={"go"} code={`
 package middlewares
 
 import (
@@ -112,14 +105,13 @@ func NewAuthMiddleware(secret string) fiber.Handler {
 		SigningKey: []byte(secret),
 	})
 }
-
-```
+`} />
 
 ### Repository
 
 Para no sobre complicar el proyecto y desviarnos del foco usaremos una función que simulará una llamada a una base de datos y nos retornara el usuario cuando la contraseña y email coincidan o un error cuando no, esto estará en la carpeta **repository/FindByCredentials.go** .
 
-```go
+<CodeSnipet route={"./repository/FindByCredentials.go"} language={"go"} code={`
 package repository
 
 import (
@@ -142,25 +134,24 @@ func FindByCredentials(email, password string) (*models.User, error) {
 
 	return nil, errors.New("user not found")
 }
-
-```
+`} />
 
 ### Handlers
 
 Ahora la parte importante, asumamos que nuestro usuario acaba de registrarse usando las siguientes credenciales.
 
-```json
+<CodeSnipet language={"json"} code={`
 {
   "email": "test@mail.com",
   "password": "test12345"
 }
-```
+`} />
 
 Crearemos el endpoint para que haga login y un endpoint protegido donde extraigamos la información almacenada en el token.
 
 Esto lo haremos en la carpeta **handlers/handlers.go**.
 
-```go
+<CodeSnipet route={"./repository/FindByCredentials.go"} language={"go"} code={`
 package handlers
 
 import (
@@ -226,14 +217,13 @@ func Protected(c *fiber.Ctx) error {
 	favPhrase := claims["fav"].(string)
 	return c.SendString("Welcome 👋" + email + " " + favPhrase)
 }
-
-```
+`} />
 
 ### Momento de unir todo
 
 Ahora en nuestro archivo **main.go** ubicado en la raíz del proyecto uniremos todas las partes y pondremos nuestra API en marcha.
 
-```go
+<CodeSnipet route={"./main.go"} language={"go"} code={`
 package main
 
 import (
@@ -260,16 +250,15 @@ func main() {
 	// Listen on port 3000
 	app.Listen(":3000")
 }
-
-```
+`} />
 
 ## Ejecutando nuestra aplicación
 
 Para ello una vez terminamos de crear los archivos necesarios ejecutaremos el siguiente comando.
 
-```bash
-go run main.go
-```
+
+<CodeSnipet language={"bash"} code={"go run main.go"} />
+
 
 Esto nos dará como resultado lo siguiente en la consola, eso significa que nuestra app ya esta corriendo en el puerto **3000**
 
