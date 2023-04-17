@@ -33,7 +33,7 @@ export const SocialShareButtons = ({ post }) => {
     <SocialShareContainer>
       <FacebookShareButton
         onClick={() => {
-          logEvent("Button", "Share on Facebook");
+          logEvent("button", "share_on_facebook", post.title);
         }}
         url={shareUrl}
         quote={post.abstract}
@@ -43,7 +43,7 @@ export const SocialShareButtons = ({ post }) => {
       </FacebookShareButton>
       <TwitterShareButton
         onClick={() => {
-          logEvent("Button", "Share on Twitter");
+          logEvent("button", "share_on_twitter", post.title);
         }}
         url={shareUrl}
         quote={post.abstract}
@@ -53,7 +53,7 @@ export const SocialShareButtons = ({ post }) => {
       </TwitterShareButton>
       <TelegramShareButton
         onClick={() => {
-          logEvent("Button", "Share on Telegram");
+          logEvent("button", "share_on_telegram", post.title);
         }}
         url={shareUrl}
         quote={post.abstract}
@@ -63,7 +63,7 @@ export const SocialShareButtons = ({ post }) => {
       </TelegramShareButton>
       <WhatsappShareButton
         onClick={() => {
-          logEvent("Button", "Share on Whatsapp");
+          logEvent("button", "share_on_whatsapp", post.title);
         }}
         url={shareUrl}
         quote={post.abstract}
@@ -73,7 +73,7 @@ export const SocialShareButtons = ({ post }) => {
       </WhatsappShareButton>
       <LinkedinShareButton
         onClick={() => {
-          logEvent("Button", "Share on Linkedin");
+          logEvent("button", "share_on_linkedin", post.title);
         }}
         url={shareUrl}
         quote={post.abstract}
@@ -83,7 +83,7 @@ export const SocialShareButtons = ({ post }) => {
       </LinkedinShareButton>
       <EmailShareButton
         onClick={() => {
-          logEvent("Button", "Share on Email");
+          logEvent("button", "share_on_email", post.title);
         }}
         url={shareUrl}
         quote={post.abstract}

@@ -26,11 +26,11 @@ Entonces ahora que ya sabemos que debemos saber comencemos paso por paso.
 
 En go usaremos la librería estándar para obtener la información del usuario ingresada por teclado a la consola. Debemos declarar de forma anticipa nuestra variable y el tipo de esta.
 
-```go
+<CodeSnipet language={"go"} code={`
 fmt.Println("Ingresa tu nombre:")
 var Name string
 fmt.Scanln(&Name)
-```
+`} />
 
 ### 2. Procesando la información
 
@@ -89,13 +89,12 @@ En Go existe el paquete "fmt" este nos ayudará a poder imprimir información po
  - Print : Imprime la información entregada
  - Printf : Imprime con formato
 
-```go
+ <CodeSnipet language={"go"} code={`
 name := "Carlos"
 
 fmt.Print("Bienvenido")
 fmt.Println("Hola yo tengo un salto de línea")
 fmt.Printf("Mi nombre es: %s", name)
-```
-
+`} />
 
 Con estos conceptos básicos para construir un programa por consola y con los conceptos básicos de programación podemos empezar nuestro proyecto donde crearemos nuestro propio planificador de viaje.

@@ -84,17 +84,18 @@ Podemos abordar el archivo de configuración usando los distintos parámetros po
 
 Para este artículo usaremos solo la URL para simplificar lo más que podamos y concentrarnos en realizar la conexión.
 
-```json
-{
+<CodeSnipet language={"json"} code={`
+  {
   "mongo_conn": "https://🤫.com"
-}
-```
+  }
+`} />
+
 
 ## Obteniendo la configuración desde el archivo config.json hacia Go
 
 Para este ejemplo usaremos nuestro servicio de configuración explicado en <BlogLink url="/blog/como-obtener-variables-entorno-go-env-json/" content="el artículo"/> donde aprendemos a traer variables de configuración desde archivos JSON.
 
-```go
+<CodeSnipet language={"go"} code={`
   package config
 
   import (
@@ -103,7 +104,7 @@ Para este ejemplo usaremos nuestro servicio de configuración explicado en <Blog
   )
 
   type Config struct {
-    MongoConn string `json:"mongo_conn"`
+    MongoConn string \`json:"mongo_conn"\`
   }
 
   type ConfigService struct {
@@ -136,19 +137,18 @@ Para este ejemplo usaremos nuestro servicio de configuración explicado en <Blog
         FilePath:path,
     }
   }
-```
+`} />
 
 ## Implementando nuestra conexión a Mongo
 
 Primero instalemos el Mongo Driver que es el paquete oficial de Mongo.
 
-```bash
-go get go.mongodb.org/mongo-driver/mongo
-```
+<CodeSnipet language={"bash"} code={`go get go.mongodb.org/mongo-driver/mongo`} />
+
 
 Una buena forma de empezar la conexión a Mongo es al momento de crear la instancia de este repositorio Mongo en el código podrás ver como en la función creadora se inicializa la conexión hacia Mongo.
 
-```go
+<CodeSnipet language={"go"} code={`
   package repositories
 
   import (
@@ -188,7 +188,7 @@ Una buena forma de empezar la conexión a Mongo es al momento de crear la instan
       panic(err)
     }
   }
-```
+`} />
 
 ## Usando nuestra implementación
 

@@ -28,9 +28,8 @@ Como ejemplo crearemos una estructura de datos llamada User que contará con dis
 
 Será una clase pública en Go ponerle la primera letra en mayúscula a una entidad denota que es pública, esto quiere decir que puede importarte y usarse en cualquier parte del programa.
 
-```go
-type User struct {}
-```
+<CodeSnipet language={"go"} code={`type User struct {}`} />
+
 
 ### 2. Creando nuestros campos.
 
@@ -41,14 +40,14 @@ Crearemos dentro de nuestra "clase" usuario los siguientes campos:
 - name: string 
 - id: uint
 
-```go
+<CodeSnipet language={"go"} code={`
 type User struct {
   Email     string
   Password  string
   Name      string 
   ID        uint
 }
-```
+`} />
 
 En nuestro caso nuestros campos serán todos públicos, si definimos un campo con letra minúscula al inicio no podrá ser accedido de forma externa, será un campo privado.
 
@@ -58,13 +57,11 @@ En nuestro caso nuestros campos serán todos públicos, si definimos un campo co
 
 Go no tiene un constructor explicito para las structs, la forma de inicializar la "clase" sería declarándola.
 
-```
-user := User{}
-```
+<CodeSnipet language={"go"} noHeaders={true} code={`user := User{}`} />
 
 Nosotros simularemos un constructor para nuestra struct de la siguiente manera.
 
-```go
+<CodeSnipet language={"go"} code={`
 type User struct {
   Email     string
   Password  string
@@ -80,24 +77,25 @@ func NewUser(email string, pwd string, name string, id uint) *User{
      ID: id,
   }
 }
-```
+`} />
+
 
 Ahora para crear una "clase" lo haríamos de la siguiente forma.
 
-```go
+<CodeSnipet language={"go"} code={`
 user := NewUser(
   "test@email.com",
   "secret123",
   "Juan Perez",
   1,
 )
-```
+`} />
 
 ###  3. Creando métodos para nuestro usuario 
 
 Para nuestros métodos usaremos una herramienta de Go llamadas receiver functions que nos permitirá ejecutar funciones invocándolas desde la instancia de nuestra "clase" usuario.
 
-```go
+<CodeSnipet language={"go"} code={`
 type User struct {
   Email     string
   Password  string
@@ -121,11 +119,11 @@ que se entienda mejor lo dejaremos como this*/
 func (this *User) Congrats() {
   fmt.Printf("Congrats %s", this.Name)
 }
-```
+`} />
 
 Ahora ejecutaremos nuestros método.
 
-```go
+<CodeSnipet language={"go"} code={`
 user := NewUser(
   "test@email.com",
   "secret123",
@@ -136,7 +134,8 @@ user := NewUser(
 user.Congrats()
 
 // Congrats Juan Perez
-```
+`} />
+
 
 Usando este mismo método podemos crear Getters y Setters, yo no soy muy fan pero es posible hacerlo.
 
@@ -144,7 +143,7 @@ Usando este mismo método podemos crear Getters y Setters, yo no soy muy fan per
 
 En Go lo más similar a la herencia que podemos conseguir es declarar una struct dentro de otra sin asignarle un valor.
 
-```go
+<CodeSnipet language={"go"} code={`
 type SuperHero struct {
   User
 }
@@ -156,7 +155,7 @@ superHero := SuperHero{
 }
 
 superHero.Congrats()
-```
+`} />
 
 Consejo personal evade la herencia y usa la composición.
 

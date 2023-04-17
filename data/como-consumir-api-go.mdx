@@ -59,16 +59,16 @@ Primero crearemos nuestros archivos necesarios para este tutorial.
 
 Ahora dentro de nuestro archivo config.example.json agregaremos la estructura de nuestra configuración con datos no reales para que al publicar nuestro repositorio no puedan ser usados.
 
-```json
+<CodeSnipet language={"json"} code={`
 {
   "api_key": "🤫"
 }
-```
+`} />
 
 Esta misma estructura la pasaremos a nuestro config.json pero con los valores reales y montaremos un pequeño servicio que cargue la configuración, si quieres aprender más a detalle sobre esto puedes visitar <BlogLink url="/blog/como-obtener-variables-entorno-go-env-json/" content="este blog"/> que habla sobre variables de entorno.
 
-```go
-	package config
+<CodeSnipet language={"go"} code={`
+package config
 
 	import (
 		"encoding/json"
@@ -76,7 +76,7 @@ Esta misma estructura la pasaremos a nuestro config.json pero con los valores re
 	)
 
 	type Config struct {
-		Key string `json:"api_key"`
+		Key string \`json:"api_key"\`
 	}
 
 	type Service struct {
@@ -105,7 +105,7 @@ Esta misma estructura la pasaremos a nuestro config.json pero con los valores re
 	func NewConfigService() *Service {
 		return &Service{}
 	}
-```
+`} />
 
 Ahora si manos a la obra hacia nuestra petición, para ello usaremos el paquete net/http, específicamente el método NewRequest.
 
@@ -115,7 +115,7 @@ En este caso haremos una petición de tipo Get y agregaremos unos headers que no
 
 Luego usaremos el DefaulClient de http y ejecutaremos el método Do para ejecutar nuestra petición, este nos devolverá la respuesta pero tendremos que leerla usando ioutil.RedAll con eso tendríamos nuestra data lista para ser usada.
 
-```go
+<CodeSnipet language={"go"} code={`
 	package main
 
 	import (
@@ -149,6 +149,6 @@ Luego usaremos el DefaulClient de http y ejecutaremos el método Do para ejecuta
 		fmt.Println(string(body))
 
 	}
-```
+`} />
 
 Las llamadas a API externas son muy comunes en proyectos grandes, saber cómo realizarlas es una skill básica del lenguaje, espero que les sirva este artículo y que exploren otras formas de parsear el body de la respuesta en un struct por ejemplo.

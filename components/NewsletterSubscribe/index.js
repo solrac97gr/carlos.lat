@@ -10,6 +10,7 @@ import {
   NewsletterFormSpan,
 } from "./index.style";
 import { logEvent } from "../../lib/analytics";
+import { getDomain } from "../../lib/helpers";
 
 export const NewsletterSubscribe = () => {
   const MAILCHIMP_URL =
@@ -51,7 +52,7 @@ const NewsletterForm = ({ status, message, onValidated }) => {
 
     const isFormValidated = onValidated({ EMAIL: email });
 
-    logEvent("Button", "Subscribe to Newsletter");
+    logEvent("button", "subscribe_newsletter", "post_form",getDomain(email));
     // On success return true
     return email && email.indexOf("@") > -1 && isFormValidated;
   };

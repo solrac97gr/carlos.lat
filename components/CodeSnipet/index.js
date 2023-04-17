@@ -4,21 +4,28 @@ import { useEffect } from "react";
 import Prism from "prismjs";
 import "prismjs/components/prism-go.js";
 
-export const CodeSnipet = ({ code, language, route = "~/projects" }) => {
+export const CodeSnipet = ({
+  code,
+  language,
+  route = "~/projects",
+  noHeaders = false,
+}) => {
   useEffect(() => {
     Prism.highlightAll();
   }, []);
 
   return (
     <pre className={`language-${language}`}>
-      <Header>
-        <small>{route}</small>
-        <CopyButton
-          onClick={() => {
-            navigator.clipboard.writeText(code);
-          }}
-        ></CopyButton>
-      </Header>
+      {!noHeaders && (
+        <Header>
+          <small>{route}</small>
+          <CopyButton
+            onClick={() => {
+              navigator.clipboard.writeText(code);
+            }}
+          ></CopyButton>
+        </Header>
+      )}
 
       <code
         className={`language-${language}`}
