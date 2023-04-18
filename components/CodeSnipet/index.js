@@ -9,6 +9,7 @@ export const CodeSnipet = ({
   language,
   route = "~/projects",
   noHeaders = false,
+  output = "",
 }) => {
   useEffect(() => {
     Prism.highlightAll();
@@ -33,6 +34,11 @@ export const CodeSnipet = ({
       >
         {code}
       </code>
+      {output && (
+        <div>
+          <small>{output}</small>
+        </div>
+      )}
     </pre>
   );
 };
