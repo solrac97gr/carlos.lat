@@ -27,15 +27,14 @@ Para ello crearemos una carpeta con 4 archivos, el `main.go` , `.gitignore` , `e
 
 Agregaremos a nuestro archivo `.gitignore` la siguiente línea de código:
 
-```
-env.json
-```
+
+<CodeSnipet language={"bash"} code={`env.json`} />
 
 Esto evitará que nuestro archivo de variables de entorno sea publicado en el repositorio.
 
 Ahora preparémoos el archivo de configuración json, dentro del archivo `env.example.json`
 
-```json
+<CodeSnipet language={"json"} code={`
 {
   "env": "develop",
   "app_name": "My env App",
@@ -45,13 +44,14 @@ Ahora preparémoos el archivo de configuración json, dentro del archivo `env.ex
     "password": "12345"
   }
 }
-```
+`} />
+
 
 Ahora que tenemos la plantilla de configuración lista podemos copiar el contenido a nuestro `env.json` y reemplazar los valores originales.
 
 Ya tenemos todo listo del lado de las configuraciones ahora tocaría el código en Go. Creáremos una carpeta 📁 que se llame `env` y dentro de ella crearemos un archivo `env.go`, aquí crearemos nuestra estructura que recibirá las variables del JSON (`env.json`).
 
-```go
+<CodeSnipet language={"go"} code={`
 package env
 
 import (
@@ -61,15 +61,15 @@ import (
 )
 
 type EnvVariables struct {
-	Env      string      `json:"env"`
-	AppName  string      `json:"app_name"`
-	Database EnvDatabase `json:"database"`
+	Env      string      \`json:"env"\`
+	AppName  string      \`json:"app_name"\`
+	Database EnvDatabase \`json:"database"\`
 }
 
 type EnvDatabase struct {
-	Name     string `json:"name"`
-	User     string `json:"user"`
-	Password string `json:"password"`
+	Name     string \`json:"name"\`
+	User     string \`json:"user"\`
+	Password string \`json:"password"\`
 }
 
 type EnvService struct {
@@ -100,12 +100,11 @@ func (e *EnvService) Load() {
 func (e *EnvService) GetVariables() *EnvVariables {
 	return e.Env
 }
-
-```
+`} />
 
 Después de tener el archivo que cargara nuestras variables de entorno a el runtime de Go vamos a conocer cómo usar este módulo desde el `main.go`
 
-```go
+<CodeSnipet language={"go"} code={`
 package main
 
 import (
@@ -126,10 +125,7 @@ func main() {
   }
   server.Start(8081)
 }
-
-
-
-```
+`} />
 
 Este método tiene sus ventajas por ejemplo la posibilidad de agregar validación de los campos en el struct de EnvVariables y el auto completado donde sabemos que tenemos exactamente y de que tipo. Sin embargo también tiene una gran desventaja dependemos de inyectar la información en otros servicios.
 
@@ -137,24 +133,44 @@ Este método tiene sus ventajas por ejemplo la posibilidad de agregar validació
 
 Como en el anterior proceso crearemos 4 archivos de forma inicial esta vez serán:
 
-- `.env`
-- `.env.example`
-- `.gitignore`
-- `main.go`
+<FolderStructure
+  tree={[
+    {
+      type: "file",
+      name: ".env",
+    },
+    {
+      type: "file",
+      name: ".env.example",
+    },
+    {
+      type: "file",
+      name: ".gitignore",
+    },
+    {
+      type: "file",
+      name: "main.go",
+    },
+    {
+      type: "file",
+      name: "go.mod",
+    },
+  ]}
+/>
 
 En primer lugar dentro del `.gitignore` agregaremos la siguiente línea de código, para ignorar el archivo `.env`
 
-```yaml
-.env
-```
+<CodeSnipet language={"yaml"} code={`.env`} />
+
 
 Luego dentro del archivo `.env.example` crearemos nuestras variables.
 
-```yaml
-  DATABASE_NAME=test
-  DATABASE_USER=root
-  DATABASE_PASSWORD=12345
-```
+<CodeSnipet language={"yaml"} code={`
+DATABASE_NAME=test
+DATABASE_USER=root
+DATABASE_PASSWORD=12345
+`} />
+
 
 Ahora procederemos a copiar y agregar la información real a nuestro archivo `.env` para cargarlo hacia nuestro programa de Go.
 
@@ -164,7 +180,7 @@ Para este caso usaremos una librería `godotenv` que nos ayudará a cargar nuest
 
 Dentro del `main.go` pondremos lo lo siguiente
 
-```go
+<CodeSnipet language={"go"} code={`
 package main
 
 import (
@@ -179,8 +195,7 @@ func main() {
  }
  databaseName := os.Getenv("DATABASE_NAME")
 }
-
-```
+`} />
 
 Ahora podríamos acceder a nuestras variables de entorno usando el paquete `os` desde cualquier parte del programa.
 
