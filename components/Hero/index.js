@@ -18,8 +18,8 @@ import {
   ExperienceContainer,
 } from "./index.styles";
 import Link from "next/link";
-import Image from "next/future/image";
-import { ARTICLES_PUBLISHED, CURRENTLY_IN, NUMBER_OF_VISITED_COUNTRIES, PHONE_NUMBER, YEARS_OF_EXPERIENCE } from "../../lib/consts";
+import { logEvent } from "../../lib/analytics";
+import { CURRENTLY_IN, NUMBER_OF_VISITED_COUNTRIES, PHONE_NUMBER, YEARS_OF_EXPERIENCE } from "../../lib/consts";
 export const Hero = ({numberOfPosts}) => {
   return (
     <Container>
@@ -33,6 +33,9 @@ export const Hero = ({numberOfPosts}) => {
             href={`https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=Hola%20me%20gustar%C3%ADa%20trabajar%20contigo`}
           >
             <LinkHero
+              onClick={() => {
+                logEvent("Button", "Work_Together");
+              }}
               href={`https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=Hola%20me%20gustar%C3%ADa%20trabajar%20contigo`}
               target="_blank"
             >

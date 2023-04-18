@@ -1,6 +1,6 @@
 import { VscCopy } from "react-icons/vsc";
 import { Container } from "./index.styles";
-import { initGA, logEvent } from "../../lib/analytics";
+import {  logEvent } from "../../lib/analytics";
 
 export const CopyButton = ({ onClick, size, color }) => {
   

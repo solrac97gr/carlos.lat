@@ -18,7 +18,7 @@ import {
 } from "react-icons/fa";
 import { useRouter } from "next/router";
 import { useIsMobile } from "../../hooks/useIsMobile";
-import { BuyMeCoffeeButton } from "../BuyMeCoffeeButton";
+import { logEvent } from "../../lib/analytics";
 
 const size = 21;
 
@@ -74,6 +74,9 @@ export const Navbar = () => {
         }}
       >
         <SocialIcon
+          onClick={() => {
+            logEvent("Button", "Twitter_Visit_Profile");
+          }}
           href="https://twitter.com/carlos97cgr"
           target="_blank"
           rel="noreferrer"
@@ -81,6 +84,9 @@ export const Navbar = () => {
           <FaTwitter size={size} color={"#FFF"} />
         </SocialIcon>
         <SocialIcon
+          onClick={() => {
+            logEvent("Button", "Linkedin_Visit_Profile");
+          }}
           href="https://www.linkedin.com/in/carlos97gr/"
           target="_blank"
           rel="noreferrer"
@@ -88,6 +94,11 @@ export const Navbar = () => {
           <FaLinkedin size={size} color={"#FFF"} />
         </SocialIcon>
         <SocialIcon
+          onClick={
+            () => {
+              logEvent("Button", "Instagram_Visit_Profile");
+            }
+          }
           href="https://www.instagram.com/carlos97cgr/"
           target="_blank"
           rel="noreferrer"
@@ -95,6 +106,9 @@ export const Navbar = () => {
           <FaInstagram size={size} color={" #FFF"} />
         </SocialIcon>
         <SocialIcon
+          onClick={() => {
+            logEvent("Button", "Github_Visit_Profile");
+          }}
           href="https://github.com/solrac97gr"
           target="_blank"
           rel="noreferrer"
@@ -102,6 +116,9 @@ export const Navbar = () => {
           <FaGithub size={size} color={" #FFF"} />
         </SocialIcon>
         <SocialIcon
+          onClick={() => {
+            logEvent("Button", "Youtube_Visit_Profile");
+          }}
           href="https://www.youtube.com/channel/UC-xrCcsYNYMs4iIvAja0Gig"
           target="_blank"
           rel="noreferrer"
