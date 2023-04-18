@@ -1,0 +1,124 @@
+---
+title: "¿Cómo usar canales en Go? 🧪"
+date: "18 de Abril del 2023"
+published: "2023-04-18"
+abstract: "En este artículo vamos a ver cómo usar canales en Go, qué son y cómo funcionan."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482737.png?alt=media&token=705f5ef8-da5e-4abd-9d17-a9d716b69be4"
+tag: "Go"
+author: "Carlos García"
+---
+
+# ¿Cómo usar canales en Go? 🧪
+
+<small>18 de Abril del 2023</small>
+<EditPost path="como-usar-canales-go" />
+
+<img
+  width="100%"
+  alt="golang-wallpaper "
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482737.png?alt=media&token=705f5ef8-da5e-4abd-9d17-a9d716b69be4"
+  style={{ borderRadius: "8px" }}
+/>
+
+En este artículo exploraremos una de las herramientas más poderosas de Go, los canales. Vamos a ver qué son, cómo funcionan y cómo podemos usarlos en nuestro código.
+
+## ¿Qué son los canales?
+
+Los canales son una forma de comunicación entre gorutinas y tambien funcionan como una forma de sincronización entre gorutinas, ya que nos permiten esperar a que una gorutina termine de ejecutar una tarea para continuar con la siguiente. En los canales viaja información, y esta información puede ser de cualquier tipo, incluso de tipos definidos por el usuario.
+
+## ¿Cómo se crean los canales?
+
+Para crear un canal, debemos usar la función `make` y pasarle como primer parámetro el tipo de dato que vamos a enviar por el canal, y como segundo parámetro el tamaño del buffer del canal. Si el tamaño del buffer es 0, el canal será un canal sincrónico, es decir, que no permitirá que una gorutina envíe información hasta que otra gorutina no esté esperando a recibir información.
+
+<CodeSnipet language={"go"} code={`
+// Canal sincrónico
+c := make(chan int)
+
+// Canal asincrónico
+c := make(chan int, 1)
+`} />
+
+## ¿Cómo se envía información por un canal?
+
+Para enviar información por un canal, debemos usar la sintaxis `<-`, de la siguiente forma:
+
+<CodeSnipet language={"go"} code={`
+c <- 1
+`} />
+
+## ¿Cómo se recibe información de un canal?
+
+Para recibir información de un canal, debemos usar la sintaxis `<-`, de la siguiente forma:
+
+<CodeSnipet language={"go"} code={`
+<- c
+`} />
+
+## ¿Cómo se cierran los canales?
+
+Para cerrar un canal, debemos usar la función `close`, de la siguiente forma:
+
+<CodeSnipet language={"go"} code={`
+close(c)
+`} />
+
+## ¿Cómo se comprueba si un canal está cerrado?
+
+Para comprobar si un canal está cerrado, debemos usar la función `ok`, de la siguiente forma:
+
+<CodeSnipet language={"go"} code={`
+v, ok := <- c
+if !ok {
+  // Canal cerrado
+}
+`} />
+
+## ¿Cómo usar canales para sincronizar gorutinas?
+
+Los canales nos permiten sincronizar gorutinas, ya que nos permiten esperar a que una gorutina termine de ejecutar una tarea para continuar con la siguiente. Para ello, debemos crear un canal, y enviar información por el canal cuando la gorutina haya terminado de ejecutar la tarea. En el ejemplo siguiente, vamos a crear un canal, y vamos a enviar información por el canal cuando la gorutina haya terminado de ejecutar la tarea.
+
+<CodeSnipet language={"go"} output={`
+Hola
+Mundo
+`} code={`
+func main() {
+  c := make(chan int)
+
+  go func() {
+    fmt.Println("Hola")
+    c <- 1
+  }()
+
+  <- c
+  fmt.Println("Mundo")
+}
+`} />
+
+En el ejemplo anterior, la gorutina imprime `Hola` y envía información por el canal. Cuando la gorutina envía información por el canal, la función `main` recibe información del canal y imprime `Mundo`.
+
+## ¿Cómo usar canales para comunicar gorutinas?
+
+Los canales nos permiten comunicar gorutinas, ya que nos permiten enviar información de una gorutina a otra. Para ello, debemos crear un canal, y enviar información por el canal cuando la gorutina haya terminado de ejecutar la tarea. En el ejemplo siguiente, vamos a crear un canal, y vamos a enviar información por el canal cuando la gorutina haya terminado de ejecutar la tarea.
+
+<CodeSnipet language={"go"} output={`
+Hola
+Mundo 1
+`} code={`
+func main() {
+  c := make(chan int)
+
+  go func() {
+    fmt.Println("Hola")
+    c <- 1
+  }()
+
+  v := <- c
+  fmt.Println("Mundo", v)
+}
+`} />
+
+En el ejemplo anterior, la gorutina imprime `Hola` y envía información por el canal. Cuando la gorutina envía información por el canal, la función `main` recibe información del canal y imprime `Mundo` y el valor que ha recibido del canal.
+
+## Conclusiones
+
+En este artículo hemos visto cómo usar canales en Go, qué son y cómo funcionan. Espero que te haya gustado el artículo, y si tienes alguna duda, puedes dejar un comentario.
