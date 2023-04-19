@@ -28,13 +28,13 @@ Para ello crearemos una carpeta con 4 archivos, el `main.go` , `.gitignore` , `e
 Agregaremos a nuestro archivo `.gitignore` la siguiente línea de código:
 
 
-<CodeSnipet language={"bash"} code={`env.json`} />
+<CodeSnippet language={"bash"} code={`env.json`} />
 
 Esto evitará que nuestro archivo de variables de entorno sea publicado en el repositorio.
 
 Ahora preparémoos el archivo de configuración json, dentro del archivo `env.example.json`
 
-<CodeSnipet language={"json"} code={`
+<CodeSnippet language={"json"} code={`
 {
   "env": "develop",
   "app_name": "My env App",
@@ -51,7 +51,7 @@ Ahora que tenemos la plantilla de configuración lista podemos copiar el conteni
 
 Ya tenemos todo listo del lado de las configuraciones ahora tocaría el código en Go. Creáremos una carpeta 📁 que se llame `env` y dentro de ella crearemos un archivo `env.go`, aquí crearemos nuestra estructura que recibirá las variables del JSON (`env.json`).
 
-<CodeSnipet language={"go"} code={`
+<CodeSnippet language={"go"} code={`
 package env
 
 import (
@@ -104,7 +104,7 @@ func (e *EnvService) GetVariables() *EnvVariables {
 
 Después de tener el archivo que cargara nuestras variables de entorno a el runtime de Go vamos a conocer cómo usar este módulo desde el `main.go`
 
-<CodeSnipet language={"go"} code={`
+<CodeSnippet language={"go"} code={`
 package main
 
 import (
@@ -160,12 +160,12 @@ Como en el anterior proceso crearemos 4 archivos de forma inicial esta vez será
 
 En primer lugar dentro del `.gitignore` agregaremos la siguiente línea de código, para ignorar el archivo `.env`
 
-<CodeSnipet language={"yaml"} code={`.env`} />
+<CodeSnippet language={"yaml"} code={`.env`} />
 
 
 Luego dentro del archivo `.env.example` crearemos nuestras variables.
 
-<CodeSnipet language={"yaml"} code={`
+<CodeSnippet language={"yaml"} code={`
 DATABASE_NAME=test
 DATABASE_USER=root
 DATABASE_PASSWORD=12345
@@ -180,7 +180,7 @@ Para este caso usaremos una librería `godotenv` que nos ayudará a cargar nuest
 
 Dentro del `main.go` pondremos lo lo siguiente
 
-<CodeSnipet language={"go"} code={`
+<CodeSnippet language={"go"} code={`
 package main
 
 import (

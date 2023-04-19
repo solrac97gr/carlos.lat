@@ -47,7 +47,7 @@ Ahora comenzaremos a escribir nuestro programo usaremos la librería `net` de Go
 
 Empezaremos a modificar nuestro archivo `main` dentro de este inicializaremos 3 argumentos que serán necesarios para el funcionamiento del script: El Host y dos parámetros más
 
-```go
+<CodeSnippet language="go" code={`
 package main
 
 import (
@@ -63,7 +63,7 @@ func init() {
 	from = flag.Int("from", 0, "from what port we will scan")
 	limit = flag.Int("limit", 65535, "until what port we will scan")
 }
-```
+`}/>
 
 Ahora tenemos nuestro Host que será el sitio al que escaneáramos y nuestro rango de puertos a escanear.
 
@@ -73,7 +73,7 @@ Go no solo es el lenguaje elegido para este blog debido a su potente librería e
 
 Dentro de la librería sync usaremos un tipo llamado WaitGroup este nos ayudará junto con las go routines a que nuestro proceso principal no termine sin que todos los sub procesos terminen su trabajo.
 
-```go
+<CodeSnippet language="go" code={`
 package main
 
 import (
@@ -111,8 +111,8 @@ func main() {
 
 	}
 	wg.Wait()
-}
-```
+}`}/>
+
 
 ## 3. Hora de usarlo
 
@@ -120,8 +120,6 @@ Para esto primero les daré una recomendación en muchos países escanear un sit
 
 Para el ejemplo usaremos los valores por defecto que tiene nuestro script.
 
-```bash
-go run main.go --host="scanme.nmap.org" --from=100 --limit=500
-```
+<CodeSnippet language="bash" code={`go run main.go --host="scanme.nmap.org" --from=100 --limit=500`}/>
 
 Espero que les sirva este tutorial con fines didácticos y que continúen mejorando esta herramienta como agregando un sistema de log o de cache.

@@ -19,7 +19,7 @@ Una de las cosas más importantes en lenguajes de tipado estático es realizar c
 
 Para convertir de String a Int usaremos una librería nativa de los paquetes de Go `strconv`.
 
-<CodeSnipet language={"go"} code={`
+<CodeSnippet language={"go"} code={`
 import "strconv"
 
 i, err := strconv.Atoi("-42")
@@ -32,7 +32,7 @@ if err != nil {
 ## Convertir de String a Int64 en Go
 Otra conversión común es la de una String a un Int64 para ellos volveremos a usar la librería que ya usamos nativa de Go.
 
-<CodeSnipet language={"go"} code={`
+<CodeSnippet language={"go"} code={`
 import "strconv"
 
 i, err := strconv.ParseInt("-42",10,64)
@@ -44,7 +44,7 @@ if err != nil {
 ## Convertir de String a Int32 en Go
 Por último convertiremos un String a un Int32 usando la misma librería.
 
-<CodeSnipet language={"go"} code={`
+<CodeSnippet language={"go"} code={`
 import "strconv"
 
 i, err := strconv.ParseInt("-42",10,32)
@@ -58,7 +58,7 @@ if err != nil {
 
 Dentro de esta librería encontramos muchos otros tipos de conversaciones de cadenas hacia distintos tipos de datos cómo convertir de String a Boolean o de String a Float. Esta librería es un navaja suiza de las conversiones de String es mejor tenerla siempre a la mano ✍️ cuando se está desarrollando.
 
-<CodeSnipet language={"go"} code={`
+<CodeSnippet language={"go"} code={`
 b, err := strconv.ParseBool("true")
 f, err := strconv.ParseFloat("3.1415", 64)
 i, err := strconv.ParseInt("-42", 10, 64)

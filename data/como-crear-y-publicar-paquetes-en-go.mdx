@@ -36,23 +36,26 @@ En mi caso dentro de mi proyecto de <BlogLink url="https://github.com/solrac97gr
 
 Para ello comenzaremos creando nuestra carpeta
 
-```bash
-mkdir session-manager
-```
+<CodeSnippet
+  code={`mkdir session-manager`}
+  language="bash"
+/>
 
 Luego crearemos un repositorio público en GitHub, que sea público es muy importante en un futuro haré un nuevo artículo dónde haremos un paquete privado, copiamos el link de nuestro repositorio.
 
 Y ahora vamos a inicializar nuestro paquete de go dentro de la carpeta que creamos
 
-```bash
-go mod init github.com/user/repository-name
-```
+<CodeSnippet
+  code={`go mod init github.com/user/repository-name`}
+  language="bash"
+/>
 
 Seguido de esos inicializaremos el repositorio de Git en la carpeta que creamos.
 
-```bash
-git init
-```
+<CodeSnippet
+  code={`git init`}
+  language="bash"
+/>
 
 Ahora agregaremos dos archivos más dentro del folder el README.md y la licencia en mi caso usaré MIT.
 
@@ -143,34 +146,37 @@ En Go podemos documentar nuestro paquete gracias a godoc.org solo agregando come
 
 Les daré un ejemplo de un paquete documentado usando el formato de godoc:
 
-```go
-// Package math is a package with mathematical operation
-package math
+<CodeSnippet
+  code={`
+  // Package math is a package with mathematical operation
+  package math
 
-const (
-  // PI is the pi number with 12 decimal's
-  PI float64 = 3.14159265359
-)
+  const (
+    // PI is the pi number with 12 decimal's
+    PI float64 = 3.14159265359
+  )
 
-// Calculator struct who will store like methods all our operations
-type Calculator struct {}
+  // Calculator struct who will store like methods all our operations
+  type Calculator struct {}
 
-// NewCalculator create a new instance of calculator
-func NewCalculator *Calculator {
-  return &Calculator{}
-}
-
-// SumInt sum a group of int
-func (c *Calculator) SumInt(numbers ...int) int{
-  total := 0
-
-  for _,n := range numbers {
-    total=total+n
+  // NewCalculator create a new instance of calculator
+  func NewCalculator *Calculator {
+    return &Calculator{}
   }
 
-  return total
-}
-```
+  // SumInt sum a group of int
+  func (c *Calculator) SumInt(numbers ...int) int{
+    total := 0
+
+    for _,n := range numbers {
+      total=total+n
+    }
+
+    return total
+  }
+`}
+  language="go"
+/>
 
 Este formato hará que cuando subamos nuestro paquete godoc.org formatee nuestros comentarios y los agregue en el apartado de documentación.
 
@@ -178,21 +184,15 @@ Este formato hará que cuando subamos nuestro paquete godoc.org formatee nuestro
 
 Ahora a llego el momento que a mi parecer es el más interesante es ver nuestro paquete ya dentro de godoc.org para ellos debemos preparar nuestro entorno una vez subido todo nuestro avance al repositorio procederemos a crear un tag.
 
-```bash
-git tag v0.1.0
-```
+<CodeSnippet code={`git tag v0.1.0`} language="bash" />
 
 Luego de crearlo vamos a subir este tag a nuestro repositorio
 
-```bash
-git push origin v0.1.0
-```
+<CodeSnippet code={`git push origin v0.1.0`} language="bash" />
 
 Y ahora indicaremos a Go que nuestro paquete esta listo para ser extraído. Debemos remplazar con el enlace de nuestro paquete y la versión que estemos publicando.
 
-```bash
-GOPROXY=proxy.golang.org go list -m github.com/solrac97gr/session-manager@v0.1.5
-```
+<CodeSnippet code={`GOPROXY=proxy.golang.org go list -m github.com/solrac97gr/session-manager@v0.1.5`} language="bash" />
 
 ## Usar nuestro paquete en otros proyectos
 
@@ -200,13 +200,11 @@ Una vez nuestro paquete este publicado podemos empezar a usarlo en otros proyect
 
 Desde otro proyecto usaremos el siguiente comando
 
-```
-go get github.com/solrac97gr/session-manager
-```
+<CodeSnippet code={`go get github.com/solrac97gr/session-manager`} language="bash" />
 
 Ahora solo bastara con importar nuestro paquete y usar lo que necesitemos de este en nuestros otros proyectos.
 
-```go
+<CodeSnippet code={`
 package main
 
 import github.com/solrac97gr/session-manager
@@ -233,7 +231,7 @@ func main() {
   sm.SetAsDefaultSession(s.SessionId())
 
 }
-```
+`} language="go" />
 
 ## Conclusión
 

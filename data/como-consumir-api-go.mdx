@@ -59,7 +59,7 @@ Primero crearemos nuestros archivos necesarios para este tutorial.
 
 Ahora dentro de nuestro archivo config.example.json agregaremos la estructura de nuestra configuración con datos no reales para que al publicar nuestro repositorio no puedan ser usados.
 
-<CodeSnipet language={"json"} code={`
+<CodeSnippet language={"json"} code={`
 {
   "api_key": "🤫"
 }
@@ -67,7 +67,7 @@ Ahora dentro de nuestro archivo config.example.json agregaremos la estructura de
 
 Esta misma estructura la pasaremos a nuestro config.json pero con los valores reales y montaremos un pequeño servicio que cargue la configuración, si quieres aprender más a detalle sobre esto puedes visitar <BlogLink url="/blog/como-obtener-variables-entorno-go-env-json/" content="este blog"/> que habla sobre variables de entorno.
 
-<CodeSnipet language={"go"} code={`
+<CodeSnippet language={"go"} code={`
 package config
 
 	import (
@@ -115,7 +115,7 @@ En este caso haremos una petición de tipo Get y agregaremos unos headers que no
 
 Luego usaremos el DefaulClient de http y ejecutaremos el método Do para ejecutar nuestra petición, este nos devolverá la respuesta pero tendremos que leerla usando ioutil.RedAll con eso tendríamos nuestra data lista para ser usada.
 
-<CodeSnipet language={"go"} code={`
+<CodeSnippet language={"go"} code={`
 	package main
 
 	import (

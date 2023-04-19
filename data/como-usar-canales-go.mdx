@@ -30,7 +30,7 @@ Los canales son una forma de comunicación entre gorutinas y tambien funcionan c
 
 Para crear un canal, debemos usar la función `make` y pasarle como primer parámetro el tipo de dato que vamos a enviar por el canal, y como segundo parámetro el tamaño del buffer del canal. Si el tamaño del buffer es 0, el canal será un canal sincrónico, es decir, que no permitirá que una gorutina envíe información hasta que otra gorutina no esté esperando a recibir información.
 
-<CodeSnipet language={"go"} code={`
+<CodeSnippet language={"go"} code={`
 // Canal sincrónico
 c := make(chan int)
 
@@ -42,7 +42,7 @@ c := make(chan int, 1)
 
 Para enviar información por un canal, debemos usar la sintaxis `<-`, de la siguiente forma:
 
-<CodeSnipet language={"go"} code={`
+<CodeSnippet language={"go"} code={`
 c <- 1
 `} />
 
@@ -50,7 +50,7 @@ c <- 1
 
 Para recibir información de un canal, debemos usar la sintaxis `<-`, de la siguiente forma:
 
-<CodeSnipet language={"go"} code={`
+<CodeSnippet language={"go"} code={`
 <- c
 `} />
 
@@ -58,7 +58,7 @@ Para recibir información de un canal, debemos usar la sintaxis `<-`, de la sigu
 
 Para cerrar un canal, debemos usar la función `close`, de la siguiente forma:
 
-<CodeSnipet language={"go"} code={`
+<CodeSnippet language={"go"} code={`
 close(c)
 `} />
 
@@ -66,7 +66,7 @@ close(c)
 
 Para comprobar si un canal está cerrado, debemos usar la función `ok`, de la siguiente forma:
 
-<CodeSnipet language={"go"} code={`
+<CodeSnippet language={"go"} code={`
 v, ok := <- c
 if !ok {
   // Canal cerrado
@@ -77,7 +77,7 @@ if !ok {
 
 Los canales nos permiten sincronizar gorutinas, ya que nos permiten esperar a que una gorutina termine de ejecutar una tarea para continuar con la siguiente. Para ello, debemos crear un canal, y enviar información por el canal cuando la gorutina haya terminado de ejecutar la tarea. En el ejemplo siguiente, vamos a crear un canal, y vamos a enviar información por el canal cuando la gorutina haya terminado de ejecutar la tarea.
 
-<CodeSnipet language={"go"} output={`
+<CodeSnippet language={"go"} output={`
 Hola
 Mundo
 `} code={`
@@ -100,7 +100,7 @@ En el ejemplo anterior, la gorutina imprime `Hola` y envía información por el 
 
 Los canales nos permiten comunicar gorutinas, ya que nos permiten enviar información de una gorutina a otra. Para ello, debemos crear un canal, y enviar información por el canal cuando la gorutina haya terminado de ejecutar la tarea. En el ejemplo siguiente, vamos a crear un canal, y vamos a enviar información por el canal cuando la gorutina haya terminado de ejecutar la tarea.
 
-<CodeSnipet language={"go"} output={`
+<CodeSnippet language={"go"} output={`
 Hola
 Mundo 1
 `} code={`

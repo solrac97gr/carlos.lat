@@ -27,7 +27,7 @@ En este post, voy a mostrarles 5 trucos que uso en mi día a día como programad
 
 Go sobresale por su gran rendimiento y así ha logrado ser uno de los lenguajes de programación más usados. Por ello, una de las cosas que hago todos los días es medir el tiempo de ejecución de mi código en Go. Puedes usar una función y añadirla en la instrucción defer para mejorar la comprensión.
 
-<CodeSnipet language={"go"} route={"./main.go"} code={`
+<CodeSnippet language={"go"} route={"./main.go"} code={`
 package main
 
   import (
@@ -50,7 +50,7 @@ package main
 
 Este es un problema común en el Log de un sistema cuando guardamos una Respuesta y una Petición con un struct no definido y necesitamos manipular la información dentro de este string.
 
-<CodeSnipet language={"go"} route={"./main.go"} code={`
+<CodeSnippet language={"go"} route={"./main.go"} code={`
   package main
 
   import (
@@ -101,7 +101,7 @@ Este es un problema común en el Log de un sistema cuando guardamos una Respuest
 
 Puedes verificar la prueba de cobertura de tu proyecto en una bonita interfaz en el navegador y verificar qué partes de tu código necesitan ser probadas.
 
-<CodeSnipet language={"bash"} code={`go test -coverprofile=coverage.out ./… && go tool cover -html=coverage.out && rm coverage.out`} />
+<CodeSnippet language={"bash"} code={`go test -coverprofile=coverage.out ./… && go tool cover -html=coverage.out && rm coverage.out`} />
 
 
 <img
@@ -116,7 +116,7 @@ El código que no ha sido comprobado aparecerá en color rojo y el código que h
 
 Otra situación habitual son los problemas relacionados con la búsqueda simple de un string dentro de un slice. Por ejemplo, quiero hacer una lista sobre los campos que se pueden modificar en un endpoint. El método de búsqueda dependerá del tamaño del array. En mi caso, son arrays muy cortos, entonces uso una búsqueda simple.
 
-<CodeSnipet language={"go"} route={"./main.go"} code={`
+<CodeSnippet language={"go"} route={"./main.go"} code={`
 package main
 
   func StringInSlice(a string, list []string) bool {
@@ -145,7 +145,7 @@ package main
 
 Asimismo, una de mis herramientas favoritas es la generación de perfiles de CPU para obtener un análisis más extenso del rendimiento de tu código.
 
-<CodeSnipet language={"bash"} code={`go test -cpuprofile=cpu.out ./… && go tool pprof cpu.out && rm cpu.out`} />
+<CodeSnippet language={"bash"} code={`go test -cpuprofile=cpu.out ./… && go tool pprof cpu.out && rm cpu.out`} />
 
 <img
   width="100%"

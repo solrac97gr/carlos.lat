@@ -21,9 +21,8 @@ Uno de mis lenguajes de programación de fin de semana es rust y algo que cuando
 
 Para ello nos ayudaremos de cargo
 
-```bash
-cargo new rust-env 
-```
+<CodeSnippet language="bash" code="cargo new rust-env" />
+
 
 Esto nos creará una estructura de archivos generada que lucirá de la siguiente forma.
 
@@ -64,61 +63,56 @@ Esto nos creará una estructura de archivos generada que lucirá de la siguiente
 
 Dentro del archivo `Cargo.toml` agregaremos la siguiente línea de código a las dependencias.
 
-```toml
-[dependencies]
+<CodeSnippet language="toml" code={`[dependencies]
 dotenv="*"
-```
+`} />
 
 ## 3. Cargando nuestro archivo .env
 
 Para ello primero crearemos nuestro archivo `.env` en la raíz del proyecto.
 
-```
-DB_USER="root"
+<CodeSnippet language="bash" code="touch .env" />
+
+Y agregaremos las siguientes variables de entorno.
+
+<CodeSnippet language="env" code={`DB_USER="root"
 DB_PASSWORD="root123"
-```
+`} />
 
 Y ahora dentro de nuestro archivo `src/main.rs` cargaremos nuestras variables.
 
-```rust
-dotenv::from_path("./.env").expect("error loading env");
-```
+<CodeSnippet language="rust" route="src/main.rs" code={`dotenv::from_path("./.env").expect("error loading env");`} />
 
 ## 4. Usando las variables de entorno
 
 Ahora usando la librería estándar de rust para las variables de entorno recuperaremos nuestras variables de entorno de la siguiente manera.
 
-```rust
-let db_users = env::var("DB_USER").expect("env error");
+<CodeSnippet language="rust" route="src/main.rs" code={`let db_users = env::var("DB_USER").expect("env error");
 let db_password = env::var("DB_PASSWORD").expect("env error");
-```
+`} />
 
 Y las imprimiremos para comprobar que logramos nuestro objetivo.
 
-```rust
-println!("------------------------");
+<CodeSnippet language="rust" route="src/main.rs" code={`println!("------------------------");
 println!("DB_USER: {}", db_users);
 println!("DB_PASSWORD: {}", db_password);
 println!("------------------------");
-```
+`} />
 
 ## 5. Ejecutamos nuestro ejemplo
 
 Usamos cargo para ejecutar nuestro ejemplo
-```bash
-cargo run --package rust-env --bin rust-env
-```
 
-Y deberíamos visualizar lo siguiente:
-
-```bash
-DB_USER:  root
+<CodeSnippet
+    language="bash"
+    code="cargo run --package rust-env --bin rust-env" output={`DB_USER:  root
 DB_PASSWORD:  root123
-```
+`} />
+
 
 
 Espero que esté tutorial les sirva y que empiecen a usar más este divertido lenguaje, próximamente estaré subiendo más tutoriales relacionados a rust.
 
-Aquí podran encontrar el repositorio <BlogLink url="https://github.com/solrac97gr/rust-env"  content="rust-env"/>
+Aquí podrán encontrar el repositorio <BlogLink url="https://github.com/solrac97gr/rust-env"  content="rust-env"/>
 
 Hasta la próxima 👋

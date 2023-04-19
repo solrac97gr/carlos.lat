@@ -21,7 +21,7 @@ Consistía en crear una función que se encargará de serializar la información
 
 Aquí les dejo la solución en código con algunos casos específicos debido al programa que estaba realizando, tú puedes cambiarlo y adaptarlo a tu caso de negocio.
 
-```go
+<CodeSnippet language="go" code={`
 func ParseToNDJson(data []domain.ElasticLog, dst *bytes.Buffer) error {
 	enc := json.NewEncoder(dst)
 	for _, element := range data {
@@ -50,4 +50,4 @@ func (edb *ElasticDB) SetElasticData(el []domain.ElasticLog) error {
 
 	return nil
 }
-```
+`} />

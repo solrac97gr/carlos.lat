@@ -29,27 +29,19 @@ Para ello abriremos una terminal y navegaremos hacia la carpeta donde queramos c
 
 Una vez dentro de la carpeta crearemos un nuevo proyecto:
 
-```bash
-mkdir fiber-docker
-```
+<CodeSnippet language="bash" code={`mkdir fiber-docker`} />
 
 Dentro de esta carpeta inicializaremos el Go modules para administrar nuestras dependencias del proyecto de Go.
 
-```shell
-go mod init github.com/solrac97g/fiber-docker
-```
+<CodeSnippet language="bash" code={`go mod init github.com/solrac97g/fiber-docker`} />
 
 Ahora crearemos un archivo de Go que será nuestro main:
 
-```bash
-touch main.go
-```
+<CodeSnippet language="bash" code={`touch main.go`} />
 
 Y crearemos nuestro archivo de docker
 
-```bash
-touch dockerfile
-```
+<CodeSnippet language="bash" code={`touch dockerfile`} />
 
 Esto será lo mínimo que requeriremos para ejecutar nuestro proyecto en Go por ahora.
 
@@ -57,7 +49,7 @@ Esto será lo mínimo que requeriremos para ejecutar nuestro proyecto en Go por 
 
 Dentro del main ejecutaremos el siguiente código que nos montara un servidor HTTP usando Fiber un framework de Go y lo expondrá en el puerto 8080.
 
-```go
+<CodeSnippet language="go" code={`
 package main
 
 import (
@@ -78,14 +70,12 @@ func main() {
 
 	log.Fatal(app.Listen(":8080"))
 }
+`} />
 
-```
 
 No olvides instalar nuestra dependencia, desde la terminal agregaremos la dependencia a nuestro proyecto:
 
-```bash
-go get github.com/gofiber/fiber/v2
-```
+<CodeSnippet language="bash" code={`go get github.com/gofiber/fiber/v2`} />
 
 Ahora si ya tenemos nuestro código preparado para funcionar. Lo que hace este script básicamente es que crea dos endpoints el principal "/" que te responde con "hello world" y el "/ping"  que te responde con "pong". 
 
@@ -93,7 +83,7 @@ Ahora si ya tenemos nuestro código preparado para funcionar. Lo que hace este s
 
 Para configurar nuestro Docker container editaremos nuestro archivo dockerfile
 
-```dockerfile
+<CodeSnippet language="dockerfile" code={`
 FROM golang:1.18-alpine
 WORKDIR /app
 COPY go.mod .
@@ -102,7 +92,7 @@ RUN go mod download
 COPY . .
 RUN go build -o ./out/dist .
 CMD ./out/dist
-```
+`} />
 
 Esto lo que hace es crear un container que corre Go 1.18 luego copia los archivos de dependencias al contenedor y ejecuta una descarga de las dependencias para finalmente construir el proyecto y ejecutarlo.
 
@@ -110,14 +100,11 @@ Esto lo que hace es crear un container que corre Go 1.18 luego copia los archivo
 
 Finalmente podemos ejecutar nuestro contenedor usando el siguiente comando primero para construir nuestro contenedor.
 
-```bash
-docker build -t app .
-```
+<CodeSnippet language="bash" code={`docker build -t app .`} />
 
 Y ahora el siguiente comando para levantar  nuestros contenedor.
-```shell
-docker run -p 8888:8080 app
-```
+
+<CodeSnippet language="bash" code={`docker run -p 8888:8080 app`} />
 
 Nuestro proyecto estaré preparado para recibir peticiones desde la url : http://localhost:8888
 

@@ -124,22 +124,23 @@ En Go no tenemos Clases(Class) pero contamos con Estructuras(Structs) y estás a
 
 Para entender mejor la diferencias revisemos este ejemplo con Typescript y Go:
 
-```typescript
-   class User {
-      id: number;
-      email: string;
-      password: string;
-      constructor(id: number, email: string, password:string){
-        this.id = id;
-        this.email = email;
-        this.password = password;
-      }
-      GetEmail(): string {
-        return this.email;
-      }
-   }
-```
-```go
+<CodeSnippet language="typescript" code={`
+  class User {
+    id: number;
+    email: string;
+    password: string;
+    constructor(id: number, email: string, password:string){
+      this.id = id;
+      this.email = email;
+      this.password = password;
+    }
+    GetEmail(): string {
+      return this.email;
+    }
+  }
+`} />
+
+<CodeSnippet language="go" code={`
   package domain
 
   type User struct {
@@ -157,7 +158,7 @@ Para entender mejor la diferencias revisemos este ejemplo con Typescript y Go:
   func (u *User) GetEmail() string {
     return u.Email
   }
-```
+`} />
 
 
 Como se puede apreciar en la imagen Go no tiene un constructor de manera explicita como Typescript asi que tenemos que simularlo creando una función que se encargue de devolvernos un Usuario (NewPerson en la imagen del lado izquierdo) y luego creamos un "Método" de la "Clase" usando Reciver Functions (GetEmail en la imagen del lado izquierdo). Ahora que tenemos la manera de remplazar las clases podemos empezar a construir nuestra App
@@ -166,28 +167,25 @@ Como se puede apreciar en la imagen Go no tiene un constructor de manera explici
 
 Vamos a usar la estructura previa, crearemos un archivo dentro de la carpeta domain (internal/core/domain) con el nombre de user.go para entender que estaría en la carpeta domain podemos decir que es analoga a la carpeta "models" o "entitys" de algunos frameworks.
 
-```go
-    package domain
+<CodeSnippet language="go" route="./internal/core/domain/user.go"  code={`
+  package domain
 
-    type User struct {
-        ID       int
-        Email    string
-        Password string
+  type User struct {
+    ID int
+    Email string
+    Password string
+  }
+  func NewPerson(id int, email string, password string){
+    return &User{
+      ID:id,
+      Email:email,
+      Password: password,
     }
-
-    func NewPerson(id int, email string, password string) *User {
-        return &User{
-            ID:       id,
-            Email:    email,
-            Password: password,
-        }
-    }
-
-    func (u *User) GetEmail() string {
-        return u.Email
-    }
-
-```
+  }
+  func (u *User) GetEmail() string {
+    return u.Email
+  }
+`} />
 
 ### 2. Creando los puertos(Ports): UserRepository, UserService y UserHandlers
 
@@ -195,233 +193,232 @@ Los puertos son las instructiones de como un Servicio o Repositorio debe comport
 
 En go las interfaces trabajan de forma distinta son implicitias eso quiere decir que no tenemos que indicar que estamos implementadola en la declaración lo único que debemos hacer es agregar los métodos y Go automaticamente lo considerara una interfaz válida.
 
-```go
-    package ports
+<CodeSnippet language="go" route="./internal/core/ports/user_ports.go" code={`
+  package ports
 
-    import (
-        fiber "github.com/gofiber/fiber/v2"
-    )
+  import (
+    "goHexagonalBlog/internal/core/domain"
+  )
 
-    type UserService interface {
-        Login(email string, password string) error
-        Register(email string, password string, passwordConfirmation string) error
-    }
+  type UserRepository interface {
+    Login(email string, password string) error
+    Register(email string, password string) error
+  }
 
-    type UserRepository interface {
-        Login(email string, password string) error
-        Register(email string, password string) error
-    }
+  type UserService interface {
+    Login(email string, password string) error
+    Register(email string, password string, passwordConfirmation string) error
+  }
 
-    type UserHandlers interface {
-        Login(c *fiber.Ctx) error
-        Register(c *fiber.Ctx) error
-    }
+  type UserHandlers interface {
+    Login(c *fiber.Ctx) error
+    Register(c *fiber.Ctx) error
+  }
+`} />
 
-```
 
 ### 3. Creando e Implementando los Servicios(Service): UserService
 
 Ahora gracias a las interfaces sabemos exactamente que métodos necesitamos crear para nuestro UserService, necesitamos en esta Estructura un método Login y uno Register. Pero para eso necesitamos comunicar Service con el Repository(Estrucura que se encargara de comunicarse con la base de datos) 🤔... así que Cómo lo lograremos? En la estrucura UserService agregaremos que como propiedad debe tener un UserRepository para poder funcionar. Este UserRepository sera requerido en nuestro constructor. [NewUserService(userRepository)]
 
-```go
-    package services
+<CodeSnippet language="go" route="./internal/core/services/user_services.go" code={`
+  package services
 
-    import (
-        "errors"
-        "goHexagonalBlog/internal/core/ports"
-    )
+  import (
+    "errors"
+    "goHexagonalBlog/internal/core/ports"
+  )
 
-    type UserService struct {
-        userRepository ports.UserRepository
+  type UserService struct {
+    userRepository ports.UserRepository
+  }
+
+  //This line is for get feedback in case we are not implementing the interface correctly
+  var _ ports.UserService = (*UserService)(nil)
+
+  func NewUserService(repository ports.UserRepository) *UserService {
+    return &UserService{
+      userRepository: repository,
     }
+  }
 
-    //This line is for get feedback in case we are not implementing the interface correctly
-    var _ ports.UserService = (*UserService)(nil)
-
-    func NewUserService(repository ports.UserRepository) *UserService {
-        return &UserService{
-            userRepository: repository,
-        }
+  func (s *UserService) Login(email string, password string) error {
+    err := s.userRepository(email, password)
+    if err != nil {
+      return err
     }
+    return nil
+  }
 
-    func (s *UserService) Login(email string, password string) error {
-        err := s.userRepository(email, password)
-        if err != nil {
-            return err
-        }
-        return nil
+  func (s *UserService) Register(email string, password string, confirmPass string) error {
+    if password != confirmPass {
+      return errors.New("the passwords are not equal")
     }
-
-    func (s *UserService) Register(email string, password string, confirmPass string) error {
-        if password != confirmPass {
-            return errors.New("the passwords are not equal")
-        }
-        err := s.userRepository.Register(email, password)
-        if err != nil {
-            return err
-        }
-        return nil
+    err := s.userRepository.Register(email, password)
+    if err != nil {
+      return err
     }
-
-```
+    return nil
+  }
+`} />
 
 ### 4. Creando e Implementando los Repositorios(Repository): UserRepository
 
-El repositorio de usuario se comunicara directamente con la base de datos, asie que en la funcion de creación (NewUserRepository) podemos agregar la inicialización de la base de datos, para este ejemplo usaré mongo.
+El repositorio de usuario se comunicara directamente con la base de datos, así que en la función de creación (NewUserRepository) podemos agregar la inicialización de la base de datos, para este ejemplo usaré mongo.
 
-```go
-    package repositories
+<CodeSnippet language="go" route="./internal/repository/user_repositories.go" code={`
+  package repositories
 
-    import (
-        "context"
-        "time"
+  import (
+    "context"
+    "time"
 
-        "goHexagonalBlog/internal/core/ports"
+    "goHexagonalBlog/internal/core/ports"
 
-        "go.mongodb.org/mongo-driver/mongo"
-        "go.mongodb.org/mongo-driver/mongo/options"
-        "go.mongodb.org/mongo-driver/mongo/readpref"
-    )
+    "go.mongodb.org/mongo-driver/mongo"
+    "go.mongodb.org/mongo-driver/mongo/options"
+    "go.mongodb.org/mongo-driver/mongo/readpref"
+  )
 
-    const (
-        MongoClientTimeout = 5
-    )
+  const (
+    MongoClientTimeout = 5
+  )
 
-    type UserRepository struct {
-        client     *mongo.Client
-        database   *mongo.Database
-        collection *mongo.Collection
+  type UserRepository struct {
+    client     *mongo.Client
+    database   *mongo.Database
+    collection *mongo.Collection
+  }
+
+  var _ ports.UserRepository = (*UserRepository)(nil)
+
+  func NewUserRepository(conn string) *UserRepository {
+    ctx, cancelFunc := context.WithTimeout(context.Background(), MongoClientTimeout*time.Second)
+    defer cancelFunc()
+
+    client, err := mongo.Connect(ctx, options.Client().ApplyURI(
+      conn,
+    ))
+    if err != nil {
+      return nil, err
     }
 
-    var _ ports.UserRepository = (*UserRepository)(nil)
-
-    func NewUserRepository(conn string) *UserRepository {
-        ctx, cancelFunc := context.WithTimeout(context.Background(), MongoClientTimeout*time.Second)
-        defer cancelFunc()
-
-        client, err := mongo.Connect(ctx, options.Client().ApplyURI(
-            conn,
-        ))
-        if err != nil {
-            return nil, err
-        }
-        err = client.Ping(ctx, readpref.Primary())
-        if err != nil {
-            return nil, err
-        }
-        return &UserRepository{
-            client:     client,
-            database:   client.Database("goHexagonalBlog"),
-            collection: client.Database("goHexagonalBlog").Collection("users"),
-        }
+    err = client.Ping(ctx, readpref.Primary())
+    if err != nil {
+      return nil, err
     }
 
-    func (r *UserRepository) Login(email string, password string) error {
-        //Here your code for login in mongo database
-        return nil
-    }
+    database := client.Database("goHexagonalBlog")
+    collection := database.Collection("users")
 
-    func (r *UserRepository) Register(email string, password string) error {
-        //Here your code for save in mongo database
-        return nil
+    return &UserRepository{
+      client:     client,
+      database:   database,
+      collection: collection,
     }
+  }
 
-```
+  func (r *UserRepository) Login(email string, password string) error {
+    return nil
+  }
+
+  func (r *UserRepository) Register(email string, password string) error {
+    return nil
+  }
+`} />
 
 ### 5. Creando los Handlers: UserHandlers
 
 Ahora tenemos que exponer nuestro servicio a los handlers y estos handlers al mundo para eso usaremos GoFiber para los handlers como en las otras implementaciones haremos algo muy parecido pero esta ves UserHandlers requerira de UserService para funcionar ya que los Handlers se comunicaran con los Servicios
 
-```go
-    package handlers
+<CodeSnippet language="go" route="./internal/handlers/user_handlers.go" code={`
+  package handlers
 
-    import (
-        "goHexagonalBlog/internal/core/ports"
+  import (
+    "goHexagonalBlog/internal/core/ports"
 
-        fiber "github.com/gofiber/fiber/v2"
-    )
+    fiber "github.com/gofiber/fiber/v2"
+  )
 
-    type UserHandlers struct {
-        userService ports.UserService
+  type UserHandlers struct {
+    userService ports.UserService
+  }
+
+  var _ ports.UserHandlers = (*UserHandlers)(nil)
+
+  func NewUserHandlers(userService ports.UserService) *UserHandlers {
+    return &UserHandlers{
+      userService: userService,
     }
+  }
 
-    var _ ports.UserHandlers = (*UserHandlers)(nil)
-
-    func NewUserHandlers(userService ports.UserService) *UserHandlers {
-        return &UserHandlers{
-            userService: userService,
-        }
+  func (h *UserHandlers) Login(c *fiber.Ctx) error {
+    var email string
+    var password string
+    //Extract the body and get the email and password
+    err := h.userService.Login(email, password)
+    if err != nil {
+      return err
     }
+    return nil
+  }
 
-    func (h *UserHandlers) Login(c *fiber.Ctx) error {
-        var email string
-        var password string
-        //Extract the body and get the email and password
-        err := h.userService.Login(email, password)
-        if err != nil {
-            return err
-        }
-        return nil
+  func (h *UserHandlers) Register(c *fiber.Ctx) error {
+    var email string
+    var password string
+    var confirmPassword string
+
+    //Extract the body and get the email and password
+    err := h.userService.Register(email, password, confirmPassword)
+    if err != nil {
+      return err
     }
-
-    func (h *UserHandlers) Register(c *fiber.Ctx) error {
-        var email string
-        var password string
-        var confirmPassword string
-
-        //Extract the body and get the email and password
-        err := h.userService.Register(email, password, confirmPassword)
-        if err != nil {
-            return err
-        }
-        return nil
-    }
-
-```
+    return nil
+  }
+`} />
 
 ### 6. Creando el Servidor (Server): Fiber HTTPS server
 
 Luego de tener todas las piezas Lego lista necesitamos crear una ultima parte para inizializar nuestros programa en un servidor HTTPS, continuare usando Fiber para esto, como en las otras partes continuare usando una Estructura para hacer el programa más modular
 
-```go
-    package server
+<CodeSnippet language="go" route="./internal/server/server.go" code={`
+  package server
 
-    import (
-        "goHexagonalBlog/internal/core/ports"
-        "log"
+  import (
+    "goHexagonalBlog/internal/core/ports"
+    "log"
 
-        fiber "github.com/gofiber/fiber/v2"
-    )
+    fiber "github.com/gofiber/fiber/v2"
+  )
 
-    type Server struct {
-        //We will add every new Handler here
-        userHandlers ports.UserHandlers
-        //middlewares ports.Middlewares
-        //paymentHandlers ports.PaymentHandlers
+  type Server struct {
+    //We will add every new Handler here
+    userHandlers ports.UserHandlers
+    //middlewares ports.Middlewares
+    //paymentHandlers ports.PaymentHandlers
+  }
+
+  func NewServer(uHandlers ports.UserHandlers) *Server {
+    return &Server{
+      userHandlers: uHandlers,
+      //paymentHandlers: pHandlers
     }
+  }
 
-    func NewServer(uHandlers ports.UserHandlers) *Server {
-        return &Server{
-            userHandlers: uHandlers,
-            //paymentHandlers: pHandlers
-        }
+  func (s *Server) Initialize() {
+    app := fiber.New()
+    v1 := app.Group("/v1")
+
+    userRoutes := v1.Group("/user")
+    userRoutes.Post("/login", s.userHandlers.Login)
+    userRoutes.Post("/register", s.userHandlers.Register)
+
+    err := app.Listen(":5000")
+    if err != nil {
+      log.Fatal(err)
     }
-
-    func (s *Server) Initialize() {
-        app := fiber.New()
-        v1 := app.Group("/v1")
-
-        userRoutes := v1.Group("/user")
-        userRoutes.Post("/login", s.userHandlers.Login)
-        userRoutes.Post("/register", s.userHandlers.Register)
-
-        err := app.Listen(":5000")
-        if err != nil {
-            log.Fatal(err)
-        }
-    }
-
-```
+  }
+`} />
 
 ### 7. Qué comienze la mágia!
 
@@ -429,7 +426,7 @@ Finalmente crearemos nuestro punto de entrada en la aplicación en el main.go y 
 
 > MongoConn:string > UserRepository > UserService > UserHandler > Server
 
-```go
+<CodeSnippet route={"./cmd/main"} language="go" code={`
     package main
 
     import (
@@ -453,8 +450,7 @@ Finalmente crearemos nuestro punto de entrada en la aplicación en el main.go y 
         )
         httpServer.Initialize()
     }
-
-```
+`} />
 
 ### 8. Disfrutar el momento.
 

@@ -84,7 +84,7 @@ Podemos abordar el archivo de configuración usando los distintos parámetros po
 
 Para este artículo usaremos solo la URL para simplificar lo más que podamos y concentrarnos en realizar la conexión.
 
-<CodeSnipet language={"json"} code={`
+<CodeSnippet language={"json"} code={`
   {
   "mongo_conn": "https://🤫.com"
   }
@@ -95,7 +95,7 @@ Para este artículo usaremos solo la URL para simplificar lo más que podamos y 
 
 Para este ejemplo usaremos nuestro servicio de configuración explicado en <BlogLink url="/blog/como-obtener-variables-entorno-go-env-json/" content="el artículo"/> donde aprendemos a traer variables de configuración desde archivos JSON.
 
-<CodeSnipet language={"go"} code={`
+<CodeSnippet language={"go"} code={`
   package config
 
   import (
@@ -143,12 +143,12 @@ Para este ejemplo usaremos nuestro servicio de configuración explicado en <Blog
 
 Primero instalemos el Mongo Driver que es el paquete oficial de Mongo.
 
-<CodeSnipet language={"bash"} code={`go get go.mongodb.org/mongo-driver/mongo`} />
+<CodeSnippet language={"bash"} code={`go get go.mongodb.org/mongo-driver/mongo`} />
 
 
 Una buena forma de empezar la conexión a Mongo es al momento de crear la instancia de este repositorio Mongo en el código podrás ver como en la función creadora se inicializa la conexión hacia Mongo.
 
-<CodeSnipet language={"go"} code={`
+<CodeSnippet language={"go"} code={`
   package repositories
 
   import (
@@ -194,7 +194,7 @@ Una buena forma de empezar la conexión a Mongo es al momento de crear la instan
 
 Ahora podremos usar nuestra base de datos en otros servicios por ahora comprobaremos la conexión en main.go
 
-```go
+<CodeSnippet language={"go"} code={`
   package main
 
   import (
@@ -209,7 +209,9 @@ Ahora podremos usar nuestra base de datos en otros servicios por ahora comprobar
 
     mongoHandler.CheckConnection()
   }
-```
+`} />
+
+
 
 ## Detalles adicionales
 

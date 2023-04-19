@@ -24,7 +24,7 @@ author: "Carlos García"
 
 Comenzando con el problema común de crear funciones más genéricas, me ocupé de un problema parecido una vez y es el acceso a subcampos dentro de una interfaz de **map[string]interface{}**, la solución es mucho más simple de lo que piensas comenzando por identificar qué campo necesitamos dentro de nuestra estructura después de eso, todo es más simple, necesitará una conversión simple del campo que tiene un subcampo a una interfaz **map[string]interface{}** y luego acceda al campo que necesita, finalmente necesita convertir el valor a su tipo de deseo, para este ejemplo no uso una validación de existencia de los campos, pero es muy recomendable.
 
-<CodeSnipet language={"go"} route={"./main.go"} code={`
+<CodeSnippet language={"go"} route={"./main.go"} code={`
 package main
 
 import "fmt"

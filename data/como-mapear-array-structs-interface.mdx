@@ -25,25 +25,25 @@ author: "Carlos García"
 
 En mi tiempo de programación con go, un problema recurrente es tratar de hacer que los métodos puedan funcionar con diferentes parámetros de tipos de datos, por ejemplo, lo que sucede cuando tiene un método para insertar varios documentos en MongoDB pero es la misma acción para diferentes tipos de datos. La forma lógica de resolver este problema es usar una Array de interfaz como en el siguiente ejemplo.
 
-```go
-    func SaveToMongo(documents []interface{}, collectionName string) {
-        ctx, cancelFunc := context.WithTimeout(context.Background(), 5*time.Second)
-        defer cancelFunc()
+<CodeSnippet language="go" code={
+`func SaveToMongo(documents []interface{}, collectionName string) {
+    ctx, cancelFunc := context.WithTimeout(context.Background(), 5*time.Second)
+    defer cancelFunc()
 
-        client, err := mongo.Connect(ctx, options.Client().ApplyURI(
-            MongoCon,
-        ))
-        if err != nil {
-                println(err.Error())
-        }
-
-        collection := client.Database("test").Collection(collectionName)
-        _, err = collection.InsertMany(ctx, documents)
-        if err != nil {
+    client, err := mongo.Connect(ctx, options.Client().ApplyURI(
+        MongoCon,
+    ))
+    if err != nil {
             println(err.Error())
-        }
     }
-```
+
+    collection := client.Database("test").Collection(collectionName)
+    _, err = collection.InsertMany(ctx, documents)
+    if err != nil {
+        println(err.Error())
+    }
+}`
+} />
 
 Pero cuando intenta enviar datos a este método, por ejemplo, una array de struct, obtiene un error de tipos incompatibles.
 
@@ -51,7 +51,7 @@ Pero cuando intenta enviar datos a este método, por ejemplo, una array de struc
 
 Para hacer que este método funcione y el método InsertMany también, en mi caso, tengo diferentes métodos que me devuelven una matriz de diferentes tipos de estructuras en el mismo método. Devuelvo esa matriz. Asigno la matriz a una []interfaz.
 
-```go
+<CodeSnippet language="go" code={`
     func GetComments() (logResultsInt []interface{}) {
         var logResults []models.Comments
         ...
@@ -60,7 +60,7 @@ Para hacer que este método funcione y el método InsertMany también, en mi cas
         }
         return logResultsInt
     }
-```
+`} />
 
 ### Conclusión
 
@@ -70,7 +70,7 @@ Con Go podemos resolver problemas y casos en los que necesitamos usar un "tipo d
 
 Gracias a <BlogLink url="https://yael-castro.medium.com" content="Yael Castro"/> por esta sugerencia de una función que realiza la conversión de manera más eficiente.
 
-```go
+<CodeSnippet language="go" code={`
     package main
 
     import "fmt"
@@ -88,4 +88,5 @@ Gracias a <BlogLink url="https://yael-castro.medium.com" content="Yael Castro"/>
 
         fmt.Printf("%T", arr)
     }
-```
+`} />
+

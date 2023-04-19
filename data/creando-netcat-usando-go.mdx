@@ -35,20 +35,15 @@ Un Flag es una entidad dentro del paquete flags que son extraídas de la ejecuci
 
 Se ven de la siguiente forma en un programa ya compilado.
 
-```bash
-./main --environment="dev"
-```
+<CodeSnippet language="bash" code={`./main --environment="dev"`} />
 
 Y así en un programa que no a sido construido aún.
 
-```bash
-go run main.go --environment="dev"
-```
+<CodeSnippet language="bash" code={`go run main.go --environment="dev"`} />
 
 En el código de nuestro programa se usan de la siguiente forma.
 
-```go
-package main
+<CodeSnippet language="go" code={`package main
 
 import "flag"
 
@@ -62,15 +57,14 @@ func main() {
   flag.Parse()
 
   println(*env)
-}
-```
+}`} />
+
 
 ## Manos a la obra con nuestro paquete de Netcat
 
 Nuestra estrategia consistirá en lo siguiente obtener por flags los parámetros del host y port en primer lugar.
 
-```go
-package main
+<CodeSnippet language="go" code={`package main
 
 import (
 	"flag"
@@ -88,23 +82,19 @@ func init() {
 
 func main() {
 	flag.Parse()
-}
-```
+}`} />
 
 Luego definir un método que copiará el contenido de nuestra comunicación.
 
-```go
-func CopyContent(dst io.Writer, src io.Reader) {
+<CodeSnippet language="go" code={`func CopyContent(dst io.Writer, src io.Reader) {
 	if _, err := io.Copy(dst, src); err != nil {
 		log.Fatal(err)
 	}
-}
-```
+}`} />
 
 Y ahora en la función main nos conectaremos al servidor de TCP y enviaremos y obtendremos información.
 
-```go
-package main
+<CodeSnippet language="go" code={`package main
 
 import (
 	"flag"
@@ -148,7 +138,7 @@ func CopyContent(dst io.Writer, src io.Reader) {
 	if _, err := io.Copy(dst, src); err != nil {
 		log.Fatal(err)
 	}
-}
-```
+}`} />
+
 
 Con este simple programa podremos conectador a un servidor TCP y esperar nuevos mensajes para imprimir el contenido en pantalla, a su vez enviar contenido por consola hacia el servidor de TCP.
