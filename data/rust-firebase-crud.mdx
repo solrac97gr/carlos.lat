@@ -30,29 +30,27 @@ Entonces me puse manos a la obra para crear esas funciones.
 
 ## Paquetes que usaremos:
 
-Agregare el archivo de Cargo para que sepan que dependencias usa el proyecto.
+Agregaré el archivo de Cargo para que sepan que dependencias usa el proyecto.
 
-```toml
-[package]
+<CodeSnippet
+  language="toml"
+  code={`[package]
 name = "rust-firebase"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 firebase-rs = "2.0.5"
 serde = "1.0.147"
 serde_json = "1.0"
-tokio = { version = "1.21.2", features = ["full"] }
-```
+tokio = { version = "1.21.2", features = ["full"] }`}
+/>
 
 ## Creando las estructuras que usaremos:
 
 Para este ejemplo usaremos dos estructuras simple un Response y un User.
 
-```rust
-use serde::{Deserialize, Serialize};
+<CodeSnippet language="rust" code={`use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 struct User {
@@ -64,15 +62,12 @@ struct User {
 #[derive(Serialize, Deserialize, Debug)]
 struct Response {
     name: String,
-}
-
-```
+}`} />
 
 ## Ahora la función main:
 Haremos que nuestra main function sea Async para esperar las respuesta del API usando el paquete Tokio.
 
-```rust
-use serde::{Deserialize, Serialize};
+<CodeSnippet language="rust" code={`use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 struct User {
@@ -88,16 +83,15 @@ struct Response {
 
 #[tokio::main]
 async fn main() {
-}
-```
+}`} />
+
 ## Inicializando un Cliente de firebase
 
 Ahora crearemos un cliente de firebase con nuestra URL de la base de datos que usaremos para pasarlo en las funciones.
 
 >Nota 📝: Si deseas usar Auth remplaza la función new por auth y agrega tu Auth token como segundo parámetro
 
-```rust
-use firebase_rs::*;
+<CodeSnippet language="rust" code={`use firebase_rs::*;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -115,12 +109,11 @@ struct Response {
 #[tokio::main]
 async fn main() {
     let firebase = Firebase::new("https://myproject.firebaseio.com").unwrap();
-}
-```
+}`} />
 
 ## Crearemos dos funciones que nos ayudarán a parsear:
-```rust
-// Convert a string to a Response
+
+<CodeSnippet language="rust" code={`// Convert a string to a Response
 fn string_to_reponse(s: &str) -> Response {
     serde_json::from_str(s).unwrap()
 }
@@ -128,62 +121,53 @@ fn string_to_reponse(s: &str) -> Response {
 // Convert a string to a User
 fn string_to_user(s: &str) -> User {
     serde_json::from_str(s).unwrap()
-}
-```
+}`} />
 
 ## Crearemos los métodos correspondientes:
 
 ### Crear un usuario:
-```rust
-async fn set_user(firebase_client: &Firebase, user: &User) -> Response {
+
+<CodeSnippet language="rust" code={`async fn set_user(firebase_client: &Firebase, user: &User) -> Response {
     let firebase = firebase_client.at("users");
     let _users = firebase.set::<User>(&user).await;
     return string_to_reponse(&_users.unwrap().data);
-}
-```
+}`} />
 
 ### Obtener todos los usuarios:
-```rust
-async fn get_users(firebase_client: &Firebase) -> HashMap<String,User> {
+
+<CodeSnippet language="rust" code={`async fn get_users(firebase_client: &Firebase) -> HashMap<String,User> {
     let firebase = firebase_client.at("users");
     let users = firebase.get::<HashMap<String, User>>().await;
     println!("{:?}", users);
     return users.unwrap();
-}
-```
+}`} />
 
 ### Obtener un usuario por id:
-```rust
-async fn get_user(firebase_client: &Firebase, id: &String) -> User {
+
+<CodeSnippet language="rust" code={`async fn get_user(firebase_client: &Firebase, id: &String) -> User {
     let firebase = firebase_client.at("users").at(&id);
     let user = firebase.get::<User>().await;
     return user.unwrap();
-}
-```
+}`} />
 
 ### Actualizar un usuario:
-```rust
-async fn update_user(firebase_client: &Firebase, id: &String, user: &User) -> User {
+<CodeSnippet language="rust" code={`async fn update_user(firebase_client: &Firebase, id: &String, user: &User) -> User {
     let firebase = firebase_client.at("users").at(&id);
     let _user = firebase.update::<User>(&user).await;
     return string_to_user(&_user.unwrap().data);
-}
-```
+}`} />
 
 ### Eliminar un usuario:
-```rust
-async fn delete_user(firebase_client: &Firebase, id: &String) {
+<CodeSnippet language="rust" code={`async fn delete_user(firebase_client: &Firebase, id: &String) {
     let firebase = firebase_client.at("users").at(&id);
     let _result = firebase.delete().await;
-}
-```
+}`} />
 
 ## Usando nuestras funciones y completando el main:
 
 Para este proceso crearemos un usuario luego obtendremos todos los usuarios en la base de datos despues obtendremos solo el usuario creado luego lo actualizaremos y al final lo eliminaremos.
 
-```rust
-use std::collections::HashMap;
+<CodeSnippet language="rust" code={`use std::collections::HashMap;
 
 use firebase_rs::*;
 use serde::{Deserialize, Serialize};
@@ -274,8 +258,43 @@ fn string_to_reponse(s: &str) -> Response {
 // Convert a string to a User
 fn string_to_user(s: &str) -> User {
     serde_json::from_str(s).unwrap()
-}
-```
+}`} />
+
+## Estructura de archivos:
+
+<FolderStructure repo={"https://github.com/solrac97gr/rust-firebase"} tree={[
+
+    {
+        name: "src",
+        type: "folder",
+        content: [
+            {
+                name: "main.rs",
+                type: "file",
+                content: ``
+            }
+        ]
+    },
+{
+    name: ".gitignore",
+    type: "file",
+},
+    {
+        name: "Cargo.toml",
+        type: "file",
+    },
+{
+    name: "Cargo.lock",
+    type: "file",
+},
+    {
+        name: "README.md",
+        type: "file",
+    },
+
+
+]} />
+
 ## Mis conclusiones:
 
 Firebase y Rust no son buenos amigos aun hay mucho que mejorar en este stack desde la falta de un paquete oficial hasta el hecho de solo poder usar Realtime Database hace que usar Firebase no sea buena idea ya que no se aprovechan todos los beneficios que Firebase te otorga al usarlo de manera completa.

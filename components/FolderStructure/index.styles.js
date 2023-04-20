@@ -3,11 +3,11 @@ import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
   flex-direction: row;
-  background-color: black;
+  background-color: #011627;
   padding: 21px;
   border-radius: 5px;
   font-size: 15px;
-  justify-content:space-between ;
+  justify-content: space-between;
 `;
 
 export const SubContainer = styled.div`
@@ -24,4 +24,9 @@ export const FileName = styled.p`
   margin-left: 5px;
   margin-top: 3px;
   margin-bottom: 3px;
+`;
+
+export const ToolBar = styled.div`
+  display: flex;
+  flex-direction: column;  
 `;

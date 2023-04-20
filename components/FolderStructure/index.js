@@ -21,9 +21,11 @@ import {
   SubContainer,
   FileNameContainer,
   FileName,
+  ToolBar,
 } from "./index.styles";
 import { CopyButton } from "../CopyButton";
 import { IoIosArrowDown } from "react-icons/io";
+import { ForkButton } from "../ForkButton";
 
 const size = 21;
 
@@ -118,16 +120,18 @@ const RenderTree = (tree) => {
   });
 };
 
-export const FolderStructure = ({ tree }) => {
+export const FolderStructure = ({ tree,repo="" }) => {
   return (
     <Container>
       <div>{RenderTree(tree)} </div>
-      <CopyButton
-        onClick={() => {
-          const text = BuildFinalScript(BuildCommand(tree, ""));
-          navigator.clipboard.writeText(text);
-        }}
-      />
+      <ToolBar>
+        {repo ? <ForkButton repo={repo} /> : <CopyButton
+            onClick={() => {
+              const text = BuildFinalScript(BuildCommand(tree, ""));
+              navigator.clipboard.writeText(text);
+            }}
+        />}
+      </ToolBar>
     </Container>
   );
 };
