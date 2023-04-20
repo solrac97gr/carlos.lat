@@ -14,4 +14,5 @@ export const ConsoleOutput = styled.pre`
   margin-top: 1rem;
   display: flex;
   flex-direction: column;
+  margin-left: -3rem;
 `;
