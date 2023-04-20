@@ -29,7 +29,7 @@ content={"JWT de Fiber en su versión 3"}
 
 Creamos nuestra carpeta 📁 donde alojaremos nuestro proyecto y inicializaremos nuestro proyecto de go usando el comando:
 
-<CodeSnippet language={"bash"} code={"go mod init github.com/solrac97gr/basic-jwt-auth"} />
+<CodeSnippet language={"bash"} code={"go mod init github.com/solrac97gr/basic-jwt-auth"} hideLineNumbers={true}/>
 
 > No olvides remplazar **solrac97gr** por tu usuario de github.
 
@@ -37,15 +37,15 @@ Ahora necesitamos descargar 3 paquetes que usaremos en esta guía básica:
 
 El paquete de JWT de Fiber
 
-<CodeSnippet language={"bash"} code={"go get github.com/gofiber/jwt/v3"} />
+<CodeSnippet language={"bash"} code={"go get github.com/gofiber/jwt/v3"} hideLineNumbers={true}/>
 
 El paquete de JWT de Golang
 
-<CodeSnippet language={"bash"} code={"go get github.com/golang-jwt/jwt/v4"} />
+<CodeSnippet language={"bash"} code={"go get github.com/golang-jwt/jwt/v4"} hideLineNumbers={true} />
 
 Y por último el paquete de Fiber
 
-<CodeSnippet language={"bash"} code={"go get github.com/gofiber/fiber/v2"} />
+<CodeSnippet language={"bash"} code={"go get github.com/gofiber/fiber/v2"} hideLineNumbers={true} />
 
 ## Manos al código
 
@@ -257,7 +257,7 @@ func main() {
 Para ello una vez terminamos de crear los archivos necesarios ejecutaremos el siguiente comando.
 
 
-<CodeSnippet language={"bash"} code={"go run main.go"} />
+<CodeSnippet language={"bash"} code={"go run main.go"} hide />
 
 
 Esto nos dará como resultado lo siguiente en la consola, eso significa que nuestra app ya esta corriendo en el puerto **3000**

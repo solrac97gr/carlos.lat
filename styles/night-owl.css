@@ -157,3 +157,8 @@
  .token.italic {
      font-style: italic;
  }
+
+pre[class*="language-"] > code {
+    position: relative;
+    display: block;
+}

@@ -27,8 +27,7 @@ En este post, voy a mostrarles 5 trucos que uso en mi día a día como programad
 
 Go sobresale por su gran rendimiento y así ha logrado ser uno de los lenguajes de programación más usados. Por ello, una de las cosas que hago todos los días es medir el tiempo de ejecución de mi código en Go. Puedes usar una función y añadirla en la instrucción defer para mejorar la comprensión.
 
-<CodeSnippet language={"go"} route={"./main.go"} code={`
-package main
+<CodeSnippet language={"go"} route={"./main.go"} code={`  package main
 
   import (
 	  "log"
@@ -43,15 +42,13 @@ package main
   func main() {
 	  defer ExecTime(time.Now(), "main")
 	  time.Sleep(3 * time.Second)
-  }
-`} />
+  }`} />
 
 ## 2. Serializar (marshalling) un Json string con un Struct no definido a un "Objeto"
 
 Este es un problema común en el Log de un sistema cuando guardamos una Respuesta y una Petición con un struct no definido y necesitamos manipular la información dentro de este string.
 
-<CodeSnippet language={"go"} route={"./main.go"} code={`
-  package main
+<CodeSnippet language={"go"} route={"./main.go"} code={`  package main
 
   import (
 	  "encoding/json"
@@ -93,8 +90,7 @@ Este es un problema común en el Log de un sistema cuando guardamos una Respuest
 	  if logRegister.RequestJson["message"] != nil {
 		  fmt.Println(logRegister.RequestJson["message"])
 	  }
-  }
-`} />
+  }`} />
 
 
 ## 3. Obtener una Prueba de Cobertura de tu código
@@ -116,8 +112,7 @@ El código que no ha sido comprobado aparecerá en color rojo y el código que h
 
 Otra situación habitual son los problemas relacionados con la búsqueda simple de un string dentro de un slice. Por ejemplo, quiero hacer una lista sobre los campos que se pueden modificar en un endpoint. El método de búsqueda dependerá del tamaño del array. En mi caso, son arrays muy cortos, entonces uso una búsqueda simple.
 
-<CodeSnippet language={"go"} route={"./main.go"} code={`
-package main
+<CodeSnippet language={"go"} route={"./main.go"} code={`  package main
 
   func StringInSlice(a string, list []string) bool {
 	 
@@ -137,8 +132,7 @@ package main
 		  println("the field is authorized")
 	  }
 	  println("the field is not authorized")
-  }
-`} />
+  }`} />
 
 
 ## 5. Generar perfiles de CPU

@@ -77,10 +77,8 @@ if !ok {
 
 Los canales nos permiten sincronizar gorutinas, ya que nos permiten esperar a que una gorutina termine de ejecutar una tarea para continuar con la siguiente. Para ello, debemos crear un canal, y enviar información por el canal cuando la gorutina haya terminado de ejecutar la tarea. En el ejemplo siguiente, vamos a crear un canal, y vamos a enviar información por el canal cuando la gorutina haya terminado de ejecutar la tarea.
 
-<CodeSnippet language={"go"} output={`
-Hola
-Mundo
-`} code={`
+<CodeSnippet language={"go"} output={`Hola
+Mundo`} code={`
 func main() {
   c := make(chan int)
 
@@ -100,10 +98,8 @@ En el ejemplo anterior, la gorutina imprime `Hola` y envía información por el 
 
 Los canales nos permiten comunicar gorutinas, ya que nos permiten enviar información de una gorutina a otra. Para ello, debemos crear un canal, y enviar información por el canal cuando la gorutina haya terminado de ejecutar la tarea. En el ejemplo siguiente, vamos a crear un canal, y vamos a enviar información por el canal cuando la gorutina haya terminado de ejecutar la tarea.
 
-<CodeSnippet language={"go"} output={`
-Hola
-Mundo 1
-`} code={`
+<CodeSnippet language={"go"} output={`Hola
+Mundo 1`} code={`
 func main() {
   c := make(chan int)
 
