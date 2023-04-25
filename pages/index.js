@@ -1,8 +1,6 @@
 import Head from "next/head";
-import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { getAllFilesMetadata } from "../lib/mdx";
-import Link from "next/link";
 import { PAGE_URL } from "../lib/consts";
 import { Hero } from "../components/Hero";
 

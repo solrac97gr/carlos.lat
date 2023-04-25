@@ -1,13 +1,10 @@
 import { getAllFilesMetadata } from "../../lib/mdx";
-import Link from "next/link";
 import Head from "next/head";
-import Image from "next/image";
 import styles from "../../styles/Home.module.css";
 import { BLOG_URL } from "../../lib/consts";
 import { BlogBanner } from "../../components/BlogBanner";
 import { useState } from "react";
 import { CategoriesFilter } from "../../components/CategoriesFilter";
-import { BlogCard } from "../../components/BlogCard";
 import { BlogGrids } from "../../components/BlogGrids";
 
 export default function Blog({ posts, lastPost, topics }) {
