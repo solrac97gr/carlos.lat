@@ -64,6 +64,13 @@ export const Navbar = () => {
             {router.pathname.includes("/sobre-mi") ? "<Sobre mi>" : "Sobre mi"}
           </NavbarLinkText>
         </NavbarLink>
+        <NavbarLink href="/cursos">
+          <NavbarLinkText
+            className={router.pathname.includes("/cursos") ? "isActive" : ""}
+          >
+            {router.pathname.includes("/cursos") ? "<Cursos>" : "Cursos"}
+          </NavbarLinkText>
+        </NavbarLink>
       </NavbarLinkContainer>
       <div
         style={{
@@ -94,11 +101,9 @@ export const Navbar = () => {
           <FaLinkedin size={size} color={"#FFF"} />
         </SocialIcon>
         <SocialIcon
-          onClick={
-            () => {
-              logEvent("Button", "Instagram_Visit_Profile");
-            }
-          }
+          onClick={() => {
+            logEvent("Button", "Instagram_Visit_Profile");
+          }}
           href="https://www.instagram.com/carlos97cgr/"
           target="_blank"
           rel="noreferrer"
