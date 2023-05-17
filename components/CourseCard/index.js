@@ -1,3 +1,4 @@
+import { logEvent } from "../../lib/analytics";
 import {
   Card,
   Content,
@@ -10,7 +11,13 @@ import {
 
 export const CourseCard = ({ course }) => {
   return (
-    <Card href={course.link} key={course.name}>
+    <Card
+      onClick={() => {
+        logEvent("Button", "Click_Course_Card");
+      }}
+      href={course.link}
+      key={course.name}
+    >
       <ImageStyled
         src={course.photo}
         alt={course.name}
@@ -20,7 +27,8 @@ export const CourseCard = ({ course }) => {
       ></ImageStyled>
       <Content>
         <Title>{course.name}</Title>
-        <small>{course.difficulty}</small><br/>
+        <small>{course.difficulty}</small>
+        <br />
         <span>{course.description}</span>
         <Tags>
           {course.tags.map((tag) => {
