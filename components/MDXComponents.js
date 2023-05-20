@@ -6,9 +6,11 @@ import { FolderStructure } from "./FolderStructure";
 import { SocialShareButtons } from "./SocialShareButtons";
 import { NewsletterSubscribe } from "./NewsletterSubscribe";
 import { CodeSnippet } from "./CodeSnipet";
+import { PromoBanner } from "./PromoBanner";
 import Image from "next/image";
 
 const components = {
+  PromoBanner,
   CodeSnippet,
   NewsletterSubscribe,
   SocialShareButtons,
