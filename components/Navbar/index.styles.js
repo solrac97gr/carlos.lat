@@ -1,6 +1,17 @@
 import styled from "styled-components";
 import Link from "next/link";
 import { BurgerMenu } from "../BurgerMenu";
+import { keyframes } from "styled-components";
+const breatheAnimation = keyframes`
+ 0% { height: 100px; width: 100px; }
+ 30% { height: 400px; width: 400px; opacity: 1 }
+ 40% { height: 405px; width: 405px; opacity: 0.3; }
+ 50% { height: 405px; width: 405px; opacity: 0.4; }
+ 60% { height: 405px; width: 405px; opacity: 0.5; }
+ 70% { height: 405px; width: 405px; opacity: 0.6; }
+ 80% { height: 405px; width: 405px; opacity: 0.7; }
+ 100% { height: 100px; width: 100px; opacity: 0.9; }
+`;
 
 const LOGO_FONT_SIZE = "21px";
 
@@ -73,4 +84,15 @@ export const NavbarLinkText = styled.a`
     color: white;
     transform: scale(1.1);
   }
+`;
+
+export const NewBadge = styled.small`
+  background-color: green;
+  padding: 3px;
+  border-radius: 5px;
+  margin-left: 3px;
+  color: white;
+  animation-name: ${breatheAnimation};
+  animation-duration: 2.7s;
+  animation-iteration-count: infinite;
 `;
