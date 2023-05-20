@@ -5,7 +5,7 @@ const courses = [
     name: "Curso de ASP.NET MVC 5",
     link: "https://go.hotmart.com/Y82938214F",
     photo:
-      "https://e1.pxfuel.com/desktop-wallpaper/657/534/desktop-wallpaper-visual-studio-aspnet.jpg",
+      "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/cursos%2Fasp-net.jpg?alt=media&token=8dbd7e2e-bb76-4408-9002-bd8e5ba3d01b",
     difficulty: "Principiante",
     description:
       "Construye aplicaciones web robustas con el Patron MVC y ASP.NET MVC 5 usando Visual Studio 2022.",
@@ -15,7 +15,8 @@ const courses = [
   {
     name: "Curso de Python",
     link: "https://go.hotmart.com/E81579781P",
-    photo: "https://wallpaperaccess.com/full/1109826.jpg",
+    photo:
+      "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/cursos%2Fpython.webp?alt=media&token=dd9d7434-0c63-4724-828e-b4dc42fd1e63",
     difficulty: "Principiante",
     description:
       "Aprende Python uno de los lenguajes de programación más versásiles y demandados.",
@@ -26,7 +27,7 @@ const courses = [
     name: "Curso de SQL Server",
     link: "https://go.hotmart.com/O82938245L",
     photo:
-      "https://e1.pxfuel.com/desktop-wallpaper/959/113/desktop-wallpaper-3-sql-server-sql-server.jpg",
+      "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/cursos%2Fsql-server.jpg?alt=media&token=5d8e9698-8b11-48f6-b2fc-b4524d4b6354",
     difficulty: "Principiante",
     description:
       "Domina SQL Server una tecnología muy usada por empresas grandes/medianas.",
@@ -37,7 +38,7 @@ const courses = [
     name: "CCNA 200-301:LAN Switching y VLANs",
     link: "https://go.hotmart.com/E82938296L",
     photo:
-      "https://w0.peakpx.com/wallpaper/828/745/HD-wallpaper-cisco-brand-cisco-computer-hardware-ict-network-tech.jpg",
+      "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/cursos%2Fcisco.jpg?alt=media&token=dafbbff6-7137-4782-803f-097141b1cf10",
     difficulty: "Media",
     description:
       "Este curso aborda las tecnología LAN Switching que son tratadas en el examen Cisco CCNA 200-301",
@@ -48,7 +49,7 @@ const courses = [
     name: "SAP para Ingenieros",
     link: "https://go.hotmart.com/X82938150K?ap=e591",
     photo:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlDpxLjhjTD_KV57vqB4EXcBQQKSKxaCGgt5d2R0NR7v16Nh5wXKwq295DNgzQ1slWsOU&usqp=CAU",
+      "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/cursos%2Fsap.png?alt=media&token=92508ab5-fd8d-4d80-bda9-7fdae3bdeec3",
     difficulty: "Principiante",
     description:
       "Aprende sobre administración, mantenimiento, auditoria y monitoreo del sistema SAP.",
