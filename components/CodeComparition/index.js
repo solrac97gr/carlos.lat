@@ -1,4 +1,7 @@
-import { Header, ConsoleOutput, CopyButtonSticky,Route } from "./index.styles";
+import { Container, Separator } from "./index.styles";
+
+import { Header, ConsoleOutput } from "./index.styles";
+import { CopyButton } from "../CopyButton";
 import { useEffect } from "react";
 import Prism from "prismjs";
 import "prismjs/components/prism-go.js";
@@ -13,13 +16,11 @@ import "prismjs/components/prism-toml.js";
 import "prismjs/components/prism-rust.js";
 import "prismjs/plugins/command-line/prism-command-line.css";
 import "prismjs/plugins/command-line/prism-command-line.js";
-import "prismjs/plugins/line-numbers/prism-line-numbers.css";
-import "prismjs/plugins/line-numbers/prism-line-numbers.js";
 import "prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js";
 import "prismjs/plugins/show-language/prism-show-language.js";
 import "prismjs/plugins/toolbar/prism-toolbar.css";
 
-export const CodeSnippet = ({
+export const CodeCustom = ({
   code,
   language,
   route = "~",
@@ -51,14 +52,14 @@ export const CodeSnippet = ({
     >
       <pre className={`language-${language}`}>
         {!noHeaders && (
-            <Header>
-              <Route>{route}</Route>
-              <CopyButtonSticky
-                onClick={() => {
-                  navigator.clipboard.writeText(code);
-                }}
-              ></CopyButtonSticky>
-            </Header>
+          <Header>
+            <small>{route}</small>
+            <CopyButton
+              onClick={() => {
+                navigator.clipboard.writeText(code);
+              }}
+            ></CopyButton>
+          </Header>
         )}
         <code className={`language-${language}`}>{code}</code>
         {output && (
@@ -70,5 +71,29 @@ export const CodeSnippet = ({
         )}
       </pre>
     </div>
+  );
+};
+
+export const CodeComparition = ({ left, rigth,languageL,languageR }) => {
+  return (
+    <Container>
+      <CodeCustom
+        styles={{
+          width: "50%",
+        }}
+        code={left}
+        language={languageL}
+        noHeaders={true}
+      />
+      <Separator></Separator>
+      <CodeCustom
+        styles={{
+          width: "50%",
+        }}
+        code={rigth}
+        language={languageR}
+        noHeaders={true}
+      />
+    </Container>
   );
 };

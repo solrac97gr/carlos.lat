@@ -119,25 +119,31 @@ Para este blog vamos a crear un backend sencillo usando lo más escencial del le
 
 En Go no tenemos Clases(Class) pero contamos con Estructuras(Structs) y estás a su vez cuentan con algo llamado Reciver Functions que seran usados como equivalentes de los Métodos.
 
-Para entender mejor la diferencias revisemos este ejemplo con Typescript y Go:
+Para entender mejor la diferencias revisemos este ejemplo con Go y Typescript:
 
-<CodeSnippet language="typescript" code={`class User {
-    id: number;
-    email: string;
-    password: string;
+<CodeComparition 
+  languageL={"go"} 
+  languageR={"typescript"} 
+  rigth={`class User {
+      id: number;
+      email: string;
+      password: string;
 
-    constructor(id: number, email: string, password:string){
-      this.id = id;
-      this.email = email;
-      this.password = password;
-    }
+      constructor(id: number, email: string, password:string){
+        this.id = id;
+        this.email = email;
+        this.password = password;
+      }
 
-    GetEmail(): string {
-      return this.email;
-    }
-}`} />
-
-<CodeSnippet language="go" code={`package domain
+      GetEmail(): string {
+        return this.email;
+      }
+  }
+  
+  
+  
+  .`} 
+  left={`package domain
 
 type User struct {
     ID int
@@ -155,7 +161,8 @@ func NewPerson(id int, email string, password string){
 
 func (u *User) GetEmail() string {
     return u.Email
-}`} />
+}`} 
+  />
 
 
 Como se puede apreciar en la imagen Go no tiene un constructor de manera explicita como Typescript asi que tenemos que simularlo creando una función que se encargue de devolvernos un Usuario (NewPerson en la imagen del lado izquierdo) y luego creamos un "Método" de la "Clase" usando Reciver Functions (GetEmail en la imagen del lado izquierdo). Ahora que tenemos la manera de remplazar las clases podemos empezar a construir nuestra App
@@ -166,7 +173,7 @@ Como se puede apreciar en la imagen Go no tiene un constructor de manera explici
 
 Vamos a usar la estructura previa, crearemos un archivo dentro de la carpeta domain (internal/core/domain) con el nombre de user.go para entender que estaría en la carpeta domain podemos decir que es analoga a la carpeta "models" o "entitys" de algunos frameworks.
 
-<CodeSnippet language="go" route="./internal/core/domain/user.go"  code={`    package domain
+<CodeSnippet language="go" route="internal/core/domain/user.go"  code={`    package domain
 
   type User struct {
     ID int
@@ -192,7 +199,7 @@ Los puertos son las instructiones de como un Servicio o Repositorio debe comport
 
 En go las interfaces trabajan de forma distinta son implicitias eso quiere decir que no tenemos que indicar que estamos implementadola en la declaración lo único que debemos hacer es agregar los métodos y Go automaticamente lo considerara una interfaz válida.
 
-<CodeSnippet language="go" route="./internal/core/ports/user_ports.go" code={`    package ports
+<CodeSnippet language="go" route="internal/core/ports/user_ports.go" code={`    package ports
 
   import (
     "goHexagonalBlog/internal/core/domain"
@@ -218,7 +225,7 @@ En go las interfaces trabajan de forma distinta son implicitias eso quiere decir
 
 Ahora gracias a las interfaces sabemos exactamente que métodos necesitamos crear para nuestro UserService, necesitamos en esta Estructura un método Login y uno Register. Pero para eso necesitamos comunicar Service con el Repository(Estrucura que se encargara de comunicarse con la base de datos) 🤔... así que Cómo lo lograremos? En la estrucura UserService agregaremos que como propiedad debe tener un UserRepository para poder funcionar. Este UserRepository sera requerido en nuestro constructor. [NewUserService(userRepository)]
 
-<CodeSnippet language="go" route="./internal/core/services/user_services.go" code={`    package services
+<CodeSnippet language="go" route="internal/core/services/user_services.go" code={`    package services
 
   import (
     "errors"
@@ -261,7 +268,7 @@ Ahora gracias a las interfaces sabemos exactamente que métodos necesitamos crea
 
 El repositorio de usuario se comunicara directamente con la base de datos, así que en la función de creación (NewUserRepository) podemos agregar la inicialización de la base de datos, para este ejemplo usaré mongo.
 
-<CodeSnippet language="go" route="./internal/repository/user_repositories.go" code={`    package repositories
+<CodeSnippet language="go" route="internal/repository/user_repositories.go" code={`    package repositories
 
   import (
     "context"
@@ -324,7 +331,7 @@ El repositorio de usuario se comunicara directamente con la base de datos, así 
 
 Ahora tenemos que exponer nuestro servicio a los handlers y estos handlers al mundo para eso usaremos GoFiber para los handlers como en las otras implementaciones haremos algo muy parecido pero esta ves UserHandlers requerira de UserService para funcionar ya que los Handlers se comunicaran con los Servicios
 
-<CodeSnippet language="go" route="./internal/handlers/user_handlers.go" code={`    package handlers
+<CodeSnippet language="go" route="internal/handlers/user_handlers.go" code={`    package handlers
 
   import (
     "goHexagonalBlog/internal/core/ports"
@@ -372,7 +379,7 @@ Ahora tenemos que exponer nuestro servicio a los handlers y estos handlers al mu
 
 Luego de tener todas las piezas Lego lista necesitamos crear una ultima parte para inizializar nuestros programa en un servidor HTTPS, continuare usando Fiber para esto, como en las otras partes continuare usando una Estructura para hacer el programa más modular
 
-<CodeSnippet language="go" route="./internal/server/server.go" code={`    package server
+<CodeSnippet language="go" route="internal/server/server.go" code={`    package server
 
   import (
     "goHexagonalBlog/internal/core/ports"

@@ -7,6 +7,7 @@ import { SocialShareButtons } from "./SocialShareButtons";
 import { NewsletterSubscribe } from "./NewsletterSubscribe";
 import { CodeSnippet } from "./CodeSnipet";
 import { PromoBanner } from "./PromoBanner";
+import {CodeComparition} from "./CodeComparition"
 import Image from "next/image";
 
 const components = {
@@ -19,6 +20,7 @@ const components = {
   BlogLink,
   Podcast,
   Gist,
+  CodeComparition,
   img: (props) => (
     <Image
       {...props}
