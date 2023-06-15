@@ -98,7 +98,22 @@ const RenderTree = (tree) => {
     return (
       <div key={el.name} id={el.name}>
         <FileNameContainer>
-          <IoIosArrowDown
+          {el.content.length != 0 ? (
+            <IoIosArrowDown
+              size={size - 7}
+              onClick={() => {
+                const element = document.getElementById(el.name);
+                const className = `sub-folder-${iterationHash}`;
+                const list = element.getElementsByClassName(className);
+                console.log(list);
+                list[0].classList.toggle("hidden");
+              }}
+              style={{ margin: 3, cursor: "pointer" }}
+            />
+          ) : (
+            <div style={{ margin: 3, cursor: "pointer" }}></div>
+          )}
+          {/* <IoIosArrowDown
             size={size-7}
             onClick={() => {
               const element = document.getElementById(el.name);
@@ -108,7 +123,7 @@ const RenderTree = (tree) => {
              list[0].classList.toggle("hidden");
             }}
             style={{ margin: 3, cursor: "pointer" }}
-          />
+          /> */}
           <BsFillFolderFill color="#63f3ab" size={size} />
           <FileName>{el.name}</FileName>
         </FileNameContainer>

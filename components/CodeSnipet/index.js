@@ -2,6 +2,7 @@ import { Header, ConsoleOutput, CopyButtonSticky,Route } from "./index.styles";
 import { useEffect } from "react";
 import Prism from "prismjs";
 import "prismjs/components/prism-go.js";
+import "prismjs/components/prism-makefile.js";
 import "prismjs/components/prism-bash.js";
 import "prismjs/components/prism-docker.js";
 import "prismjs/components/prism-json.js";
