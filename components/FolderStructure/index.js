@@ -98,7 +98,7 @@ const RenderTree = (tree) => {
     return (
       <div key={el.name} id={el.name}>
         <FileNameContainer>
-          {el.content.length != 0 ? (
+          {el?.content?.length != 0 ? (
             <IoIosArrowDown
               size={size - 7}
               onClick={() => {
