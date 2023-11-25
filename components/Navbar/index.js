@@ -8,7 +8,6 @@ import {
   NavbarLink,
   NavbarLinkText,
   BurgerStyled,
-  NewBadge,
 } from "./index.styles";
 import {
   FaTwitter,
@@ -71,7 +70,6 @@ export const Navbar = () => {
               className={router.pathname.includes("/cursos") ? "isActive" : ""}
             >
               {router.pathname.includes("/cursos") ? "<Cursos>" : "Cursos"}
-              <NewBadge>new</NewBadge>
             </NavbarLinkText>
         </NavbarLink>
       </NavbarLinkContainer>
