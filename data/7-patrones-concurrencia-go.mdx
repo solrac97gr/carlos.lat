@@ -89,14 +89,14 @@ func producer(id int, ch chan<- int, wg *sync.WaitGroup) {
 	defer wg.Done()
 	for i := 0; i < 5; i++ {
 		ch <- i
-		fmt.Printf("Producer %d produced %d\n", id, i)
+		fmt.Printf("Producer %d produced %d\\n", id, i)
 	}
 }
 func consumer(id int, in <-chan int, out chan<- int, wg *sync.WaitGroup) {
 	defer wg.Done()
 	for v := range in {
 		out <- v * 2
-		fmt.Printf("Consumer %d processed %d\n", id, v)
+		fmt.Printf("Consumer %d processed %d\\n", id, v)
 	}
 }
 func main() {
