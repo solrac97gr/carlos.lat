@@ -18,15 +18,6 @@ export const Bio = () => {
         interesante Hobby. Espero poder visitar todos los países del mundo y
         compartir todos mis conocimientos en programación en este blog.
       </Content>
-      <LinkStyled
-        onClick={() => {
-          logEvent("Button", "Download_Resume");
-        }}
-        href="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/pdf%2FProfile.pdf?alt=media&token=821db37a-f291-4ef0-a5d2-5a65e71509b1"
-        target="_blank"
-      >
-        Descargar resumen
-      </LinkStyled>
       <ReserveMeeting />
     </Container>
   );
