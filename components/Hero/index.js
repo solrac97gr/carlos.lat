@@ -20,7 +20,7 @@ import {
 import Link from "next/link";
 import { logEvent } from "../../lib/analytics";
 import { CURRENTLY_IN, NUMBER_OF_VISITED_COUNTRIES, PHONE_NUMBER, YEARS_OF_EXPERIENCE } from "../../lib/consts";
-export const Hero = ({numberOfPosts}) => {
+export const Hero = ({ numberOfPosts }) => {
   return (
     <Container>
       <LeftColumn>

@@ -77,28 +77,12 @@ export const BurgerMenu = () => {
           {router.pathname.includes("/blog") ? "<Blog>" : "Blog"}
         </a>
       </Link>
-      <Link href="/mi-mapa">
-        <a
-          className={router.pathname.includes("/mi-mapa") ? "isActive" : ""}
-          style={{ marginBottom: marginItems }}
-        >
-          {router.pathname.includes("/mi-mapa") ? "<Mis viajes>" : "Mis viajes"}
-        </a>
-      </Link>
       <Link href="/sobre-mi">
         <a
           className={router.pathname.includes("/sobre-mi") ? "isActive" : ""}
           style={{ marginBottom: marginItems }}
         >
           {router.pathname.includes("/sobre-mi") ? "<Sobre mi>" : "Sobre mi"}
-        </a>
-      </Link>
-      <Link href="/cursos">
-        <a
-          className={router.pathname.includes("/cursos") ? "isActive" : ""}
-          style={{ marginBottom: marginItems }}
-        >
-          {router.pathname.includes("/cursos") ? "<Cursos>" : "Cursos"}
         </a>
       </Link>
     </Menu>
