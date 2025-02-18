@@ -60,19 +60,6 @@ export const Hero = ({ numberOfPosts }) => {
           </ExperienceRow>
         </ExperienceContainer>
       </LeftColumn>
-      <RightColumn>
-        <ImageContainer>
-          <img
-            src="https://newporfolio-4b2a1.firebaseapp.com/static/profile-4475f23252283d7f7f0f4830790772a4.png"
-            alt="carlos garcia"
-            style={{
-              maxWidth: "100%",
-              maxHeight: "100%",
-            }}
-            loading="lazy"
-          ></img>
-        </ImageContainer>
-      </RightColumn>
     </Container>
   );
 };

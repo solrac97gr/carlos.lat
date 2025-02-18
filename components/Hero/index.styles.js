@@ -4,7 +4,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  padding: 0 10% 0 10%;
+  padding: 0 20% 0 20%;
   justify-content: space-between;
   @media (max-width: 768px) {
     flex-direction: column-reverse;
@@ -15,7 +15,7 @@ export const LeftColumn = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 45%;
+  width: 100%;
   @media (max-width: 768px) {
     width: 100%;
   }
