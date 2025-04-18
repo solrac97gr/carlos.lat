@@ -3,7 +3,7 @@ title: "Crea una API Simple con Go Kit 🛠️"
 date: "18 de Abril del 2025"
 published: "2025-04-18"
 abstract: "Go Kit es un excelente toolkit para construir microservicios robustos y mantenibles en Go. Aprende los conceptos básicos creando una API simple paso a paso."
-image: "https://miro.medium.com/v2/resize:fit:1400/1*1fE5-1-XpFqj7pYyQjXQoQ.png" # You might want to replace this with a more specific image later
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F1*QD-fZ5jS3GahUKP-T3EzRA.png?alt=media&token=5b3931b5-e333-481f-9e7b-788c051a0ff1"
 tag: "Go, Go Kit, API, Microservices"
 author: "Carlos García"
 ---
@@ -16,7 +16,7 @@ author: "Carlos García"
 <img
   width="100%"
   alt="go-kit-microservices"
-  src="https://miro.medium.com/v2/resize:fit:1400/1*1fE5-1-XpFqj7pYyQjXQoQ.png" # Ensure this image URL is correct and accessible
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F1*QD-fZ5jS3GahUKP-T3EzRA.png?alt=media&token=5b3931b5-e333-481f-9e7b-788c051a0ff1"
   style={{ borderRadius: "8px" }}
 />
 
@@ -84,13 +84,13 @@ import (
 
 // SaludarRequest define la estructura de la petición para el endpoint Saludar.
 type SaludarRequest struct {
-    Nombre string `json:"nombre"`
+    Nombre string json:"nombre"
 }
 
 // SaludarResponse define la estructura de la respuesta para el endpoint Saludar.
 type SaludarResponse struct {
-    Saludo string `json:"saludo"`
-    Err    string `json:"err,omitempty"` // Los errores no se devuelven directamente en JSON usualmente
+    Saludo string json:"saludo"
+    Err    string json:"err,omitempty" // Los errores no se devuelven directamente en JSON usualmente
 }
 
 // MakeSaludarEndpoint crea un endpoint para el método Saludar del servicio.
@@ -198,26 +198,73 @@ func main() {
 ## Estructura de Carpetas Sugerida
 Una posible estructura para este proyecto podría ser:
 
-<FolderStructure tree={[
-    { type: "folder", name: "cmd", children: [
-        { type: "folder", name: "server", children: [
-            { type: "file", name: "main.go" }
-        ]}
-    ]},
-    { type: "folder", name: "pkg", children: [
-        { type: "folder", name: "service", children: [
-            { type: "file", name: "service.go" }
-        ]},
-        { type: "folder", name: "endpoint", children: [
-            { type: "file", name: "endpoint.go" }
-        ]},
-        { type: "folder", name: "transport", children: [
-            { type: "file", name: "http.go" }
-        ]}
-    ]},
+<FolderStructure
+  repo="https://github.com/your-username/go-kit-saludo-api"
+  tree={[
+    {
+      type: "folder",
+      name: "cmd",
+      content: [
+        {
+          type: "folder",
+          name: "saludo-api",
+          content: [
+            { type: "file", name: "main.go", extension: "go" }
+          ]
+        }
+      ]
+    },
+    {
+      type: "folder",
+      name: "internal",
+      content: [
+        {
+          type: "folder",
+          name: "config",
+          content: [
+            { type: "file", name: "config.go", extension: "go" }
+          ]
+        },
+        {
+          type: "folder",
+          name: "service",
+          content: [
+            { type: "file", name: "service.go", extension: "go" },
+            { type: "file", name: "instrumentation.go", extension: "go" }
+          ]
+        },
+        {
+          type: "folder",
+          name: "endpoint",
+          content: [
+            { type: "file", name: "set.go", extension: "go" },
+            { type: "file", name: "request_response.go", extension: "go" },
+            { type: "file", name: "middleware.go", extension: "go" }
+          ]
+        },
+        {
+          type: "folder",
+          name: "transport",
+          content: [
+            {
+              type: "folder",
+              name: "http",
+              content: [
+                { type: "file", name: "handler.go", extension: "go" },
+                { type: "file", name: "encode_decode.go", extension: "go" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
     { type: "file", name: "go.mod" },
     { type: "file", name: "go.sum" },
-]} />
+    { type: "file", name: "Makefile" },
+    { type: "file", name: "Dockerfile" }
+  ]}
+/>
+
 
 ## Probando la API
 1.  Inicializa tu módulo Go: `go mod init your_module_path`
