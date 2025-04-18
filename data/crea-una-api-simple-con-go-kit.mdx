@@ -1,0 +1,234 @@
+---
+title: "Crea una API Simple con Go Kit 🛠️"
+date: "18 de Abril del 2025"
+published: "2025-04-18"
+abstract: "Go Kit es un excelente toolkit para construir microservicios robustos y mantenibles en Go. Aprende los conceptos básicos creando una API simple paso a paso."
+image: "https://miro.medium.com/v2/resize:fit:1400/1*1fE5-1-XpFqj7pYyQjXQoQ.png" # You might want to replace this with a more specific image later
+tag: "Go, Go Kit, API, Microservices"
+author: "Carlos García"
+---
+
+# Crea una API Simple con Go Kit 🛠️
+
+<small>18 de Abril del 2025</small>
+<EditPost path="crea-una-api-simple-con-go-kit" />
+
+<img
+  width="100%"
+  alt="go-kit-microservices"
+  src="https://miro.medium.com/v2/resize:fit:1400/1*1fE5-1-XpFqj7pYyQjXQoQ.png" # Ensure this image URL is correct and accessible
+  style={{ borderRadius: "8px" }}
+/>
+
+Go Kit es un conjunto de paquetes (un toolkit, no un framework) que ayuda a construir microservicios en Go. No impone una estructura rígida, pero sí promueve patrones que llevan a código más estructurado, mantenible y testable, especialmente útil a medida que las aplicaciones crecen.
+
+En este post, vamos a explorar los componentes principales de Go Kit creando una API HTTP muy sencilla que devuelva un saludo.
+
+## ¿Por qué usar Go Kit?
+Antes de empezar, ¿por qué elegir Go Kit?
+- **Separación de Responsabilidades**: Go Kit fomenta dividir la aplicación en capas claras: Transporte, Endpoint y Servicio.
+- **Componentes Intercambiables**: Facilita cambiar detalles de implementación (como pasar de HTTP a gRPC) sin afectar la lógica de negocio.
+- **Middleware**: Proporciona un sistema robusto de middleware para añadir funcionalidades transversales como logging, métricas, tracing, rate limiting, etc.
+- **Infraestructura para Microservicios**: Incluye herramientas para service discovery, circuit breaking y más.
+
+## Las Capas Principales de Go Kit
+Una aplicación típica en Go Kit se estructura en tres capas principales:
+
+1.  **Servicio (Service)**: Contiene la lógica de negocio pura. No sabe nada sobre HTTP, JSON, gRPC, etc. Es la capa más interna y testable.
+2.  **Endpoint**: Adapta las funciones del servicio a un formato específico que Go Kit entiende. Cada método del servicio suele tener un endpoint correspondiente. Actúa como un adaptador.
+3.  **Transporte (Transport)**: Expone los endpoints a través de un medio específico como HTTP, gRPC, NATS, etc. Se encarga de decodificar las peticiones entrantes y codificar las respuestas salientes.
+
+Vamos a construir nuestra API "Hola Mundo" siguiendo estas capas.
+
+## 1. Definiendo el Servicio (La Lógica de Negocio)
+Primero, definimos la interfaz de nuestro servicio y su implementación. Queremos un servicio que pueda saludar a un nombre dado.
+
+Crea un archivo `service.go` (por ejemplo, en `pkg/service/service.go`):
+<CodeSnippet language="go" code={`package service
+
+import "context"
+
+// Service define la interfaz para nuestro servicio de saludo.
+type Service interface {
+    Saludar(ctx context.Context, nombre string) (string, error)
+}
+
+// Implementación simple del servicio.
+type simpleService struct{}
+
+// NewService crea una nueva instancia del servicio.
+func NewService() Service {
+    return simpleService{}
+}
+
+// Saludar implementa la lógica de negocio.
+func (s simpleService) Saludar(ctx context.Context, nombre string) (string, error) {
+    if nombre == "" {
+        return "Hola!", nil // Saludo genérico si no hay nombre
+    }
+    return "Hola, " + nombre + "!", nil
+}
+`}/>
+
+## 2. Creando el Endpoint
+El endpoint envuelve nuestro método `Saludar` del servicio. Necesitamos definir las estructuras de petición y respuesta para este endpoint.
+
+Crea un archivo `endpoint.go` (por ejemplo, en `pkg/endpoint/endpoint.go`):
+<CodeSnippet language="go" code={`package endpoint
+
+import (
+    "context"
+    "github.com/go-kit/kit/endpoint"
+    "your_module_path/pkg/service" // Reemplaza con tu ruta de módulo
+)
+
+// SaludarRequest define la estructura de la petición para el endpoint Saludar.
+type SaludarRequest struct {
+    Nombre string `json:"nombre"`
+}
+
+// SaludarResponse define la estructura de la respuesta para el endpoint Saludar.
+type SaludarResponse struct {
+    Saludo string `json:"saludo"`
+    Err    string `json:"err,omitempty"` // Los errores no se devuelven directamente en JSON usualmente
+}
+
+// MakeSaludarEndpoint crea un endpoint para el método Saludar del servicio.
+func MakeSaludarEndpoint(svc service.Service) endpoint.Endpoint {
+    return func(ctx context.Context, request interface{}) (interface{}, error) {
+        req := request.(SaludarRequest) // Type assertion
+        saludo, err := svc.Saludar(ctx, req.Nombre)
+        if err != nil {
+            // En una app real, manejarías el error de forma más robusta
+            return SaludarResponse{Saludo: saludo, Err: err.Error()}, nil
+        }
+        return SaludarResponse{Saludo: saludo, Err: ""}, nil
+    }
+}
+`}/>
+*Nota: Asegúrate de reemplazar `your_module_path` con la ruta correcta de tu módulo Go.*
+
+## 3. Configurando el Transporte HTTP
+Ahora, exponemos nuestro endpoint a través de HTTP. Necesitamos funciones para decodificar la petición HTTP entrante a nuestra `SaludarRequest` y codificar la `SaludarResponse` a una respuesta HTTP.
+
+Crea un archivo `transport_http.go` (por ejemplo, en `pkg/transport/http.go`):
+<CodeSnippet language="go" code={`package transport
+
+import (
+    "context"
+    "encoding/json"
+    "net/http"
+
+    "github.com/go-kit/kit/endpoint"
+    httptransport "github.com/go-kit/kit/transport/http"
+    "your_module_path/pkg/endpoint" // Reemplaza con tu ruta de módulo
+)
+
+// NewHTTPHandler crea un manejador HTTP para los endpoints del servicio.
+func NewHTTPHandler(ep endpoint.Endpoint) http.Handler {
+    mux := http.NewServeMux()
+    mux.Handle("/saludar", httptransport.NewServer(
+        ep,
+        decodeSaludarRequest,
+        encodeResponse,
+    ))
+    // Puedes añadir más rutas aquí para otros endpoints
+    return mux
+}
+
+// decodeSaludarRequest decodifica la petición HTTP a SaludarRequest.
+func decodeSaludarRequest(_ context.Context, r *http.Request) (interface{}, error) {
+    var request endpoint.SaludarRequest
+    // Intentamos decodificar el nombre desde query param o JSON body
+    if name := r.URL.Query().Get("nombre"); name != "" {
+         request.Nombre = name
+    } else if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+        // Si no hay nombre en query y falla el decode del body (o está vacío)
+        // Devolvemos un request con nombre vacío para el saludo genérico.
+        // En una API real, podrías devolver un error BadRequest aquí.
+        request.Nombre = ""
+    }
+    return request, nil
+}
+
+// encodeResponse codifica la respuesta del endpoint a formato JSON para HTTP.
+func encodeResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
+    w.Header().Set("Content-Type", "application/json; charset=utf-8")
+    // Aquí puedes manejar códigos de status basados en la respuesta si es necesario
+    // Por ejemplo, si response contiene un error.
+    // if e, ok := response.(endpoint.Failer); ok && e.Failed() != nil {
+    //     encodeErrorResponse(ctx, e.Failed(), w) // Función separada para errores
+    //     return nil
+    // }
+    return json.NewEncoder(w).Encode(response)
+}
+`}/>
+
+## 4. Uniendo Todo en `main.go`
+Finalmente, en nuestro `main.go` (por ejemplo, en `cmd/server/main.go`), instanciamos todas las capas y arrancamos el servidor HTTP.
+
+<CodeSnippet language="go" code={`package main
+
+import (
+    "log"
+    "net/http"
+
+    "your_module_path/pkg/service"    // Reemplaza con tu ruta de módulo
+    "your_module_path/pkg/endpoint"   // Reemplaza con tu ruta de módulo
+    "your_module_path/pkg/transport"  // Reemplaza con tu ruta de módulo
+)
+
+func main() {
+    // 1. Crear el servicio
+    svc := service.NewService()
+
+    // 2. Crear el endpoint
+    saludarEndpoint := endpoint.MakeSaludarEndpoint(svc)
+
+    // 3. Crear el manejador HTTP
+    httpHandler := transport.NewHTTPHandler(saludarEndpoint)
+
+    // 4. Iniciar el servidor HTTP
+    port := ":8080"
+    log.Printf("Servidor escuchando en puerto %s", port)
+    log.Fatal(http.ListenAndServe(port, httpHandler))
+}
+`}/>
+
+## Estructura de Carpetas Sugerida
+Una posible estructura para este proyecto podría ser:
+
+<FolderStructure tree={[
+    { type: "folder", name: "cmd", children: [
+        { type: "folder", name: "server", children: [
+            { type: "file", name: "main.go" }
+        ]}
+    ]},
+    { type: "folder", name: "pkg", children: [
+        { type: "folder", name: "service", children: [
+            { type: "file", name: "service.go" }
+        ]},
+        { type: "folder", name: "endpoint", children: [
+            { type: "file", name: "endpoint.go" }
+        ]},
+        { type: "folder", name: "transport", children: [
+            { type: "file", name: "http.go" }
+        ]}
+    ]},
+    { type: "file", name: "go.mod" },
+    { type: "file", name: "go.sum" },
+]} />
+
+## Probando la API
+1.  Inicializa tu módulo Go: `go mod init your_module_path`
+2.  Descarga las dependencias: `go mod tidy`
+3.  Ejecuta el servidor: `go run ./cmd/server/main.go`
+4.  Abre tu navegador o usa `curl`:
+    * `curl http://localhost:8080/saludar` (Devolverá `{"saludo":"Hola!"}`)
+    * `curl http://localhost:8080/saludar?nombre=Carlos` (Devolverá `{"saludo":"Hola, Carlos!"}`)
+    * `curl -X POST -H "Content-Type: application/json" -d '{"nombre":"Mundo"}' http://localhost:8080/saludar` (Devolverá `{"saludo":"Hola, Mundo!"}`)
+
+## Conclusión
+Hemos creado una API HTTP muy simple utilizando Go Kit, separando claramente la lógica de negocio (servicio), la adaptación (endpoint) y la comunicación (transporte). Esta estructura, aunque parece verbosa para un ejemplo tan pequeño, escala muy bien para aplicaciones más complejas y facilita la adición de funcionalidades como logging, métricas o diferentes transportes (como gRPC) de forma organizada.
+
+Go Kit ofrece mucho más, te animo a explorar su <BlogLink url="https://gokit.io/examples/" content="documentación y ejemplos oficiales"/> para aprender sobre middleware, gRPC, service discovery y otras características avanzadas.
