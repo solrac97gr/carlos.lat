@@ -1,0 +1,99 @@
+---
+title: "My First Time Using Rust, Not Very Happy... 🦀"
+date: "March 18, 2022"
+published: "2022-03-18"
+abstract: "✅ We'll create a script that will organize the downloads folder based on file types. 📋 "
+image: "https://miro.medium.com/max/1038/1*TZbUMhZG8Co1hWCVd3MpIQ.png"
+tag: "Rust"
+author: "Carlos García"
+---
+# My First Time Using Rust, Not Very Happy... 🦀
+
+<small>March 18, 2022</small><EditPost path="primera-vez-usando-rust" />
+
+<img width="100%" alt="rust wallpaper" src="https://miro.medium.com/max/1038/1*TZbUMhZG8Co1hWCVd3MpIQ.png" style={{borderRadius:"8px"}}></img>
+
+```rust
+      println!("Hello World 🌎");
+```
+
+Yes, that was exactly clickbait. I'm very happy with my first experience developing a small script using Rust. I'm a Backend developer who works with Go most of the time, also a bit of TypeScript and Elixir.
+
+### The Project
+
+To try this programming language, days ago I was watching some videos on YouTube to get inspired and have some idea of what projects I could do. After a few days, I found a project.
+
+This project was about creating a script that would organize your downloads folder based on file types (We could also do it by date), so this script must review the content of a certain folder and according to the extension categorize it in another subfolder. It sounds quite easy if you've already done it with Python or Go.
+
+### The Language: Rust
+
+I won't lie to you - I saw the opportunity to use a new and cutting-edge programming language and I took it. I read about the performance of this language and the concept of borrowing and I found it interesting.
+
+### Shut Up and Give Me the Code
+
+If you're curious about how this script works, you can review it below and try it. In my case, for its use, I programmed the execution the moment I open a terminal (Very frequently). I'll be very happy if more experienced Rust programmers can give me suggestions. If you have any suggestions, you can write to me on Twitter or make a Pull Request on Github.
+
+```rust
+use std::fs;
+use std::path::Path;
+
+use std::env;
+extern crate dotenv;
+
+
+
+fn main() {
+    
+        dotenv::from_path("./.env").expect("error loading env");
+        
+        let path_to_images = env::var("PATH_IMAGES").expect("env error");
+        let path_to_videos = env::var("PATH_VIDEOS").expect("env error");
+        let path_to_audios = env::var("PATH_AUDIOS").expect("env error");
+        let path_to_documents =env::var("PATH_DOCUMENTS").expect("env error");
+        let path_to_installers = env::var("PATH_INSTALLERS").expect("env error");
+
+        for entry in fs::read_dir(env::var("FOLDER_TO_ORGANIZE").expect("env error")).unwrap() {
+            let entry = entry.unwrap();
+            let path = entry.path();
+           
+            if path.is_file() {
+                if Path::new(&path).extension() != None && Path::new(&path).file_name() != None {
+                    
+                    let path_string = Path::new(&path).to_str().unwrap();
+                    let file_name = Path::new(&path).file_name().unwrap().to_str().unwrap();
+                    let file_type= Path::new(&path).extension().unwrap();
+
+                    //IMAGES
+                    if file_type == "jpeg" ||file_type == "png" || file_type == "jpg" || file_type == "heic" {
+                        let destination_file = format!("{}/{}",path_to_images,file_name);
+                        fs::copy(path_string,destination_file).expect("copy error");
+                        
+                    }
+                    //INSTALLERS
+                    if file_type == "dmg" || file_type == "app" {
+                        let destination_file = format!("{}/{}",path_to_installers,file_name);
+                        fs::copy(path_string,destination_file).expect("copy error");
+                    }
+                    //DOCUMENTS
+                    if file_type == "pdf" || file_type == "doc" || file_type == "docx" || file_type == "ppt" || file_type == "xls"{
+                        let destination_file = format!("{}/{}",path_to_documents,file_name);
+                        fs::copy(path_string,destination_file).expect("copy error");
+                    }
+                    //VIDEOS
+                    if file_type == "mp4" || file_type == "avi" {
+                        let destination_file = format!("{}/{}",path_to_videos,file_name);
+                        fs::copy(path_string,destination_file).expect("copy error");
+                    }
+                    //AUDIOS
+                    if file_type == "mp3" {
+                        let destination_file = format!("{}/{}",path_to_audios,file_name);
+                        fs::copy(path_string,destination_file).expect("copy error");
+                    }
+
+                    fs::remove_file(path_string).expect("remove error");
+                }
+            }
+        }
+    
+}
+```

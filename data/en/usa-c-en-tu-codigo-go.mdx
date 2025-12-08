@@ -1,0 +1,156 @@
+---
+title: "Use C in Your Go Code 🐹"
+date: "August 28, 2024"
+published: "2024-08-28"
+abstract: "Using C in your Go code can be an excellent option to improve your application's performance. In this post, I'll show you how you can integrate C code into your Go project."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fc-in-go.jpeg?alt=media&token=95e4b48c-822e-4e2f-8361-426e185944b8"
+tag: "Go, C"
+author: "Carlos García"
+---
+
+# Use C in Your Go Code 🐹
+
+<small>August 28, 2024</small>
+<EditPost path="usa-c-en-tu-codigo-go" />
+
+<img
+  width="100%"
+  alt="golang-wallpaper"
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fc-in-go.jpeg?alt=media&token=95e4b48c-822e-4e2f-8361-426e185944b8"
+  style={{ borderRadius: "8px" }}  
+/>
+
+I decided to write this post after working on a new tool for <BlogLink url="https://github.com/solrac97gr/go-shield" content="go-shield"/> where I was trying to read the memory of a running process. I realized that Go doesn't have a direct way to do this, but C does. So I decided to integrate C code into my Go project.
+
+## Why Use C in Your Go Code?
+Using C in your Go code can be beneficial for several reasons:
+- **Performance**: C is a low-level language that can be faster than Go in certain cases.
+- **Access to C libraries**: If you need to access an existing C library, you can do so from Go.
+- **C-specific functionalities**: Some C-specific functionalities may not be available in Go.
+
+## Integrating C into Your Go Project Using a Shared Library
+To integrate C code into your Go project, you can follow these steps:
+- **Create a C code file**: Create a file with a `.c` extension that contains your C code.
+    <CodeSnippet language="Go" code={`
+    int add(int a, int b) {
+        return a + b;
+    }`}/>
+- **Create a C header file**: Create a file with a `.h` extension that contains the declarations of your C functions.
+    <CodeSnippet language="Go" code={`
+    #ifndef MYLIB_H
+    #define MYLIB_H
+
+    int add(int a, int b);
+
+    #endif`}/>
+
+- **Compile the C code**: Compile your C code into a shared library (`.so` on Linux or `.dll` on Windows).
+    <CodeSnippet language="bash" code={`
+    gcc -c -fPIC mylib.c -o mylib.o
+    gcc -shared -o libmylib.so mylib.o`}/>
+- **Create a Go code file**: Create a file with a `.go` extension that imports the shared library and uses the C functions.
+    <CodeSnippet language="go" code={`package main
+
+    // #cgo CFLAGS: -I.
+    // #cgo LDFLAGS: -L. -lmylib
+    // #include "mylib.h"
+    import "C"
+    import "fmt"
+
+    func main() {
+        a := C.add(1, 2)
+        fmt.Println("add from c:", a)
+    }`}/>
+- **Include the compilation process in your Makefile**: Make sure to include the compilation process of your C code in your Makefile.
+    <CodeSnippet language="bash" code={`build:
+        gcc -c -fPIC c_code.c -o c_code.o
+        gcc -shared -o libc_code.so c_code.o
+        go build -o main main.go`}/>
+### This is How Your Folder Structure Would Look Using the Example Above:
+<FolderStructure tree={[
+    {
+      type: "file",
+      name: "main.go",
+    },
+    {
+      type: "file",
+      name: "mylib.c",
+    },
+    {
+      type: "file",
+      name: "mylib.h",
+    },
+    {
+      type: "file",
+      name: "Makefile",
+    },
+]} />
+
+## Integrating C in Go Within the Same Go File
+Another way to integrate C code into your Go project is to write the C code directly in your Go file. You can do this using a block comment right before importing the Go library called "C".
+
+<CodeSnippet language="go" output={`Hello, Carlos!
+add from c:3
+Memory address [C]: 0x60000370c000
+Value:
+Memory address [Go]: 0x60000370c000
+Value: C`} code={`package main
+
+/*
+#include <stdio.h>
+#include <stdlib.h>
+
+void printHello(const char *name) {
+	printf("Hello, %s!", name);
+	fflush(stdout);
+}
+
+int add(int a, int b) {
+	return a + b;
+}
+
+char *reserveCharMemory(int size, char *ptr) {
+	ptr = (char *)malloc(size);
+	if (ptr == NULL) {
+		printf("Memory allocation failed");
+		fflush(stdout);
+	}
+	// Print the memory address
+	printf("Memory address [C]: %p", ptr);
+	fflush(stdout);
+	// Some garbage value in the memory
+	printf("Value: %c", *ptr);
+	fflush(stdout);
+	return ptr;
+}
+
+void releaseCharMemory(char *ptr) {
+	free(ptr);
+}
+
+*/
+import "C"
+import (
+	"fmt"
+)
+
+func main() {
+	C.printHello(C.CString("Carlos"))
+
+	a := C.add(1, 2)
+	fmt.Printf("add from c:%d", a)
+
+	// Memory allocation in C
+	var ptr *C.char
+	ptr = C.reserveCharMemory(100, ptr)
+	if ptr == nil {
+		fmt.Println("Memory allocation failed")
+	}
+	defer C.releaseCharMemory(ptr)
+	*ptr = 'C'
+	fmt.Printf("Memory address [Go]: %p", ptr)
+	fmt.Printf("Value: %c", *ptr)
+}`} />
+
+# My Use of C in Go
+In my particular case, I used it to access the C library <BlogLink url="https://man7.org/linux/man-pages/man2/ptrace.2.html" content="ptrace" /> to read the memory of a running process. Then I stored it in a bin file that I could process using other system tools. This is the project where I resorted to using C in Go: <BlogLink url="https://github.com/solrac97gr/go-memory-dumper" content="go-memory-dumper"/>.
