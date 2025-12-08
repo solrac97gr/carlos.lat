@@ -8,7 +8,15 @@ export const FooterContainer = styled.footer`
 export const FooterContent = styled.div`
   max-width: 1280px;
   margin: 0 auto;
-  padding: 3rem 1.5rem;
+  padding: 3rem 2rem;
+
+  @media (min-width: 768px) {
+    padding: 3rem 3rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 3rem 4rem;
+  }
 `;
 
 export const FooterGrid = styled.div`
