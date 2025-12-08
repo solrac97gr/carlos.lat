@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { Footer } from "../../components/Footer";
 import styled from "styled-components";
 import { getArticleSchema, getBreadcrumbSchema } from "../../lib/structuredData";
+import ErrorBoundary from "../../components/ErrorBoundary";
 
 /**
  * Bilingual Blog Post Component
@@ -162,7 +163,25 @@ export default function Post({ source: initialSource, frontmatter: initialFrontm
                     : 'Este artículo solo está disponible en Español.'}
                 </div>
               )}
-              <MDXRemote {...source} components={MDXComponents} />
+              {frontmatter.title && <h1>{frontmatter.title}</h1>}
+              {frontmatter.date && (
+                <p style={{ 
+                  color: '#6b7280', 
+                  fontSize: '0.875rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  marginBottom: '1.5rem'
+                }}>
+                  {frontmatter.date}
+                  {frontmatter.readingTime && (
+                    <span> • {frontmatter.readingTime} min read</span>
+                  )}
+                </p>
+              )}
+              <ErrorBoundary fallbackMessage="The blog content failed to render. Please try refreshing the page.">
+                <MDXRemote {...source} components={MDXComponents} />
+              </ErrorBoundary>
               <NewsletterSubscribe />
             </>
           )}

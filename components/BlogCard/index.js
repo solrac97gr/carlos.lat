@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Card, Content, Tag, Tags, Title, Date, ImageStyled } from "./index.styles";
+import { Card, Content, Tag, Tags, Title, Date, ImageStyled, ReadingTime } from "./index.styles";
 
 export const BlogCard = ({ post }) => {
   return (
@@ -20,7 +20,12 @@ export const BlogCard = ({ post }) => {
               return <Tag key={tag}>{tag}</Tag>;
             })}
           </Tags>
-          <Date>{post.date}</Date>
+          <Date>
+            {post.date}
+            {post.readingTime && (
+              <ReadingTime> • {post.readingTime} min read</ReadingTime>
+            )}
+          </Date>
         </Content>
       </Card>
     </Link>

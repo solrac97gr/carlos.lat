@@ -4,6 +4,7 @@ import {Layout} from '../components/layout'
 import { useEffect } from "react";
 import { initGA, logEvent } from '../lib/analytics';
 import { LanguageProvider } from '../lib/LanguageContext';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 
 function MyApp({ Component, pageProps }) {
@@ -13,11 +14,15 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   return (
-    <LanguageProvider>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </LanguageProvider>
+    <ErrorBoundary fallbackMessage="We're experiencing technical difficulties. Please refresh the page or try again later.">
+      <LanguageProvider>
+        <Layout>
+          <ErrorBoundary fallbackMessage="This page content failed to load. Please try refreshing.">
+            <Component {...pageProps} />
+          </ErrorBoundary>
+        </Layout>
+      </LanguageProvider>
+    </ErrorBoundary>
   
   )
 }
