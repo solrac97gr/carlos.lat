@@ -24,6 +24,7 @@ const components = {
   img: (props) => (
     <Image
       {...props}
+      alt={props.alt || ""}
       style={{
         borderRadius: "5px",
       }}

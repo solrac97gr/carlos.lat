@@ -63,8 +63,14 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
             rel="stylesheet"
           />
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+          <Script
+            src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+            strategy="afterInteractive"
+          />
+          <Script
+            src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"
+            strategy="afterInteractive"
+          />
         </Head>
         <body>
           <noscript
