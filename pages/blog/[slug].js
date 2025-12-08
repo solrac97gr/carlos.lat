@@ -9,6 +9,7 @@ import { NewsletterSubscribe } from "../../components/NewsletterSubscribe";
 import { useLanguage } from "../../lib/LanguageContext";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { Footer } from "../../components/Footer";
 import styled from "styled-components";
 
 /**
@@ -175,6 +176,7 @@ export default function Post({ source: initialSource, frontmatter: initialFrontm
           <div className="giscus"></div>
         </BlogContainer>
       </MainContent>
+      <Footer />
     </PageContainer>
   );
 }

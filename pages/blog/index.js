@@ -6,6 +6,7 @@ import { useState } from "react";
 import { CategoriesFilter } from "../../components/CategoriesFilter";
 import { BlogGrids } from "../../components/BlogGrids";
 import { useLanguage } from "../../lib/LanguageContext";
+import { Footer } from "../../components/Footer";
 import styled from "styled-components";
 
 const PageContainer = styled.div`
@@ -83,6 +84,7 @@ export default function Blog({ posts, lastPost, topics }) {
         />
         <BlogGrids filter={filter} posts={posts} />
       </MainContent>
+      <Footer />
     </PageContainer>
   );
 }
