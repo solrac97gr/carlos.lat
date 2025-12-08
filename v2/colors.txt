@@ -1,0 +1,43 @@
+Color Palette for carlos.lat
+Primary Colors
+Primary Blue: #2563eb (blue-600 in Tailwind)
+Primary Blue Hover: #1d4ed8 (blue-700 in Tailwind)
+Accent Cyan/Blue: #60a5fa (blue-400 for accent text like "García")
+Grayscale
+Dark Gray (Text): #111827 (gray-900)
+Medium Gray (Text): #4b5563 (gray-600)
+Light Gray (Text): #6b7280 (gray-500)
+Very Light Gray (Borders): #e5e7eb (gray-200)
+Background Gray: #f3f4f6 (gray-100)
+White: #ffffff
+Footer/Dark Theme
+Footer Background: #1f2937 (gray-800)
+Footer Border: #374151 (gray-700)
+Footer Text: #9ca3af (gray-400)
+Accent Colors
+Success Green Background: #d1fae5 (green-100)
+Success Green Border: #34d399 (green-400)
+Success Green Text: #065f46 (green-700)
+Light Blue Background: #dbeafe (blue-100) - used for icon backgrounds
+Gradients
+Hero Section Gradient: from-blue-50 to-gray-50
+From: #eff6ff (blue-50)
+To: #f9fafb (gray-50)
+Summary for Your Blog
+Main Brand Colors:
+Primary: #2563eb (Blue)
+Primary Hover: #1d4ed8 (Darker Blue)
+Accent: #60a5fa (Light Blue)
+Text Colors:
+Heading: #111827 (Almost Black)
+Body: #4b5563 (Dark Gray)
+Muted: #6b7280 (Medium Gray)
+Background Colors:
+White: #ffffff
+Light: #f3f4f6 (Very Light Gray)
+Dark: #1f2937 (Dark Gray for footer)
+Interactive Elements:
+Hover Blue: #1d4ed8
+Icon Background: #dbeafe (Light Blue)
+Success: #34d399 (Green)
+This palette creates a professional, modern look with blue as the primary brand color and clean grayscale for content. The blue-600 (#2563eb) is your hero color that appears throughout buttons, links, and accents!

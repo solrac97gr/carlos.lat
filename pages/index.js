@@ -3,23 +3,27 @@ import styles from "../styles/Home.module.css";
 import { getAllFilesMetadata } from "../lib/mdx";
 import { PAGE_URL } from "../lib/consts";
 import { Hero } from "../components/Hero";
+import { Services } from "../components/Services";
+import { About } from "../components/About";
+import { Contact } from "../components/Contact";
+import { Footer } from "../components/Footer";
 
 export default function Home({ posts }) {
   return (
     <div className={styles.container}>
       <Head>
         <title>
-          carlos97gr 👨🏽‍💻 | Backend, Go, Flutter, Firebase, Rust y más
+          Carlos García | Consultoría IT & Desarrollo de Software
         </title>
         <meta
           name="description"
-          content="Creando contenido mientras programo."
+          content="Ayudo a las empresas a aprovechar la inteligencia artificial y estrategias basadas en datos para optimizar la tecnología y impulsar un crecimiento inteligente."
         />
-        <meta name="keywords" content="backend go development" />
+        <meta name="keywords" content="IA, inteligencia artificial, desarrollo software, visualización datos, consultoría IT" />
         <meta name="author" content="Carlos García" />
         <meta
           property="og:title"
-          content="carlos97gr 👨🏽‍💻 | Backend, Go, Flutter, Firebase, Rust"
+          content="Carlos García | Consultoría IT & Desarrollo de Software"
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={PAGE_URL} />
@@ -28,12 +32,16 @@ export default function Home({ posts }) {
           content="https://miro.medium.com/max/1400/1*xofqkz49chC9XliDAuH1Qw.png"
         />
         <meta
+          property="og:description"
+          content="Ayudo a las empresas a aprovechar la inteligencia artificial y estrategias basadas en datos."
+        />
+        <meta
           name="twitter:title"
-          content="carlos97gr 👨🏽‍💻 | Backend, Go, Flutter, Firebase, Rust"
+          content="Carlos García | Consultoría IT & Desarrollo de Software"
         />
         <meta
           name="twitter:description"
-          content="Creando contenido mientras programo."
+          content="Ayudo a las empresas a aprovechar la inteligencia artificial y estrategias basadas en datos."
         />
         <meta
           name="twitter:image"
@@ -42,9 +50,13 @@ export default function Home({ posts }) {
         <meta name="twitter:card" content="summary_large_image" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <Hero numberOfPosts={posts.length}></Hero>
+      <main>
+        <Hero numberOfPosts={posts.length} />
+        <Services />
+        <About />
+        <Contact />
       </main>
+      <Footer />
     </div>
   );
 }

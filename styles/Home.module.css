@@ -1,29 +1,24 @@
 .container {
-  padding: 0 2rem;
-  background-color: #2D2E32;
+  padding: 0;
+  background-color: #ffffff;
 }
 
 .main {
   min-height: 100vh;
-  padding: 4rem 0;
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding-top: 100px;
-  background-color: #2D2E32;
+  background-color: #ffffff;
 }
 
 .footer {
   display: flex;
   flex: 1;
   padding: 2rem 0;
-  border-top: 1px solid #63F3AB;
+  border-top: none;
   justify-content: center;
   align-items: center;
-  background-color: #2D2E32;
-
+  background-color: #1f2937;
 }
 
 .footer a {

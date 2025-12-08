@@ -2,9 +2,9 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: "Fira Code", system-ui, Roboto, sans-serif;
-  background-color: #393640;
-  color: white;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #ffffff;
+  color: #111827;
 }
 
 a {
@@ -19,7 +19,7 @@ a {
 
 h1 {
   line-height: 40px;
-  color: white;
+  color: #111827;
   font-weight: 500;
 }
 
