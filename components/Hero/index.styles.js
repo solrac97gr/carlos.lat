@@ -81,7 +81,7 @@ export const Title = styled.h1`
 `;
 
 export const TitleAccent = styled.span`
-  color: #2563eb;
+  color: #3b82f6;
 `;
 
 export const Subtitle = styled.p`
@@ -120,7 +120,7 @@ export const ButtonGroup = styled.div`
 
 export const PrimaryButton = styled.a`
   width: 100%;
-  background-color: #2563eb;
+  background-color: #3b82f6;
   color: white;
   font-weight: 700;
   padding: 0.75rem 2rem;
@@ -134,7 +134,7 @@ export const PrimaryButton = styled.a`
   cursor: pointer;
 
   &:hover {
-    background-color: #1d4ed8;
+    background-color: #2563eb;
     transform: scale(1.05);
   }
 

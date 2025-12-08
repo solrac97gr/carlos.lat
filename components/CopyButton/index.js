@@ -14,7 +14,7 @@ export const CopyButton = ({ onClick, size, color }) => {
       <VscCopy
         onClick={handleClick}
         size={size ? size : 21}
-        color={color ? color : "#63F3AB"}
+        color={color ? color : "#3b82f6"}
       />
     </Container>
   );

@@ -34,7 +34,7 @@ export const Button = styled.button`
   transition: 0.4s;
   &:hover {
     color: #393640;
-    background-color: #63f3ab;
+    background-color: #3b82f6;
     border: 2px solid white;
   }
 `;

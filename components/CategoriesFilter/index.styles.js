@@ -44,15 +44,15 @@ export const Category = styled.button`
   transition: all 0.2s ease;
 
   &:hover {
-    border-color: #2563eb;
-    color: #2563eb;
+    border-color: #3b82f6;
+    color: #3b82f6;
   }
 
   ${(props) =>
     props.isActive &&
     css`
-      background: #2563eb !important;
+      background: #3b82f6 !important;
       color: white !important;
-      border-color: #2563eb !important;
+      border-color: #3b82f6 !important;
     `}
 `;

@@ -10,7 +10,7 @@ export const ForkButton = ({ repo,size,color }) => {
           logEvent("Button", "Fork", repo);
         }}
         size={size ? size : 21}
-        color={color ? color : "#63F3AB"}
+        color={color ? color : "#3b82f6"}
       />
     </Button>
   );

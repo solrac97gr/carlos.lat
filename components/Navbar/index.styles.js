@@ -43,7 +43,7 @@ export const Logo = styled.a`
 `;
 
 export const LogoAccent = styled.span`
-  color: #2563eb;
+  color: #3b82f6;
 `;
 
 export const DesktopNav = styled.nav`
@@ -64,7 +64,7 @@ export const NavLink = styled.a`
   cursor: pointer;
 
   &:hover {
-    color: #2563eb;
+    color: #3b82f6;
   }
 `;
 
@@ -85,12 +85,12 @@ export const SocialIcon = styled.a`
   }
 
   &:hover {
-    color: #2563eb;
+    color: #3b82f6;
   }
 `;
 
 export const CTAButton = styled.a`
-  background-color: #2563eb;
+  background-color: #3b82f6;
   color: white;
   font-weight: 600;
   padding: 0.5rem 1.25rem;
@@ -115,7 +115,7 @@ export const MobileMenuButton = styled.button`
   transition: color 0.3s ease;
 
   &:hover {
-    color: #2563eb;
+    color: #3b82f6;
   }
 
   &:focus {
@@ -147,7 +147,7 @@ export const MobileNavLink = styled.a`
 
   &:hover {
     background-color: #eff6ff;
-    color: #2563eb;
+    color: #3b82f6;
   }
 `;
 
@@ -161,7 +161,7 @@ export const MobileSocialIcons = styled.div`
 
 export const MobileCTAButton = styled.a`
   display: block;
-  background-color: #2563eb;
+  background-color: #3b82f6;
   color: white;
   font-weight: 600;
   text-align: center;
@@ -193,7 +193,7 @@ export const LanguageButton = styled.button`
   gap: 0.25rem;
 
   &:hover {
-    color: #2563eb;
+    color: #3b82f6;
   }
 
   &:focus {
@@ -232,7 +232,7 @@ export const LanguageOption = styled.button`
 
   &:hover {
     background-color: #eff6ff;
-    color: #2563eb;
+    color: #3b82f6;
   }
 
   &:first-child {

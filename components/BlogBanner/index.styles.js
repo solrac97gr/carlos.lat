@@ -78,7 +78,7 @@ export const TagContainer = styled.div`
 export const Tag = styled.div`
   background: #eff6ff;
   border-radius: 0.5rem;
-  color: #2563eb;
+  color: #3b82f6;
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
   font-weight: 600;
@@ -92,7 +92,7 @@ export const Tag = styled.div`
 
 export const StyledA = styled.a`
   display: inline-block;
-  background: #2563eb;
+  background: #3b82f6;
   border-radius: 0.5rem;
   color: white;
   font-weight: 600;
@@ -104,7 +104,7 @@ export const StyledA = styled.a`
   width: fit-content;
 
   &:hover {
-    background: #1d4ed8;
+    background: #2563eb;
     transform: translateY(-2px);
     box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.3);
   }

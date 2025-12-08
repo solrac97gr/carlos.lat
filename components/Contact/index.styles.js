@@ -104,7 +104,7 @@ export const Input = styled.input`
   transition: all 0.2s ease;
 
   &:focus {
-    border-color: #2563eb;
+    border-color: #3b82f6;
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
   }
 
@@ -126,7 +126,7 @@ export const Select = styled.select`
   cursor: pointer;
 
   &:focus {
-    border-color: #2563eb;
+    border-color: #3b82f6;
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
   }
 `;
@@ -145,7 +145,7 @@ export const TextArea = styled.textarea`
   font-family: inherit;
 
   &:focus {
-    border-color: #2563eb;
+    border-color: #3b82f6;
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
   }
 
@@ -155,7 +155,7 @@ export const TextArea = styled.textarea`
 `;
 
 export const SubmitButton = styled.button`
-  background-color: #2563eb;
+  background-color: #3b82f6;
   color: white;
   font-weight: 700;
   padding: 0.75rem 3rem;

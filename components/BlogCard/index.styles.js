@@ -63,7 +63,7 @@ export const Tags = styled.div`
 
 export const Tag = styled.span`
   background: #eff6ff;
-  color: #2563eb;
+  color: #3b82f6;
   font-size: 0.75rem;
   font-weight: 600;
   padding: 0.375rem 0.75rem;

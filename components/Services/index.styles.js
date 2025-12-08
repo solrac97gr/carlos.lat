@@ -79,7 +79,7 @@ export const IconWrapper = styled.div`
   svg {
     width: 2.5rem;
     height: 2.5rem;
-    color: #2563eb;
+    color: #3b82f6;
   }
 `;
 
