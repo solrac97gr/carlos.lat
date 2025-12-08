@@ -1,30 +1,22 @@
 import styled from "styled-components";
 import Image from "next/image";
+import { theme, media } from "../../lib/theme";
 
 export const Container = styled.div`
   width: 100%;
-  background: #ffffff;
-  padding: 4rem 0 3rem;
+  background: ${theme.colors.background};
+  padding: ${theme.spacing['3xl']} 0 ${theme.spacing['2xl']};
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 3rem;
-  border-radius: 1rem;
-  margin-bottom: 3rem;
+  gap: ${theme.spacing['2xl']};
+  border-radius: ${theme.borderRadius.xl};
+  margin-bottom: ${theme.spacing['2xl']};
 
-  @media (min-width: 768px) {
-    padding: 5rem 0 3.5rem;
-    gap: 4rem;
-  }
-
-  @media (min-width: 1024px) {
-    padding: 6rem 0 4rem;
-  }
-
-  @media (max-width: 768px) {
+  ${media.mobile} {
     flex-direction: column;
-    padding: 3rem 0 2rem;
-    gap: 2rem;
+    padding: ${theme.spacing['2xl']} 0;
+    gap: ${theme.spacing.xl};
   }
 `;
 
@@ -41,13 +33,13 @@ export const LeftColumn = styled.div`
 `;
 
 export const Title = styled.h1`
-  font-size: 2rem;
-  font-weight: 800;
+  font-size: ${theme.fontSize['3xl']};
+  font-weight: ${theme.fontWeight.bold};
   line-height: 1.2;
-  color: #111827;
-  margin-bottom: 1.25rem;
+  color: ${theme.colors.text};
+  margin-bottom: ${theme.spacing.lg};
 
-  @media (min-width: 768px) {
+  ${media.mobile} {
     font-size: 2.5rem;
   }
 

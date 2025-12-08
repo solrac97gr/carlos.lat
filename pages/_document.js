@@ -64,6 +64,25 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
             rel="stylesheet"
           />
+          {/* RSS Feed Autodiscovery */}
+          <link
+            rel="alternate"
+            type="application/rss+xml"
+            title="Carlos García Blog - RSS Feed"
+            href="https://carlos.lat/rss.xml"
+          />
+          <link
+            rel="alternate"
+            type="application/rss+xml"
+            title="Carlos García Blog - Spanish"
+            href="https://carlos.lat/rss-es.xml"
+          />
+          <link
+            rel="alternate"
+            type="application/rss+xml"
+            title="Carlos García Blog - English"
+            href="https://carlos.lat/rss-en.xml"
+          />
           <Script
             src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
             strategy="afterInteractive"
