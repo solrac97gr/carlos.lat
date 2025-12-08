@@ -1,11 +1,34 @@
 import { getAllFilesMetadata } from "../../lib/mdx";
 import Head from "next/head";
-import styles from "../../styles/Home.module.css";
 import { BLOG_URL } from "../../lib/consts";
 import { BlogBanner } from "../../components/BlogBanner";
 import { useState } from "react";
 import { CategoriesFilter } from "../../components/CategoriesFilter";
 import { BlogGrids } from "../../components/BlogGrids";
+import styled from "styled-components";
+
+const PageContainer = styled.div`
+  min-height: 100vh;
+  background: #ffffff;
+`;
+
+const MainContent = styled.main`
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-top: 5rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+
+  @media (min-width: 768px) {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+`;
 
 export default function Blog({ posts, lastPost, topics }) {
   const [filter, SetFilter] = useState("Todos");
@@ -19,7 +42,7 @@ export default function Blog({ posts, lastPost, topics }) {
   };
 
   return (
-    <div className={styles.container}>
+    <PageContainer>
       <Head>
         <title>Blog | carlos97gr 👨🏽‍💻</title>
         <meta
@@ -50,7 +73,7 @@ export default function Blog({ posts, lastPost, topics }) {
         <meta name="twitter:card" content="summary_large_image" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
+      <MainContent>
         <BlogBanner post={lastPost} />
         <CategoriesFilter
           filter={filter}
@@ -58,8 +81,8 @@ export default function Blog({ posts, lastPost, topics }) {
           topics={topics}
         />
         <BlogGrids filter={filter} posts={posts} />
-      </main>
-    </div>
+      </MainContent>
+    </PageContainer>
   );
 }
 export async function getStaticProps() {
