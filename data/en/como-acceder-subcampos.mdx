@@ -18,7 +18,6 @@ author: "Carlos García"
   style={{borderRadius:"8px"}}
 ></img>
 
-<PromoBanner/>
 
 Starting with the common problem of creating more generic functions, I once dealt with a similar issue: accessing sub-fields within a **map[string]interface{}** interface. The solution is much simpler than you think, starting by identifying which field we need within our structure. After that, everything is simpler - you'll need a simple conversion of the field that has a sub-field to a **map[string]interface{}** interface and then access the field you need. Finally, you need to convert the value to your desired type. For this example, I don't use validation for field existence, but it's highly recommended.
 
