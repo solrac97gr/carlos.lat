@@ -5,6 +5,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "next dev",
+    "dev:all": "concurrently -n \"APP,STUDIO\" -c \"cyan,magenta\" \"pnpm run dev\" \"pnpm run studio\"",
     "build": "next build",
     "postbuild": "next-sitemap && node scripts/generate-rss.js",
     "start": "next start",
@@ -39,6 +40,7 @@
   },
   "devDependencies": {
     "babel-plugin-styled-components": "^2.1.4",
+    "concurrently": "^9.2.1",
     "eslint": "8.18.0",
     "eslint-config-next": "12.2.0"
   }
