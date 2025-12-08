@@ -1,0 +1,156 @@
+---
+title: "HTML and CSS - Basic Web Development 😎"
+date: "July 20, 2022"
+published: "2022-07-20"
+abstract: "The goal of this article will be to create a small website with our name and biography, changing the background color, font style, and size."
+image: "https://wallpapercave.com/wp/wp7420861.png"
+tag: "HTML, CSS, Javascript"
+author: "Carlos García"
+---
+
+# HTML and CSS - Basic Web Development 😎
+
+<small>July 20, 2022</small>
+<EditPost path="html-css-desarrollo-web-basico" />
+
+<img
+  width="100%"
+  alt="golang-wallpaper "
+  src="https://wallpapercave.com/wp/wp7420861.png"
+  style={{borderRadius:"8px"}}
+/>
+
+For this article we'll focus on writing our first webpage from scratch. To do this, we'll use the HTML markup language and the CSS styling language.
+
+The goal of this article will be to create a small website with our name and biography, changing the background color, font style, and size.
+
+This tutorial is for non-advanced users. If you want a slightly more advanced challenge, I invite you to visit my article on Hexagonal Architecture in Go.
+
+## 1. Preparing Our Environment
+
+On our desktop or preferred folder, we'll create a folder that we'll call "my first website"
+
+Inside this folder we'll create 1 more folder and 2 files.
+
+<FolderStructure
+  tree={[
+    {
+      type: "folder",
+      name: "styles",
+      content: [
+        {
+          type: "file",
+          name: "style.css",
+        },
+      ],
+    },
+    {
+      type: "file",
+      name: "index.html",
+    },
+  ]}
+/>
+
+This will be the basic structure of our website. The script and styles files don't necessarily have to be inside a folder, but this will help you have better organization from the start.
+
+## 2. Programs We'll Use
+
+For this tutorial we'll use two programs: <BlogLink url="https://code.visualstudio.com/download" content="Visual Studio Code"/> and Google Chrome. If you're already familiar with another browser like Firefox and Safari, you don't have to worry and you can use it as well.
+
+We'll open our folder where we previously created all our files inside Visual Studio Code and we'll have our preferred browser at hand.
+
+## 3. Developing with HTML
+
+HTML is a markup language that will help you write webpages. It works using special tags that tell us what an element represents, for example:
+
+```html
+<h1>I'm a Title</h1>
+<p>I'm a Paragraph</p>
+```
+
+The h1 tag represents a title and p represents a paragraph, and in this way there are more tags that help us represent other elements like links, images, tables, etc.
+
+Now let's get our hands dirty. In our index.html file we'll write the following:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My first webpage</title>
+  </head>
+  <body>
+    <h1>My name is Carlos</h1>
+    <p>I am a programmer.</p>
+  </body>
+</html>
+```
+
+We'll save our file and enter our folder where the file is located and open it using our browser. By clicking it, it will by default open your configured browser and you'll be able to see your first webpage.
+
+## 4. Adding Styles
+
+Now it's time to add some style to the page. For that we'll use CSS, the CSS styling language works by relating HTML to a specific style and it's achieved like this:
+
+I want my paragraphs to have a larger font, so in CSS I'll specify the font size for my paragraphs.
+
+```css
+p {
+  font-size: 31px;
+}
+```
+
+I'll also make my title green.
+
+```css
+h1 {
+  color: green;
+}
+```
+
+And we'll modify the background color of our document.
+
+```css
+body {
+  background-color: red;
+}
+```
+
+Our styles.css would look like this:
+
+```css
+p {
+  font-size: 31px;
+}
+
+h1 {
+  color: green;
+}
+
+body {
+  background-color: red;
+}
+```
+
+Now for our HTML to know it should listen to the styles from this file, we'll add a new line to our HTML.
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My first webpage</title>
+    <link rel="stylesheet" href="styles/style.css" />
+  </head>
+  <body>
+    <h1>My name is Carlos</h1>
+    <p>I am a programmer.</p>
+  </body>
+</html>
+```
+
+We'll save both files and reload our page in our browser.
+
+You'll see how our webpage starts to have more personality.
+
+## 5. I Challenge You
+
+Now I challenge you to continue with this page, add your hobbies, put your name as the title, write a mini biography, and style it however you like best.

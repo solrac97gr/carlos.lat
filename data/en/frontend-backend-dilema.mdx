@@ -1,0 +1,114 @@
+---
+title: "Frontend or Backend: The Dilemma 🤔"
+date: "July 7, 2022"
+published: "2022-07-07"
+abstract: "✅ Frontend and Backend are two branches of web development - one focused on the visual part and the other on business logic."
+image: "https://miro.medium.com/max/1400/0*EODEF6xTWVm5hv-3"
+tag: "Go, HTML, CSS, Javascript"
+author: "Carlos García"
+---
+# Frontend or Backend: The Dilemma 🤔
+
+<small>July 7, 2022</small><EditPost path="frontend-backend-dilema" />
+
+<img width="100%" src="https://miro.medium.com/max/1400/0*EODEF6xTWVm5hv-3" style={{borderRadius:"8px"}}/>
+
+```go
+    fmt.Println("Hello World!🌎")
+```
+
+Hello world👋! One of the most common questions we hear when entering the world of web development is:
+
+> Are you a Frontend or Backend developer?
+
+This question refers to two of the many branches of web development that exist. So you can learn to understand and answer it, I'll explain in this article what these terms refer to.
+
+## What is a Developer and What Do They Do?
+
+A web developer in our case, according to Wikipedia, is:
+
+> A developer is a programmer or a commercial company dedicated to one or more aspects of the software development process. It's a broader scope than algorithmic programming.
+
+So a developer, redundantly speaking, is someone who is dedicated to software development (Applications, web pages, etc.).
+
+## Frontend
+
+### What is Frontend?
+
+Frontend is a branch of web development that refers to the person who programs the user interface. This involves programming the user interface or colloquially called "what you see" and giving it interactivity by controlling the flow of information that comes from the user, whether typing on the keyboard or clicking with the mouse, and sending the information to the Backend if necessary.
+
+### What Technologies Do Frontend Developers Use?
+
+The basic tools that every Frontend developer uses are: the structure language called HTML, the styling language called CSS, and the programming language called JavaScript (which has nothing to do with Java... 😅 in terms of complexity and purpose).
+
+As for my stack, I work in Frontend with React and for styling I still use pure CSS or Styled Components.
+
+1. **HTML**: In charge of giving structure to the page, telling the browser what type of object it should represent.
+    
+```html
+   <h1>I am a title</h1>
+   <p>And I am a paragraph.</p>
+```
+
+2. **CSS**: In charge of styling our structure created with HTML. For example, we could indicate that we want our titles in blue and our paragraphs to have size 20 font.
+    
+```css
+   h1 {
+     color: blue;
+   }
+   
+   p {
+     font-size: 20px;
+   }
+```
+
+3. **JavaScript**: The programming language that frontend developers use to give interactivity to pages. For example, we want a message about who the creator is to appear when opening our website.
+    
+```js
+   alert("page developed by Carlos")
+```
+
+
+## Backend
+
+### What is Backend?
+
+It's also a branch of web development normally focused on business logic. That is, it's in charge of making queries to the database, processing that information, and sending it to the frontend. An example of information processing to make it clearer could be that in our database we have stored our user's birthday. Before sending the user information to the frontend, we can calculate their age and send it to the Frontend.
+
+### What Technologies Do Backend Developers Use?
+
+In terms of technologies used in Backend, you could take as the most basic: A programming language that runs on the server, a database, and a server.
+
+Currently, the web is mostly built with PHP, MySQL, and Apache. This is because many blogs built today use WordPress, which has that combination of tools and due to its great popularity in the past.
+
+As for my current Stack, I work with Go, MongoDB, and Nginx in most of my Backend projects.
+
+Next I'll show you how to set up a server using Go with a route that greets you when you enter.
+
+```go
+package main
+
+import (
+    "fmt"
+    "html"
+    "log"
+    "net/http"
+)
+
+func main() {
+
+    http.HandleFunc("/hi", func(w http.ResponseWriter, r *http.Request){
+        fmt.Fprintf(w, "Hi")
+    })
+
+    log.Fatal(http.ListenAndServe(":8081", nil))
+
+}
+
+```
+
+This makes it so that when we go to http://localhost:8081/hi we get a greeting in response. Of course, this will only work if you run this code on your computer.
+
+## In Conclusion
+
+Frontend and Backend are two branches of web development - one focused on the visual part and the other on the business logic part.
