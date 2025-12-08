@@ -5,6 +5,7 @@ import { BlogBanner } from "../../components/BlogBanner";
 import { useState } from "react";
 import { CategoriesFilter } from "../../components/CategoriesFilter";
 import { BlogGrids } from "../../components/BlogGrids";
+import { useLanguage } from "../../lib/LanguageContext";
 import styled from "styled-components";
 
 const PageContainer = styled.div`
@@ -86,7 +87,26 @@ export default function Blog({ posts, lastPost, topics }) {
   );
 }
 export async function getStaticProps() {
-  const posts = await getAllFilesMetadata();
+  // Get posts preferring English, fallback to Spanish
+  const enPosts = await getAllFilesMetadata("en");
+  const esPosts = await getAllFilesMetadata("es");
+  
+  // Merge posts, preferring English versions
+  const postsMap = new Map();
+  
+  // Add Spanish posts first
+  esPosts.forEach(post => {
+    postsMap.set(post.slug, post);
+  });
+  
+  // Override with English posts if available
+  enPosts.forEach(post => {
+    postsMap.set(post.slug, post);
+  });
+  
+  const posts = Array.from(postsMap.values())
+    .sort((a, b) => new Date(b.published) - new Date(a.published));
+  
   const lastPost = posts[0];
   const topics = ["Todos"];
   posts.forEach((post) => {

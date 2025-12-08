@@ -1,0 +1,360 @@
+---
+title: "NetArchTest for Go? GoArchTest: Preserve Your Architecture 🏗️"
+date: "June 13th, 2025"
+published: "2025-06-13"
+abstract: "Discover how GoArchTest helps you maintain a solid architecture in Go, detecting violations that the compiler cannot find."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FFUAQvEkXoAAuQ-2.jpg-large.jpeg?alt=media&token=959951bf-5f60-4ecd-9ddf-74511f0ff3fa"
+tag: "Go, Hexagonal, Clean, DDD"
+author: "Carlos García"
+---
+
+# NetArchTest for Go? GoArchTest: Preserve Your Architecture 🏗️
+
+<small>June 13th, 2025</small>
+<EditPost path="goarchtest-arquitectura-go-limpia" />
+
+<img
+  width="100%"
+  alt="GoArchTest - Clean Go Architecture"
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FFUAQvEkXoAAuQ-2.jpg-large.jpeg?alt=media&token=959951bf-5f60-4ecd-9ddf-74511f0ff3fa"
+  style={{ borderRadius: "8px" }} />
+
+Have you ever wondered why your Go code compiles perfectly but your architecture deteriorates over time? The Go compiler prevents import cycles, but it cannot detect more subtle architectural violations. This is where **GoArchTest** comes in, a library that allows you to define and enforce architectural rules in your Go projects.
+
+In this post, I'll show you how to use GoArchTest to keep your Go code organized and architecturally correct, especially when working with patterns like Clean Architecture and Domain-Driven Design.
+
+## Why do you need GoArchTest if Go already prevents import cycles?
+
+That's the million-dollar question. While Go prevents this:
+
+<CodeSnippet language={"go"} route={"package_a.go"} code={`// ❌ Go compiler ERROR: import cycle
+package A
+import "B"  // A → B
+
+package B  
+import "A"  // B → A (ERROR: import cycle)`} />
+
+Go **DOES allow** this (but violates Clean Architecture):
+
+<CodeSnippet language={"go"} route={"domain.go"} code={`// ✅ Go compiler: Compiles fine
+// ❌ Clean Architecture: VIOLATION
+package domain
+import "infrastructure"  // Inner layer depending on outer layer
+
+package infrastructure
+import "domain"  // This is correct in Clean Architecture`} />
+
+**GoArchTest** fills this gap by detecting architectural violations that Go cannot verify.
+
+## Installation and initial setup
+
+First, install GoArchTest in your project:
+
+<CodeSnippet language={"bash"} code={`go get github.com/solrac97gr/goarchtest`} />
+
+## 1. Basic example: Layer separation
+
+Let's start with a simple example where we want to ensure that the presentation layer doesn't directly depend on the data layer:
+
+<CodeSnippet language={"go"} route={"architecture_test.go"} code={`package main_test
+
+import (
+    "testing"
+    "path/filepath"
+    
+    "github.com/solrac97gr/goarchtest"
+)
+
+func TestArchitecture(t *testing.T) {
+    // Get project path
+    projectPath, _ := filepath.Abs("./")
+    
+    // Create GoArchTest instance
+    types := goarchtest.InPath(projectPath)
+    
+    // Rule: presentation should not depend on data
+    result := types.
+        That().
+        ResideInNamespace("presentation").
+        ShouldNot().
+        HaveDependencyOn("data").
+        GetResult()
+        
+    if !result.IsSuccessful {
+        t.Error("❌ Violation: Presentation layer depends on data")
+        for _, failingType := range result.FailingTypes {
+            t.Logf("Violation in: %s (%s)", failingType.Name, failingType.Package)
+        }
+    }
+}`} />
+
+## 2. Validating complete Clean Architecture
+
+GoArchTest includes predefined patterns for common architectures. Here's how to validate Clean Architecture:
+
+<CodeSnippet language={"go"} route={"clean_arch_test.go"} code={`func TestCleanArchitecture(t *testing.T) {
+    projectPath, _ := filepath.Abs("./")
+    types := goarchtest.InPath(projectPath)
+    
+    // Define Clean Architecture pattern
+    cleanArchPattern := goarchtest.CleanArchitecture(
+        "domain",        // Domain layer
+        "application",   // Application layer  
+        "infrastructure", // Infrastructure layer
+        "presentation",  // Presentation layer
+    )
+    
+    // Validate all rules
+    validationResults := cleanArchPattern.Validate(types)
+    
+    // Check results
+    passedRules := 0
+    for i, result := range validationResults {
+        if result.IsSuccessful {
+            passedRules++
+            t.Logf("✅ Rule #%d: SUCCESS", i+1)
+        } else {
+            t.Errorf("❌ Rule #%d: FAILURE", i+1)
+            for _, failingType := range result.FailingTypes {
+                t.Logf("   Violation: %s (%s)", failingType.Name, failingType.Package)
+            }
+        }
+    }
+    
+    t.Logf("Summary: %d/%d rules passed", passedRules, len(validationResults))
+}`} />
+
+
+## 3. Domain-Driven Design with Clean Architecture
+
+For more complex projects using DDD, GoArchTest supports multiple bounded contexts:
+
+<CodeSnippet language={"go"} route={"ddd_test.go"} code={`func TestDDDArchitecture(t *testing.T) {
+    projectPath, _ := filepath.Abs("./")
+    types := goarchtest.InPath(projectPath)
+    
+    // Define domains (bounded contexts)
+    domains := []string{"user", "products", "orders"}
+    
+    // DDD pattern with Clean Architecture
+    dddPattern := goarchtest.DDDWithCleanArchitecture(
+        domains,           // List of domains
+        "internal/shared", // Shared kernel
+        "pkg",            // Utilities
+    )
+    
+    validationResults := dddPattern.Validate(types)
+    
+    // Verify isolation between domains
+    for i, result := range validationResults {
+        if !result.IsSuccessful {
+            t.Errorf("❌ DDD Rule #%d fails", i+1)
+            for _, failingType := range result.FailingTypes {
+                t.Logf("Violation: %s (%s)", failingType.Name, failingType.Package)
+            }
+        }
+    }
+}`} />
+
+Typical DDD project structure:
+
+<FolderStructure
+  repo="https://github.com/solrac97gr/goarchtest/"
+  tree={[
+    {
+      type: "folder",
+      name: "internal",
+      content: [
+        {
+          type: "folder",
+          name: "user",
+          content: [
+            {
+              type: "folder",
+              name: "domain",
+            },
+            {
+              type: "folder",
+              name: "application", 
+            },
+            {
+              type: "folder",
+              name: "infrastructure",
+            }
+          ]
+        },
+        {
+          type: "folder",
+          name: "products",
+          content: [
+            {
+              type: "folder",
+              name: "domain"
+            },
+            {
+              type: "folder",
+              name: "application"
+            },
+            {
+              type: "folder",
+              name: "infrastructure"
+            }
+          ]
+        },
+        {
+          type: "folder",
+          name: "shared",
+        }
+      ]
+    },
+    {
+      type: "folder",
+      name: "pkg",
+      content: [
+        {
+          type: "folder",
+          name: "logger"
+        }
+      ]
+    }
+  ]}
+/>
+
+## 4. Custom rules for your project
+
+You can create specific rules for your project using custom predicates:
+
+<CodeSnippet language={"go"} route={"custom_rules_test.go"} code={`func TestCustomRules(t *testing.T) {
+    projectPath, _ := filepath.Abs("./")
+    types := goarchtest.InPath(projectPath)
+    
+    // Custom rule: Services must end with "Service"
+    isServiceImplementation := func(typeInfo *goarchtest.TypeInfo) bool {
+        return typeInfo.IsStruct && 
+               len(typeInfo.Name) > 7 && 
+               typeInfo.Name[len(typeInfo.Name)-7:] == "Service"
+    }
+    
+    result := types.
+        That().
+        WithCustomPredicate("IsServiceImplementation", isServiceImplementation).
+        Should().
+        ResideInNamespace("application").
+        GetResult()
+        
+    if !result.IsSuccessful {
+        t.Error("❌ Services must be in the application layer")
+    }
+}`} />
+
+## 5. Dependency visualization
+
+GoArchTest can generate dependency graphs to visualize your architecture:
+
+<CodeSnippet language={"go"} route={"graph_generation.go"} code={`func GenerateDependencyGraph() {
+    projectPath, _ := filepath.Abs("./")
+    types := goarchtest.InPath(projectPath)
+    
+    // Create reporter
+    reporter := goarchtest.NewErrorReporter(os.Stderr)
+    
+    // Get all types
+    allTypes := types.That().GetAllTypes()
+    
+    // Generate DOT graph
+    err := reporter.SaveDependencyGraph(allTypes, "dependency_graph.dot")
+    if err != nil {
+        log.Printf("Error generating graph: %v", err)
+        return
+    }
+    
+    log.Println("Graph saved at: dependency_graph.dot")
+    log.Println("To generate PNG: dot -Tpng dependency_graph.dot -o dependency_graph.png")
+}`} />
+
+## 6. CI/CD integration
+
+To automatically maintain your clean architecture, add the tests to your pipeline:
+
+<CodeSnippet language={"yaml"} route={".github/workflows/architecture.yml"} code={`name: Architecture Tests
+
+on: [push, pull_request]
+
+jobs:
+  architecture:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.21
+        
+    - name: Run Architecture Tests
+      run: |
+        go test -v ./tests/architecture/
+        
+    - name: Generate Dependency Graph
+      run: |
+        go run cmd/graph/main.go
+        
+    - name: Upload Architecture Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: architecture-report
+        path: dependency_graph.png`} />
+
+## Real benefits for development teams
+
+### 🚀 **Prevention of architectural deterioration**
+- Detects violations before they reach production
+- Maintains consistency across different developers
+- Avoids architectural "technical debt"
+
+### 📚 **Living documentation**
+- Tests serve as executable documentation
+- New developers understand the architecture by reading the tests
+- Rules are always up to date
+
+### 🔧 **Scalability**
+- Facilitates domain division into microservices
+- Maintains clear boundaries between contexts
+- Reduces coupling between components
+
+## Comparison: Go vs GoArchTest
+
+### 🔧 **Go Compiler**
+- ✅ **Circular dependencies**: Automatically prevents import cycles
+- ❌ **Layer violations**: Allows any layer to depend on any other
+- ❌ **Dependency direction**: Doesn't control architectural flow
+- ❌ **Domain isolation**: No rules to separate business contexts
+- ❌ **Team consistency**: Manual and error-prone validation
+
+### 🏗️ **GoArchTest**
+- 🟡 **Circular dependencies**: Not necessary (Go already handles it)
+- ✅ **Layer violations**: Detects and prevents architectural violations
+- ✅ **Dependency direction**: Controls flow according to Clean Architecture
+- ✅ **Domain isolation**: Configurable for Domain-Driven Design
+- ✅ **Team consistency**: Automated through executable tests
+
+## Conclusion
+
+GoArchTest is an essential tool for any Go project that wants to maintain a solid and scalable architecture. It doesn't replace compiler protections, but complements them with architectural validations that go beyond what Go can verify.
+
+By implementing GoArchTest in your project, you'll achieve:
+- **Consistent architecture** across the team
+- **Early detection** of architectural violations  
+- **Executable documentation** of your design decisions
+- **Solid foundation** to scale your application
+
+Do you already use any tool to validate architecture in your Go projects? Tell me in the comments how you keep your code organized!
+
+---
+
+**💡 Extra tip:** Combine GoArchTest with static analysis tools like `golangci-lint` for complete validation of your Go code.
+
+**🔗 Useful links:**
+- [GoArchTest Repository](https://github.com/solrac97gr/goarchtest)
+- [Complete Documentation](https://github.com/solrac97gr/goarchtest#readme)
+- [Practical Examples](https://github.com/solrac97gr/goarchtest/tree/main/examples)
