@@ -1,0 +1,117 @@
+---
+title: "How to Load Environment Variables in Rust (.env)? 🦀"
+date: "September 20, 2022"
+published: "2022-09-20"
+abstract: "Learn how to use environment variable files in rust"
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fl3nzamcawtw31.png?alt=media&token=4c6eefce-9a39-4d37-ac68-786ca4dde59d"
+tag: "Rust"
+author: "Carlos García"
+---
+
+# How to Load Environment Variables in Rust (.env)? 🦀
+
+<small>September 20, 2022</small><EditPost path="como-usar-variables-entorno-rust" />
+
+<img width="100%" alt="rust-wallpaper " src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fl3nzamcawtw31.png?alt=media&token=4c6eefce-9a39-4d37-ac68-786ca4dde59d" style={{borderRadius:"8px"}}/>
+
+
+One of my weekend programming languages is Rust and something I needed when I started was to use environment variables, so I'm leaving you a small tutorial on how to use these variables.
+
+## 1. Creating Our Project
+
+For this we'll use cargo
+
+<CodeSnippet language="bash" code="cargo new rust-env" />
+
+
+This will create a generated file structure that will look like this:
+
+<FolderStructure
+  tree={[
+  {
+    type: "folder",
+    name: "src",
+    content: [
+      {
+        type:"file",
+        name: "main.rs"
+      }
+    ]
+  },
+  {
+    type:"folder",
+    name:"target",
+    content:[]
+  },
+  {
+    type:"file",
+    name:".gitignore"
+  },
+  {
+    type:"file",
+    name:"Cargo.lock"
+  },
+  {
+    type:"file",
+    name:"Cargo.toml"
+  }
+]}
+/>
+
+
+## 2. Adding Dependencies
+
+Inside the `Cargo.toml` file we'll add the following line of code to the dependencies.
+
+<CodeSnippet language="toml" code={`[dependencies]
+dotenv="*"
+`} />
+
+## 3. Loading Our .env File
+
+For this we'll first create our `.env` file in the project root.
+
+<CodeSnippet language="bash" code="touch .env" />
+
+And we'll add the following environment variables.
+
+<CodeSnippet language="env" code={`DB_USER="root"
+DB_PASSWORD="root123"
+`} />
+
+And now inside our `src/main.rs` file we'll load our variables.
+
+<CodeSnippet language="rust" route="src/main.rs" code={`dotenv::from_path("./.env").expect("error loading env");`} />
+
+## 4. Using Environment Variables
+
+Now using Rust's standard library for environment variables we'll retrieve our environment variables as follows.
+
+<CodeSnippet language="rust" route="src/main.rs" code={`let db_users = env::var("DB_USER").expect("env error");
+let db_password = env::var("DB_PASSWORD").expect("env error");
+`} />
+
+And we'll print them to verify we achieved our goal.
+
+<CodeSnippet language="rust" route="src/main.rs" code={`println!("------------------------");
+println!("DB_USER: {}", db_users);
+println!("DB_PASSWORD: {}", db_password);
+println!("------------------------");
+`} />
+
+## 5. Running Our Example
+
+We use cargo to run our example
+
+<CodeSnippet
+    language="bash"
+    code="cargo run --package rust-env --bin rust-env" output={`DB_USER:  root
+DB_PASSWORD:  root123`} />
+
+
+
+I hope this tutorial helps you and that you start using this fun language more. Soon I'll be uploading more Rust-related tutorials.
+
+Here you can find the repository <BlogLink url="https://github.com/solrac97gr/rust-env"  content="rust-env"/>
+
+Until next time 👋
