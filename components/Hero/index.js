@@ -22,8 +22,14 @@ import Link from "next/link";
 import { logEvent } from "../../lib/analytics";
 import { PHONE_NUMBER } from "../../lib/consts";
 import { ThreeCanvas } from "../ThreeCanvas";
+import { useLanguage } from "../../lib/LanguageContext";
 
 export const Hero = ({ numberOfPosts }) => {
+  const { t, language } = useLanguage();
+  
+  const whatsappText = language === 'en' 
+    ? 'Hi%20I%20would%20like%20to%20work%20with%20you'
+    : 'Hola%20me%20gustar%C3%ADa%20trabajar%20contigo';
   return (
     <Container>
       <HeroSection>
@@ -34,22 +40,22 @@ export const Hero = ({ numberOfPosts }) => {
           
           <ContentColumn>
             <Title>
-              Asegura el Futuro de tu Negocio con<br />
-              <TitleAccent>IA e Inteligencia de Datos</TitleAccent>
+              {t('hero.titlePart1')}<br />
+              <TitleAccent>{t('hero.titlePart2')}</TitleAccent>
             </Title>
             <Subtitle>
-              Ayudo a las empresas a aprovechar la inteligencia artificial y estrategias basadas en datos para optimizar la tecnología, desbloquear nuevas oportunidades e impulsar un crecimiento inteligente.
+              {t('hero.subtitle')}
             </Subtitle>
             <ButtonGroup>
-              <Link href={`https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=Hola%20me%20gustar%C3%ADa%20trabajar%20contigo`} passHref>
+              <Link href={`https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${whatsappText}`} passHref>
                 <PrimaryButton
                   onClick={() => {
                     logEvent("Button", "Book_Consultation");
                   }}
-                  href={`https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=Hola%20me%20gustar%C3%ADa%20trabajar%20contigo`}
+                  href={`https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${whatsappText}`}
                   target="_blank"
                 >
-                  Reservar Consulta
+                  {t('hero.cta1')}
                 </PrimaryButton>
               </Link>
               <Link href="/blog" passHref>
@@ -59,7 +65,7 @@ export const Hero = ({ numberOfPosts }) => {
                   }}
                   href="/blog"
                 >
-                  Ver Blog
+                  {t('hero.cta2')}
                 </SecondaryButton>
               </Link>
             </ButtonGroup>
@@ -109,7 +115,7 @@ export const Hero = ({ numberOfPosts }) => {
             </ClientsScroll>
           </ClientsScrollContainer>
           <ClientsSubtitle>
-            Tengo experiencia trabajando con clientes empresariales en los sectores bancario, tecnológico y de consultoría
+            {t('hero.clientsSubtitle')}
           </ClientsSubtitle>
         </ClientsSection>
       </HeroSection>

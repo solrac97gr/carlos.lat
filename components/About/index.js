@@ -16,15 +16,17 @@ import {
   CheckIcon,
 } from "./index.styles";
 import { YEARS_OF_EXPERIENCE } from "../../lib/consts";
+import { useLanguage } from "../../lib/LanguageContext";
 
 export const About = () => {
+  const { t } = useLanguage();
   return (
     <Section id="about">
       <Container>
         <Content>
-          <Title>Tu Socio de Confianza en Innovación</Title>
+          <Title>{t('about.title')}</Title>
           <Description>
-            Veo la tecnología como tu ventaja competitiva. Como profesional orientado a datos, mi misión es aprovechar el poder de la inteligencia artificial y el análisis avanzado para resolver desafíos complejos y desbloquear tu máximo potencial en un mundo digital. Soy más que un consultor; soy tu socio en innovación.
+            {t('about.description')}
           </Description>
 
           <StatsGrid>
@@ -36,8 +38,8 @@ export const About = () => {
                   <path d="M2 12l10 5 10-5"></path>
                 </svg>
               </StatIcon>
-              <StatNumber>{YEARS_OF_EXPERIENCE}+ Años</StatNumber>
-              <StatLabel>Experiencia en la industria</StatLabel>
+              <StatNumber>{YEARS_OF_EXPERIENCE}+ {t('about.value1Title')}</StatNumber>
+              <StatLabel>{t('about.value1Desc')}</StatLabel>
             </StatCard>
 
             <StatCard>
@@ -49,8 +51,8 @@ export const About = () => {
                   <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                 </svg>
               </StatIcon>
-              <StatNumber>20+ Proyectos</StatNumber>
-              <StatLabel>Entregados exitosamente en todo el mundo</StatLabel>
+              <StatNumber>20+ {t('about.value2Title')}</StatNumber>
+              <StatLabel>{t('about.value2Desc')}</StatLabel>
             </StatCard>
 
             <StatCard>
@@ -59,13 +61,13 @@ export const About = () => {
                   <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
                 </svg>
               </StatIcon>
-              <StatNumber>24/7 Soporte</StatNumber>
-              <StatLabel>Asistencia dedicada cuando la necesites</StatLabel>
+              <StatNumber>24/7 {t('about.value3Title')}</StatNumber>
+              <StatLabel>{t('about.value3Desc')}</StatLabel>
             </StatCard>
           </StatsGrid>
 
           <WhyChooseBox>
-            <WhyChooseTitle>¿Por Qué Trabajar Conmigo?</WhyChooseTitle>
+            <WhyChooseTitle>{t('about.whyChooseTitle')}</WhyChooseTitle>
             <FeatureList>
               <FeatureItem>
                 <CheckIcon>
@@ -74,9 +76,7 @@ export const About = () => {
                     <polyline points="22 4 12 14.01 9 11.01"></polyline>
                   </svg>
                 </CheckIcon>
-                <span>
-                  <strong>Enfoque Basado en Datos:</strong> Adapto cada solución a tus desafíos y objetivos únicos.
-                </span>
+                <span dangerouslySetInnerHTML={{ __html: t('about.feature1') }} />
               </FeatureItem>
               <FeatureItem>
                 <CheckIcon>
@@ -85,9 +85,7 @@ export const About = () => {
                     <polyline points="22 4 12 14.01 9 11.01"></polyline>
                   </svg>
                 </CheckIcon>
-                <span>
-                  <strong>Experiencia en IA y Análisis:</strong> Con más de {YEARS_OF_EXPERIENCE} años de experiencia trabajando con empresas líderes en la industria, aporto un profundo conocimiento técnico.
-                </span>
+                <span dangerouslySetInnerHTML={{ __html: t('about.feature2').replace('{years}', YEARS_OF_EXPERIENCE) }} />
               </FeatureItem>
               <FeatureItem>
                 <CheckIcon>
@@ -96,9 +94,7 @@ export const About = () => {
                     <polyline points="22 4 12 14.01 9 11.01"></polyline>
                   </svg>
                 </CheckIcon>
-                <span>
-                  <strong>Orientado a Resultados:</strong> Me enfoco en entregar resultados medibles que mejoren tu rentabilidad.
-                </span>
+                <span dangerouslySetInnerHTML={{ __html: t('about.feature3') }} />
               </FeatureItem>
             </FeatureList>
           </WhyChooseBox>

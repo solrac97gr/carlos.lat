@@ -168,3 +168,70 @@ export const MobileCTAButton = styled.a`
     background-color: #1d4ed8;
   }
 `;
+
+export const LanguageDropdown = styled.div`
+  position: relative;
+`;
+
+export const LanguageButton = styled.button`
+  display: flex;
+  align-items: center;
+  color: #4b5563;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.3s ease;
+  gap: 0.25rem;
+
+  &:hover {
+    color: #2563eb;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+`;
+
+export const LanguageMenu = styled.div`
+  display: ${props => props.isOpen ? 'block' : 'none'};
+  position: absolute;
+  right: 0;
+  margin-top: 0.5rem;
+  width: 6rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+  z-index: 10;
+`;
+
+export const LanguageOption = styled.button`
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 1rem;
+  color: #374151;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #eff6ff;
+    color: #2563eb;
+  }
+
+  &:first-child {
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+
+  &:last-child {
+    border-radius: 0 0 0.5rem 0.5rem;
+  }
+`;

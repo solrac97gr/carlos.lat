@@ -16,8 +16,10 @@ import {
   Copyright,
   Divider,
 } from "./index.styles";
+import { useLanguage } from '../../lib/LanguageContext';
 
 export const Footer = () => {
+  const { t } = useLanguage();
   const scrollToSection = (e, id) => {
     e.preventDefault();
     const element = document.getElementById(id);
@@ -35,42 +37,42 @@ export const Footer = () => {
               Carlos<LogoAccent> García</LogoAccent>
             </FooterLogo>
             <FooterTagline>
-              Consultoría Estratégica de IT & Desarrollo de Software
+              {t('footer.tagline')}
             </FooterTagline>
           </FooterColumn>
 
           <FooterColumn>
-            <ColumnTitle>Enlaces Rápidos</ColumnTitle>
+            <ColumnTitle>{t('footer.quickLinksTitle')}</ColumnTitle>
             <LinkList>
               <LinkItem>
                 <FooterLink href="/#services" onClick={(e) => scrollToSection(e, 'services')}>
-                  Servicios
+                  {t('nav.services')}
                 </FooterLink>
               </LinkItem>
               <LinkItem>
                 <FooterLink href="/#about" onClick={(e) => scrollToSection(e, 'about')}>
-                  Sobre Mí
+                  {t('nav.about')}
                 </FooterLink>
               </LinkItem>
               <LinkItem>
                 <FooterLink href="/#contact" onClick={(e) => scrollToSection(e, 'contact')}>
-                  Contacto
+                  {t('nav.contact')}
                 </FooterLink>
               </LinkItem>
             </LinkList>
           </FooterColumn>
 
           <FooterColumn>
-            <ColumnTitle>Contacto</ColumnTitle>
+            <ColumnTitle>{t('footer.contactTitle')}</ColumnTitle>
             <InfoList>
-              <InfoItem>Email: cgarciarosales97@gmail.com</InfoItem>
-              <InfoItem>Teléfono: +34 603 418 717</InfoItem>
-              <InfoItem>Málaga, Andalucía, España</InfoItem>
+              <InfoItem>{t('footer.email')}</InfoItem>
+              <InfoItem>{t('footer.phone')}</InfoItem>
+              <InfoItem>{t('footer.location')}</InfoItem>
             </InfoList>
           </FooterColumn>
 
           <FooterColumn>
-            <ColumnTitle>Conéctate</ColumnTitle>
+            <ColumnTitle>{t('footer.connectTitle')}</ColumnTitle>
             <LinkList>
               <LinkItem>
                 <SocialLink
@@ -111,7 +113,7 @@ export const Footer = () => {
         <Divider />
         
         <Copyright>
-          &copy; {new Date().getFullYear()} Carlos García Rosales. Todos los derechos reservados.
+          &copy; {new Date().getFullYear()} Carlos García Rosales. {t('footer.copyright')}
         </Copyright>
       </FooterContent>
     </FooterContainer>

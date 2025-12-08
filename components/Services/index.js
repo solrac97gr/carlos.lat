@@ -10,13 +10,15 @@ import {
   ServiceTitle,
   ServiceDescription,
 } from "./index.styles";
+import { useLanguage } from "../../lib/LanguageContext";
 
 export const Services = () => {
+  const { t } = useLanguage();
   const services = [
     {
       id: "ai-automation",
-      title: "Automatizaciones con IA",
-      description: "Optimiza tus operaciones e incrementa la productividad integrando agentes de IA personalizados para manejar tareas repetitivas y flujos de trabajo complejos.",
+      title: t('services.aiAutomation.title'),
+      description: t('services.aiAutomation.description'),
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M12 8V4H8" />
@@ -29,8 +31,8 @@ export const Services = () => {
     },
     {
       id: "data-visualization",
-      title: "Visualización de Datos",
-      description: "Transforma conjuntos de datos complejos en paneles claros e interactivos. Te ayudamos a descubrir insights accionables y tomar decisiones informadas al instante.",
+      title: t('services.dataVisualization.title'),
+      description: t('services.dataVisualization.description'),
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M3 3v18h18" />
@@ -42,8 +44,8 @@ export const Services = () => {
     },
     {
       id: "software-development",
-      title: "Desarrollo de Software",
-      description: "Desde aplicaciones web hasta sistemas empresariales, construimos soluciones de software robustas, escalables y seguras adaptadas a las necesidades específicas de tu negocio.",
+      title: t('services.softwareDevelopment.title'),
+      description: t('services.softwareDevelopment.description'),
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <polyline points="16 18 22 12 16 6" />
@@ -53,8 +55,8 @@ export const Services = () => {
     },
     {
       id: "mvp-validation",
-      title: "Validaciones de MVP",
-      description: "Lleva tus ideas a la vida de manera rápida y eficiente. Te ayudamos a construir y probar Productos Mínimos Viables para validar conceptos y asegurar el ajuste al mercado.",
+      title: t('services.mvpValidation.title'),
+      description: t('services.mvpValidation.description'),
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="m9 9 5-5" />
@@ -67,8 +69,8 @@ export const Services = () => {
     },
     {
       id: "cloud-solutions",
-      title: "Soluciones en la Nube",
-      description: "Aprovecha el poder y la escalabilidad de la nube. Proporcionamos servicios expertos para migración, optimización y gestión de tu infraestructura en la nube.",
+      title: t('services.cloudSolutions.title'),
+      description: t('services.cloudSolutions.description'),
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M17.5 19H9a7 7 0 1 1 6.32-10.95A5 5 0 1 1 19 19Z" />
@@ -77,8 +79,8 @@ export const Services = () => {
     },
     {
       id: "ai-education",
-      title: "Servicios Educativos de IA",
-      description: "Potencia a tu equipo con nuestros programas de capacitación personalizados. Enseñamos a tu personal cómo usar efectivamente las herramientas de IA para aumentar la creatividad y productividad.",
+      title: t('services.aiEducation.title'),
+      description: t('services.aiEducation.description'),
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
@@ -91,9 +93,9 @@ export const Services = () => {
     <Section id="services">
       <Container>
         <Header>
-          <Title>Servicios Principales</Title>
+          <Title>{t('services.title')}</Title>
           <Subtitle>
-            Potencio tu negocio con soluciones vanguardistas basadas en datos y diseñadas para el futuro.
+            {t('services.subtitle')}
           </Subtitle>
         </Header>
         <Grid>

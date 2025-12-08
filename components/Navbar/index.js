@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   NavbarContainer,
   NavbarContent,
@@ -14,17 +14,48 @@ import {
   MobileNavLink,
   MobileSocialIcons,
   MobileCTAButton,
+  LanguageDropdown,
+  LanguageButton,
+  LanguageMenu,
+  LanguageOption,
 } from "./index.styles";
 import { useRouter } from "next/router";
 import { logEvent } from "../../lib/analytics";
+import { useLanguage } from "../../lib/LanguageContext";
+import { PHONE_NUMBER } from "../../lib/consts";
 
 export const Navbar = () => {
   const router = useRouter();
+  const { language, changeLanguage, t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
+  const languageMenuRef = useRef(null);
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
+
+  const toggleLanguageMenu = () => {
+    setLanguageMenuOpen(!languageMenuOpen);
+  };
+
+  const handleLanguageChange = (lang) => {
+    changeLanguage(lang);
+    setLanguageMenuOpen(false);
+    logEvent("Language", "Change", lang);
+  };
+
+  // Close language menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (languageMenuRef.current && !languageMenuRef.current.contains(event.target)) {
+        setLanguageMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const scrollToSection = (e, id) => {
     e.preventDefault();
@@ -55,16 +86,16 @@ export const Navbar = () => {
 
         <DesktopNav>
           <NavLink href="/#services" onClick={(e) => scrollToSection(e, 'services')}>
-            Servicios
+            {t('nav.services')}
           </NavLink>
           <NavLink href="/#about" onClick={(e) => scrollToSection(e, 'about')}>
-            Sobre Mí
+            {t('nav.about')}
           </NavLink>
           <NavLink href="/#contact" onClick={(e) => scrollToSection(e, 'contact')}>
-            Contacto
+            {t('nav.contact')}
           </NavLink>
           <NavLink href="/blog" onClick={() => logEvent("Navigation", "Blog_Click")}>
-            Blog
+            {t('nav.blog')}
           </NavLink>
 
           <SocialIcons>
@@ -92,8 +123,32 @@ export const Navbar = () => {
             </SocialIcon>
           </SocialIcons>
 
-          <CTAButton href="/#contact" onClick={(e) => scrollToSection(e, 'contact')}>
-            Comenzar
+          <LanguageDropdown ref={languageMenuRef}>
+            <LanguageButton onClick={toggleLanguageMenu}>
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+              </svg>
+              <span>{language.toUpperCase()}</span>
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ width: '1rem', height: '1rem' }}>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </LanguageButton>
+            <LanguageMenu isOpen={languageMenuOpen}>
+              <LanguageOption onClick={() => handleLanguageChange('en')}>
+                EN
+              </LanguageOption>
+              <LanguageOption onClick={() => handleLanguageChange('es')}>
+                ES
+              </LanguageOption>
+            </LanguageMenu>
+          </LanguageDropdown>
+
+          <CTAButton
+            href={`https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${language === 'en' ? 'Hi%20I%20would%20like%20to%20work%20with%20you' : 'Hola%20me%20gustar%C3%ADa%20trabajar%20contigo'}`}
+            target="_blank"
+            onClick={() => logEvent("Button", "Get_Started")}
+          >
+            {t('nav.getStarted')}
           </CTAButton>
         </DesktopNav>
 
@@ -118,16 +173,16 @@ export const Navbar = () => {
 
       <MobileMenu isOpen={mobileMenuOpen}>
         <MobileNavLink href="/#services" onClick={(e) => scrollToSection(e, 'services')}>
-          Servicios
+          {t('nav.services')}
         </MobileNavLink>
         <MobileNavLink href="/#about" onClick={(e) => scrollToSection(e, 'about')}>
-          Sobre Mí
+          {t('nav.about')}
         </MobileNavLink>
         <MobileNavLink href="/#contact" onClick={(e) => scrollToSection(e, 'contact')}>
-          Contacto
+          {t('nav.contact')}
         </MobileNavLink>
         <MobileNavLink href="/blog">
-          Blog
+          {t('nav.blog')}
         </MobileNavLink>
 
         <MobileSocialIcons>
