@@ -8,16 +8,16 @@ export const Container = styled.div`
 `;
 
 export const HeroSection = styled.section`
-  padding: 6rem 1.5rem 2rem;
+  padding: 6rem 2.5rem 2rem;
   max-width: 1280px;
   margin: 0 auto;
 
   @media (min-width: 768px) {
-    padding: 10rem 1.5rem 4rem;
+    padding: 10rem 4rem 4rem;
   }
 
   @media (min-width: 1024px) {
-    padding: 12rem 1.5rem 5rem;
+    padding: 12rem 5rem 5rem;
   }
 `;
 

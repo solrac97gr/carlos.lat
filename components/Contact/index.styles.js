@@ -1,11 +1,15 @@
 import styled from 'styled-components';
 
 export const Section = styled.section`
-  padding: 5rem 1.5rem;
+  padding: 5rem 2.5rem;
   background-color: #f3f4f6;
 
   @media (min-width: 768px) {
-    padding: 7rem 1.5rem;
+    padding: 7rem 4rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 7rem 5rem;
   }
 `;
 

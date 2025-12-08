@@ -14,10 +14,18 @@ export const NavbarContainer = styled.header`
 export const NavbarContent = styled.div`
   max-width: 1280px;
   margin: 0 auto;
-  padding: 1rem 1.5rem;
+  padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (min-width: 768px) {
+    padding: 1rem 3rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 1rem 4rem;
+  }
 `;
 
 export const Logo = styled.a`
