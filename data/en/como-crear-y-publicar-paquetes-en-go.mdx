@@ -1,0 +1,245 @@
+---
+title: "How to Create and Publish Go Packages 📂"
+date: "February 28, 2023"
+published: "2023-02-28"
+abstract: "Publish your own Go packages and use them in your other projects."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgopher.png?alt=media&token=bde793b0-fa05-4a47-b26f-f74b4cbac3ce"
+tag: "Go"
+author: "Carlos García"
+---
+
+# How to Create and Publish Go Packages 📂
+
+<small>February 28, 2023</small>
+<EditPost path="como-crear-y-publicar-paquetes-en-go" />
+
+<img
+  width="100%"
+  alt="golang-wallpaper"
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgopher.png?alt=media&token=bde793b0-fa05-4a47-b26f-f74b4cbac3ce"
+  style={{ borderRadius: "8px" }}
+/>
+
+A need in the programming world has always been to reuse our code and functions. In fact, it's one of the golden rules: DRY, which stands for Don't Repeat Yourself. But many of us have encountered the dilemma of having such a useful class in a project and thinking...
+
+> I wish I could use this class in this project, ctrl c and ctrl v
+
+Then it happens that one of the projects adds an extra function to that class and you realize it would be good in the other one too, so you copy the function and the tests. This can be an endless cycle - I'm telling you, you can be copying and pasting class functions forever.
+
+The solution is very simple: turn that class so useful to you into an independent package with its own tests and its own repository that we can use in all the projects that need it.
+
+## Let's Prepare the Environment
+
+In my case, within my <BlogLink url="https://github.com/solrac97gr/go-jwt-auth" content="template project that I use"/> for 80% of my projects, I have several sub-packages that I sometimes need in other projects, where I decided not to use the template because it was a small project to use that template. So we'll take one of them, in this case the:
+
+> Session Manager: I normally use it to persist the session without depending on the framework I use.
+
+For this we'll start by creating our folder
+
+<CodeSnippet
+  code={`mkdir session-manager`}
+  language="bash"
+/>
+
+Then we'll create a public repository on GitHub. Being public is very important. In the future I'll do a new article where we'll make a private package. Copy the link to our repository.
+
+And now we're going to initialize our Go package inside the folder we created
+
+<CodeSnippet
+  code={`go mod init github.com/user/repository-name`}
+  language="bash"
+/>
+
+Following that, we'll initialize the Git repository in the folder we created.
+
+<CodeSnippet
+  code={`git init`}
+  language="bash"
+/>
+
+Now we'll add two more files inside the folder: README.md and the license. In my case I'll use MIT.
+
+We upload all our files to the repository and we now have our environment ready to start developing our package.
+
+## Now We Proceed to Move Our Entity or Entities.
+
+Some recommendations I can leave you: move only what's strictly necessary for the package to function and its tests. Something crucial is to have a package with the highest amount of Test Coverage.
+
+For my case I'll move the interfaces, the structures, and the tests. Each of them in different files to be able to find them more easily.
+
+Also something I usually do is move some workflows I use to check tests before doing a merge and see the test coverage level. These will go to the .github folder.
+
+Our package would look like this:
+
+> The file I call main.go I use to generally describe the package.
+<br/>
+<FolderStructure
+repo={"https://github.com/solrac97gr/session-manager"}
+  tree={[
+    {
+      type: "folder",
+      name: ".github",
+      content: [
+        {
+          type: "folder",
+          name: "workflows",
+          content: [
+            {
+              type: "file",
+              name: "CI.yaml",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: "file",
+      name: "README.md",
+    },
+    {
+      type: "file",
+      name: "MIT-LICENSE.txt",
+    },
+    {
+      type: "file",
+      name: "cover-profile.sh",
+    },
+    {
+      type: "file",
+      name: "go.mod",
+    },
+    {
+      type: "file",
+      name: "go.sum",
+    },
+    {
+      type: "file",
+      name: "interfaces.go",
+    },
+    {
+      type: "file",
+      name: "main.go",
+    },
+    {
+      type: "file",
+      name: "session.go",
+    },
+    {
+      type: "file",
+      name: "session_manager.go",
+    },
+    {
+      type: "file",
+      name: "session_manager_test.go",
+    },
+
+    {
+      type: "file",
+      name: "session_test.go",
+    },
+
+]}
+/>
+
+## Adding Documentation for Our Package.
+
+In Go we can document our package thanks to godoc.org by simply adding formatted comments to our entities.
+
+I'll give you an example of a documented package using the godoc format:
+
+<CodeSnippet
+  code={`
+  // Package math is a package with mathematical operation
+  package math
+
+  const (
+    // PI is the pi number with 12 decimal's
+    PI float64 = 3.14159265359
+  )
+
+  // Calculator struct who will store like methods all our operations
+  type Calculator struct {}
+
+  // NewCalculator create a new instance of calculator
+  func NewCalculator *Calculator {
+    return &Calculator{}
+  }
+
+  // SumInt sum a group of int
+  func (c *Calculator) SumInt(numbers ...int) int{
+    total := 0
+
+    for _,n := range numbers {
+      total=total+n
+    }
+
+    return total
+  }
+`}
+  language="go"
+/>
+
+This format will make godoc.org format our comments and add them to the documentation section when we upload our package.
+
+## Publishing Our Package.
+
+Now the moment has arrived that in my opinion is the most interesting: seeing our package already inside godoc.org. For this we must prepare our environment. Once all our progress is uploaded to the repository, we'll proceed to create a tag.
+
+<CodeSnippet code={`git tag v0.1.0`} language="bash" />
+
+After creating it, we're going to upload this tag to our repository
+
+<CodeSnippet code={`git push origin v0.1.0`} language="bash" />
+
+And now we'll indicate to Go that our package is ready to be fetched. We must replace with our package link and the version we're publishing.
+
+<CodeSnippet code={`GOPROXY=proxy.golang.org go list -m github.com/solrac97gr/session-manager@v0.1.5`} language="bash" />
+
+## Using Our Package in Other Projects
+
+Once our package is published we can start using it in other projects. For this we'll use the go get directive.
+
+From another project we'll use the following command
+
+<CodeSnippet code={`go get github.com/solrac97gr/session-manager`} language="bash" />
+
+Now it will only be necessary to import our package and use what we need from it in our other projects.
+
+<CodeSnippet code={`
+package main
+
+import github.com/solrac97gr/session-manager
+
+func main() {
+  user := struct {
+    Name string
+    Age int
+  } {
+    Name: "Carlos",
+    Age:26,
+  }
+
+
+  sm := sessionmanager.NewSessionManager()
+
+  s,err :=  sm.CreateSession()
+  if err != nil {
+    panic(err)
+  }
+
+  s.Set("user",user)
+
+  sm.SetAsDefaultSession(s.SessionId())
+
+}
+`} language="go" />
+
+## Conclusion
+
+Go provides us with a very simple tool to share code between our projects and teams that we should take advantage of. There are many teams that usually solve the need to share code using thousands of microservices. Microservices should be created with a lot of criteria since they generate infrastructure costs. There are very small things that aren't worth making a microservice, but by making it a package we solve the need to share those functionalities.
+I'll leave you a link to the package I separated from <BlogLink url="https://github.com/solrac97gr/go-jwt-auth" content="my template I use this 2023"/> to program Go projects so you can see it, contribute to the project, and leave a star.
+
+<BlogLink
+  url="https://github.com/solrac97gr/session-manager"
+  content="Link to the repository"
+/>{" "}

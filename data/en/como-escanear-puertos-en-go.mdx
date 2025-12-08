@@ -1,0 +1,125 @@
+---
+title: "How to Scan Ports Using Go? ⚓️"
+date: "August 8, 2022"
+published: "2022-08-08"
+abstract: "Discover Go's incredible power to perform web analysis using concurrency"
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FFUAQvEkXoAAuQ-2.jpg-large.jpeg?alt=media&token=959951bf-5f60-4ecd-9ddf-74511f0ff3fa"
+tag: "Go, Seguridad"
+author: "Carlos García"
+---
+
+# How to Scan Ports Using Go? ⚓️
+
+<small>August 8, 2022</small>
+<EditPost path="como-escanear-puertos-en-go" />
+
+<img
+  width="100%"
+  alt="golang-wallpaper "
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FFUAQvEkXoAAuQ-2.jpg-large.jpeg?alt=media&token=959951bf-5f60-4ecd-9ddf-74511f0ff3fa"
+  style={{borderRadius:"8px"}}
+/>
+
+A very important utility when working in the world of computer security is port scanning. Currently many tools exist that allow us to perform this task, but for practical purposes we'll learn to develop our own port scanner.
+
+We'll use Go since it has a very good standard library for web communications.
+
+We'll start by creating our project, we'll create our folder and a main.go file, followed by executing the go mod init command to use Go modules as our dependency manager.
+
+As a result we'll get the following folder structure.
+
+<FolderStructure
+  tree={[
+    {
+      type: "file",
+      name: "main.go",
+    },
+    {
+      type: "file",
+      name: "go.mod",
+    },
+  ]}
+/>
+
+Now we'll start writing our program. We'll use Go's `net` library.
+
+## 1. Adding Parameters for Our Script
+
+We'll start modifying our `main` file. Inside it we'll initialize 3 arguments that will be necessary for the script to work: The Host and two more parameters
+
+<CodeSnippet language="go" code={`
+package main
+
+import (
+	"flag"
+)
+
+var host *string
+var from *int
+var limit *int
+
+func init() {
+	host = flag.String("host", "scanme.nmap.org", "hostname to scan")
+	from = flag.Int("from", 0, "from what port we will scan")
+	limit = flag.Int("limit", 65535, "until what port we will scan")
+}
+`}/>
+
+Now we have our Host which will be the site we'll scan and our range of ports to scan.
+
+## 2. Scanning Ports Using Concurrency
+
+Go is not only the language chosen for this blog due to its powerful standard library, but also because we can take advantage of the language's concurrency. For this we'll use the `sync` library. This library offers us a set of tools to work with concurrent processes.
+
+Within the sync library we'll use a type called WaitGroup. This will help us along with go routines so that our main process doesn't finish without all sub-processes completing their work.
+
+<CodeSnippet language="go" code={`
+package main
+
+import (
+	"flag"
+	"fmt"
+	"net"
+	"sync"
+)
+
+var host *string
+var from *int
+var limit *int
+
+func init() {
+	host = flag.String("host", "scanme.nmap.org", "hostname to scan")
+	from = flag.Int("from", 0, "from what port we will scan")
+	limit = flag.Int("limit", 65535, "until what port we will scan")
+}
+
+func main() {
+	flag.Parse()
+	fmt.Printf("Scanning %s from port %d to %d\n", *host, *from, *limit)
+	var wg sync.WaitGroup
+	for i := *from; i < *limit; i++ {
+		wg.Add(1)
+		go func(port int) {
+			defer wg.Done()
+			conn, err := net.Dial("tcp", fmt.Sprintf("%s:%d", *host, port))
+			if err != nil {
+				return
+			}
+			conn.Close()
+			fmt.Println("Port", port, "is open")
+		}(i)
+
+	}
+	wg.Wait()
+}`}/>
+
+
+## 3. Time to Use It
+
+For this, first I'll give you a recommendation: in many countries scanning a website without authorization is a crime. Always use this type of tool on your own sites, test sites, or if you use it for your work.
+
+For the example we'll use the default values that our script has.
+
+<CodeSnippet language="bash" code={`go run main.go --host="scanme.nmap.org" --from=100 --limit=500`}/>
+
+I hope this tutorial serves you for educational purposes and that you continue improving this tool by adding things like a logging system or cache.
