@@ -21,8 +21,9 @@ export const CourseCard = ({ course }) => {
       <ImageStyled
         src={course.photo}
         alt={course.name}
-        width="500px"
-        height="250px"
+        width={500}
+        height={250}
+        style={{ width: '100%', height: 'auto' }}
         unoptimized
       ></ImageStyled>
       <Content>

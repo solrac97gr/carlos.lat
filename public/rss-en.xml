@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Carlos García Blog - English</title>
+    <description>Technical blog about Go, Backend Development, AI, and Software Engineering</description>
+    <link>https://carlos.lat</link>
+    <language>en</language>
+    <lastBuildDate>Mon, 08 Dec 2025 23:03:23 GMT</lastBuildDate>
+    <atom:link href="https://carlos.lat/rss-en.xml" rel="self" type="application/rss+xml" />
+    <image>
+      <url>https://carlos.lat/logo.png</url>
+      <title>Carlos García Blog</title>
+      <link>https://carlos.lat</link>
+    </image>
+    
+    <item>
+      <title><![CDATA[NetArchTest for Go? GoArchTest: Preserve Your Architecture 🏗️]]></title>
+      <description><![CDATA[Discover how GoArchTest helps you maintain a solid architecture in Go, detecting violations that the compiler cannot find.]]></description>
+      <link>https://carlos.lat/blog/netarchttest-para-go</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/netarchttest-para-go</guid>
+      <pubDate>Fri, 13 Jun 2025 00:00:00 GMT</pubDate>
+      <category>Go, Hexagonal, Clean, DDD</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FFUAQvEkXoAAuQ-2.jpg-large.jpeg?alt=media&amp;token=959951bf-5f60-4ecd-9ddf-74511f0ff3fa" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[Create a Simple API with Go Kit 🛠️]]></title>
+      <description><![CDATA[Go Kit is an excellent toolkit for building robust and maintainable microservices in Go. Learn the basics by creating a simple API step by step.]]></description>
+      <link>https://carlos.lat/blog/crea-una-api-simple-con-go-kit</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/crea-una-api-simple-con-go-kit</guid>
+      <pubDate>Fri, 18 Apr 2025 00:00:00 GMT</pubDate>
+      <category>Go, GoKit, Microservices</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-kit.png?alt=media&amp;token=55421998-d226-4248-923f-e06355c2bfb1" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[Use C in Your Go Code 🐹]]></title>
+      <description><![CDATA[Using C in your Go code can be an excellent option to improve your application's performance. In this post, I'll show you how you can integrate C code into your Go project.]]></description>
+      <link>https://carlos.lat/blog/usa-c-en-tu-codigo-go</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/usa-c-en-tu-codigo-go</guid>
+      <pubDate>Wed, 28 Aug 2024 00:00:00 GMT</pubDate>
+      <category>Go, C</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fc-in-go.jpeg?alt=media&amp;token=95e4b48c-822e-4e2f-8361-426e185944b8" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[7 Concurrency Patterns in Go You Should Know 🐹]]></title>
+      <description><![CDATA[In this post, we'll explore 7 concurrency patterns in Go that every programmer should know to handle concurrency efficiently.]]></description>
+      <link>https://carlos.lat/blog/7-patrones-concurrencia-go</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/7-patrones-concurrencia-go</guid>
+      <pubDate>Thu, 22 Aug 2024 00:00:00 GMT</pubDate>
+      <category>Go</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fconcurrency-go-2.jpeg?alt=media&amp;token=0c8d51d9-5491-4928-8ff7-d8786be2d65b" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[Speed Up Go Project Development (go-katana) 🤺]]></title>
+      <description><![CDATA[Boost your productivity with Go Katana, a powerful VSCode extension. This tool uses code snippets to easily generate code for Hexagonal Architecture modules and packages, streamlining your development process.]]></description>
+      <link>https://carlos.lat/blog/agiliza-desarrollo-go-katana</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/agiliza-desarrollo-go-katana</guid>
+      <pubDate>Mon, 03 Jul 2023 22:00:00 GMT</pubDate>
+      <category>Go, Extension, go-katana</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-katana.jpeg?alt=media&amp;token=39e519ab-b60b-4a70-b292-5f1345d88f52" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[Modular Projects in Go Using Private Packages 📦]]></title>
+      <description><![CDATA[Learn how to simplify your Go projects with private packages and modular design 📦.]]></description>
+      <link>https://carlos.lat/blog/como-usar-paquetes-privados-go</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/como-usar-paquetes-privados-go</guid>
+      <pubDate>Thu, 22 Jun 2023 00:00:00 GMT</pubDate>
+      <category>Go, Modules, Private</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-private-packages.png?alt=media&amp;token=e5d3d24c-506c-41f2-be1c-1e3b0e0b9df0" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[Improve Your DX in Go with Makefiles 🐹]]></title>
+      <description><![CDATA[Improve your development workflow using Makefile files and scripts for your Go projects.]]></description>
+      <link>https://carlos.lat/blog/mejora-desarrollo-go-makefile</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/mejora-desarrollo-go-makefile</guid>
+      <pubDate>Thu, 15 Jun 2023 00:00:00 GMT</pubDate>
+      <category>Go, DX, Bash</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-minimal.jpeg?alt=media&amp;token=2af7f91a-5e96-460d-82b4-22ad94448705" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[How to Compile Go Programs? 🐹]]></title>
+      <description><![CDATA[One of Go's most attractive features is its ability to compile code for different architectures and operating systems. In this article, we'll look at how to compile your Go files on different platforms.]]></description>
+      <link>https://carlos.lat/blog/como-compilar-golang</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/como-compilar-golang</guid>
+      <pubDate>Thu, 18 May 2023 00:00:00 GMT</pubDate>
+      <category>Go</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-build-wallpaper.png?alt=media&amp;token=9ef99469-9e00-499f-ada5-3647b72d672a" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[How to Test Go Applications Using Test Tables? 🧪]]></title>
+      <description><![CDATA[In this article we'll work using a repository I created previously to better explain how tests work in Go. We'll also use a technique called test tables that will help us easily add new cases if needed.]]></description>
+      <link>https://carlos.lat/blog/como-testear-aplicaciones-go-test-tables</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/como-testear-aplicaciones-go-test-tables</guid>
+      <pubDate>Sat, 13 May 2023 00:00:00 GMT</pubDate>
+      <category>Go</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750690.jpg?alt=media&amp;token=4dc9af5c-57f4-4c70-b47d-304771eab417" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[How to Use Channels in Go? 🧪]]></title>
+      <description><![CDATA[In this article we'll see how to use channels in Go, what they are and how they work.]]></description>
+      <link>https://carlos.lat/blog/como-usar-canales-go</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/como-usar-canales-go</guid>
+      <pubDate>Tue, 18 Apr 2023 00:00:00 GMT</pubDate>
+      <category>Go</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482737.png?alt=media&amp;token=705f5ef8-da5e-4abd-9d17-a9d716b69be4" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[How to Install and Uninstall Go on Linux, Mac and Windows? 🤔]]></title>
+      <description><![CDATA[In this article we'll see how to correctly install and uninstall Go on Linux, Mac and Windows using the official method.]]></description>
+      <link>https://carlos.lat/blog/como-instalar-desinstalar-golang-linux-mac-windows</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/como-instalar-desinstalar-golang-linux-mac-windows</guid>
+      <pubDate>Mon, 17 Apr 2023 00:00:00 GMT</pubDate>
+      <category>Go</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FGo-structs.jpg?alt=media&amp;token=db442930-e540-4fef-a97a-42add1ea2da7" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[Authentication using JWT with Golang [Fiber] 2023]]></title>
+      <description><![CDATA[Learn how authentication works using JWT for the Fiber Framework and implement a protected route]]></description>
+      <link>https://carlos.lat/blog/golang-fiber-jwt-autenticacion-2023</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/golang-fiber-jwt-autenticacion-2023</guid>
+      <pubDate>Tue, 11 Apr 2023 00:00:00 GMT</pubDate>
+      <category>Go</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgolang_destaque1.png?alt=media&amp;token=3bc5a6ab-4dea-4a72-a11b-31ebf8bc5eb5" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[My Future with Go for 2023 🐹]]></title>
+      <description><![CDATA[Last year I dedicated myself solely and exclusively to building the ideal template for my projects. Discover what the next step is 🤔.]]></description>
+      <link>https://carlos.lat/blog/mi-futuro-en-go</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/mi-futuro-en-go</guid>
+      <pubDate>Wed, 22 Mar 2023 00:00:00 GMT</pubDate>
+      <category>Go</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FDO9s_gDX0AEsSe8.jpg?alt=media&amp;token=01fd59bd-c226-4cc0-aba1-65e5f845ec48" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[Easily Generate Invoices in Go 🤑]]></title>
+      <description><![CDATA[The Payment Receipt Generator repository in Go allows you to generate invoices quickly and efficiently. Simplify billing in your business or as a freelancer with this automated tool.]]></description>
+      <link>https://carlos.lat/blog/generador-recibos-pago-en-go</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/generador-recibos-pago-en-go</guid>
+      <pubDate>Sat, 18 Mar 2023 00:00:00 GMT</pubDate>
+      <category>Go, Fiber</category>
+      <author>Carlos García</author>
+      <enclosure url="https://cdn.filestackcontent.com/p5fN19Qi7ctgFewfHFwi" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[How to Create and Publish Go Packages 📂]]></title>
+      <description><![CDATA[Publish your own Go packages and use them in your other projects.]]></description>
+      <link>https://carlos.lat/blog/como-crear-y-publicar-paquetes-en-go</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/como-crear-y-publicar-paquetes-en-go</guid>
+      <pubDate>Tue, 28 Feb 2023 00:00:00 GMT</pubDate>
+      <category>Go</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgopher.png?alt=media&amp;token=bde793b0-fa05-4a47-b26f-f74b4cbac3ce" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[Custom Types (Aliases) and Enums? in Go - Learn to Leverage Them 🐹]]></title>
+      <description><![CDATA[Discover the potential of aliases in Go and how to get the most out of them in your day-to-day work.]]></description>
+      <link>https://carlos.lat/blog/enums-en-go</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/enums-en-go</guid>
+      <pubDate>Mon, 06 Feb 2023 00:00:00 GMT</pubDate>
+      <category>Go</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F1*QD-fZ5jS3GahUKP-T3EzRA.png?alt=media&amp;token=5b3931b5-e333-481f-9e7b-788c051a0ff1" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[My development environment for 2023 (Go Backend) 🐹]]></title>
+      <description><![CDATA[I'm sharing the tools that accompanied me during the third quarter of 2022 and that will accompany me in 2023.]]></description>
+      <link>https://carlos.lat/blog/mi-entorno-desarrollo-en-go-2023</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/mi-entorno-desarrollo-en-go-2023</guid>
+      <pubDate>Mon, 28 Nov 2022 00:00:00 GMT</pubDate>
+      <category>Go</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FGolang-paquetes-y-modulos.jpg?alt=media&amp;token=55b4e9d6-9e2e-4fbc-86df-c5f71143a71a" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[CRUD Operations with Rust and Firebase (Realtime Database) 🦀+🔥]]></title>
+      <description><![CDATA[A brief analysis of the state of Firebase and Rust as a combination for working on real projects.]]></description>
+      <link>https://carlos.lat/blog/rust-firebase-crud</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/rust-firebase-crud</guid>
+      <pubDate>Fri, 18 Nov 2022 00:00:00 GMT</pubDate>
+      <category>Rust</category>
+      <author>Carlos García</author>
+      <enclosure url="https://i.imgur.com/RAbuxBU.png" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[My project template for 2023 using Go (Fiber and MongoDB) 👨🏽‍💻]]></title>
+      <description><![CDATA[✅ Learn how I organize my Go projects to scale at enterprise level]]></description>
+      <link>https://carlos.lat/blog/plantilla-proyecto-2023</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/plantilla-proyecto-2023</guid>
+      <pubDate>Thu, 10 Nov 2022 00:00:00 GMT</pubDate>
+      <category>Go, Fiber</category>
+      <author>Carlos García</author>
+      <enclosure url="https://cdn.filestackcontent.com/p5fN19Qi7ctgFewfHFwi" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[How to Load Environment Variables in Rust (.env)? 🦀]]></title>
+      <description><![CDATA[Learn how to use environment variable files in rust]]></description>
+      <link>https://carlos.lat/blog/como-usar-variables-entorno-rust</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/como-usar-variables-entorno-rust</guid>
+      <pubDate>Tue, 20 Sep 2022 00:00:00 GMT</pubDate>
+      <category>Rust</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fl3nzamcawtw31.png?alt=media&amp;token=4c6eefce-9a39-4d37-ac68-786ca4dde59d" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[How to Create Console Programs Using Go? 🐹]]></title>
+      <description><![CDATA[Let's learn how to build a console program using Go]]></description>
+      <link>https://carlos.lat/blog/como-crear-programa-consola-go</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/como-crear-programa-consola-go</guid>
+      <pubDate>Sun, 28 Aug 2022 00:00:00 GMT</pubDate>
+      <category>Go</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FDiseño%20sin%20t%C3%ADtulo%20(3).png?alt=media&amp;token=0b4ad9a9-cb30-4a82-b4d2-dd88e8828233" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[JavaScript - The Engine of the Web 🛩]]></title>
+      <description><![CDATA[The language that brings web pages to life 👀]]></description>
+      <link>https://carlos.lat/blog/javascript-motor-web</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/javascript-motor-web</guid>
+      <pubDate>Sat, 13 Aug 2022 00:00:00 GMT</pubDate>
+      <category>Javascript</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fjavascript-small-horizontal-4k.png?alt=media&amp;token=65dfbd58-0585-438a-b420-3379d1c63c31" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[How to Scan Ports Using Go? ⚓️]]></title>
+      <description><![CDATA[Discover Go's incredible power to perform web analysis using concurrency]]></description>
+      <link>https://carlos.lat/blog/como-escanear-puertos-en-go</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/como-escanear-puertos-en-go</guid>
+      <pubDate>Mon, 08 Aug 2022 00:00:00 GMT</pubDate>
+      <category>Go, Seguridad</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FFUAQvEkXoAAuQ-2.jpg-large.jpeg?alt=media&amp;token=959951bf-5f60-4ecd-9ddf-74511f0ff3fa" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[Creating NetCat using Go 📥]]></title>
+      <description><![CDATA[In this blog we'll build a solution in Go that allows us to get class-like behavior in other programming languages.]]></description>
+      <link>https://carlos.lat/blog/creando-netcat-usando-go</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/creando-netcat-usando-go</guid>
+      <pubDate>Tue, 26 Jul 2022 00:00:00 GMT</pubDate>
+      <category>Go</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Ff36611152c8c09bfff77656fb0653249.jpeg?alt=media&amp;token=722321a3-6cd6-40ec-a2bd-01cd67b081d1" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[5 Useful Tricks and Tips for Go You Should Know 🐹]]></title>
+      <description><![CDATA[In this post, I'll show you 5 tricks I use in my day-to-day work as a remote Go programmer.]]></description>
+      <link>https://carlos.lat/blog/5-tips-go-deberias-conocer</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/5-tips-go-deberias-conocer</guid>
+      <pubDate>Thu, 21 Jul 2022 00:00:00 GMT</pubDate>
+      <category>Go</category>
+      <author>Carlos García</author>
+      <enclosure url="https://miro.medium.com/max/1400/1*0xwMiyD3YFwIsfk-ZREGNQ.png" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[HTML and CSS - Basic Web Development 😎]]></title>
+      <description><![CDATA[The goal of this article will be to create a small website with our name and biography, changing the background color, font style, and size.]]></description>
+      <link>https://carlos.lat/blog/html-css-desarrollo-web-basico</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/html-css-desarrollo-web-basico</guid>
+      <pubDate>Wed, 20 Jul 2022 00:00:00 GMT</pubDate>
+      <category>HTML, CSS, Javascript</category>
+      <author>Carlos García</author>
+      <enclosure url="https://wallpapercave.com/wp/wp7420861.png" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[How to Connect Go to MongoDB? 🍃]]></title>
+      <description><![CDATA[✅ In this article we'll learn how to connect to a MongoDB database from Go.]]></description>
+      <link>https://carlos.lat/blog/como-conectar-go-mongo</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/como-conectar-go-mongo</guid>
+      <pubDate>Tue, 19 Jul 2022 00:00:00 GMT</pubDate>
+      <category>Go, Mongo</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482765.jpeg?alt=media&amp;token=daf8051d-cb05-45c4-8709-844b0754abcf" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[How to Consume an API in Go? 🛰]]></title>
+      <description><![CDATA[For this blog we'll build a Go solution that allows us to fetch data from another API.]]></description>
+      <link>https://carlos.lat/blog/como-consumir-api-go</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/como-consumir-api-go</guid>
+      <pubDate>Mon, 18 Jul 2022 00:00:00 GMT</pubDate>
+      <category>Go</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750705.jpg?alt=media&amp;token=d595312d-67bd-44d2-80be-65c4c8bb6b61" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[How to Create a Class in Go? 🏗]]></title>
+      <description><![CDATA[✅ For this blog we'll build a Go solution that allows us to get the behavior of a class from other programming languages. 🚀]]></description>
+      <link>https://carlos.lat/blog/como-crear-clase-go</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/como-crear-clase-go</guid>
+      <pubDate>Sun, 17 Jul 2022 00:00:00 GMT</pubDate>
+      <category>Go</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482746.jpg?alt=media&amp;token=510dd66e-15af-4292-b84d-795a267155c4" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[How to Run Your Go Application Using Docker? 🐋]]></title>
+      <description><![CDATA[✅ We'll create a Go application that will be executed from a Docker container using Fiber]]></description>
+      <link>https://carlos.lat/blog/como-ejecutar-aplicacion-go-docker</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/como-ejecutar-aplicacion-go-docker</guid>
+      <pubDate>Fri, 15 Jul 2022 00:00:00 GMT</pubDate>
+      <category>Go, Docker</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750690.jpg?alt=media&amp;token=4dc9af5c-57f4-4c70-b47d-304771eab417" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[How to Get Environment Variables in Go? (.env or env.json) 📝]]></title>
+      <description><![CDATA[Load your environment variables using Go from Json or Env, learn the advantages and disadvantages 👀]]></description>
+      <link>https://carlos.lat/blog/como-obtener-variables-entorno-go-env-json</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/como-obtener-variables-entorno-go-env-json</guid>
+      <pubDate>Thu, 14 Jul 2022 00:00:00 GMT</pubDate>
+      <category>Go, JSON</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750679.jpg?alt=media&amp;token=7ef5bc19-8c32-48ca-bce3-1be0a3da046c" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[How to Do Bulk Insert in ElasticSearch in Go? 🔎]]></title>
+      <description><![CDATA[We'll create a function that will serialize the information within the array and then save it in a buffer to send it 💡.]]></description>
+      <link>https://carlos.lat/blog/como-hacer-bulk-insert-elasticsearch-go</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/como-hacer-bulk-insert-elasticsearch-go</guid>
+      <pubDate>Wed, 13 Jul 2022 00:00:00 GMT</pubDate>
+      <category>Go, ElasticSearch</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482734.png?alt=media&amp;token=3da62197-fa7a-45fd-84d8-0ed2d2983cfa" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[How to Convert String to Int in Go? 🔁]]></title>
+      <description><![CDATA[ ✅ Go offers us different tools. In this article we'll specifically look at conversions from text strings to integers.]]></description>
+      <link>https://carlos.lat/blog/como-convertir-string-int-go</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/como-convertir-string-int-go</guid>
+      <pubDate>Tue, 12 Jul 2022 00:00:00 GMT</pubDate>
+      <category>Go</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482737.png?alt=media&amp;token=705f5ef8-da5e-4abd-9d17-a9d716b69be4" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[Frontend or Backend: The Dilemma 🤔]]></title>
+      <description><![CDATA[✅ Frontend and Backend are two branches of web development - one focused on the visual part and the other on business logic.]]></description>
+      <link>https://carlos.lat/blog/frontend-backend-dilema</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/frontend-backend-dilema</guid>
+      <pubDate>Thu, 07 Jul 2022 00:00:00 GMT</pubDate>
+      <category>Go, HTML, CSS, Javascript</category>
+      <author>Carlos García</author>
+      <enclosure url="https://miro.medium.com/max/1400/0*EODEF6xTWVm5hv-3" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[How Does the Web Work? 🌎]]></title>
+      <description><![CDATA[Hello world 👋🏾! My name is Carlos García. In this blog we'll see in a simple and summarized way for non-technical users, how does the web work?]]></description>
+      <link>https://carlos.lat/blog/como-funciona-la-web</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/como-funciona-la-web</guid>
+      <pubDate>Tue, 05 Jul 2022 00:00:00 GMT</pubDate>
+      <category>HTML, CSS, Javascript</category>
+      <author>Carlos García</author>
+      <enclosure url="https://miro.medium.com/max/1400/1*-SUwL8gnL8qmt3aYsb-UBg.png" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[How to Access Fields Inside map[string]interface{} 🐹?]]></title>
+      <description><![CDATA[We'll convert the field that has a sub-field to a map[string]interface{} and then access the needed field 🚀]]></description>
+      <link>https://carlos.lat/blog/como-acceder-subcampos</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/como-acceder-subcampos</guid>
+      <pubDate>Thu, 31 Mar 2022 00:00:00 GMT</pubDate>
+      <category>Go</category>
+      <author>Carlos García</author>
+      <enclosure url="https://miro.medium.com/max/1400/1*mJ0RwW7FYTiCbs-K_7q11Q.jpeg" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[My First Time Using Rust, Not Very Happy... 🦀]]></title>
+      <description><![CDATA[✅ We'll create a script that will organize the downloads folder based on file types. 📋 ]]></description>
+      <link>https://carlos.lat/blog/primera-vez-usando-rust</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/primera-vez-usando-rust</guid>
+      <pubDate>Fri, 18 Mar 2022 00:00:00 GMT</pubDate>
+      <category>Rust</category>
+      <author>Carlos García</author>
+      <enclosure url="https://miro.medium.com/max/1038/1*TZbUMhZG8Co1hWCVd3MpIQ.png" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[Hexagonal Architecture using Go (Fiber)👨🏽‍💻]]></title>
+      <description><![CDATA[✅ For this tutorial we're going to create a simple backend using the most essential parts of the language.👨🏽‍💻]]></description>
+      <link>https://carlos.lat/blog/hexagonal-architecture-using-go-fiber</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/hexagonal-architecture-using-go-fiber</guid>
+      <pubDate>Mon, 15 Nov 2021 00:00:00 GMT</pubDate>
+      <category>Go, Fiber</category>
+      <author>Carlos García</author>
+      <enclosure url="https://miro.medium.com/max/1400/1*xofqkz49chC9XliDAuH1Qw.png" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[How to Map an Array of Structs to an Array of Interfaces in Go 🐹?]]></title>
+      <description><![CDATA[ ✅ What happens when you have a method to insert multiple documents into MongoDB but it's the same action for different data types. ]]></description>
+      <link>https://carlos.lat/blog/como-mapear-array-structs-interface</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/como-mapear-array-structs-interface</guid>
+      <pubDate>Fri, 05 Nov 2021 00:00:00 GMT</pubDate>
+      <category>Go</category>
+      <author>Carlos García</author>
+      <enclosure url="https://miro.medium.com/max/1400/1*IHqSJ2_7CeaU675YRdLY2g.jpeg" type="image/jpeg" />
+    </item>
+  </channel>
+</rss>

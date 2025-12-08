@@ -23,13 +23,23 @@ import { logEvent } from "../../lib/analytics";
 import { PHONE_NUMBER } from "../../lib/consts";
 import { ThreeCanvas } from "../ThreeCanvas";
 import { useLanguage } from "../../lib/LanguageContext";
+import { useState, useEffect } from "react";
 
 export const Hero = ({ numberOfPosts }) => {
   const { t, language } = useLanguage();
+  const [mounted, setMounted] = useState(false);
   
-  const whatsappText = language === 'en' 
-    ? 'Hi%20I%20would%20like%20to%20work%20with%20you'
-    : 'Hola%20me%20gustar%C3%ADa%20trabajar%20contigo';
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
+  // Always use default value on server to prevent hydration mismatch
+  const whatsappText = !mounted 
+    ? 'Hola%20me%20gustar%C3%ADa%20trabajar%20contigo'
+    : language === 'en' 
+      ? 'Hi%20I%20would%20like%20to%20work%20with%20you'
+      : 'Hola%20me%20gustar%C3%ADa%20trabajar%20contigo';
+    
   return (
     <Container>
       <HeroSection>

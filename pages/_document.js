@@ -33,11 +33,12 @@ class MyDocument extends Document {
     return (
       <Html lang="es">
         <Head>
-          <script
+          <Script
             async
             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9432125869132148"
             crossOrigin="anonymous"
-          ></script>
+            strategy="afterInteractive"
+          />
           <Script
             id="google-tag-manager"
             strategy="afterInteractive"
@@ -62,6 +63,25 @@ class MyDocument extends Document {
           <link
             href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
             rel="stylesheet"
+          />
+          {/* RSS Feed Autodiscovery */}
+          <link
+            rel="alternate"
+            type="application/rss+xml"
+            title="Carlos García Blog - RSS Feed"
+            href="https://carlos.lat/rss.xml"
+          />
+          <link
+            rel="alternate"
+            type="application/rss+xml"
+            title="Carlos García Blog - Spanish"
+            href="https://carlos.lat/rss-es.xml"
+          />
+          <link
+            rel="alternate"
+            type="application/rss+xml"
+            title="Carlos García Blog - English"
+            href="https://carlos.lat/rss-en.xml"
           />
           <Script
             src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"

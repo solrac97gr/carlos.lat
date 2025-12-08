@@ -1,26 +1,23 @@
 import styled, { css } from "styled-components";
+import { theme, media } from "../../lib/theme";
 
 export const Container = styled.div`
-  padding: 3rem 0;
+  padding: ${theme.spacing['2xl']} 0;
 
-  @media (min-width: 768px) {
-    padding: 4rem 0;
-  }
-
-  @media (min-width: 1024px) {
-    padding: 4rem 0;
+  @media (min-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing['3xl']} 0;
   }
 `;
 
 export const Title = styled.h1`
   text-align: center;
-  font-size: 2rem;
-  font-weight: 800;
-  color: #111827;
-  margin-bottom: 2rem;
+  font-size: ${theme.fontSize['3xl']};
+  font-weight: ${theme.fontWeight.bold};
+  color: ${theme.colors.text};
+  margin-bottom: ${theme.spacing.xl};
 
-  @media (min-width: 768px) {
-    font-size: 2.5rem;
+  ${media.mobile} {
+    font-size: ${theme.fontSize['2xl']};
   }
 `;
 

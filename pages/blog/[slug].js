@@ -3,6 +3,7 @@ import { MDXRemote } from "next-mdx-remote";
 import MDXComponents from "../../components/MDXComponents";
 import { BlogContainer } from "../../components/BlogContainer";
 import Head from "next/head";
+import Script from "next/script";
 import { BLOG_URL, PAGE_URL } from "../../lib/consts";
 import { SocialShareButtons } from "../../components/SocialShareButtons";
 import { NewsletterSubscribe } from "../../components/NewsletterSubscribe";
@@ -11,6 +12,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Footer } from "../../components/Footer";
 import styled from "styled-components";
+import { getArticleSchema, getBreadcrumbSchema } from "../../lib/structuredData";
+import ErrorBoundary from "../../components/ErrorBoundary";
 
 /**
  * Bilingual Blog Post Component
@@ -76,16 +79,28 @@ export default function Post({ source: initialSource, frontmatter: initialFrontm
     }
   }, [language, router.query.slug, frontmatter.lang]);
   
+  const articleSchema = getArticleSchema(frontmatter);
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: PAGE_URL },
+    { name: "Blog", url: BLOG_URL },
+    { name: frontmatter.title, url: `${BLOG_URL}/${frontmatter.slug}` }
+  ]);
+
+  // Truncate abstract for meta description if too long
+  const metaDescription = frontmatter.abstract.length > 160 
+    ? frontmatter.abstract.substring(0, 157) + "..."
+    : frontmatter.abstract;
+
   return (
     <PageContainer>
       <Head>
-        <title>{`${frontmatter.title} | carlos97gr 👨🏽‍💻 `}</title>
+        <title>{`${frontmatter.title} | Carlos García 👨🏽‍💻`}</title>
         <meta charSet="UTF-8" />
-        <meta name="description" content={frontmatter.abstract} />
+        <meta name="description" content={metaDescription} />
         <meta name="keywords" content={frontmatter.tag} />
-        <meta name="author" content={`${PAGE_URL}/sobre-mi`} />
+        <meta name="author" content="Carlos García" />
         <meta property="og:title" content={frontmatter.title} />
-        <meta name="og:description" content={frontmatter.abstract} />
+        <meta name="og:description" content={metaDescription} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={`${BLOG_URL}/${frontmatter.slug}`} />
         <meta property="og:image" content={frontmatter.image} />
@@ -94,41 +109,21 @@ export default function Post({ source: initialSource, frontmatter: initialFrontm
           content={frontmatter.published}
         />
         <meta property="article:tag" content={frontmatter.tag} />
-        <meta property="article:author" content={`${PAGE_URL}/sobre-mi`} />
+        <meta property="article:author" content="Carlos García" />
         <meta name="twitter:title" content={frontmatter.title} />
-        <meta name="twitter:description" content={frontmatter.abstract} />
+        <meta name="twitter:description" content={metaDescription} />
         <meta name="twitter:image" content={frontmatter.image} />
         <meta name="twitter:card" content="summary_large_image" />
+        
+        {/* Structured Data */}
         <script
-          src="https://giscus.app/client.js"
-          data-repo="solrac97gr/carlos.lat"
-          data-repo-id="R_kgDOHl_QEQ"
-          data-category="General"
-          data-category-id="DIC_kwDOHl_QEc4CQrs_"
-          data-mapping="title"
-          data-strict="0"
-          data-reactions-enabled="1"
-          data-emit-metadata="0"
-          data-input-position="top"
-          data-theme="light"
-          data-lang="es"
-          data-loading="lazy"
-          crossOrigin="anonymous"
-          async
-        ></script>
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+        />
         <script
-          data-name="BMC-Widget"
-          data-cfasync="false"
-          src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
-          data-id="carlosgarcA"
-          data-description="Apoyame usando Buy me a coffee!"
-          data-message="Gracias por visitar mi blog!"
-          data-color="#40DCA5"
-          data-position="Right"
-          data-x_margin="18"
-          data-y_margin="18"
-          async
-        ></script>
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        />
       </Head>
       <MainContent>
         <BlogContainer>
@@ -168,7 +163,25 @@ export default function Post({ source: initialSource, frontmatter: initialFrontm
                     : 'Este artículo solo está disponible en Español.'}
                 </div>
               )}
-              <MDXRemote {...source} components={MDXComponents} />
+              {frontmatter.title && <h1>{frontmatter.title}</h1>}
+              {frontmatter.date && (
+                <p style={{ 
+                  color: '#6b7280', 
+                  fontSize: '0.875rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  marginBottom: '1.5rem'
+                }}>
+                  {frontmatter.date}
+                  {frontmatter.readingTime && (
+                    <span> • {frontmatter.readingTime} min read</span>
+                  )}
+                </p>
+              )}
+              <ErrorBoundary fallbackMessage="The blog content failed to render. Please try refreshing the page.">
+                <MDXRemote {...source} components={MDXComponents} />
+              </ErrorBoundary>
               <NewsletterSubscribe />
             </>
           )}
@@ -177,6 +190,36 @@ export default function Post({ source: initialSource, frontmatter: initialFrontm
         </BlogContainer>
       </MainContent>
       <Footer />
+      <Script
+        src="https://giscus.app/client.js"
+        data-repo="solrac97gr/carlos.lat"
+        data-repo-id="R_kgDOHl_QEQ"
+        data-category="General"
+        data-category-id="DIC_kwDOHl_QEc4CQrs_"
+        data-mapping="title"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="es"
+        data-loading="lazy"
+        crossOrigin="anonymous"
+        strategy="lazyOnload"
+      />
+      <Script
+        data-name="BMC-Widget"
+        data-cfasync="false"
+        src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
+        data-id="carlosgarcA"
+        data-description="Apoyame usando Buy me a coffee!"
+        data-message="Gracias por visitar mi blog!"
+        data-color="#40DCA5"
+        data-position="Right"
+        data-x_margin="18"
+        data-y_margin="18"
+        strategy="lazyOnload"
+      />
     </PageContainer>
   );
 }

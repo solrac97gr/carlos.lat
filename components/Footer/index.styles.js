@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { theme, media } from '../../lib/theme';
 
 export const FooterContainer = styled.footer`
   background-color: #1f2937;
@@ -26,8 +27,12 @@ export const FooterGrid = styled.div`
   text-align: center;
 
   @media (min-width: 768px) {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     text-align: left;
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(5, 1fr);
   }
 `;
 
@@ -70,10 +75,12 @@ export const LinkList = styled.ul`
 export const LinkItem = styled.li``;
 
 export const FooterLink = styled.a`
-  color: #9ca3af;
+  color: ${theme.colors.textLight};
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: color ${theme.transitions.base};
   cursor: pointer;
+  display: flex;
+  align-items: center;
 
   &:hover {
     color: #ffffff;
@@ -94,7 +101,7 @@ export const InfoList = styled.ul`
 export const InfoItem = styled.li``;
 
 export const SocialLink = styled.a`
-  color: #9ca3af;
+  color: ${theme.colors.textLight};
   text-decoration: none;
   display: flex;
   align-items: center;

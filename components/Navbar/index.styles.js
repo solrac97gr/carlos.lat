@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { theme, media } from "../../lib/theme";
 
 export const NavbarContainer = styled.header`
   position: fixed;
@@ -7,8 +8,8 @@ export const NavbarContainer = styled.header`
   right: 0;
   background-color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(8px);
-  z-index: 50;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  z-index: ${theme.zIndex.modal};
+  box-shadow: ${theme.shadows.sm};
 `;
 
 export const NavbarContent = styled.div`
@@ -29,13 +30,13 @@ export const NavbarContent = styled.div`
 `;
 
 export const Logo = styled.a`
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #111827;
+  font-size: ${theme.fontSize.xl};
+  font-weight: ${theme.fontWeight.bold};
+  color: ${theme.colors.text};
   letter-spacing: -0.025em;
   text-decoration: none;
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  transition: opacity ${theme.transitions.fast};
 
   &:hover {
     opacity: 0.8;
@@ -43,7 +44,7 @@ export const Logo = styled.a`
 `;
 
 export const LogoAccent = styled.span`
-  color: #3b82f6;
+  color: ${theme.colors.primary};
 `;
 
 export const DesktopNav = styled.nav`

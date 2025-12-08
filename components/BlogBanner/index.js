@@ -11,8 +11,10 @@ import {
 } from "./index.styles";
 import Link from "next/link";
 import { useState } from "react";
+import { useLanguage } from "../../lib/LanguageContext";
 
 export const BlogBanner = ({ post }) => {
+  const { t } = useLanguage();
   const [tags, setTags] = useState(post.tag?.split(", "));
   return (
     <Container>
@@ -26,16 +28,17 @@ export const BlogBanner = ({ post }) => {
         </TagContainer>
 
         <Link href={`blog/${post.slug}`}>
-          <StyledA>Continuar leyendo</StyledA>
+          <StyledA>{t('blog.continueReading')}</StyledA>
         </Link>
       </LeftColumn>
       <ImageWrapper>
         <ImageStyled
           alt="programming wallpaper"
           src={post.image}
-          layout="responsive"
           width={600}
           height={400}
+          sizes="(max-width: 768px) 100vw, 600px"
+          style={{ width: '100%', height: 'auto' }}
           unoptimized
         />
       </ImageWrapper>

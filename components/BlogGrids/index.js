@@ -4,7 +4,7 @@ import { Container } from "./index.styles";
 export const BlogGrids = ({ posts, filter }) => {
   return (
     <Container>
-      {filter === "Todos"
+      {filter === "All"
         ? posts.map((post) => {
             return <BlogCard key={post.title} post={post} />;
           })
