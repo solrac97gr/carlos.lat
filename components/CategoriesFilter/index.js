@@ -1,8 +1,12 @@
 import { Container, Categories, Category, Title } from "./index.styles";
+import { useLanguage } from "../../lib/LanguageContext";
+
 export const CategoriesFilter = ({ filter, topics, handleChangeFilter }) => {
+  const { t } = useLanguage();
+  
   return (
     <Container>
-      <Title>Categorías</Title>
+      <Title>{t('blog.categories')}</Title>
       <Categories>
         {topics.map((topic) => (
           <Category
@@ -10,7 +14,7 @@ export const CategoriesFilter = ({ filter, topics, handleChangeFilter }) => {
             key={topic}
             isActive={topic === filter}
           >
-            {topic}
+            {topic === "All" ? t('blog.all') : topic}
           </Category>
         ))}
       </Categories>

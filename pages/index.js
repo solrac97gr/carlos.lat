@@ -7,8 +7,12 @@ import { Services } from "../components/Services";
 import { About } from "../components/About";
 import { Contact } from "../components/Contact";
 import { Footer } from "../components/Footer";
+import { getPersonSchema, getWebsiteSchema } from "../lib/structuredData";
 
 export default function Home({ posts }) {
+  const personSchema = getPersonSchema();
+  const websiteSchema = getWebsiteSchema();
+
   return (
     <div className={styles.container}>
       <Head>
@@ -49,6 +53,16 @@ export default function Home({ posts }) {
         />
         <meta name="twitter:card" content="summary_large_image" />
         <link rel="icon" href="/favicon.ico" />
+        
+        {/* Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
       </Head>
       <main>
         <Hero numberOfPosts={posts.length} />

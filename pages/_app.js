@@ -2,7 +2,7 @@ import '../styles/globals.css'
 import '../styles/night-owl.css'
 import {Layout} from '../components/layout'
 import { useEffect } from "react";
-import { initGA } from '../lib/analytics';
+import { initGA, logEvent } from '../lib/analytics';
 import { LanguageProvider } from '../lib/LanguageContext';
 
 
@@ -20,6 +20,11 @@ function MyApp({ Component, pageProps }) {
     </LanguageProvider>
   
   )
+}
+
+export function reportWebVitals(metric) {
+  // Log Core Web Vitals to Google Analytics
+  logEvent('Web Vitals', metric.name, metric.label, Math.round(metric.value));
 }
 
 export default MyApp

@@ -1,6 +1,5 @@
 import { Container, Separator } from "./index.styles";
-
-import { Header, ConsoleOutput } from "./index.styles";
+import { Header, ConsoleOutput } from "../CodeSnipet/index.styles";
 import { CopyButton } from "../CopyButton";
 import { useEffect } from "react";
 import Prism from "prismjs";

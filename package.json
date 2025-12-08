@@ -8,32 +8,32 @@
     "build": "next build",
     "postbuild": "next-sitemap",
     "start": "next start",
-    "export": "next export",
     "lint": "next lint",
-    "ci": "pnpm install && pnpm run build && pnpm run postbuild && pnpm run export"
+    "ci": "pnpm install && pnpm run build && pnpm run postbuild"
   },
   "dependencies": {
     "fs": "^0.0.1-security",
     "gray-matter": "^4.0.3",
     "html-entities": "^2.3.3",
     "mdx-prism": "^0.3.4",
-    "next": "12.2.0",
-    "next-mdx-remote": "^4.0.3",
+    "next": "15.5.7",
+    "next-mdx-remote": "^5.0.0",
     "next-sitemap": "^3.1.8",
     "parse-entities": "^4.0.0",
     "prettier": "^2.8.7",
     "prism-line-numbers.min.js": "link:prismjs/plugins/line-numbers/prism-line-numbers.min.js",
     "prismjs": "^1.29.0",
-    "react": "18.2.0",
+    "react": "19.2.1",
     "react-burger-menu": "^3.0.8",
-    "react-dom": "18.2.0",
+    "react-dom": "19.2.1",
     "react-ga4": "^2.1.0",
     "react-icons": "^4.4.0",
     "react-mailchimp-subscribe": "^2.1.3",
-    "react-share": "^4.4.1",
+    "react-share": "^5.2.2",
     "styled-components": "^5.3.5"
   },
   "devDependencies": {
+    "babel-plugin-styled-components": "^2.1.4",
     "eslint": "8.18.0",
     "eslint-config-next": "12.2.0"
   }

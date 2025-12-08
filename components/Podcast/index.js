@@ -3,7 +3,7 @@ export const Podcast = ({ episode }) => {
     <iframe
       src={`https://open.spotify.com/embed/episode/${episode}`}
       width="100%"
-      height="180px"
+      style={{ height: '180px', borderRadius: '12px' }}
       frameBorder="0"
       allow="encrypted-media"
     />

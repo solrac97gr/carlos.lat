@@ -8,8 +8,9 @@ export const BlogCard = ({ post }) => {
         <ImageStyled
           src={post.image}
           alt="go-wallpaper"
-          width="500px"
-          height="250px"
+          width={500}
+          height={250}
+          style={{ width: '100%', height: 'auto' }}
           unoptimized
         ></ImageStyled>
         <Content>

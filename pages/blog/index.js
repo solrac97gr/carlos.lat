@@ -8,6 +8,9 @@ import { BlogGrids } from "../../components/BlogGrids";
 import { useLanguage } from "../../lib/LanguageContext";
 import { Footer } from "../../components/Footer";
 import styled from "styled-components";
+import { useEffect } from "react";
+import { getBlogSchema, getBreadcrumbSchema } from "../../lib/structuredData";
+import { PAGE_URL } from "../../lib/consts";
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -33,40 +36,54 @@ const MainContent = styled.main`
 `;
 
 export default function Blog({ posts, lastPost, topics }) {
-  const [filter, SetFilter] = useState("Todos");
+  const { t } = useLanguage();
+  const [filter, SetFilter] = useState("All");
+
+  useEffect(() => {
+    SetFilter("All");
+  }, []);
 
   const handleChangeFilter = (topic) => {
     if (filter === topic) {
-      SetFilter("Todos");
+      SetFilter("All");
     } else {
       SetFilter(topic);
     }
   };
 
+  const blogSchema = getBlogSchema();
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: PAGE_URL },
+    { name: "Blog", url: BLOG_URL }
+  ]);
+
+  const metaDescription = `Technical blog about Go, Backend Development, AI, and Software Engineering. ${posts.length} articles covering topics like ${topics.slice(1, 4).join(', ')} and more.`;
+
   return (
     <PageContainer>
       <Head>
-        <title>Blog | carlos97gr 👨🏽‍💻</title>
+        <title>Blog | Carlos García 👨🏽‍💻 - Go, Backend, AI & Software Engineering</title>
         <meta
           name="description"
-          content="Creando contenido mientras programo."
+          content={metaDescription}
         />
-        <meta name="keywords" content="backend go development" />
+        <meta name="keywords" content="Go, Golang, Backend Development, AI, Software Engineering, MongoDB, Docker, Microservices, Rust" />
         <meta name="author" content="Carlos García" />
-        <meta property="og:title" content="carlos97gr 👨🏽‍💻 | Blog" />
+        <meta property="og:title" content="Blog | Carlos García - Technical Articles on Go & Backend Development" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={BLOG_URL} />
+        <meta property="og:description" content={metaDescription} />
         <meta
           property="og:image"
           content="https://miro.medium.com/max/1400/1*xofqkz49chC9XliDAuH1Qw.png"
         />
         <meta
           name="twitter:title"
-          content="carlos97gr 👨🏽‍💻 | Backend, Go, Flutter, Firebase, Rust"
+          content="Blog | Carlos García - Go, Backend, AI"
         />
         <meta
           name="twitter:description"
-          content="Creando contenido mientras programo."
+          content={metaDescription}
         />
         <meta
           name="twitter:image"
@@ -74,6 +91,16 @@ export default function Blog({ posts, lastPost, topics }) {
         />
         <meta name="twitter:card" content="summary_large_image" />
         <link rel="icon" href="/favicon.ico" />
+        
+        {/* Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        />
       </Head>
       <MainContent>
         <BlogBanner post={lastPost} />
@@ -110,7 +137,7 @@ export async function getStaticProps() {
     .sort((a, b) => new Date(b.published) - new Date(a.published));
   
   const lastPost = posts[0];
-  const topics = ["Todos"];
+  const topics = ["All"];
   posts.forEach((post) => {
     post.tag?.split(", ").forEach((topic) => {
       if (!topics.includes(topic)) {
