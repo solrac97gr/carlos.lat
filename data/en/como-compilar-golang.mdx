@@ -1,0 +1,74 @@
+---
+title: "How to Compile Go Programs? 🐹"
+date: "May 18, 2023"
+published: "2023-05-18"
+abstract: "One of Go's most attractive features is its ability to compile code for different architectures and operating systems. In this article, we'll look at how to compile your Go files on different platforms."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-build-wallpaper.png?alt=media&token=9ef99469-9e00-499f-ada5-3647b72d672a"
+tag: "Go"
+author: "Carlos García"
+---
+
+# How to Compile Go Programs? 🐹
+
+<small>May 18, 2023</small>
+<EditPost path="como-compilar-golang" />
+
+<img
+  width="100%"
+  alt="golang-wallpaper "
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-build-wallpaper.png?alt=media&token=9ef99469-9e00-499f-ada5-3647b72d672a"
+  style={{ borderRadius: "8px" }}
+/>
+
+
+Go is an open-source programming language that has become increasingly popular among developers in recent years. One of Go's most attractive features is its ability to compile code for different architectures and operating systems. In this article, we'll look at how to compile your Go files on different platforms.
+
+## Importance of Compiling for a Specific Operating System in Go
+
+Compiling your Go code for a specific operating system can be very important to ensure your application works correctly on different platforms. When you compile your code for a specific operating system, Go produces an executable file that is optimized for that platform and can take advantage of that operating system's specific features.
+
+For example, if your application uses Linux-specific system calls, you should compile your Go code for Linux to ensure it works correctly on that operating system. If you try to run the same executable file on Windows, it may not work correctly because Windows doesn't have the same system calls as Linux.
+
+In summary, compiling your Go code for a specific operating system can help you ensure your application works correctly on different platforms and takes full advantage of each operating system's specific features.
+
+<PromoBanner/>
+
+## Compiling Go on Windows Operating Systems
+
+To compile your Go files on Windows, you must first have Go installed on your system. You can download the latest version of Go from the official Go website. Once you've installed Go, you should open a command line window and navigate to your Go file's location. Then, run the following command to compile your file:
+
+<CodeSnippet language={"bash"} code={`go build filename.go`} />
+
+If you want to compile your Go file for Windows, you should run the following command:
+
+<CodeSnippet language={"bash"} code={`GOOS=windows GOARCH=amd64 go build filename.go`} />
+
+
+## Compiling Go on Linux Operating Systems
+
+To compile your Go files on Linux, you must have Go installed on your system. You can install Go using the following command:
+
+<CodeSnippet language={"bash"} code={`sudo apt-get install golang`} />
+
+
+Once you've installed Go, you should open a command line window and navigate to your Go file's location. Then, run the following command to compile your file:
+
+<CodeSnippet language={"bash"} code={`go build filename.go`} />
+
+If you want to compile your file for Linux, you can use the following command just like we do on Linux:
+
+<CodeSnippet language={"bash"} code={`GOOS=linux GOARCH=amd64 go build filename.go`} />
+
+
+## Compiling Go on macOS Operating Systems
+
+To compile your Go files on macOS, you must have Go installed on your system. You can download the latest version of Go from the official Go website. Once you've installed Go, you should open a command line window and navigate to your Go file's location. Then, run the following command to compile your file:
+
+<CodeSnippet language={"bash"} code={`go build filename.go`} />
+
+
+If you want to compile your file for Mac, you can use the following command:
+
+<CodeSnippet language={"bash"} code={`GOOS=darwin go build filename.go`} />
+
+With these simple steps, you can compile your Go files on different architectures and operating systems.

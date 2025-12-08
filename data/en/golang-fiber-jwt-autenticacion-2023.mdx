@@ -20,14 +20,14 @@ author: "Carlos García"
   style={{ borderRadius: "8px" }}
 />
 
-Authentication can be a headache when you're just starting in the programming world, so I want to make your life a little easier and teach you how to implement it basically using the <BlogLink
+Authentication can be a headache when you're just starting in the programming world, so I want to make your life a bit easier and teach you how to implement it in a basic way using the <BlogLink
 url={"https://github.com/gofiber/jwt"}
 content={"Fiber JWT package in version 3"}
-/>.
+/> .
 
 ## Let's prepare the environment:
 
-We create our folder 📁 where we'll host our project and initialize our Go project using the command:
+Create a folder 📁 where we'll host our project and initialize our Go project using the command:
 
 <CodeSnippet language={"bash"} code={"go mod init github.com/solrac97gr/basic-jwt-auth"} hideLineNumbers={true}/>
 
@@ -48,7 +48,7 @@ And finally the Fiber package
 <CodeSnippet language={"bash"} code={"go get github.com/gofiber/fiber/v2"} hideLineNumbers={true} />
 
 
-## Let's code
+## Hands on code
 <PromoBanner/>
 
 ### Models:
@@ -78,7 +78,7 @@ type User struct {
 
 ### Config
 
-Inside the **config/config.go** folder you have the task of extracting the signature for your token from environment variables or a configuration file. For the example I'll use a constant - you should never do this as it would compromise the security of the Token.
+Inside the **config/config.go** folder, your task is to extract the signature for your token from environment variables or a configuration file. For the example I'll use a constant - you should never do this as it would compromise the Token's security.
 
 <CodeSnippet route={"config/config.go"} language={"go"} code={`
 package config
@@ -111,7 +111,7 @@ func NewAuthMiddleware(secret string) fiber.Handler {
 
 ### Repository
 
-To avoid overcomplicating the project and deviating from the focus, we'll use a function that will simulate a database call and return the user when the password and email match or an error when they don't. This will be in the **repository/FindByCredentials.go** folder.
+To not overcomplicate the project and deviate from the focus, we'll use a function that will simulate a database call and return the user when the password and email match, or an error when they don't. This will be in the **repository/FindByCredentials.go** folder.
 
 <CodeSnippet route={"repository/FindByCredentials.go"} language={"go"} code={`
 package repository
@@ -221,9 +221,9 @@ func Protected(c *fiber.Ctx) error {
 }
 `} />
 
-### Time to bring everything together
+### Time to bring it all together
 
-Now in our **main.go** file located at the project root, we'll unite all the parts and get our API running.
+Now in our **main.go** file located at the project root, we'll unite all the parts and get our API up and running.
 
 <CodeSnippet route={"main.go"} language={"go"} code={`
 package main
@@ -256,13 +256,13 @@ func main() {
 
 ## Running our application
 
-Once we finish creating the necessary files, we'll run the following command.
+Once we finish creating the necessary files, we'll execute the following command.
 
 
 <CodeSnippet language={"bash"} code={"go run main.go"} hide />
 
 
-This will give us the following result in the console, which means our app is now running on port **3000**
+This will give us the following result in the console, which means our app is already running on port **3000**
 
 <img
   width="100%"
@@ -282,7 +282,7 @@ We execute the Login and see that we get our Token 🌟
   style={{ borderRadius: "8px" }}
 />
 
-Now we'll use our token in the next request to the protected route and done - our route identifies which user is logged in thanks to the token information.
+Now we'll use our token in the next request to the protected route and that's it - our route identifies which user is logged in thanks to the token information.
 
 <img
   width="100%"
@@ -298,7 +298,7 @@ content={"here"}
 
 ## This is how our final project would look
 
-You can check the repository at the following link <BlogLink
+You can review the repository at the following link <BlogLink
 url={"https://github.com/solrac97gr/basic-jwt-auth"}
 content={"github.com/basic-jwt-auth"}
 />
@@ -371,7 +371,7 @@ This would be the file structure.
 
 ## Conclusion
 
-This is how we can authenticate users using JWT in Go Fiber. However, the structure of this project has many points for improvement that I address in <BlogLink
+This is how we can authenticate users using JWT in Go Fiber. However, this project structure has many points for improvement that I address in <BlogLink
 url={"https://carlos.lat/blog/plantilla-proyecto-2023/"}
 content={"this article"}
 /> and that you can review to build something more robust using hexagonal architecture and DDD.

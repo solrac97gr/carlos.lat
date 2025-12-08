@@ -1,0 +1,45 @@
+---
+title: "How to Access Fields Inside map[string]interface{} 🐹?"
+date: "March 31, 2022"
+published: "2022-03-31"
+abstract: "We'll convert the field that has a sub-field to a map[string]interface{} and then access the needed field 🚀"
+image: "https://miro.medium.com/max/1400/1*mJ0RwW7FYTiCbs-K_7q11Q.jpeg"
+tag: "Go"
+author: "Carlos García"
+---
+
+# How to Access Fields Inside map[string]interface{} 🐹?
+
+<small>March 31, 2022</small> <EditPost path="como-acceder-subcampos" />
+
+<img
+  width="100%"
+  src="https://miro.medium.com/max/1400/1*mJ0RwW7FYTiCbs-K_7q11Q.jpeg"
+  style={{borderRadius:"8px"}}
+></img>
+
+<PromoBanner/>
+
+Starting with the common problem of creating more generic functions, I once dealt with a similar issue: accessing sub-fields within a **map[string]interface{}** interface. The solution is much simpler than you think, starting by identifying which field we need within our structure. After that, everything is simpler - you'll need a simple conversion of the field that has a sub-field to a **map[string]interface{}** interface and then access the field you need. Finally, you need to convert the value to your desired type. For this example, I don't use validation for field existence, but it's highly recommended.
+
+<CodeSnippet language={"go"} route={"main.go"} code={`
+package main
+
+import "fmt"
+
+func main() {
+    subMap := map[string]interface{}{
+        "sqlid": 1,
+    }
+
+    Map := map[string]interface{}{
+        "metadata": subMap,
+    }
+
+    sqlid := Map["metadata"].(map[string]interface{})["sqlid"].(int)
+
+    fmt.Println(sqlid)
+}
+`} />
+
+I hope this brief article helps you easily solve this problem in the future. Happy coding and save this article so you never lose the solution.

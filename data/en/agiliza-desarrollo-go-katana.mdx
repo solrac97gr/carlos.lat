@@ -1,0 +1,162 @@
+---
+title: "Speed Up Go Project Development (go-katana) 🤺"
+date: "July 4, 2023"
+published: "2023-07-4"
+abstract: "Boost your productivity with Go Katana, a powerful VSCode extension. This tool uses code snippets to easily generate code for Hexagonal Architecture modules and packages, streamlining your development process."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-katana.jpeg?alt=media&token=39e519ab-b60b-4a70-b292-5f1345d88f52"
+tag: "Go, Extension, go-katana"
+author: "Carlos García"
+---
+
+# Speed Up Go Project Development (go-katana) 🤺
+
+<small>July 4, 2023</small>
+<EditPost path="agiliza-desarrollo-go-katana" />
+
+<img
+  width="100%"
+  alt="golang-wallpaper "
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-katana.jpeg?alt=media&token=39e519ab-b60b-4a70-b292-5f1345d88f52"
+  style={{ borderRadius: "8px" }}
+/>
+
+After 6 years working as a programmer in various programming languages, I started noticing some things I missed from other languages in Go. For example, the lack of code generators that simplify the development process. This was my motivation to create <BlogLink url="https://marketplace.visualstudio.com/items?itemName=carlos-lat.go-katana&ssr=false#overview" content="go-katana"/>, an extension with code snippets that will help you speed up your development.
+
+## What is go-katana? 👀
+
+Go-katana is a simple extension where I collect code snippets of things I usually build daily in my Go projects, such as Repositories, Services, Value Objects, Domain Entities, Ports, etc.
+
+ <PromoBanner/>
+
+
+## The Code Snippets 🔍
+
+Currently, Go-katana has only 4 code snippets that will help us with Go programming. However, we already have plans in the project roadmap to add more than 10 additional code snippets and a more advanced code generator that will allow us to build complete Go packages with just one command.
+
+### Generate Entities
+
+The first code snippet is invoked with the keyword:
+
+```go
+entity
+```
+
+This will generate a Go struct that will have the same name as our file but capitalized, if it's a single word, and if there are multiple words, it will separate them with "_" as is the Go convention using "Pascal Case".
+
+> Filename: admin_params.go -> AdminParams
+>
+> The package name comes from the folder where the file is located
+
+And the code it would generate would be:
+
+<CodeSnippet  language={"go"} route={"./models"} code={`package models
+
+type AdminParams struct {
+	field string
+}
+
+func NewAdminParams(field string) *AdminParams {
+	return &AdminParams{
+		//Add properties
+		field: field,
+	}
+}
+
+func (a *AdminParams) Validate() error {
+	//TODO: Implement
+	return nil
+}`} />
+
+### Generate Ports
+
+For this code snippet there's not much science - it will create an interface using your file name and using your folder name as the package name.
+
+We'll use the command:
+
+```go
+port
+```
+
+It will generate the following code:
+
+<CodeSnippet  language={"go"} route={"./ports"} code={`package ports
+
+type UserApplication interface{}
+`} />
+
+### Generate Implementations
+
+To achieve this, we'll add a constructor in struct form that can also return an error, and an additional line to validate the interface. Unfortunately, I haven't been able to make the import dynamic due to VSCode code snippet limitations (there's no way to get the module name automatically), so we'll have to add it manually.
+
+We'll use the command:
+
+```go
+impl
+```
+
+It will generate the following code:
+
+<CodeSnippet  language={"go"} route={"./application"} code={`package application
+
+import (
+ ports ~/Development/work/bayonet/go-auth/application
+)
+
+type UserApplication struct {
+	field string
+}
+
+// Validate the interface it's completed in the struct
+var _ ports.UserApplication = (*UserApplication)(nil)
+
+func NewUserApplication(field string) (*UserApplication, error) {
+	return &UserApplication{
+		//Add properties
+		field: field,
+	},nil
+}`} />
+
+### Generate Value Objects
+
+We can also generate value objects with the following command:
+
+```go
+vo
+```
+
+It will generate the following code:
+
+<CodeSnippet  language={"go"} route={"./application"} code={`package models
+
+type Email struct {
+	value string
+}
+
+func NewEmail(value string) Email {
+	return Email{
+		value: value,
+	}
+}
+
+func (e Email) Equals(other Email) bool {
+	return e.value == other.value
+}
+
+func (e Email) Validate() error {
+	//TODO: Implement
+	return nil
+}`} />
+
+## Future Features 🚀
+- Package generator (Using Hexagonal Architecture).
+- Test tables generator.
+- Handler generator for different frameworks.
+- Mock generator.
+
+Currently, go-katana is in its first version. However, we already have a planned roadmap and the project's future is to become a project generator that can be installed as an extension, providing support throughout the entire development lifecycle.
+
+I hope you find it helpful. Here's the link to the extension:
+
+<BlogLink url="https://marketplace.visualstudio.com/items?itemName=carlos-lat.go-katana&ssr=false#overview" content="go-katana: you can go faster"/>
+
+It will remain free for life for users who install it now in its initial phase.
