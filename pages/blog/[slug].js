@@ -6,10 +6,30 @@ import Head from "next/head";
 import { BLOG_URL, PAGE_URL } from "../../lib/consts";
 import { SocialShareButtons } from "../../components/SocialShareButtons";
 import { NewsletterSubscribe } from "../../components/NewsletterSubscribe";
+import styled from "styled-components";
+
+const PageContainer = styled.div`
+  min-height: 100vh;
+  background: #ffffff;
+`;
+
+const MainContent = styled.main`
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 5rem 2rem 4rem;
+
+  @media (min-width: 768px) {
+    padding: 5rem 3rem 5rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 5rem 4rem 6rem;
+  }
+`;
 
 export default function Post({ source, frontmatter }) {
   return (
-    <div>
+    <PageContainer>
       <Head>
         <title>{`${frontmatter.title} | carlos97gr 👨🏽‍💻 `}</title>
         <meta charSet="UTF-8" />
@@ -62,13 +82,15 @@ export default function Post({ source, frontmatter }) {
           async
         ></script>
       </Head>
-      <BlogContainer>
-        <MDXRemote {...source} components={MDXComponents} />
-        <NewsletterSubscribe />
-        <SocialShareButtons post={frontmatter}></SocialShareButtons>
-        <div className="giscus"></div>
-      </BlogContainer>
-    </div>
+      <MainContent>
+        <BlogContainer>
+          <MDXRemote {...source} components={MDXComponents} />
+          <NewsletterSubscribe />
+          <SocialShareButtons post={frontmatter}></SocialShareButtons>
+          <div className="giscus"></div>
+        </BlogContainer>
+      </MainContent>
+    </PageContainer>
   );
 }
 

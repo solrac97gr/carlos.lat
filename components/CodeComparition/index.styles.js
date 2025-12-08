@@ -14,7 +14,7 @@ export const Container = styled.div`
 
 export const Separator = styled.div`
   width: 1px;
-  background-color: #63f3ab;
+  background-color: #3b82f6;
   padding: 1px;
 
 `;

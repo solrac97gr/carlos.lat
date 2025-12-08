@@ -6,7 +6,8 @@ import {
   LeftColumn,
   TagContainer,
   Tag,
-  ImageStyled
+  ImageStyled,
+  ImageWrapper
 } from "./index.styles";
 import Link from "next/link";
 import { useState } from "react";
@@ -28,16 +29,16 @@ export const BlogBanner = ({ post }) => {
           <StyledA>Continuar leyendo</StyledA>
         </Link>
       </LeftColumn>
-      <div style={{ width: "50%" }}>
+      <ImageWrapper>
         <ImageStyled
           alt="programming wallpaper"
           src={post.image}
           layout="responsive"
-          width="80%"
-          height="50%"
+          width={600}
+          height={400}
           unoptimized
-        ></ImageStyled>
-      </div>
+        />
+      </ImageWrapper>
     </Container>
   );
 };

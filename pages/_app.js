@@ -3,6 +3,7 @@ import '../styles/night-owl.css'
 import {Layout} from '../components/layout'
 import { useEffect } from "react";
 import { initGA } from '../lib/analytics';
+import { LanguageProvider } from '../lib/LanguageContext';
 
 
 function MyApp({ Component, pageProps }) {
@@ -12,9 +13,11 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <LanguageProvider>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </LanguageProvider>
   
   )
 }

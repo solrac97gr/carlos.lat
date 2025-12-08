@@ -1,98 +1,245 @@
 import styled from "styled-components";
-import Link from "next/link";
-import { BurgerMenu } from "../BurgerMenu";
-import { keyframes } from "styled-components";
-const breatheAnimation = keyframes`
- 0% { height: 100px; width: 100px; }
- 30% { height: 400px; width: 400px; opacity: 1 }
- 40% { height: 405px; width: 405px; opacity: 0.3; }
- 50% { height: 405px; width: 405px; opacity: 0.4; }
- 60% { height: 405px; width: 405px; opacity: 0.5; }
- 70% { height: 405px; width: 405px; opacity: 0.6; }
- 80% { height: 405px; width: 405px; opacity: 0.7; }
- 100% { height: 100px; width: 100px; opacity: 0.9; }
+
+export const NavbarContainer = styled.header`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  z-index: 50;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 `;
 
-const LOGO_FONT_SIZE = "21px";
+export const NavbarContent = styled.div`
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-export const BurgerStyled = styled(BurgerMenu)`
-  display: none !important;
-  @media (max-width: 768px) {
+  @media (min-width: 768px) {
+    padding: 1rem 3rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 1rem 4rem;
+  }
+`;
+
+export const Logo = styled.a`
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.025em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
+export const LogoAccent = styled.span`
+  color: #3b82f6;
+`;
+
+export const DesktopNav = styled.nav`
+  display: none;
+  align-items: center;
+  gap: 2rem;
+
+  @media (min-width: 768px) {
     display: flex;
   }
 `;
 
-export const NavbarContainer = styled.div`
-  background-color: #2d2e32;
-  color: white;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  padding: 20px;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  overflow: hidden;
-  z-index: 999;
-  @media (max-width: 768px) {
-    padding: 20px;
-    justify-content: space-between;
+export const NavLink = styled.a`
+  color: #4b5563;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    color: #3b82f6;
   }
 `;
 
-export const NameContainer = styled(Link)`
+export const SocialIcons = styled.div`
   display: flex;
-  flex-direction: row;
-  padding-right: 5px;
-`;
-
-export const FirstName = styled.span`
-  font-weight: 600;
-  font-size: ${LOGO_FONT_SIZE};
-`;
-
-export const LastName = styled.span`
-  color: #95989f;
-  font-weight: 500;
-  font-size: ${LOGO_FONT_SIZE};
-  margin-left: 3px;
+  align-items: center;
+  gap: 1rem;
 `;
 
 export const SocialIcon = styled.a`
-  margin-right: 8px;
+  color: #4b5563;
+  transition: color 0.3s ease;
+  cursor: pointer;
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  &:hover {
+    color: #3b82f6;
+  }
 `;
 
-export const NavbarLinkContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  @media (max-width: 768px) {
+export const CTAButton = styled.a`
+  background-color: #3b82f6;
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+
+  &:hover {
+    background-color: #1d4ed8;
+  }
+`;
+
+export const MobileMenuButton = styled.button`
+  display: block;
+  color: #4b5563;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #3b82f6;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  @media (min-width: 768px) {
     display: none;
   }
 `;
 
-export const NavbarLink = styled(Link)``;
+export const MobileMenu = styled.div`
+  display: ${props => props.isOpen ? 'block' : 'none'};
+  background-color: #ffffff;
+  padding-bottom: 1rem;
 
-export const NavbarLinkText = styled.a`
-  color: white;
-  font-size: 16px;
-  font-weight: 200;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  margin-left: 21px;
-  &:hover {
-    color: white;
-    transform: scale(1.1);
+  @media (min-width: 768px) {
+    display: none;
   }
 `;
 
-export const NewBadge = styled.small`
-  background-color: green;
-  padding: 3px;
-  border-radius: 5px;
-  margin-left: 3px;
+export const MobileNavLink = styled.a`
+  display: block;
+  padding: 0.5rem 1.5rem;
+  color: #4b5563;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #eff6ff;
+    color: #3b82f6;
+  }
+`;
+
+export const MobileSocialIcons = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem 1.5rem;
+`;
+
+export const MobileCTAButton = styled.a`
+  display: block;
+  background-color: #3b82f6;
   color: white;
-  animation-name: ${breatheAnimation};
-  animation-duration: 2.7s;
-  animation-iteration-count: infinite;
+  font-weight: 600;
+  text-align: center;
+  padding: 0.5rem 1.25rem;
+  margin: 0.5rem 1.5rem 0;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #1d4ed8;
+  }
+`;
+
+export const LanguageDropdown = styled.div`
+  position: relative;
+`;
+
+export const LanguageButton = styled.button`
+  display: flex;
+  align-items: center;
+  color: #4b5563;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.3s ease;
+  gap: 0.25rem;
+
+  &:hover {
+    color: #3b82f6;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+`;
+
+export const LanguageMenu = styled.div`
+  display: ${props => props.isOpen ? 'block' : 'none'};
+  position: absolute;
+  right: 0;
+  margin-top: 0.5rem;
+  width: 6rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+  z-index: 10;
+`;
+
+export const LanguageOption = styled.button`
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 1rem;
+  color: #374151;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #eff6ff;
+    color: #3b82f6;
+  }
+
+  &:first-child {
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+
+  &:last-child {
+    border-radius: 0 0 0.5rem 0.5rem;
+  }
 `;

@@ -39,7 +39,7 @@ const RenderExtensionIcon = (extension) => {
     docker: <SiDocker color="skyblue" size={size} />,
     gitignore: <SiGit color="orange" size={size} />,
     rs: <FaRust color="#DE5246" size={size} />,
-    yaml: <AiOutlineDeploymentUnit color="#63f3ab" size={size} />,
+    yaml: <AiOutlineDeploymentUnit color="#3b82f6" size={size} />,
     csv: <FaFileCsv color="magenta" size={size} />,
     md: <BsFillMarkdownFill color="orange" size={size} />,
     sh: <BsFillTerminalFill color="red" size={size} />,
@@ -113,7 +113,7 @@ const RenderTree = (tree) => {
           ) : (
             <div style={{ margin: 3, cursor: "pointer" }}></div>
           )}
-          <BsFillFolderFill color="#63f3ab" size={size} />
+          <BsFillFolderFill color="#3b82f6" size={size} />
           <FileName>{el.name}</FileName>
         </FileNameContainer>
         <SubContainer className={`sub-folder-${iterationHash}`}>

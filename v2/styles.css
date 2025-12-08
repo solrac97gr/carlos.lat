@@ -1,0 +1,103 @@
+/* Use Inter as the default font */
+body {
+    font-family: "Inter", sans-serif;
+    overflow-x: hidden; /* Prevent horizontal scroll on small screens */
+}
+
+/* --- Hero Animation Styles --- */
+#hero-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+}
+
+/* Initial state for scroll animations, to prevent flash of unstyled content */
+[data-animation] {
+    opacity: 0;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    transition: opacity 0.3s ease-in-out;
+}
+.modal-content {
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Infinite Scroll Clients */
+.clients-scroll-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.clients-scroll {
+    display: flex;
+    gap: 3rem;
+    animation: scroll 30s linear infinite;
+    width: fit-content;
+}
+
+.client-item {
+    white-space: nowrap;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+}
+
+.client-logo {
+    height: 40px;
+    width: auto;
+    max-width: 150px;
+    object-fit: contain;
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+/* Adjust specific logos for size and positioning */
+.client-logo[alt="Adevinta"] {
+    height: 32px;
+}
+
+.client-logo[alt="Accenture"] {
+    transform: translateY(-2px);
+}
+
+.client-logo[alt="Banco Santander"] {
+    transform: translateY(-3px);
+}
+
+.client-logo[alt="Bayonet"] {
+    transform: translateY(2px);
+}
+
+.client-logo[alt="Acklen Avenue"] {
+    transform: translateY(-2px);
+}
+
+.client-logo[alt="Manzana Verde"] {
+    transform: translateY(1px);
+}
+
+.client-item:hover .client-logo {
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Pause animation on hover */
+.clients-scroll-container:hover .clients-scroll {
+    animation-play-state: paused;
+}

@@ -10,7 +10,7 @@ export const BlogLink = ({url, content}) => {
             href={url}
             target="_blank"
             rel="noreferrer"
-            style={{color: "#63f3ab", textDecoration: "underline"}}
+            style={{color: "#3b82f6", textDecoration: "underline"}}
         >
             {content ? content : url}
         </a>
