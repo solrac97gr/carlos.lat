@@ -6,6 +6,16 @@ const root = process.cwd();
 const BLOG_URL = 'https://carlos.lat/blog';
 const PAGE_URL = 'https://carlos.lat';
 
+function escapeXml(unsafe) {
+  if (!unsafe) return '';
+  return unsafe
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
 function getFiles(lang) {
   const langPath = path.join(root, 'data', lang);
   if (!fs.existsSync(langPath)) return [];
@@ -47,9 +57,9 @@ function generateRSSFeed(posts, lang) {
       <link>${postUrl}</link>
       <guid isPermaLink="true">${postUrl}</guid>
       <pubDate>${pubDate}</pubDate>
-      <category>${post.tag}</category>
-      <author>Carlos García</author>
-      ${post.image ? `<enclosure url="${post.image}" type="image/jpeg" />` : ''}
+      <category>${escapeXml(post.tag)}</category>
+      <author>${escapeXml(post.author)}</author>
+      ${post.image ? `<enclosure url="${escapeXml(post.image)}" type="image/jpeg" />` : ''}
     </item>`;
     }).join('');
 

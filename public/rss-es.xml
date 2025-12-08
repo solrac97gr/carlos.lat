@@ -5,7 +5,7 @@
     <description>Technical blog about Go, Backend Development, AI, and Software Engineering</description>
     <link>https://carlos.lat</link>
     <language>es</language>
-    <lastBuildDate>Mon, 08 Dec 2025 22:53:22 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 08 Dec 2025 23:03:23 GMT</lastBuildDate>
     <atom:link href="https://carlos.lat/rss-es.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://carlos.lat/logo.png</url>
@@ -21,7 +21,7 @@
       <pubDate>Fri, 13 Jun 2025 00:00:00 GMT</pubDate>
       <category>Go, Hexagonal, Clean, DDD</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FFUAQvEkXoAAuQ-2.jpg-large.jpeg?alt=media&token=959951bf-5f60-4ecd-9ddf-74511f0ff3fa" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FFUAQvEkXoAAuQ-2.jpg-large.jpeg?alt=media&amp;token=959951bf-5f60-4ecd-9ddf-74511f0ff3fa" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[Crea una API Simple con Go Kit 🛠️]]></title>
@@ -31,7 +31,7 @@
       <pubDate>Fri, 18 Apr 2025 00:00:00 GMT</pubDate>
       <category>Go, GoKit, Microservices</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-kit.png?alt=media&token=55421998-d226-4248-923f-e06355c2bfb1" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-kit.png?alt=media&amp;token=55421998-d226-4248-923f-e06355c2bfb1" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[Usa C en tu código de Go 🐹]]></title>
@@ -41,7 +41,7 @@
       <pubDate>Wed, 28 Aug 2024 00:00:00 GMT</pubDate>
       <category>Go, C</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fc-in-go.jpeg?alt=media&token=95e4b48c-822e-4e2f-8361-426e185944b8" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fc-in-go.jpeg?alt=media&amp;token=95e4b48c-822e-4e2f-8361-426e185944b8" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[7 Patrones de Concurrencia en Go que Deberías Conocer 🐹]]></title>
@@ -51,7 +51,7 @@
       <pubDate>Thu, 22 Aug 2024 00:00:00 GMT</pubDate>
       <category>Go</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fconcurrency-go-2.jpeg?alt=media&token=0c8d51d9-5491-4928-8ff7-d8786be2d65b" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fconcurrency-go-2.jpeg?alt=media&amp;token=0c8d51d9-5491-4928-8ff7-d8786be2d65b" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[Agiliza el desarrollo de tus proyectos en Go (go-katana) 🤺]]></title>
@@ -61,7 +61,7 @@
       <pubDate>Mon, 03 Jul 2023 22:00:00 GMT</pubDate>
       <category>Go, Extension, go-katana</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-katana.jpeg?alt=media&token=39e519ab-b60b-4a70-b292-5f1345d88f52" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-katana.jpeg?alt=media&amp;token=39e519ab-b60b-4a70-b292-5f1345d88f52" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[Proyectos modulares en Go usando paquetes privados 📦]]></title>
@@ -71,7 +71,7 @@
       <pubDate>Thu, 22 Jun 2023 00:00:00 GMT</pubDate>
       <category>Go, Modules, Private</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-private-packages.png?alt=media&token=e5d3d24c-506c-41f2-be1c-1e3b0e0b9df0" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-private-packages.png?alt=media&amp;token=e5d3d24c-506c-41f2-be1c-1e3b0e0b9df0" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[Mejora tu DX en Go con Makefiles 🐹]]></title>
@@ -81,7 +81,7 @@
       <pubDate>Thu, 15 Jun 2023 00:00:00 GMT</pubDate>
       <category>Go, DX, Bash</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-minimal.jpeg?alt=media&token=2af7f91a-5e96-460d-82b4-22ad94448705" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-minimal.jpeg?alt=media&amp;token=2af7f91a-5e96-460d-82b4-22ad94448705" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[¿Cómo compilar programas en Go? 🐹]]></title>
@@ -91,7 +91,7 @@
       <pubDate>Thu, 18 May 2023 00:00:00 GMT</pubDate>
       <category>Go</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-build-wallpaper.png?alt=media&token=9ef99469-9e00-499f-ada5-3647b72d672a" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-build-wallpaper.png?alt=media&amp;token=9ef99469-9e00-499f-ada5-3647b72d672a" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[¿Cómo Testear aplicaciones en Go usando Test Tables? 🧪]]></title>
@@ -101,7 +101,7 @@
       <pubDate>Sat, 13 May 2023 00:00:00 GMT</pubDate>
       <category>Go</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750690.jpg?alt=media&token=4dc9af5c-57f4-4c70-b47d-304771eab417" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750690.jpg?alt=media&amp;token=4dc9af5c-57f4-4c70-b47d-304771eab417" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[¿Cómo usar canales en Go? 🧪]]></title>
@@ -111,7 +111,7 @@
       <pubDate>Tue, 18 Apr 2023 00:00:00 GMT</pubDate>
       <category>Go</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482737.png?alt=media&token=705f5ef8-da5e-4abd-9d17-a9d716b69be4" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482737.png?alt=media&amp;token=705f5ef8-da5e-4abd-9d17-a9d716b69be4" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[¿Cómo instalar y desintalar Go en Linux, Mac y Windows? 🤔]]></title>
@@ -121,7 +121,7 @@
       <pubDate>Mon, 17 Apr 2023 00:00:00 GMT</pubDate>
       <category>Go</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FGo-structs.jpg?alt=media&token=db442930-e540-4fef-a97a-42add1ea2da7" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FGo-structs.jpg?alt=media&amp;token=db442930-e540-4fef-a97a-42add1ea2da7" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[Autenticación usando JWT con Golang [Fiber] 2023]]></title>
@@ -131,7 +131,7 @@
       <pubDate>Tue, 11 Apr 2023 00:00:00 GMT</pubDate>
       <category>Go</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgolang_destaque1.png?alt=media&token=3bc5a6ab-4dea-4a72-a11b-31ebf8bc5eb5" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgolang_destaque1.png?alt=media&amp;token=3bc5a6ab-4dea-4a72-a11b-31ebf8bc5eb5" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[Mi futuro con Go para este 2023 🐹]]></title>
@@ -141,7 +141,7 @@
       <pubDate>Wed, 22 Mar 2023 00:00:00 GMT</pubDate>
       <category>Go</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FDO9s_gDX0AEsSe8.jpg?alt=media&token=01fd59bd-c226-4cc0-aba1-65e5f845ec48" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FDO9s_gDX0AEsSe8.jpg?alt=media&amp;token=01fd59bd-c226-4cc0-aba1-65e5f845ec48" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[Genera facturas fácilmente en Go 🤑]]></title>
@@ -161,7 +161,7 @@
       <pubDate>Tue, 28 Feb 2023 00:00:00 GMT</pubDate>
       <category>Go</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgopher.png?alt=media&token=bde793b0-fa05-4a47-b26f-f74b4cbac3ce" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgopher.png?alt=media&amp;token=bde793b0-fa05-4a47-b26f-f74b4cbac3ce" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[Custom Types (Alias) y ¿Enums? en Go aprende a aprovecharlos 🐹]]></title>
@@ -171,7 +171,7 @@
       <pubDate>Mon, 06 Feb 2023 00:00:00 GMT</pubDate>
       <category>Go</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F1*QD-fZ5jS3GahUKP-T3EzRA.png?alt=media&token=5b3931b5-e333-481f-9e7b-788c051a0ff1" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F1*QD-fZ5jS3GahUKP-T3EzRA.png?alt=media&amp;token=5b3931b5-e333-481f-9e7b-788c051a0ff1" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[Mi entorno de desarrollo para 2023 (Go Backend) 🐹]]></title>
@@ -181,7 +181,7 @@
       <pubDate>Mon, 28 Nov 2022 00:00:00 GMT</pubDate>
       <category>Go</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FGolang-paquetes-y-modulos.jpg?alt=media&token=55b4e9d6-9e2e-4fbc-86df-c5f71143a71a" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FGolang-paquetes-y-modulos.jpg?alt=media&amp;token=55b4e9d6-9e2e-4fbc-86df-c5f71143a71a" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[Operaciones CRUD con Rust y Firebase (Realtime Database) 🦀+🔥]]></title>
@@ -211,7 +211,7 @@
       <pubDate>Tue, 20 Sep 2022 00:00:00 GMT</pubDate>
       <category>Rust</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fl3nzamcawtw31.png?alt=media&token=4c6eefce-9a39-4d37-ac68-786ca4dde59d" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fl3nzamcawtw31.png?alt=media&amp;token=4c6eefce-9a39-4d37-ac68-786ca4dde59d" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[¿Cómo crear programas de consola usando Go? 🐹]]></title>
@@ -221,7 +221,7 @@
       <pubDate>Sun, 28 Aug 2022 00:00:00 GMT</pubDate>
       <category>Go</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FDiseño%20sin%20t%C3%ADtulo%20(3).png?alt=media&token=0b4ad9a9-cb30-4a82-b4d2-dd88e8828233" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FDiseño%20sin%20t%C3%ADtulo%20(3).png?alt=media&amp;token=0b4ad9a9-cb30-4a82-b4d2-dd88e8828233" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[JavaScript el motor de la Web 🛩]]></title>
@@ -231,7 +231,7 @@
       <pubDate>Sat, 13 Aug 2022 00:00:00 GMT</pubDate>
       <category>Javascript</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fjavascript-small-horizontal-4k.png?alt=media&token=65dfbd58-0585-438a-b420-3379d1c63c31" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fjavascript-small-horizontal-4k.png?alt=media&amp;token=65dfbd58-0585-438a-b420-3379d1c63c31" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[ ¿Cómo escanear los puertos usando Go? ⚓️]]></title>
@@ -241,7 +241,7 @@
       <pubDate>Mon, 08 Aug 2022 00:00:00 GMT</pubDate>
       <category>Go, Seguridad</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FFUAQvEkXoAAuQ-2.jpg-large.jpeg?alt=media&token=959951bf-5f60-4ecd-9ddf-74511f0ff3fa" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FFUAQvEkXoAAuQ-2.jpg-large.jpeg?alt=media&amp;token=959951bf-5f60-4ecd-9ddf-74511f0ff3fa" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[Creando NetCat usando Go 📥]]></title>
@@ -251,7 +251,7 @@
       <pubDate>Tue, 26 Jul 2022 00:00:00 GMT</pubDate>
       <category>Go</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Ff36611152c8c09bfff77656fb0653249.jpeg?alt=media&token=722321a3-6cd6-40ec-a2bd-01cd67b081d1" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Ff36611152c8c09bfff77656fb0653249.jpeg?alt=media&amp;token=722321a3-6cd6-40ec-a2bd-01cd67b081d1" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[5 trucos y consejos útiles para Go que deberías conocer 🐹]]></title>
@@ -281,7 +281,7 @@
       <pubDate>Tue, 19 Jul 2022 00:00:00 GMT</pubDate>
       <category>Go, Mongo</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482765.jpeg?alt=media&token=daf8051d-cb05-45c4-8709-844b0754abcf" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482765.jpeg?alt=media&amp;token=daf8051d-cb05-45c4-8709-844b0754abcf" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[¿Cómo consumir una API en Go? 🛰]]></title>
@@ -291,7 +291,7 @@
       <pubDate>Mon, 18 Jul 2022 00:00:00 GMT</pubDate>
       <category>Go</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750705.jpg?alt=media&token=d595312d-67bd-44d2-80be-65c4c8bb6b61" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750705.jpg?alt=media&amp;token=d595312d-67bd-44d2-80be-65c4c8bb6b61" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[¿Cómo crear una clase en Go? 🏗]]></title>
@@ -301,7 +301,7 @@
       <pubDate>Sun, 17 Jul 2022 00:00:00 GMT</pubDate>
       <category>Go</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482746.jpg?alt=media&token=510dd66e-15af-4292-b84d-795a267155c4" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482746.jpg?alt=media&amp;token=510dd66e-15af-4292-b84d-795a267155c4" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[¿Cómo ejecutar tu aplicación de Go usando Docker? 🐋]]></title>
@@ -311,7 +311,7 @@
       <pubDate>Fri, 15 Jul 2022 00:00:00 GMT</pubDate>
       <category>Go, Docker</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750690.jpg?alt=media&token=4dc9af5c-57f4-4c70-b47d-304771eab417" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750690.jpg?alt=media&amp;token=4dc9af5c-57f4-4c70-b47d-304771eab417" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[¿Cómo obtener variables de entorno en Go? (.env o env.json) 📝]]></title>
@@ -321,7 +321,7 @@
       <pubDate>Thu, 14 Jul 2022 00:00:00 GMT</pubDate>
       <category>Go, JSON</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750679.jpg?alt=media&token=7ef5bc19-8c32-48ca-bce3-1be0a3da046c" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750679.jpg?alt=media&amp;token=7ef5bc19-8c32-48ca-bce3-1be0a3da046c" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[¿Cómo hacer bulk insert en ElasticSearch en Go? 🔎]]></title>
@@ -331,7 +331,7 @@
       <pubDate>Wed, 13 Jul 2022 00:00:00 GMT</pubDate>
       <category>Go, ElasticSearch</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482734.png?alt=media&token=3da62197-fa7a-45fd-84d8-0ed2d2983cfa" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482734.png?alt=media&amp;token=3da62197-fa7a-45fd-84d8-0ed2d2983cfa" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[¿Cómo convertir de String a Int en Go? 🔁]]></title>
@@ -341,7 +341,7 @@
       <pubDate>Tue, 12 Jul 2022 00:00:00 GMT</pubDate>
       <category>Go</category>
       <author>Carlos García</author>
-      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482737.png?alt=media&token=705f5ef8-da5e-4abd-9d17-a9d716b69be4" type="image/jpeg" />
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482737.png?alt=media&amp;token=705f5ef8-da5e-4abd-9d17-a9d716b69be4" type="image/jpeg" />
     </item>
     <item>
       <title><![CDATA[Frontend o Backend: El Dilema 🤔]]></title>
