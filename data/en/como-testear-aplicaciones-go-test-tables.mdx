@@ -1,0 +1,561 @@
+---
+title: "How to Test Go Applications Using Test Tables? 🧪"
+date: "May 13, 2023"
+published: "2023-05-13"
+abstract: "In this article we'll work using a repository I created previously to better explain how tests work in Go. We'll also use a technique called test tables that will help us easily add new cases if needed."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750690.jpg?alt=media&token=4dc9af5c-57f4-4c70-b47d-304771eab417"
+tag: "Go"
+author: "Carlos García"
+---
+# How to Test Go Applications Using Test Tables? 🧪
+
+<small>May 13, 2023</small>
+<EditPost path="como-testear-aplicaciones-go-test-tables" />
+
+<img
+  width="100%"
+  alt="golang-wallpaper "
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750690.jpg?alt=media&token=4dc9af5c-57f4-4c70-b47d-304771eab417"
+  style={{ borderRadius: "8px" }}
+/>
+
+In this article we'll work using a repository I created previously to better explain how tests work in Go. We'll also use a technique called test tables that will help us easily add new cases if needed. Let's get to work.
+
+## Tools We'll Use
+
+### Gomock (To generate our mocks):
+First we must understand that a mock is nothing more and nothing less than a controllable version of some entity in our program, which will allow us to induce failures or successes according to our needs - very important for unit tests.
+
+Now gomock is a library that will allow us to generate mocks from our interfaces. This is very useful if we've used interfaces to build our entire project, just as I do in my 2023 code template.
+
+### Testify/Assert (To perform checks):
+An important part of tests is that after obtaining the results from executing our function, we must verify that the results were as expected. We'll do this using the Assert tool from testify.
+
+In summary, it's a set of preprogrammed conditions that will help us compare our expected result with the obtained one.
+
+## How Do Test Tables Work?
+
+Now it's time to venture a bit more into the code. What I usually use for test tables is a map[string]struct{} structure where the structure varies according to the test's needs.
+
+For this example we'll test a User package that has a single function: save a user to a database.
+
+Our user package is composed of the following files:
+
+<FolderStructure
+  tree={[
+    {
+      type: "folder",
+      name: "application",
+      content: [
+        {
+          type: "file",
+          name: "aplication.go",
+        },
+        {
+          type: "file",
+          name: "aplication_test.go",
+        },
+      ],
+    },
+    {
+      type: "folder",
+      name: "domain",
+      content: [
+        {
+          type: "folder",
+          name: "models",
+          content :[
+            {
+                type:"file",
+                name:"users.go"
+            }
+          ]
+        },
+        {
+          type: "folder",
+          name: "ports",
+          content :[
+            {
+                type:"file",
+                name:"ports.go"
+            }
+          ]
+        },
+      ],
+    },
+     {
+      type: "folder",
+      name: "application",
+      content: [
+        {
+          type: "folder",
+          name: "repositories",
+          content :[
+            {
+                type:"file",
+                name:"repository.go"
+            }
+          ]
+        },
+      ],
+    },
+  ]}
+/>
+
+Along with this we also have a package called Validator that shares a similar file structure, which will help us test how we can manipulate the behavior of parts of the system at will thanks to using mocks.
+
+Within the project we'll also find a Mocks folder which is where our mocks will be generated when using the gomock tool, and a Scripts folder where we'll store useful actions that are better not to memorize and automate using bash.
+
+This is how our final project structure would look:
+
+<FolderStructure
+  repo={"https://github.com/solrac97gr/go-test-tables"}
+  tree={[
+    {
+        type:"folder",
+        name:"mocks",
+        content:[
+            {
+                type:"file",
+                name:"mock_user_application.go"
+            },
+            {
+                type:"file",
+                name:"mock_user_repository.go"
+            },
+            {
+                type:"file",
+                name:"mock_validator.go"
+            }
+        ]
+    },
+    {
+        type:"folder",
+        name:"scripts",
+        content:[
+            {
+                type:"file",
+                name:"generate-cover-profile.sh"
+            },
+            {
+                type:"file",
+                name:"generate-mocks.sh"
+            },
+            {
+                type:"file",
+                name:"run-test.sh"
+            }
+        ]
+    },
+    {
+        type:"folder",
+        name:"user",
+        content: [
+                    {
+            type: "folder",
+            name: "application",
+            content: [
+                {
+                type: "file",
+                name: "aplication.go",
+                },
+                {
+                    type:"file",
+                    name: "application_test.go"
+                }
+            ],
+            },
+            {
+            type: "folder",
+            name: "domain",
+            content: [
+                {
+                type: "folder",
+                name: "models",
+                content :[
+                    {
+                        type:"file",
+                        name:"users.go"
+                    }
+                ]
+                },
+                {
+                type: "folder",
+                name: "ports",
+                content :[
+                    {
+                        type:"file",
+                        name:"ports.go"
+                    }
+                ]
+                },
+            ],
+            },
+            {
+            type: "folder",
+            name: "application",
+            content: [
+                {
+                type: "folder",
+                name: "repositories",
+                content :[
+                    {
+                        type:"file",
+                        name:"repository.go"
+                    }
+                ]
+                },
+            ],
+            },
+        ]
+    },
+    {
+        type:"folder",
+        name:"validator",
+        content: [
+            {
+                type:"folder",
+                name:"domain",
+                content: [
+                    {
+                        type:"folder",
+                        name:"ports",
+                        content: [
+                            {
+                                type:"file",
+                                name:"ports.go"
+                            }
+                        ]
+                    }    
+                ]
+            }
+        ]
+    },
+    {
+        type:"file",
+        name:"go.mod"
+    },
+    {
+        type:"file",
+        name:"go.sum"
+    },
+    {
+        type:"file",
+        name:"README.md"
+    }
+  ]}
+/>
+
+As you can see in the project repository, the validator package isn't even implemented - only the interface is defined. Even so, it's possible to generate the mock thanks to the interface and we can test the user package without having to implement the validator package. Total independence.
+
+<PromoBanner/>
+
+## The Content of Our Files
+
+Now we'll see what's inside the User package file by file so you can understand the context before running the tests.
+
+We start with the user.go file found inside the domain/models folder:
+
+<CodeSnippet route={"users/domain/models/user.go"} language={"go"} code={`package models
+
+import "errors"
+
+type User struct {
+	ID       int
+	Email    string
+	Password string
+}
+
+var (
+	// Validation errors
+	ErrInvalidEmail    = errors.New("invalid email")
+	ErrInvalidPassword = errors.New("invalid password")
+	// Repository errors
+	ErrSavingUser = errors.New("error saving user")
+)
+
+func (u *User) Validate() error {
+	if u.Email == "" {
+		return ErrInvalidEmail
+	}
+
+	if u.Password == "" {
+		return ErrInvalidPassword
+	}
+	return nil
+}`} />
+
+Here is our user model along with its validation function and possible errors. It's an incomplete implementation of how a User structure should behave - don't take it as an example for your projects. Remember, this is about unit testing.
+
+Now let's continue with the ports.go file found inside domain/ports:
+
+<CodeSnippet route={"users/domain/ports/ports.go"} language={"go"} code={`package ports
+
+import "github.com/solrac97gr/go-test-tables/users/domain/models"
+
+type Application interface {
+	// CreateUser creates a new user
+	CreateUser(email, password string) (*models.User, error)
+}
+
+type Repository interface {
+	// SaveUser saves a user
+	SaveUser(user *models.User) error
+}`} />
+
+Here we find the repository and service or application behavior of our users package defined. We find two interfaces each with their respective functions.
+
+The function we'll test will be CreateUser in the application layer.
+
+The corresponding implementation of these interfaces would be the following:
+
+repositories/repositories.go:
+
+<CodeSnippet route={"users/infrastructure/repositories/repository.go"} language={"go"} code={`package repositories
+
+import "github.com/solrac97gr/go-test-tables/users/domain/models"
+
+type FakeStorage struct {
+	DB map[int]*models.User
+}
+
+func NewFakeStorage() *FakeStorage {
+	return &FakeStorage{
+		DB: make(map[int]*models.User),
+	}
+}
+
+var (
+	ErrSavingUser = models.ErrSavingUser
+)
+
+func (s *FakeStorage) SaveUser(user *models.User) error {
+	s.DB[user.ID] = user
+	return nil
+}`} />
+
+application/application.go:
+
+<CodeSnippet route={"users/application/application.go"} language={"go"} code={`package application
+
+import (
+	"github.com/solrac97gr/go-test-tables/users/domain/models"
+	"github.com/solrac97gr/go-test-tables/users/domain/ports"
+	val "github.com/solrac97gr/go-test-tables/validator/domain/ports"
+)
+
+type UserApp struct {
+	UserRepo  ports.Repository
+	Validator val.Validator
+}
+
+func NewUserApp(repo ports.Repository, val val.Validator) *UserApp {
+	return &UserApp{
+		UserRepo:  repo,
+		Validator: val,
+	}
+}
+
+func (app *UserApp) CreateUser(email, password string) (*models.User, error) {
+	user := &models.User{Email: email, Password: password}
+
+	err := app.Validator.Struct(user)
+	if err != nil {
+		return nil, err
+	}
+
+	err = app.UserRepo.SaveUser(user)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}`} />
+
+Taking into account our current state in the project, we'll start with our tests.
+
+## Defining Our Tests
+
+Inside the application folder we create the aplication_test.go file. By convention, this is how test files are called in Go.
+
+In the file we'll define a function that starts with Test, then the package name, and finally the package function we're testing.
+
+Our function name would be as follows: TestApplication_CreateUser. Now we'll start to understand the parts of a test function using test tables.
+
+### Cases:
+
+Here will be our different test cases inside a map as follows:
+
+You can notice that our tests are composed of a name which is the key in the map and different properties in the structure which is the map's value.
+
+In this test we can observe that we need an Input which in this case is the email and password. We also have 2 functions: testSetup and assertSetup.
+
+<CodeSnippet route={"users/application/application_test.go"} language={"go"} code={`email: "mail@car.com",
+password: ""`} />
+
+**TestSetup**: This is where we'll determine the behavior of our mocks according to the case being tested.
+
+<CodeSnippet route={"users/application/application_test.go"} language={"go"} code={`testSetup: func(repo *mocks.MockRepository, val *mocks.MockValidator) {
+				val.EXPECT().Struct(gomock.Any()).Return(models.ErrInvalidPassword)
+			}`} />
+
+**AssertSetup**: This is where we'll put our comparison rules about whether or not the function behaves properly.
+
+<CodeSnippet route={"users/application/application_test.go"} language={"go"} code={`assertSetup: func(t *testing.T, user *models.User, email, password string, err error) {
+				assert.Nil(t, user)
+				assert.EqualError(t, err, models.ErrInvalidPassword.Error())
+			}`} />
+
+Leaving us with the following structure in this test case:
+
+<CodeSnippet route={"users/application/application_test.go"} language={"go"} code={`"Empty Password [Validation Error]": {
+			email:    "mail@car.com",
+			password: "",
+			testSetup: func(repo *mocks.MockRepository, val *mocks.MockValidator) {
+				val.EXPECT().Struct(gomock.Any()).Return(models.ErrInvalidPassword)
+			},
+			assertSetup: func(t *testing.T, user *models.User, email, password string, err error) {
+				assert.Nil(t, user)
+				assert.EqualError(t, err, models.ErrInvalidPassword.Error())
+			},
+		}`} />
+
+Here you can clearly see that we have 3 important things defined: the information we need for the function to work, the behavior of internal elements of the function, and the evaluation of the result.
+
+### For Loop:
+
+Here we'll iterate through our cases and initialize the boilerplate part of our tests:
+
+<CodeSnippet route={"users/application/application_test.go"} language={"go"} code={`for name, tc := range cases {
+		t.Run(name, func(t *testing.T) {
+			// Create a mock controller
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+
+			// Create a mock repository
+			repo := mocks.NewMockRepository(ctrl)
+			val := mocks.NewMockValidator(ctrl)
+
+			// Setup the mock repository
+			if tc.testSetup != nil {
+				tc.testSetup(repo, val)
+			}
+
+			app := application.NewUserApp(repo, val)
+			user, err := app.CreateUser(tc.email, tc.password)
+
+			// Assert the result
+			if tc.assertSetup != nil {
+				tc.assertSetup(t, user, tc.email, tc.password, err)
+			}
+		})
+	}`} />
+
+We can observe in detail that we start by creating the controller for our mocks, then we create our necessary mocks for the function to work and inject the controller into them. Immediately after, we validate the existence of the function that determines the mock behavior and once validated we proceed to execute it - that will endow our mocks with the behavior the test needs.
+
+Now we create our application structure, inject the mocks we need (which already have the expected behavior) and now execute our function that we want to test using the input we defined in the test case.
+
+In the final part we validate the existence of the function that determines the result of executing our function and execute it to verify that our function produced the expected results.
+
+This would be the final result:
+
+<CodeSnippet route={"users/application/application_test.go"} language={"go"} code={`package application_test
+
+import (
+	"testing"
+
+	"github.com/golang/mock/gomock"
+	"github.com/solrac97gr/go-test-tables/mocks"
+	"github.com/solrac97gr/go-test-tables/users/application"
+	"github.com/solrac97gr/go-test-tables/users/domain/models"
+	"github.com/solrac97gr/go-test-tables/users/infrastructure/repositories"
+	"github.com/stretchr/testify/assert"
+)
+
+func TestApplication_CreateUser(t *testing.T) {
+	cases := map[string]struct {
+		email       string
+		password    string
+		testSetup   func(*mocks.MockRepository, *mocks.MockValidator)
+		assertSetup func(*testing.T, *models.User, string, string, error)
+	}{
+		"Empty Password [Validation Error]": {
+			email:    "mail@car.com",
+			password: "",
+			testSetup: func(repo *mocks.MockRepository, val *mocks.MockValidator) {
+				val.EXPECT().Struct(gomock.Any()).Return(models.ErrInvalidPassword)
+			},
+			assertSetup: func(t *testing.T, user *models.User, email, password string, err error) {
+				assert.Nil(t, user)
+				assert.EqualError(t, err, models.ErrInvalidPassword.Error())
+			},
+		},
+		"Empty Email [Validation Error]": {
+			email:    "",
+			password: "123456",
+			testSetup: func(repo *mocks.MockRepository, val *mocks.MockValidator) {
+				val.EXPECT().Struct(gomock.Any()).Return(models.ErrInvalidEmail)
+			},
+			assertSetup: func(t *testing.T, user *models.User, email, password string, err error) {
+				assert.Nil(t, user)
+				assert.EqualError(t, err, models.ErrInvalidEmail.Error())
+			},
+		},
+
+		"Error saving [Repository Error]": {
+			email: "test@mail.com",
+			testSetup: func(repo *mocks.MockRepository, val *mocks.MockValidator) {
+				val.EXPECT().Struct(gomock.Any()).Return(nil)
+				repo.EXPECT().SaveUser(gomock.Any()).Return(repositories.ErrSavingUser)
+			},
+			assertSetup: func(t *testing.T, user *models.User, email, password string, err error) {
+				assert.Nil(t, user)
+				assert.EqualError(t, err, repositories.ErrSavingUser.Error())
+			},
+		},
+
+		"Valid User [Success]": {
+			email:    "test@mail.com",
+			password: "123456",
+			testSetup: func(repo *mocks.MockRepository, val *mocks.MockValidator) {
+				val.EXPECT().Struct(gomock.Any()).Return(nil)
+				repo.EXPECT().SaveUser(gomock.Any()).Return(nil)
+			},
+			assertSetup: func(t *testing.T, user *models.User, email, password string, err error) {
+				assert.NotNil(t, user)
+				assert.Equal(t, email, user.Email)
+				assert.Equal(t, password, user.Password)
+				assert.NoError(t, err)
+			},
+		},
+	}
+
+	for name, tc := range cases {
+		t.Run(name, func(t *testing.T) {
+			// Create a mock controller
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+
+			// Create a mock repository
+			repo := mocks.NewMockRepository(ctrl)
+			val := mocks.NewMockValidator(ctrl)
+
+			// Setup the mock repository
+			if tc.testSetup != nil {
+				tc.testSetup(repo, val)
+			}
+
+			app := application.NewUserApp(repo, val)
+			user, err := app.CreateUser(tc.email, tc.password)
+
+			// Assert the result
+			if tc.assertSetup != nil {
+				tc.assertSetup(t, user, tc.email, tc.password, err)
+			}
+		})
+	}
+}`} />
+
+
+## Conclusions
+
+As you will have noticed, this allows us great flexibility to add tests. It also allows us to add within the structure, for example, some expected result for a specific function. For now, this is the testing method I use in my projects. Along with TDD, I always make my mocks and my tests before starting to program. Soon I'll write an article about how this methodology works.

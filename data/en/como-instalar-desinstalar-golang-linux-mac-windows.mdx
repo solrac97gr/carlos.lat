@@ -1,0 +1,78 @@
+---
+title: "How to Install and Uninstall Go on Linux, Mac and Windows? 🤔"
+date: "April 17, 2023"
+published: "2023-04-17"
+abstract: "In this article we'll see how to correctly install and uninstall Go on Linux, Mac and Windows using the official method."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FGo-structs.jpg?alt=media&token=db442930-e540-4fef-a97a-42add1ea2da7"
+tag: "Go"
+author: "Carlos García"
+---
+
+# How to Install and Uninstall Go on Linux, Mac and Windows? 🤔
+
+<small>April 17, 2023</small>
+<EditPost path="como-instalar-desinstalar-golang-linux-mac-windows" />
+
+<img
+  width="100%"
+  alt="golang-wallpaper "
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FGo-structs.jpg?alt=media&token=db442930-e540-4fef-a97a-42add1ea2da7"
+  style={{ borderRadius: "8px" }}
+/>
+
+In this article we'll see how to correctly install and uninstall Go on Linux, Mac and Windows. For this we'll follow the [official documentation](https://golang.org/doc/install).
+
+## Installing Go on Linux 🐧 (Ubuntu, Debian, Kali, etc.)
+
+To install Go on Linux we'll use our operating system's package manager. In this case we'll use Ubuntu 20.04.
+
+<CodeSnippet language={"bash"} route={"~"} code={`sudo apt install golang`} />
+
+
+Once installed we can check the version of Go we have installed.
+
+<CodeSnippet language={"bash"} route={"~"} code={`go version`} output={"go version go1.19.1 darwin/arm64"}/>
+
+
+## Installing Go on Mac 🍎
+
+To install Go on Mac we'll use our operating system's package manager. In this case we'll use Homebrew.
+
+<CodeSnippet language={"bash"} route={"~"} code={`brew install go`} />
+
+
+Once installed we can check the version of Go we have installed.
+
+<CodeSnippet language={"bash"} route={"~"} code={`go version`} output={"go version go1.19.1 darwin/arm64"}/>
+
+
+## Installing Go on Windows 🖥️
+
+To install Go on Windows we'll use the official Go installer.
+
+1. Download the Go installer from the [official page](https://golang.org/dl/).
+2. Run the installer and follow the steps it indicates.
+3. Once installed we can check the version of Go we have installed.
+
+<CodeSnippet language={"bash"} route={"~"} code={`go version`} output={"go version go1.19.1 darwin/arm64"}/>
+
+## Uninstalling Go on Linux 🐧 (Ubuntu, Debian, Kali, etc.)
+
+To uninstall Go on Linux we'll use our operating system's package manager. In this case we'll use Ubuntu 20.04.
+
+<CodeSnippet language={"bash"} route={"~"} code={`sudo apt remove golang`} />
+
+## Uninstalling Go on Mac 🍎
+
+To uninstall Go on Mac we'll use our operating system's package manager. In this case we'll use Homebrew.
+
+<CodeSnippet language={"bash"} route={"~"} code={`brew uninstall go`} />
+
+## Uninstalling Go on Windows 🖥️
+
+To uninstall Go on Windows we'll use the official Go uninstaller.
+
+1. Run the uninstaller and follow the steps it indicates.
+2. Once uninstalled we can verify that we no longer have Go installed.
+
+<CodeSnippet language={"bash"} route={"~"} code={`go version`} output={"go version go1.19.1 darwin/arm64"}/>

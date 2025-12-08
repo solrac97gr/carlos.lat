@@ -1,0 +1,91 @@
+---
+title: "How to Map an Array of Structs to an Array of Interfaces in Go 🐹?"
+date: "November 5, 2021"
+published: "2021-11-05"
+abstract: " ✅ What happens when you have a method to insert multiple documents into MongoDB but it's the same action for different data types. "
+image: "https://miro.medium.com/max/1400/1*IHqSJ2_7CeaU675YRdLY2g.jpeg"
+tag: "Go"
+author: "Carlos García"
+---
+
+# How to Map an Array of Structs to an Array of Interfaces in Go 🐹?
+
+<small>November 5, 2021</small><EditPost path="como-mapear-array-structs-interface" />
+
+<img
+  width="100%"
+  src="https://miro.medium.com/max/1400/1*IHqSJ2_7CeaU675YRdLY2g.jpeg"
+  alt="golang wallpaper"
+  style={{borderRadius:"8px"}}
+></img>
+
+```go
+      fmt.Println("Hello World 🌎")
+```
+
+In my time programming with Go, a recurring problem is trying to make methods work with different data type parameters. For example, what happens when you have a method to insert multiple documents into MongoDB but it's the same action for different data types. The logical way to solve this problem is to use an interface array as in the following example.
+
+<CodeSnippet language="go" code={
+`func SaveToMongo(documents []interface{}, collectionName string) {
+    ctx, cancelFunc := context.WithTimeout(context.Background(), 5*time.Second)
+    defer cancelFunc()
+
+    client, err := mongo.Connect(ctx, options.Client().ApplyURI(
+        MongoCon,
+    ))
+    if err != nil {
+            println(err.Error())
+    }
+
+    collection := client.Database("test").Collection(collectionName)
+    _, err = collection.InsertMany(ctx, documents)
+    if err != nil {
+        println(err.Error())
+    }
+}`
+} />
+
+But when you try to send data to this method, for example, an array of structs, you get an incompatible types error.
+
+### So What's the Solution...?
+
+To make this method work and the InsertMany method too, in my case, I have different methods that return me an array of different struct types in the same method. I return that array. I assign the array to a []interface.
+
+<CodeSnippet language="go" code={`
+    func GetComments() (logResultsInt []interface{}) {
+        var logResults []models.Comments
+        ...
+        for _, log := range logResults {
+            logResultsInt = append(logResultsInt, log)
+        }
+        return logResultsInt
+    }
+`} />
+
+### Conclusion
+
+With Go we can solve problems and cases where we need to use a "dynamic type", even if it's a statically typed language. I hope to help someone with this short format solving small problems I have in my work day.
+
+### Edit
+
+Thanks to <BlogLink url="https://yael-castro.medium.com" content="Yael Castro"/> for this suggestion of a function that performs the conversion more efficiently.
+
+<CodeSnippet language="go" code={`
+    package main
+
+    import "fmt"
+
+    type Empty struct{}
+
+    func toInterfaceSlice(slice ...interface{}) []interface{} {
+        return slice
+    }
+
+    func main() {
+        slice := []Empty{}
+
+        arr := toInterfaceSlice(slice)
+
+        fmt.Printf("%T", arr)
+    }
+`} />
