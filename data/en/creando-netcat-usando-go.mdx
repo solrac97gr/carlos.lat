@@ -1,0 +1,144 @@
+---
+title: "Creating NetCat using Go 📥"
+date: "July 26, 2022"
+published: "2022-07-26"
+abstract: "In this blog we'll build a solution in Go that allows us to get class-like behavior in other programming languages."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Ff36611152c8c09bfff77656fb0653249.jpeg?alt=media&token=722321a3-6cd6-40ec-a2bd-01cd67b081d1"
+tag: "Go"
+author: "Carlos García"
+---
+
+# Creating NetCat using Go 📥
+
+<small>July 26, 2022</small>
+
+<img
+  width="100%"
+  alt="cat-programmer-wallpaper"
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Ff36611152c8c09bfff77656fb0653249.jpeg?alt=media&token=722321a3-6cd6-40ec-a2bd-01cd67b081d1"
+  style={{borderRadius:"8px"}}
+/>
+
+In this article we'll create a Netcat client that will serve as a terminal interface for a chat server that we'll be implementing using Go and the standard Net package.
+
+To do this, we need to understand that we'll be connecting using the TCP protocol and we'll learn to use Flags to send information to our Go runtime through terminal parameters.
+
+## What is the TCP protocol and what is it for?
+
+TCP is the Transmission Control Protocol that allows establishing a connection and exchanging data between two hosts. This protocol provides reliable data transport.
+
+[Learn more about TCP](https://openwebinars.net/blog/que-es-tcpip/)
+
+## What is a flag in Go?
+
+A Flag is an entity within the flags package that is extracted from program execution and helps us make a command-line program parameterizable.
+
+They look like this in an already compiled program:
+
+<CodeSnippet language="bash" code={`./main --environment="dev"`} />
+
+And like this in a program that hasn't been built yet:
+
+<CodeSnippet language="bash" code={`go run main.go --environment="dev"`} />
+
+In our program code they're used as follows:
+
+<CodeSnippet language="go" code={`package main
+
+import "flag"
+
+var env *string
+
+func init() {
+  env = flag.String("env","production","our execution environment ")
+}
+
+func main() {
+  flag.Parse()
+
+  println(*env)
+}`} />
+
+
+## Getting Our Hands Dirty with Our Netcat Package
+
+Our strategy will consist of first obtaining the host and port parameters through flags.
+
+<CodeSnippet language="go" code={`package main
+
+import (
+	"flag"
+)
+
+var (
+	host *string
+	port *int
+)
+
+func init() {
+	host = flag.String("h", "localhost", "hostname")
+	port = flag.Int("p", 3090, "port")
+}
+
+func main() {
+	flag.Parse()
+}`} />
+
+Then define a method that will copy the content of our communication.
+
+<CodeSnippet language="go" code={`func CopyContent(dst io.Writer, src io.Reader) {
+	if _, err := io.Copy(dst, src); err != nil {
+		log.Fatal(err)
+	}
+}`} />
+
+And now in the main function we'll connect to the TCP server and send and receive information.
+
+<CodeSnippet language="go" code={`package main
+
+import (
+	"flag"
+	"fmt"
+	"io"
+	"log"
+	"net"
+	"os"
+)
+
+var (
+	host *string
+	port *int
+)
+
+func init() {
+	host = flag.String("h", "localhost", "hostname")
+	port = flag.Int("p", 3090, "port")
+}
+
+func main() {
+	flag.Parse()
+	conn, err := net.Dial("tcp", fmt.Sprintf("%s:%d", *host, *port))
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Print("Connected")
+	done := make(chan struct{})
+
+	go func() {
+		io.Copy(os.Stdout, conn)
+		done <- struct{}{}
+	}()
+
+	CopyContent(conn, os.Stdin)
+	conn.Close()
+	<-done
+}
+
+func CopyContent(dst io.Writer, src io.Reader) {
+	if _, err := io.Copy(dst, src); err != nil {
+		log.Fatal(err)
+	}
+}`} />
+
+
+With this simple program we can connect to a TCP server and wait for new messages to print the content on screen, while also sending content through the console to the TCP server.

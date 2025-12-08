@@ -1,0 +1,53 @@
+---
+title: "How to Do Bulk Insert in ElasticSearch in Go? 🔎"
+date: "July 13, 2022"
+published: "2022-07-13"
+abstract: "We'll create a function that will serialize the information within the array and then save it in a buffer to send it 💡."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482734.png?alt=media&token=3da62197-fa7a-45fd-84d8-0ed2d2983cfa"
+tag: "Go, ElasticSearch"
+author: "Carlos García"
+---
+# How to Do Bulk Insert in ElasticSearch in Go? 🔎
+
+<small>July 13, 2022</small><EditPost path="como-hacer-bulk-insert-elasticsearch-go" />
+
+<img width="100%" alt="golang wallpaper" src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482734.png?alt=media&token=3da62197-fa7a-45fd-84d8-0ed2d2983cfa" style={{borderRadius:"8px"}}/>
+
+Using ElasticSearch with Go, I encountered a specific challenge that consisted of sending an amount of information to an Index in ES. For this I didn't find clear documentation that resolved my question about how it worked and in my case why it failed.
+
+Browsing on StackOverflow I found a solution with some errors and proceeded to optimize and fix it.
+
+It consisted of creating a function that would serialize the information within the array and then save this already serialized information in a buffer to then send it.
+
+Here's the solution in code with some specific cases due to the program I was making. You can change it and adapt it to your business case.
+
+<CodeSnippet language="go" code={`
+func ParseToNDJson(data []domain.ElasticLog, dst *bytes.Buffer) error {
+	enc := json.NewEncoder(dst)
+	for _, element := range data {
+		if err := enc.Encode(element); err != nil {
+			if err != io.EOF {
+				return fmt.Errorf("failed to parse NDJSON: %v", err)
+			}
+			break
+		}
+	}
+	return nil
+}
+
+func (edb *ElasticDB) SetElasticData(el []domain.ElasticLog) error {
+	var body bytes.Buffer
+	if err := ParseToNDJson(el, &body); err != nil {
+		return fmt.Errorf("error encoding request: %s", err)
+	}
+	_, err := esapi.BulkRequest{
+		Index: "logs",
+		Body:  strings.NewReader(body.String()),
+	}.Do(context.Background(), edb.Client.Transport)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+`} />

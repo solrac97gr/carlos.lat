@@ -1,21 +1,30 @@
 import styled from 'styled-components';
 
 export const Section = styled.section`
-  padding: 5rem 2.5rem;
+  padding: 5rem 0;
   background-color: #f3f4f6;
 
   @media (min-width: 768px) {
-    padding: 7rem 4rem;
+    padding: 7rem 0;
   }
 
   @media (min-width: 1024px) {
-    padding: 7rem 5rem;
+    padding: 7rem 0;
   }
 `;
 
 export const Container = styled.div`
   max-width: 1280px;
   margin: 0 auto;
+  padding: 0 2rem;
+
+  @media (min-width: 768px) {
+    padding: 0 3rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 0 4rem;
+  }
 `;
 
 export const FormWrapper = styled.div`

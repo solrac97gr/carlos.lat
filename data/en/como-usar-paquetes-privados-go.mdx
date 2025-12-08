@@ -1,0 +1,187 @@
+---
+title: "Modular Projects in Go Using Private Packages 📦"
+date: "June 22, 2023"
+published: "2023-06-22"
+abstract: "Learn how to simplify your Go projects with private packages and modular design 📦."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-private-packages.png?alt=media&token=e5d3d24c-506c-41f2-be1c-1e3b0e0b9df0"
+tag: "Go, Modules, Private"
+author: "Carlos García"
+---
+
+# Modular Projects in Go Using Private Packages 📦 
+
+<small>June 22, 2023</small>
+<EditPost path="como-usar-paquetes-privados-go" />
+
+<img
+  width="100%"
+  alt="golang-wallpaper "
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-private-packages.png?alt=media&token=e5d3d24c-506c-41f2-be1c-1e3b0e0b9df0"
+  style={{ borderRadius: "8px" }}
+/>
+
+As I develop, I've been encountering increasingly recurring problems, and one of them is module reusability between projects. This is something that can be leveraged very well in Go, since it's a language designed to work in a modular way.
+
+## What Is a Package in Go?
+
+In Go, a package is a way to organize and reuse code. A package can contain one or more Go source files and can be imported into other Go programs to use its exported functions, variables, and types. It's a fundamental concept in Go programming and helps create modular and reusable code.
+
+## Advantages of Using Private Packages
+
+ 1. Greater security: Private packages allow us to protect our source code and prevent unauthorized access.
+ 2. Greater control: By having private packages, we can have greater control over our project's dependencies and ensure we're using the correct versions.
+ 3. Improves code reusability: Private packages allow us to share code between company projects more efficiently, which can improve productivity and reduce development time.
+ 4. Greater scalability: With private packages, we can build larger and more complex projects more easily, as it allows us to divide our code into smaller, more manageable modules.
+ 5. Improves code quality: By having private packages, we can ensure our code is well-structured and follows programming best practices, which can improve code quality and reduce the number of errors.
+
+
+## How Do We Create a Private Package in Go?
+
+For this, we'll propose the following situation:
+
+> We work in a team of more than 20 developers and our projects need a more homogeneous way to handle Logs, but the nature of our projects forces us to obfuscate sensitive information in our Logs.
+
+This is a perfect case for applying the use of private packages. We could proceed as follows:
+
+1. We assign the logging project to a specific developer (the one with the most experience in the subject).
+2. The development team reaches an agreement to model the Logger interface.
+3. The development phase of our Logging project begins.
+    **Now we'll show an example of how our Go package could look.**
+
+    <FolderStructure
+    repo="https://github.com/solrac97gr/private-packages-go"
+    tree={[
+        {
+            type:"folder",
+            name:"internal",
+            content:[
+                {
+                    type:"folder",
+                    name:"obfuscator",
+                    content:[
+                        {
+                            type:"file",
+                            name:"obfuscator.go",
+                        },
+                    ]
+                },
+            ]
+        },
+        {
+            type:"folder",
+            name:"logger",
+            content:[
+                {
+                    type:"file",
+                    name:"logger.go",
+                },
+            ]
+        },
+        {
+            type:"file",
+            name:".gitignore"
+        },
+        {
+        type: "file",
+        name: "go.mod",
+        },
+        {
+        type: "file",
+        name: "go.sum",
+        },
+        {
+            type:"file",
+            name:"README.md"
+        },
+    ]}
+    />
+
+    As you can see, our package has two sub-packages: one called Logger at the project root and another called Obfuscator inside the Internal folder.
+
+    > Tip 💡: All code inside the internal folder makes it impossible to import. This way, we can keep functionalities hidden from export in other projects where the package will be used.
+
+5. Now we develop our two packages (I'll be as brief and simple as possible since the focus of this article is not to teach you how to make a logger)
+
+    <CodeSnippet  language={"go"} code={`package logger
+
+    import (
+        "fmt"
+
+        "private-packages-go/internal/obfuscator"
+    )
+
+    type Logger interface {
+        Debug(msg string)
+    }
+
+    type CompanyLogger struct {
+        obfuscator *obfuscator.Obfuscator
+    }
+
+    func NewCompanyLogger() *CompanyLogger {
+        o := obfuscator.NewObfuscator()
+
+        return &CompanyLogger{
+            obfuscator: o,
+        }
+    }
+
+    func (c *CompanyLogger) Debug(msg string) {
+        nMsg := c.obfuscator.Obfuscate(msg)
+        fmt.Println(nMsg)
+    }`} />
+
+    If you can notice something, it's that the obfuscator is initialized and assigned within the logger's "constructor", and can't be assigned from the "constructor". This allows no one to change the logic of what gets hidden or not.
+ 
+    If your package needs some other part of your project, like a custom obfuscator, ideally you'd pass an interface in the constructor that obfuscators must comply with, rather than an implementation.
+    
+    In our case, the obfuscator will be unique and controlled by the Logging package.
+
+6. It's time to upload our package to a private repository on GitHub and start using it in other projects.
+
+
+## How Do We Use Private Packages in Go?
+
+> For this we need to have our <BlogLink url="/blog/como-obtener-variables-entorno-go-env-json/" content="GitHub SSH Key configured on our computer"/>.
+
+1. We'll change the Git URL using the following command:
+    <CodeSnippet  language={"bash"} code={`git config --global url.git@github.com:.insteadOf https://github.com/`} />
+2. To be sure, we'll check if the configuration changed correctly.
+    <CodeSnippet  language={"bash"} code={`cat ~/.gitconfig`} output={`[url "git@github.com:"]
+    insteadOf = https://github.com/`}/>
+3. We add the module to the GOPRIVATE variable.
+    <CodeSnippet  language={"bash"} code={`export GOPRIVATE=github.com/private/repo`}/>
+4. Now we simply use Go's `get` tool to bring the package to our project.
+    <CodeSnippet  language={"bash"} code={`go get github.com/private/repo`}/>
+5. Time to use our Go package.
+    <CodeSnippet  language={"go"} code={`package main
+
+    import "github.com/solrac97gr/private-packages-go/logger"
+
+    type Service struct {
+        logger logger.Logger
+    }
+
+    func NewService(l logger.Logger) *Service {
+        return &Service{
+            logger: l,
+        }
+    }
+
+    func (s *Service) DoSomething() {
+        msg := "I am secret 🤫, I am not a secret 😎"
+        s.logger.Debug(msg)
+    }
+
+    func main() {
+        lggr := logger.NewCompanyLogger()
+        srv := NewService(lggr)
+        srv.DoSomething()
+    }
+    `} output={`I am not a secret 😎`} />
+
+    We can notice that we're using the interface and not the implementation, which will allow us to use mocks in the future to improve tests. Additionally, we should consider that packages must have their own tests, which is not optional.
+
+## Conclusion
+
+In conclusion, module reusability between projects is a common problem in software development, but in Go, this problem can be effectively addressed thanks to its modular design. By leveraging private packages, we can share code more efficiently and improve module reusability between projects. This way, we can improve productivity and reduce development time in our company.

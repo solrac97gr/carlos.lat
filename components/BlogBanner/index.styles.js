@@ -36,6 +36,7 @@ export const LeftColumn = styled.div`
 
   @media (max-width: 768px) {
     width: 100%;
+    order: 2;
   }
 `;
 
@@ -126,5 +127,6 @@ export const ImageWrapper = styled.div`
 
   @media (max-width: 768px) {
     width: 100%;
+    order: 1;
   }
 `;

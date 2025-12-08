@@ -8,16 +8,16 @@ export const Container = styled.div`
 `;
 
 export const HeroSection = styled.section`
-  padding: 6rem 2.5rem 2rem;
+  padding: 6rem 2rem 2rem;
   max-width: 1280px;
   margin: 0 auto;
 
   @media (min-width: 768px) {
-    padding: 10rem 4rem 4rem;
+    padding: 10rem 3rem 4rem;
   }
 
   @media (min-width: 1024px) {
-    padding: 12rem 5rem 5rem;
+    padding: 12rem 4rem 5rem;
   }
 `;
 
@@ -40,7 +40,7 @@ export const GridContainer = styled.div`
 export const CanvasColumn = styled.div`
   width: 100%;
   height: 20rem;
-  order: 2;
+  order: 1;
 
   @media (min-width: 768px) {
     height: 31.25rem;
@@ -54,7 +54,7 @@ export const CanvasColumn = styled.div`
 
 export const ContentColumn = styled.div`
   text-align: center;
-  order: 1;
+  order: 2;
 
   @media (min-width: 768px) {
     text-align: left;

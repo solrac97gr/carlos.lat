@@ -1,0 +1,110 @@
+---
+title: "How to Run Your Go Application Using Docker? 🐋"
+date: "July 15, 2022"
+published: "2022-07-15"
+abstract: "✅ We'll create a Go application that will be executed from a Docker container using Fiber"
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750690.jpg?alt=media&token=4dc9af5c-57f4-4c70-b47d-304771eab417"
+tag: "Go, Docker"
+author: "Carlos García"
+---
+
+# How to Run Your Go Application Using Docker? 🐋
+
+<small>July 15, 2022</small><EditPost path="como-ejecutar-aplicacion-go-docker" />
+
+<img width="100%" alt="golang-wallpaper " src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750690.jpg?alt=media&token=4dc9af5c-57f4-4c70-b47d-304771eab417" style={{borderRadius:"8px"}}/>
+
+In the last decade, Docker has become popular as a development mechanism thanks to its many advantages such as:
+
+- Small development environments with the minimum needed to run.
+- Being able to share them easily without worrying about dependencies.
+- Various cloud services use them as standard to run your application easily.
+- Easy and intuitive syntax to declare our container configuration.
+
+Therefore, today we'll create a Go application that will be executed from a Docker container. This will be the first part of a tutorial where we'll deploy an API made in Go to Google Cloud ☁️.
+
+## Creating Our Project
+
+For this we'll open a terminal and navigate to the folder where we want to create our project. In my case, my folder is Development.
+
+Once inside the folder we'll create a new project:
+
+<CodeSnippet language="bash" code={`mkdir fiber-docker`} />
+
+Inside this folder we'll initialize Go modules to manage our Go project dependencies.
+
+<CodeSnippet language="bash" code={`go mod init github.com/solrac97g/fiber-docker`} />
+
+Now we'll create a Go file that will be our main:
+
+<CodeSnippet language="bash" code={`touch main.go`} />
+
+And we'll create our docker file
+
+<CodeSnippet language="bash" code={`touch dockerfile`} />
+
+This will be the minimum we'll require to run our Go project for now.
+
+## Modifying the Main
+
+Inside main we'll execute the following code which will set up an HTTP server using Fiber, a Go framework, and expose it on port 8080.
+
+<CodeSnippet language="go" code={`
+package main
+
+import (
+	"github.com/gofiber/fiber/v2"
+	"log"
+)
+
+func main() {
+	app := fiber.New()
+
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.SendString("Hello, World!")
+	})
+
+	app.Get("/ping", func(c *fiber.Ctx) error {
+		return c.SendString("pong")
+	})
+
+	log.Fatal(app.Listen(":8080"))
+}
+`} />
+
+
+Don't forget to install our dependency. From the terminal we'll add the dependency to our project:
+
+<CodeSnippet language="bash" code={`go get github.com/gofiber/fiber/v2`} />
+
+Now we have our code ready to work. What this script basically does is create two endpoints: the main one "/" which responds with "hello world" and "/ping" which responds with "pong".
+
+
+## Configuring Our Docker Container
+
+To configure our Docker container we'll edit our dockerfile
+
+<CodeSnippet language="dockerfile" code={`
+FROM golang:1.18-alpine
+WORKDIR /app
+COPY go.mod .
+COPY go.sum .
+RUN go mod download
+COPY . .
+RUN go build -o ./out/dist .
+CMD ./out/dist
+`} />
+
+What this does is create a container that runs Go 1.18, then copies the dependency files to the container and downloads the dependencies to finally build the project and execute it.
+
+## Running Our Project
+
+Finally we can run our container using the following command first to build our container.
+
+<CodeSnippet language="bash" code={`docker build -t app .`} />
+
+And now the following command to start our container.
+
+<CodeSnippet language="bash" code={`docker run -p 8888:8080 app`} />
+
+Our project will be ready to receive requests from the URL: http://localhost:8888

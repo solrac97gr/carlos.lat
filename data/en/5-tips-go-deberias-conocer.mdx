@@ -1,0 +1,149 @@
+---
+title: "5 Useful Tricks and Tips for Go You Should Know 🐹"
+date: "July 21, 2022"
+published: "2022-07-21"
+abstract: "In this post, I'll show you 5 tricks I use in my day-to-day work as a remote Go programmer."
+image: "https://miro.medium.com/max/1400/1*0xwMiyD3YFwIsfk-ZREGNQ.png"
+tag: "Go"
+author: "Carlos García"
+---
+
+# 5 Useful Tricks and Tips for Go You Should Know 🐹
+
+<small>July 21, 2022</small>
+<EditPost path="5-tips-go-deberias-conocer" />
+
+<img
+  width="100%"
+  alt="golang-wallpaper "
+  src="https://miro.medium.com/max/1400/1*0xwMiyD3YFwIsfk-ZREGNQ.png"
+  style={{ borderRadius: "8px" }}
+/>
+
+Go is one of the most useful programming languages for performing different tasks, especially concurrency tasks. Additionally, all the native libraries in this language have many common functions we need daily.
+In this post, I'll show you 5 tricks I use in my day-to-day work as a remote Go programmer.
+
+## 1. Code Execution Time
+
+Go excels at great performance and has become one of the most used programming languages. Therefore, one of the things I do every day is measure my Go code's execution time. You can use a function and add it to the defer statement to improve readability.
+
+<CodeSnippet language={"go"} route={"main.go"} code={`  package main
+
+  import (
+	  "log"
+	  "time"
+  )
+
+  func ExecTime(start time.Time, name string) {
+	  elapsed := time.Since(start)
+	  log.Printf("%s took %s", name, elapsed)
+  }
+
+  func main() {
+	  defer ExecTime(time.Now(), "main")
+	  time.Sleep(3 * time.Second)
+  }`} />
+
+## 2. Marshal a JSON String with an Undefined Struct to an "Object"
+
+This is a common problem in system logs when we save a Response and Request with an undefined struct and need to manipulate the information within this string.
+
+<CodeSnippet language={"go"} route={"main.go"} code={`  package main
+
+  import (
+	  "encoding/json"
+	  "fmt"
+	  "time"
+  )
+
+  type LogRegister struct {
+	  ID            int
+	  RequestString string
+	  RequestJson   map[string]interface{}
+	  CreatedAt     time.Time
+	  UpdatedAt     time.Time
+  }
+
+  func (c *LogRegister) FormatStringToJson() {
+	  var request map[string]interface{}
+
+	  json.Unmarshal([]byte(c.RequestString), &request)
+
+	  c.RequestJson = request
+  }
+
+  func main() {
+	  logRegister := LogRegister{
+		  ID: 1,
+		  RequestString: \`
+		  {
+			  "status":200,
+			  "message":"ok, now you can use me"
+		  }
+		  \`,
+		  CreatedAt: time.Now(),
+	  }
+	  logRegister.FormatStringToJson()
+	  if logRegister.RequestJson["status"] != nil {
+		  fmt.Println(logRegister.RequestJson["status"])
+	  }
+	  if logRegister.RequestJson["message"] != nil {
+		  fmt.Println(logRegister.RequestJson["message"])
+	  }
+  }`} />
+
+
+## 3. Get Code Coverage Test
+
+You can check your project's test coverage in a nice browser interface and verify which parts of your code need to be tested.
+
+<CodeSnippet language={"bash"} code={`go test -coverprofile=coverage.out ./… && go tool cover -html=coverage.out && rm coverage.out`} />
+
+
+<img
+  width="100%"
+  alt="golang-wallpaper "
+  src="https://miro.medium.com/max/1400/1*NHVEWp5EHEAY__rn4US1Cg.png"
+/>
+
+Code that hasn't been tested will appear in red and code that has been tested in green.
+
+
+## 4. Check if String is Inside a Slice
+
+Another common situation involves simple search problems for a string within a slice. For example, I want to make a list of fields that can be modified in an endpoint. The search method will depend on the array size. In my case, they're very short arrays, so I use a simple search.
+
+<CodeSnippet language={"go"} route={"main.go"} code={`  package main
+
+  func StringInSlice(a string, list []string) bool {
+	 
+	  for _, b := range list {
+		  if b == a {
+			  return true
+		  }
+	  }
+	  return false
+  }
+
+  func main() {
+	  permmitedFields := []string{"status", "message"}
+	  field := "createdAt"
+
+	  if StringInSlice(field, permmitedFields) {
+		  println("the field is authorized")
+	  }
+	  println("the field is not authorized")
+  }`} />
+
+
+## 5. Generate CPU Profiles
+
+Likewise, one of my favorite tools is CPU profiling to get a more extensive analysis of your code's performance.
+
+<CodeSnippet language={"bash"} code={`go test -cpuprofile=cpu.out ./… && go tool pprof cpu.out && rm cpu.out`} />
+
+<img
+  width="100%"
+  alt="golang-wallpaper "
+  src="https://miro.medium.com/max/1400/1*-JpIHiLuBs02DIORHu5dHA.png"
+/>

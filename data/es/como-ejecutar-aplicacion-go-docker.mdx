@@ -1,0 +1,111 @@
+---
+title: "¿Cómo ejecutar tu aplicación de Go usando Docker? 🐋"
+date: "15 de Julio del 2022"
+published: "2022-07-15"
+abstract: "✅ Realizaremos una aplicación de Go que será ejecutada desde un Docker container usando Fiber"
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750690.jpg?alt=media&token=4dc9af5c-57f4-4c70-b47d-304771eab417"
+tag: "Go, Docker"
+author: "Carlos García"
+---
+
+# ¿Cómo ejecutar tu aplicación de Go usando Docker? 🐋
+
+<small>15 de Julio del 2022</small><EditPost path="como-ejecutar-aplicacion-go-docker" />
+
+<img width="100%" alt="golang-wallpaper " src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750690.jpg?alt=media&token=4dc9af5c-57f4-4c70-b47d-304771eab417" style={{borderRadius:"8px"}}/>
+
+En la última década se a popularizado el uso de Docker como mecanismo de desarrollo gracias sus muchas ventajas tales como:
+
+- Pequeños entornos de desarrollo con lo mínimo para que se puedan ejecutar.
+- Poder compartirlos de forma sencilla sin tener que preocuparnos por las dependencias.
+- Distintos servicios de nubes los usan como standard para ejecutar tu aplicación de forma sencilla.
+- Sintaxis fácil e intuitiva para declarar la configuración de nuestros contenedores.
+
+Por ello hoy realizaremos una aplicación de Go que será ejecutada desde un Docker container, está será la primera parte de un tutorial donde haremos deploy de una API hecha en Go hacia Google Cloud ☁️. 
+
+## Creando nuestro proyecto
+
+Para ello abriremos una terminal y navegaremos hacia la carpeta donde queramos crear nuestro proyecto en mi caso mi carpeta es Development.
+
+Una vez dentro de la carpeta crearemos un nuevo proyecto:
+
+<CodeSnippet language="bash" code={`mkdir fiber-docker`} />
+
+Dentro de esta carpeta inicializaremos el Go modules para administrar nuestras dependencias del proyecto de Go.
+
+<CodeSnippet language="bash" code={`go mod init github.com/solrac97g/fiber-docker`} />
+
+Ahora crearemos un archivo de Go que será nuestro main:
+
+<CodeSnippet language="bash" code={`touch main.go`} />
+
+Y crearemos nuestro archivo de docker
+
+<CodeSnippet language="bash" code={`touch dockerfile`} />
+
+Esto será lo mínimo que requeriremos para ejecutar nuestro proyecto en Go por ahora.
+
+## Modificando el Main
+
+Dentro del main ejecutaremos el siguiente código que nos montara un servidor HTTP usando Fiber un framework de Go y lo expondrá en el puerto 8080.
+
+<CodeSnippet language="go" code={`
+package main
+
+import (
+	"github.com/gofiber/fiber/v2"
+	"log"
+)
+
+func main() {
+	app := fiber.New()
+
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.SendString("Hello, World!")
+	})
+
+	app.Get("/ping", func(c *fiber.Ctx) error {
+		return c.SendString("pong")
+	})
+
+	log.Fatal(app.Listen(":8080"))
+}
+`} />
+
+
+No olvides instalar nuestra dependencia, desde la terminal agregaremos la dependencia a nuestro proyecto:
+
+<CodeSnippet language="bash" code={`go get github.com/gofiber/fiber/v2`} />
+
+Ahora si ya tenemos nuestro código preparado para funcionar. Lo que hace este script básicamente es que crea dos endpoints el principal "/" que te responde con "hello world" y el "/ping"  que te responde con "pong". 
+
+
+## Configurando nuestro Docker container
+
+Para configurar nuestro Docker container editaremos nuestro archivo dockerfile
+
+<CodeSnippet language="dockerfile" code={`
+FROM golang:1.18-alpine
+WORKDIR /app
+COPY go.mod .
+COPY go.sum .
+RUN go mod download
+COPY . .
+RUN go build -o ./out/dist .
+CMD ./out/dist
+`} />
+
+Esto lo que hace es crear un container que corre Go 1.18 luego copia los archivos de dependencias al contenedor y ejecuta una descarga de las dependencias para finalmente construir el proyecto y ejecutarlo.
+
+## Ejecutando nuestro proyecto
+
+Finalmente podemos ejecutar nuestro contenedor usando el siguiente comando primero para construir nuestro contenedor.
+
+<CodeSnippet language="bash" code={`docker build -t app .`} />
+
+Y ahora el siguiente comando para levantar  nuestros contenedor.
+
+<CodeSnippet language="bash" code={`docker run -p 8888:8080 app`} />
+
+Nuestro proyecto estaré preparado para recibir peticiones desde la url : http://localhost:8888
+

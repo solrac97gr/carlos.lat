@@ -1,0 +1,361 @@
+---
+title: "Mejora tu DX en Go con Makefiles 🐹"
+date: "15 de Junio del 2023"
+published: "2023-06-15"
+abstract: "Mejora tu flujo de desarrollo usando archivos Makefile y scripts para tus proyectos en Go."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-minimal.jpeg?alt=media&token=2af7f91a-5e96-460d-82b4-22ad94448705"
+tag: "Go, DX, Bash"
+author: "Carlos García"
+---
+
+# Mejora tu DX en Go con Makefiles 🐹 
+
+<small>15 de Junio del 2023</small>
+<EditPost path="mejora-desarrollo-go-makefile" />
+
+<img
+  width="100%"
+  alt="golang-wallpaper "
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-minimal.jpeg?alt=media&token=2af7f91a-5e96-460d-82b4-22ad94448705"
+  style={{ borderRadius: "8px" }}
+/>
+
+Algo muy importante como desarrolladores es disfrutar de nuestro trabajo y de ayudar a que todo el equipo también disfrute de este. Por eso existe el término DX (Developer Experience) y en este Post nos adentraremos en una forma sencilla de mejorar la DX de nuestros proyectos en Go usando los ya conocidos Makefiles (creados en los 70’s 🤯).
+
+## ¿Qué es un Makefile?
+
+Un Makefile es una herramienta para simplificar u organizar el código para la compilación. Un Makefile es un conjunto de comandos con nombres de variables y metas para crear o eliminar archivos objetos y binarios. Un Makefile se puede usar para compilar código en lenguajes como C o C++, o para proporcionar comandos para automatizar tareas comunes. Un Makefile ayuda a decidir qué partes de un programa grande deben recompilarse.
+
+## ¿Cómo un Makefile mejorará nuestra DX en Go?
+
+Si has tenido la oportunidad de trabajar en el lado del Frontend, sabrás que existe dentro del Package.json una lista de comandos que puedes personalizar para realizar tareas específicas, como ejecutar los Tests, aplicar un Linter, construir la aplicación o ejecutarla. Pues bien, eso hará nuestro Makefile por nosotros en Go.
+
+Nuestro Makefile en Go nos ayudará a organizar nuestros distintos comandos, haciendo que no tengamos que enseñarles específicamente a cada nuevo developer en el proyecto largos comandos para generar mocks, por ejemplo, o para obtener un formato específico de code coverage.
+
+## Ejemplos de comandos que se pueden agregar a nuestro Makefile
+
+Primero partiremos de la base de que en nuestro proyecto de Go contamos con una carpeta scripts. Una vez claro esto, crearemos un archivo Makefile en la raíz de este y ahí agregaremos nuestros distintos comandos que usaremos.
+
+Nuestro proyecto se vería algo así (Dejaré los folders vacíos para no distraernos. Este template es de mi Post <BlogLink url="/blog/plantilla-proyecto-2023/" content="Plantilla de proyecto 2023"/>).
+
+
+<FolderStructure
+  tree={[
+    {   
+        type:"folder",
+        name:".github",
+        content:[
+            
+        ]
+    },
+    {
+      type: "folder",
+      name: "cmd",
+      content: [
+      ],
+    },
+    {
+        type:"folder",
+        name:"config",
+        content:[
+           
+        ]
+    },
+    {
+        type:"folder",
+        name:"deploy",
+        content:[
+            
+        ]
+    },
+    {
+        type:"folder",
+        name:"docs",
+        content:[
+          
+        ]
+    },
+    {
+        type:"folder",
+        name:"hooks",
+        content:[
+          
+        ]
+    },
+    {
+      type: "folder",
+      name: "internal",
+      content: [
+       
+      ],
+    },
+    {
+        type:"folder",
+        name:"logs",
+        content:[
+         
+        ]
+    },
+    {
+        type:"folder",
+        name:"pkg",
+        content:[
+          
+        ]
+    },
+    {
+        type:"folder",
+        name:"scripts",
+        content:[
+            {
+                type:"file",
+                name:"build.sh",
+            },
+            {
+                type:"file",
+                name:"generate-mocks.sh"
+            }
+        ]
+    },
+    {
+        type:"file",
+        name:".gitignore"
+    },
+    {
+      type: "file",
+      name: "go.mod",
+    },
+    {
+      type: "file",
+      name: "go.sum",
+    },
+    {
+        type:"file",
+        name:"main.go"
+    },
+    {
+        type:"file",
+        name:"README.md"
+    },
+    {
+        type:"file",
+        name:"Makefile"
+    }
+  ]}
+/>
+
+Nuestro makefile quedaría de la siguiente forma: definiríamos los distintos scripts que queremos usar con la palabra clave make. En este caso, haremos el proceso de Build, Test, Run y Generación de Mocks.
+
+### 1. Definimos nuestros comandos a usar.
+
+Primero definimos las herramientas que usaremos en variables que nos recuerden las acciones que realizamos normalmente con el CLI de go. Esto lo hacemos para que, si nuestro makefile crece y luego alguna de las herramientas de go cambia de nombre, podamos reemplazarla fácilmente sin modificar cada comando de forma unitaria.
+
+<CodeSnippet  language={"Makefile"} code={`
+# Go parameters
+GOCMD=go
+GOBUILD=$(GOCMD) build
+GOCLEAN=$(GOCMD) clean
+GOTEST=$(GOCMD) test
+GOTOOL=$(GOCMD) tool
+GOGET=$(GOCMD) get
+GOMOD=$(GOCMD) mod
+GOINST=$(GOCMD) install
+`} />
+
+### 2. Definimos nuestro comando de Build
+
+Un proceso común en Go es crear nuestra aplicación y, al llegar nuevos desarrolladores, recordar los parámetros de construcción puede ser un poco tedioso. Entonces, nos ayudaremos del Makefile para definir nuestro comando de construcción del proyecto.
+
+<CodeSnippet  language={"Makefile"} code={`
+# Go parameters
+GOCMD=go
+GOBUILD=$(GOCMD) build
+GOCLEAN=$(GOCMD) clean
+GOTEST=$(GOCMD) test
+GOTOOL=$(GOCMD) tool
+GOGET=$(GOCMD) get
+GOMOD=$(GOCMD) mod
+GOINST=$(GOCMD) install
+
+#Binary Name
+BINARY_NAME=main
+
+# Build
+build:
+    @$(GOBUILD) -o $(BINARY_NAME) ./cmd/http
+    @echo "📦 Build Done"
+`} />
+
+### 3. Agregamos nuestro comando de Tests
+
+Otro proceso común en Go es ejecutar los tests de nuestra aplicación para verificar su correcto funcionamiento y detectar posibles errores. Para ello, podemos usar el comando go test, que busca y ejecuta los archivos que terminan en _test.go en nuestro proyecto. Sin embargo, este comando puede tener varias opciones y argumentos que pueden complicar su uso. Por ejemplo, podemos querer especificar el nivel de cobertura de los tests, el formato de salida, los paquetes a testear o los flags a pasar al test runner. Para simplificar este proceso, podemos definir nuestro comando de tests en el Makefile, usando las variables que definimos anteriormente y agregando las opciones que necesitemos.
+
+<CodeSnippet  language={"Makefile"} code={`
+# Go parameters
+GOCMD=go
+GOBUILD=$(GOCMD) build
+GOCLEAN=$(GOCMD) clean
+GOTEST=$(GOCMD) test
+GOTOOL=$(GOCMD) tool
+GOGET=$(GOCMD) get
+GOMOD=$(GOCMD) mod
+GOINST=$(GOCMD) install
+
+#Binary Name
+BINARY_NAME=main
+
+# Build
+build:
+    @$(GOBUILD) -o $(BINARY_NAME) ./cmd/http
+    @echo "📦 Build Done"
+
+# Test
+test:
+	@$(GOTEST) -v ./...
+	@echo "🧪 Test Completed"
+`} />
+
+### 4. Agregamos ahora nuestro comando de Ejecución de nuestro binario.
+
+Una vez que hemos construido nuestro binario con el comando make build, podemos ejecutarlo directamente desde la terminal con ./main. Sin embargo, puede ser conveniente definir un comando en el Makefile para ejecutar nuestro binario de forma más sencilla y consistente. Para ello, podemos usar el comando run y especificar el nombre del binario que queremos ejecutar. Así, podremos iniciar nuestra aplicación con solo escribir make run en la terminal.
+
+<CodeSnippet  language={"Makefile"} code={`
+# Go parameters
+GOCMD=go
+GOBUILD=$(GOCMD) build
+GOCLEAN=$(GOCMD) clean
+GOTEST=$(GOCMD) test
+GOTOOL=$(GOCMD) tool
+GOGET=$(GOCMD) get
+GOMOD=$(GOCMD) mod
+GOINST=$(GOCMD) install
+
+#Binary Name
+BINARY_NAME=main
+
+# Build
+build:
+    @$(GOBUILD) -o $(BINARY_NAME) ./cmd/http
+    @echo "📦 Build Done"
+
+# Test
+test:
+	@$(GOTEST) -v ./...
+	@echo "🧪 Test Completed"
+
+# Run
+run:
+    @echo "🚀 Running App"
+    @./$(BINARY_NAME)
+`} />
+
+### 5. Tambien podemos ejecutar scripts más complejos usando la carpeta de scripts.
+
+A veces, podemos necesitar ejecutar scripts que realizan tareas más complejas que las que podemos definir en el Makefile. Por ejemplo, podemos querer generar mocks para nuestros tests, formatear nuestro código o generar documentación. Para ello, podemos usar la carpeta de scripts que hemos creado en nuestro proyecto y almacenar ahí los scripts que queremos ejecutar. Luego, podemos definir comandos en el Makefile que invocan esos scripts usando el comando sh. Así, podremos ejecutar nuestros scripts con solo escribir make script-name en la terminal
+
+<CodeSnippet  language={"Makefile"} code={`
+# Go parameters
+GOCMD=go
+GOBUILD=$(GOCMD) build
+GOCLEAN=$(GOCMD) clean
+GOTEST=$(GOCMD) test
+GOTOOL=$(GOCMD) tool
+GOGET=$(GOCMD) get
+GOMOD=$(GOCMD) mod
+GOINST=$(GOCMD) install
+
+#Binary Name
+BINARY_NAME=main
+
+# Build
+build:
+    @$(GOBUILD) -o $(BINARY_NAME) ./cmd/http
+    @echo "📦 Build Done"
+
+# Test
+test:
+	@$(GOTEST) -v ./...
+	@echo "🧪 Test Completed"
+
+# Run
+run:
+    @echo "🚀 Running App"
+    @./$(BINARY_NAME)
+
+# Generate Mocks
+generate-mocks:
+	@$(GOINST) github.com/golang/mock/mockgen@v1.6.0
+
+	@./scripts/generate-mocks.sh
+`} />
+
+### 6. Tambien podemos llamar otros comandos de nuestro make file
+
+Digamos que queremos tener un comando dev que nos construya y ejecute la app al mismo tiempo. Para ello, crearemos nuestro comando dev con la dependencia del comando build. Esto significa que, antes de ejecutar el comando dev, se ejecutará el comando build para asegurarnos de que tenemos el binario actualizado. Luego, el comando dev ejecutará el binario usando el nombre que le hemos asignado. Así, podremos iniciar nuestra app con solo escribir make dev en la terminal.
+
+<CodeSnippet  language={"Makefile"} code={`
+# Go parameters
+GOCMD=go
+GOBUILD=$(GOCMD) build
+GOCLEAN=$(GOCMD) clean
+GOTEST=$(GOCMD) test
+GOTOOL=$(GOCMD) tool
+GOGET=$(GOCMD) get
+GOMOD=$(GOCMD) mod
+GOINST=$(GOCMD) install
+
+#Binary Name
+BINARY_NAME=main
+
+# Build
+build:
+    @$(GOBUILD) -o $(BINARY_NAME) ./cmd/http
+    @echo "📦 Build Done"
+
+# Test
+test:
+	@$(GOTEST) -v ./...
+	@echo "🧪 Test Completed"
+
+# Run
+run:
+    @echo "🚀 Running App"
+    @./$(BINARY_NAME)
+
+# Generate Mocks
+generate-mocks:
+	@$(GOINST) github.com/golang/mock/mockgen@v1.6.0
+
+	@./scripts/generate-mocks.sh
+
+# Dev
+dev:build
+    @echo "🚀 Running App"
+    @./$(BINARY_NAME)
+`} />
+
+
+
+## Usando nuestros comandos
+
+
+
+Para usar nuestros comandos del Makefile es muy simple: usaremos la palabra clave make seguida del nombre del comando que queremos realizar.
+
+#### Veremos aquí unos ejemplos de cómo usarlo:
+
+- Para construir nuestra aplicación usaremos el comando `make build`
+
+    <CodeSnippet language={"bash"} code={`make build`} output={"📦 Build Done"}/>
+
+- Para ejecutar nuestros tests usaremos el comando `make test`
+
+    <CodeSnippet language={"bash"} code={`make test`} output={"🧪 Test Completed"}/>
+
+- Para ejecutar nuestros programa en modo dev `make dev`
+
+    <CodeSnippet language={"bash"} code={`make dev`} output={"🚀 Running App"}/>
+
+## Conclusión
+
+En este artículo hemos visto cómo los Makefiles pueden mejorar nuestra experiencia de desarrollo en Go, al simplificar y organizar los comandos que usamos para construir, ejecutar y testear nuestra aplicación. Hemos aprendido la sintaxis básica de un Makefile, cómo definir variables, objetivos y dependencias, y cómo ejecutar scripts más complejos desde el Makefile. También hemos visto algunos ejemplos de comandos útiles que podemos usar en nuestros proyectos de Go, como build, test, run y dev. Espero que este artículo te haya sido de utilidad y que te animes a usar los Makefiles en tus proyectos de Go. ¡Hasta la próxima!

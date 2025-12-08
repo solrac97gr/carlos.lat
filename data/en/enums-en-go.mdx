@@ -1,0 +1,199 @@
+---
+title: "Custom Types (Aliases) and Enums? in Go - Learn to Leverage Them 🐹"
+date: "February 6, 2023"
+published: "2023-02-06"
+abstract: "Discover the potential of aliases in Go and how to get the most out of them in your day-to-day work."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F1*QD-fZ5jS3GahUKP-T3EzRA.png?alt=media&token=5b3931b5-e333-481f-9e7b-788c051a0ff1"
+tag: "Go"
+author: "Carlos García"
+---
+
+# Custom Types (Aliases) and Enums? in Go - Learn to Leverage Them 🐹
+
+<small>February 6, 2023</small>
+<EditPost path="enums-en-go" />
+
+<img
+  width="100%"
+  alt="golang-wallpaper "
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F1*QD-fZ5jS3GahUKP-T3EzRA.png?alt=media&token=5b3931b5-e333-481f-9e7b-788c051a0ff1"
+  style={{ borderRadius: "8px" }}
+/>
+
+One of the things I like most about Go is definitely the ability to create types based on basic types. In very popular programming languages like TypeScript you can create types this way, being very useful for encapsulating business concepts.
+
+That's why I'll give you some ideas on how to use aliases in Go.
+
+## Create Types for Business Concepts
+
+This will help us use business concept words within our code that a company would use when providing a requirement.
+
+Let's say you have a pet app that generates coins you can use within the app by inviting referrals, and that you can later claim as real money.
+
+```go
+
+func GetBalance() float64 {}
+func GetTotal() float64 {}
+
+```
+
+We can see that both functions return float64, but which one returns the balance in dollars and which returns the balance in game coins?
+
+For this, we can create types for each of these units.
+
+```go
+type USD float64
+type PetCoin float64
+
+func GetBalance() PetCoin {}
+func GetTotal() USD {}
+
+```
+
+Now if I ask you, which function gives us the Petcoins balance? You could determine it thanks to what the function returns, and this also helps when receiving a requirement.
+
+> Carlos, I need you to optimize the function that gets the Petcoins balance
+
+It helps us better understand requirements by having these business concepts as part of our code.
+
+## Secure Functions That Receive Many Arguments of the Same Type
+
+There's something we typed language users say a lot - it's easier to avoid errors due to types, and it's true. But what happens when we have a function that receives X number of arguments all of the same type?
+
+You have to be very careful when passing arguments or you'll end up passing them in the wrong order and might not detect the error until it's too late.
+
+Let's look at this example:
+
+```go
+func setHeaders(IP string, Hostname string, Key string) {}
+
+func ExampleHandler(ctx *fiber.Ctx) {
+  setHeaders(ctx.Hostname(),ctx.IP(),ctx.Authorization())
+}
+
+```
+
+As you can see, the arguments are not in the correct order, however this function will execute normally, and if we don't have any validation within it, it will perform its function with incorrect data.
+
+Now we'll define types for each of the arguments.
+
+```go
+type IP string
+type Hostname string
+type Key string
+
+func setHeaders(ip IP, hostname Hostname, key Key) {}
+
+
+func ExampleHandler(ctx *fiber.Ctx) {
+  setHeaders(ctx.Hostname(),ctx.IP(),ctx.Authorization()) // error
+
+  ip:= IP(ctx.IP())
+  hostname:= Hostname(ctx.Hostname())
+  key:= Key(ctx.Authorization())
+
+  setHeaders(hostname,ip,key) // error wrong type in arguments
+
+  setHeaders(ip, hostname, key) // Correct
+}
+```
+
+Now our function will receive typed arguments of abstract concepts that don't have a data type in the language.
+
+## Enhance Data Types That Don't Need to Be a Structure
+
+Many times we'll need to create data types that have only one piece of data within the structure but require several methods that help us enhance the data type, however we don't want to add them to the base data type.
+
+```go
+type IP struct {
+  Value string
+}
+
+func NewIP(s string) IP {}
+
+func (i IP) Parse(s string) error {}
+func (i IP) Validate() error {}
+func (i IP) ToString() string {}
+```
+
+An IP data type is definitely an excellent idea, but creating a structure is too complicated. So to be able to load a common data type like a string, we can use an alias as follows:
+
+```go
+package main
+
+type IP string
+
+func (i IP) Validate() error {
+  // Here validate your type
+}
+
+func (i IP) ToString() string {
+  return string(i)
+}
+
+func NewIP(s string) IP {
+  ip := IP(s)
+
+  if err:= ip.Validate(); err != nil {
+    panic(err.Error())
+  }
+  return ip
+}
+
+func main() {
+  ip:=NewIP("197.0.0.1")
+
+  println(ip.ToString())
+}
+```
+
+This opens up many possibilities for us, like creating functions that only receive the IP data type and don't need validation within the flow since it's validated when created using a method like validate in the example above.
+
+```go
+func ConnectToIP(ip IP) {}
+```
+
+## Enums in Go?
+
+Also thanks to aliases in Go, we can simulate something very similar to an Enum in Go since it doesn't natively have this data type.
+
+```go
+type Season int
+
+const (
+  Undefined Season = iota
+  Summer    Season
+  Winter    Season
+  Autumn    Season
+  Spring    Season
+)
+
+func (s Season) String() string {
+	switch s {
+	case Summer:
+		return "summer"
+	case Autumn:
+		return "autumn"
+	case Winter:
+		return "winter"
+	case Spring:
+		return "spring"
+	}
+	return "unknown"
+}
+```
+
+This way we can simulate an Enum in Go and define a limited set of options for a specific concept. Here we can see an example of how we would use our Enum in the code.
+
+```go
+func ShowSeason(s Season) {
+  fmt.Println(s.String())
+}
+
+func main() {
+  ShowSeason(Winter) // "winter"
+  ShowSeason(Summer) // "summer"
+}
+```
+
+Tell me about other ways you use aliases in your Go projects so we can continue improving this article and adding new uses for this incredible Go functionality.

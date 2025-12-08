@@ -1,0 +1,339 @@
+---
+title: "Mi plantilla para proyectos en 2023 usando Go (Fiber y MongoDB) 👨🏽‍💻"
+date: "10 de Noviembre del 2022"
+published: "2022-11-10"
+abstract: "✅ Conocé como organizo mis proyectos en Go para escalar a nivel empresarial"
+image: "https://cdn.filestackcontent.com/p5fN19Qi7ctgFewfHFwi"
+tag: "Go, Fiber"
+author: "Carlos García"
+---
+
+# Mi plantilla para proyectos en 2023 usando Go (Fiber y MongoDB) 👨🏽‍💻
+
+<small>10 de Noviembre del 2022</small>
+<EditPost path="plantilla-proyecto-2023" />
+
+<img
+  width="100%"
+  alt="golang wallpaper"
+  src="https://cdn.filestackcontent.com/p5fN19Qi7ctgFewfHFwi"
+  style={{ borderRadius: "8px" }}
+></img>
+
+Ya estamos cerca al final del 2022 y esto quiere decir es un año más en el que trabaje como desarrollador Golang full time, dentro de este año de trabajo descubrí nuevas herramientas que te ayudan en el flujo de desarrollo y la documentación como tambien una nueva forma de organizar mis proyectos de manera que escalen de forma saludable.
+
+## El Stack 🧱
+
+Haremos un mini recorrido a las herramientas que le dan vida a esta plantilla y sabremos porque las uso actulamente.
+
+- **El enrutador** 🚀: Para el enrutador escogí usar **Fiber** debido a las multiples herramientas que tiene desarralladas internamente en el framework y porque me parece que la declaracion de rutas es mucho más intuitiva.
+
+- **La base de datos** 💾: Para el almacenamiento de datos escogí a **MongoDB** por su facíl despliegue y más que todo por que la mayoría de proyectos que desarrolle en 2022 y 2021 me pidieron usar esta base de datos.
+
+- **La documentación** 📄: Una de las partes más importantes cuando desarrollas un proyecto en el ambito profesional es la documentación recuerda que trabajaras con más desarrolladores. Para esto usaremos **Swag** un paquete de Go que nos permite generar la documentación en base a comentarios.
+
+- **Los logs** ⚡️: En cuanto a los logs es una combiancion entre una herramienta desarrollada en el proyecto que me permite tener logs en un archivo de CSV y para los Logs en el servidor uso **Zap**
+
+- **Los tests** 💀: En los test use la librería nativa de Go en combinación de la libreía de mocks `gomock` para generar mocks automaticamente a partir de mis interfaces.
+
+- **Los contenedores** 🐳: Para el despligue en contenedores por ahora sigo usando **Docker**, estoy explorando nuevas opciones, si tienes alguna recomendación dejala en los comentarios.
+
+- **El despliegue** 🐙: Para el CI estoy totalmente enamorado de Github actions y de su potencial, me decante por **Github Actions** por la facilidad de integración con tu repositorio.
+
+
+## La estructura de archivos 📂
+
+Tenemos una combinación entre el famoso repositorio de <BlogLink url="https://github.com/golang-standards/project-layout" content="Go Standart Layout"/> que es un "Estandar" no oficial y la estructura de los paquetes viene de la estructura de carpetas de la Arquitectura Hexagonal.
+
+Dentro de los paquetes podemos apreciar dentro de la carpeta **internal/user** que tenemos 3 carpetas **application, domain e infrastructure.** Para mantener las funcionalidades lo más faciles de entender posible tengo archivos separados para cada una de las funcionalidades.
+
+Deje este proyecto como plantilla en Github en caso quieran verlo más a detalle y como ejemplo implemente todo el sistema de login y de autenticación usando JWT.
+
+<BlogLink url="https://github.com/solrac97gr/go-jwt-auth" content="Ver proyecto."/>
+
+<FolderStructure
+  tree={[
+    {   
+        type:"folder",
+        name:".github",
+        content:[
+            {
+                type:"folder",
+                name:"workflows",
+                content:[
+                    {
+                        type:"file",
+                        name:"CI.yaml"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+      type: "folder",
+      name: "cmd",
+      content: [
+        {
+          type: "folder",
+          name: "http",
+          content:[
+            {
+                type:"file",
+                name:"main.go"
+            }
+          ]
+        },
+      ],
+    },
+    {
+        type:"folder",
+        name:"config",
+        content:[
+            {
+                type:"file",
+                name:"env.json"
+            }
+        ]
+    },
+    {
+        type:"folder",
+        name:"deploy",
+        content:[
+            {
+                type:"file",
+                name:"dockerfile"
+            }
+        ]
+    },
+    {
+        type:"folder",
+        name:"docs",
+        content:[
+            {
+                type:"file",
+                name:"docs.go"
+            },
+            {
+                type:"file",
+                name:"swagger.json"
+            },
+            {
+                type:"file",
+                name:"swagger.yaml"
+            }
+        ]
+    },
+    {
+        type:"folder",
+        name:"hooks",
+        content:[
+            {
+                type:"file",
+                name:"pre-commit.sh"
+            }
+        ]
+    },
+    {
+      type: "folder",
+      name: "internal",
+      content: [
+       {
+        type:"folder",
+        name:"user",
+        content:[
+            {
+                type:"folder",
+                name: "application",
+                content:[
+                    {
+                        type:"file",
+                        name: "application.go",
+                    },
+                    {
+                        type:"file",
+                        name:"create_user.go"
+                    },
+                    {
+                        type:"file",
+                        name:"create_user_test.go"
+                    },
+                ]
+            },
+            {
+                type:"folder",
+                name:"domain",
+                content:[
+                    {
+                        type:"folder",
+                        name:"models",
+                        content:[
+                            {
+                                type:"file",
+                                name:"user.go"
+                            },
+                        ]
+                    },
+                    {
+                        type:"folder",
+                        name:"ports",
+                        content:[
+                            {
+                                type:"file",
+                                name:"user_application.go"
+                            },
+                            {
+                                type:"file",
+                                name:"user_handlers.go"
+                            },
+                            {
+                                type:"file",
+                                name:"user_repository.go"
+                            },
+                        ]
+                    }
+                ]
+            },
+            {
+                type:"folder",
+                name:"infrastructure",
+                content:[
+                    {
+                        type:"folder",
+                        name:"handlers",
+                        content:[
+                            {
+                                type:"file",
+                                name:"fiber.go",
+                            },
+                            {
+                                type:"file",
+                                name:"create_user.go"
+                            },
+                            {
+                                type:"file",
+                                name:"create_user_test.go"
+                            }
+
+                        ]
+                    },
+                    {
+                        type:"folder",
+                        name:"repositories",
+                        content:[
+                            {
+                                type:"file",
+                                name:"mongo.go",
+                            },
+                            {
+                                type:"file",
+                                name:"create_user.go"
+                            },
+                            {
+                                type:"file",
+                                name:"create_user_test.go"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+       },
+      ],
+    },
+    {
+        type:"folder",
+        name:"logs",
+        content:[
+            {
+                type:"file",
+                name:"log-2023-01-01.csv"
+            }
+        ]
+    },
+    {
+        type:"folder",
+        name:"pkg",
+        content:[
+            {
+                type:"folder",
+                name:"middleware",
+                content:[
+                    {
+                        type:"folder",
+                        name:"application",
+                        content:[
+                            {
+                                type:"file",
+                                name:"middleware.go"
+                            },
+                            {
+                                type:"file",
+                                name:"authenticate.go"
+                            },
+                        ]
+                    },
+                    {
+                        type:"folder",
+                        name:"domain",
+                        content:[
+                            {
+                                type:"file",
+                                name:"request.go"
+                            },
+                            {
+                                type:"file",
+                                name:"ports.go"
+                            }
+                        ]
+
+                    },
+                    {
+                        type:"folder",
+                        name:"infrastructure"
+                    }
+
+                ]
+            },
+        ]
+    },
+    {
+        type:"folder",
+        name:"scripts",
+        content:[
+            {
+                type:"file",
+                name:"build.sh",
+            },
+            {
+                type:"file",
+                name:"generate-mocks.sh"
+            }
+        ]
+    },
+    {
+        type:"file",
+        name:".gitignore"
+    },
+    {
+      type: "file",
+      name: "go.mod",
+    },
+    {
+      type: "file",
+      name: "go.sum",
+    },
+    {
+        type:"file",
+        name:"main.go"
+    },
+    {
+        type:"file",
+        name:"README.md"
+    }
+  ]}
+/>
+
+## Conclusiones 🤔
+
+Cada año mejoras como desarrollador a nivel exponenciale si constantemente estas empezando nuevos proyectos, te ayuda a pensar: ¿Qué hubiese hecho diferente al empezar este proyecto? ¿Qué herrammienta hubiese usado en cambio de esta otra? y aplicarlas vas iterando poco a poco hasta encontrar tu "template" perfecto para empezar un proyecto. Por ahora esta es la mía y espero que les sea de ayuda para que puedan crear la suya segun sus necesidades.
+

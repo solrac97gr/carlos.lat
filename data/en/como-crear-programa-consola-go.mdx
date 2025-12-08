@@ -1,0 +1,100 @@
+---
+title: "How to Create Console Programs Using Go? 🐹"
+date: "August 28, 2022"
+published: "2022-08-28"
+abstract: "Let's learn how to build a console program using Go"
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FDiseño%20sin%20t%C3%ADtulo%20(3).png?alt=media&token=0b4ad9a9-cb30-4a82-b4d2-dd88e8828233"
+tag: "Go"
+author: "Carlos García"
+---
+
+# How to Create Console Programs Using Go? 🐹
+
+<small>August 28, 2022</small><EditPost path="como-crear-programa-consola-go" />
+
+<img width="100%" alt="golang-wallpaper " src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FDiseño%20sin%20t%C3%ADtulo%20(3).png?alt=media&token=0b4ad9a9-cb30-4a82-b4d2-dd88e8828233" style={{borderRadius:"8px"}}/>
+
+To create a console program with Go we mainly need to know 3 things:
+
+- Get data entered by the user
+- Process the information
+- Print the processed information to the console
+
+Now that we know what we need to know, let's begin step by step.
+
+### 1. Getting user data from the console
+
+In Go we'll use the standard library to get the user's information entered via keyboard to the console. We must declare our variable and its type in advance.
+
+<CodeSnippet language={"go"} code={`
+fmt.Println("Enter your name:")
+var Name string
+fmt.Scanln(&Name)
+`} />
+
+### 2. Processing the information
+
+We'll use a layered architecture to process our information obtained through the console.
+
+<FolderStructure
+  tree={[
+  {
+    type:"folder",
+    name:"database",
+    content:[
+      {
+        type:"file",
+        name:"database.go"
+      }
+    ]
+  },
+  {
+    type:"folder",
+    name:"controllers",
+    content:[
+      {
+        type:"file",
+        name:"controllers.go"
+      }
+    ]
+  },
+  {
+    type:"folder",
+    name:"services",
+    content:[
+      {
+        type:"file",
+        name:"service.go"
+      }
+    ]
+  },
+  {
+    type:"file",
+    name:"main.go"
+  },
+  {
+    type:"file",
+    name:"go.mod"
+  }
+]}
+/>
+
+Inside the services folder we'll have all the services where we'll process the information. This will communicate with the controllers and with the database layer.
+
+### 3. Print to console
+
+In Go there's the "fmt" package which will help us print information to the console in our program. Let's look at 3 ways.
+
+ - Println : Prints and inserts a line break
+ - Print : Prints the provided information
+ - Printf : Prints with formatting
+
+ <CodeSnippet language={"go"} code={`
+name := "Carlos"
+
+fmt.Print("Welcome")
+fmt.Println("Hello I have a line break")
+fmt.Printf("My name is: %s", name)
+`} />
+
+With these basic concepts for building a console program and with basic programming concepts, we can start our project where we'll create our own travel planner.

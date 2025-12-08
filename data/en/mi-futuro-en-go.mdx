@@ -1,0 +1,175 @@
+---
+title: "My Future with Go for 2023 🐹"
+date: "March 22, 2023"
+published: "2023-03-22"
+abstract: "Last year I dedicated myself solely and exclusively to building the ideal template for my projects. Discover what the next step is 🤔."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FDO9s_gDX0AEsSe8.jpg?alt=media&token=01fd59bd-c226-4cc0-aba1-65e5f845ec48"
+tag: "Go"
+author: "Carlos García"
+---
+
+# My Future with Go for 2023 🐹
+
+<small>March 22, 2023</small>
+<EditPost path="mi-futuro-en-go" />
+
+<img
+  width="100%"
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2FDO9s_gDX0AEsSe8.jpg?alt=media&token=01fd59bd-c226-4cc0-aba1-65e5f845ec48"
+  alt="golang wallpaper"
+  style={{ borderRadius: "8px" }}
+></img>
+
+Last year I focused on finding the ideal architecture and distribution for my projects. As a result, I created my current template that I use to start Go projects, which already has a built foundation that includes: JWT login, Swagger documentation, Metrics, Mock generation, etc. You can review it in more detail at the following link template 2023.
+
+This year I decided to improve modularity. In short, I decided to divide my template into small packages that I could reuse. This is because I usually have projects that are not just Web but also CLI, and there are parts of my web template that I'd like to use like the Validator or Session Manager. I could copy and paste the code to another project but...
+
+This is the plan
+
+1. Identify every possible package within my template that can be reusable and applicable in another context.
+2. Develop a package that mimics its behavior and structure.
+3. Document and Test the package until reaching at least 90% Coverage
+4. At the end of the year, update my new 2024 template to be 100% modular
+
+## Advantages of Atomizing Our Packages
+
+- From now on, packages will serve their purpose and nothing more. This means that being in an isolated context, when they are modified, there will be no bias from the project they're in interfering.
+
+  > (Validator package in a web app) Well, in this sprint we'll add a function to validate the fields of this structure that will come to us as the body of function X, let's add it to the validator.
+
+  While it's a validation, it already carries a layer of bias. For example, what good is having that validation function in the validator package that will only be used by that specific structure? It's better to use the basic functions that the validator already has to validate the structure without compromising the basic function of the package.
+
+  ```go
+  package validator
+
+  import errors
+
+  func ValidateHeadersOfBuyShoesRequest(h *HeadersShoes) error{
+    if h.authorization!= "my secret 🤫 " {
+      return errors.New("Error validating the authorization")
+    }
+  }
+
+  ```
+
+  Instead of polluting the validator package with such a specific function, we'll take advantage of how it's built in my template so that the structure itself groups the validation rules.
+
+  ```go
+  package validator
+
+  type Validator interface {
+    Struct(s EvaluableStruct) error
+  }
+
+  type EvaluableStruct interface {
+    Validate(args...interface{}) error
+  }
+
+  type ValidatorImpl struct {}
+
+  func (v *ValidatorImpl) Struct(s EvaluableStruct) error {
+    // another logic for only structs
+    return s.validate()
+  }
+  ```
+
+  ```go
+  package models
+
+  type HeadersShoesRequest struct {
+    Authorization string
+    ClientID int
+  }
+
+  // The validations are always close with the struct who validates
+  func (h *HeadersShoesRequest) Validate(args ...interface{}) error{
+    if err := validations.IsEquals(h.Authorization,args[0]); err != nil {
+      // use the generic error or be more specific for the example I will use the generic
+      return err
+    }
+
+    if err := validations.GreaterThan(ClientID,-1); err != nil {
+      return err
+    }
+  }
+
+  ```
+
+  > Consider that the validations package is part of the validator package
+
+- Test once - I've already lost count of how many Tests I write that test things that are exactly the same as in some other project, for example:
+
+  > We need the session manager to also have tests to validate that the session was saved correctly in projects A, B, and C
+
+  Where does DRY fit in then? Even if it's in different projects, by atomizing into small packages that clearly serve their purpose and do nothing more than what they promise, we can have Tests written only once and therefore we'll pay more attention to detail to make them quality. Our mind will think only about the functionality of the function, redundantly speaking. There will be no bias or external noise to confuse us about the function's purpose because it's just the package 📦.
+
+- The ease of sharing packages among team members ends up generating a standard in how things are done since all their projects will be built from the base of the same Lego blocks. Imagine something like this.
+
+  <img
+    width="100%"
+    src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fatomic-packages.png?alt=media&token=1791bc97-b2c4-4c56-aee8-0b2d75044b4a"
+    alt="invoice example"
+    style={{ borderRadius: "8px" }}
+  ></img>
+
+- Easier and less abrupt starts - there will be less to ask. Let me give you an example.
+
+  > Hi Carlos, on Monday a new programmer joins the team. Can you help with technical OnBoarding?
+
+  > Welcome X, your project is Y, so I think to start you could bring the following packages to your project that will be useful: Session Manager, Validator, Logger, Authentication, etc. The documentation is in the repositories themselves.
+
+  We just saved them probably a week of work on pure boilerplate and probably another extra week on just tests.
+
+  Not to mention that having a package that only handles authentication allows one of the most critical and stressful parts, I'd say, for someone joining the company to be reduced to using a Middleware that was already programmed and is practically "Plug and Play"
+
+- It allows us to isolate critical business logic like authentication in a single responsible party that will ensure the security of that package and, being isolated, focus on what matters - making it more secure.
+- It also allows us to isolate changing business logic, something very common in startups where there are parts of the business that are still in testing and iteration stages. Let's use the authentication package example again.
+
+  > We need to add new encryption to our keys. Notify all projects using authentication that they must add the following rule X
+
+  > Hi, how's the addition of the new rule going? Projects A and B were already modified but can't be released because project C that connects with A is still behind and we need to finish this before adding the new security rule
+
+  Do you more or less understand what I mean? Now how would it be if authentication was an isolated package? The conversation would change a bit.
+
+  > Notify the person in charge of the authentication package that we need to add a new rule
+
+  > Hi, how's the addition of the new security rule going? It's already finished. A release was made today and all involved projects will create a branch of their most stable version in their project and added the update immediately
+
+## As Always, Not Everything is Rosy
+
+There's a high risk of falling into something very common in microservices - having 200 microservices and 5 people maintaining them. We could definitely have 200 packages and only 5 people maintaining them.
+
+Another point to consider is whether we should create an isolated package for every part of our project. I believe that if a package isn't useful in at least more than 60% of projects, maybe it's better to keep them in the projects.
+
+Unless you have extra hands, then I'd go 100% with another rule: Does this package solve a common problem in my business or is it a changing part of my business? If the answer is yes, it's better to have it as a package.
+
+## My Personal Conclusion
+
+Everyone knows their workflow. If you feel it's increasingly tedious to start a project from scratch because of the time you invest in the initial Boilerplate, you'll realize which parts repeat the most and you can identify them and turn them into a package that will save you a lot of time.
+
+There's a reason why boilerplates are so popular, and it's usually for two reasons in my view:
+
+- Not knowing where to start.
+- Being tired of programming the same thing every time you start a new project.
+
+And generating these atomic packages will give you the freedom to only choose the parts you need. Personally, I'm someone who really likes to program Open Source things and this method helps me so that small parts of my templates can be used without needing to use 100% of it.
+
+This current year I'll dedicate myself to atomizing all my repeating packages so that next year I can use the template built with the blocks I create this year and create a client that lets you choose parts of the template, improving the project size for 2024.
+
+I'm leaving some links to the packages I'm already developing in case you want to collaborate - they're simple things so it's ideal if you want to start in the open source world:
+
+- <BlogLink
+    url="https://github.com/solrac97gr/session-manager"
+    content="github.com/session-manager"
+  />
+- <BlogLink
+    url="https://github.com/solrac97gr/validator"
+    content="github.com/validator"
+  />
+
+And this is the link to my current template - it uses Fiber, Mongo, and JWT authentication
+
+- <BlogLink
+    url="https://github.com/solrac97gr/go-jwt-auth"
+    content="github.com/go-jwt-auth"
+  />

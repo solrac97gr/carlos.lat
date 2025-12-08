@@ -1,0 +1,120 @@
+---
+title: "How to Use Channels in Go? 🧪"
+date: "April 18, 2023"
+published: "2023-04-18"
+abstract: "In this article we'll see how to use channels in Go, what they are and how they work."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482737.png?alt=media&token=705f5ef8-da5e-4abd-9d17-a9d716b69be4"
+tag: "Go"
+author: "Carlos García"
+---
+
+# How to Use Channels in Go? 🧪
+
+<small>April 18, 2023</small>
+<EditPost path="como-usar-canales-go" />
+
+<img
+  width="100%"
+  alt="golang-wallpaper "
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482737.png?alt=media&token=705f5ef8-da5e-4abd-9d17-a9d716b69be4"
+  style={{ borderRadius: "8px" }}
+/>
+
+In this article we'll explore one of Go's most powerful tools: channels. We'll see what they are, how they work and how we can use them in our code.
+
+## What Are Channels?
+
+Channels are a form of communication between goroutines and also function as a form of synchronization between goroutines, since they allow us to wait for one goroutine to finish executing a task before continuing with the next. Information travels through channels, and this information can be of any type, even user-defined types.
+
+## How Are Channels Created?
+
+To create a channel, we must use the `make` function and pass as the first parameter the data type we're going to send through the channel, and as the second parameter the size of the channel's buffer. If the buffer size is 0, the channel will be a synchronous channel, meaning it won't allow a goroutine to send information until another goroutine is waiting to receive information.
+
+<CodeSnippet language={"go"} code={`
+// Synchronous channel
+c := make(chan int)
+
+// Asynchronous channel
+c := make(chan int, 1)
+`} />
+
+## How Is Information Sent Through a Channel?
+
+To send information through a channel, we must use the `<-` syntax as follows:
+
+<CodeSnippet language={"go"} code={`
+c <- 1
+`} />
+
+## How Is Information Received from a Channel?
+
+To receive information from a channel, we must use the `<-` syntax as follows:
+
+<CodeSnippet language={"go"} code={`
+<- c
+`} />
+
+## How Are Channels Closed?
+
+To close a channel, we must use the `close` function as follows:
+
+<CodeSnippet language={"go"} code={`
+close(c)
+`} />
+
+## How Do You Check If a Channel Is Closed?
+
+To check if a channel is closed, we must use the `ok` function as follows:
+
+<CodeSnippet language={"go"} code={`
+v, ok := <- c
+if !ok {
+  // Channel closed
+}
+`} />
+
+## How to Use Channels to Synchronize Goroutines?
+
+Channels allow us to synchronize goroutines, since they allow us to wait for one goroutine to finish executing a task before continuing with the next. For this, we must create a channel and send information through the channel when the goroutine has finished executing the task. In the following example, we'll create a channel and send information through the channel when the goroutine has finished executing the task.
+
+<CodeSnippet language={"go"} output={`Hola
+Mundo`} code={`
+func main() {
+  c := make(chan int)
+
+  go func() {
+    fmt.Println("Hola")
+    c <- 1
+  }()
+
+  <- c
+  fmt.Println("Mundo")
+}
+`} />
+
+In the previous example, the goroutine prints `Hola` and sends information through the channel. When the goroutine sends information through the channel, the `main` function receives information from the channel and prints `Mundo`.
+
+## How to Use Channels to Communicate Goroutines?
+
+Channels allow us to communicate goroutines, since they allow us to send information from one goroutine to another. For this, we must create a channel and send information through the channel when the goroutine has finished executing the task. In the following example, we'll create a channel and send information through the channel when the goroutine has finished executing the task.
+
+<CodeSnippet language={"go"} output={`Hola
+Mundo 1`} code={`
+func main() {
+  c := make(chan int)
+
+  go func() {
+    fmt.Println("Hola")
+    c <- 1
+  }()
+
+  v := <- c
+  fmt.Println("Mundo", v)
+}
+`} />
+
+In the previous example, the goroutine prints `Hola` and sends information through the channel. When the goroutine sends information through the channel, the `main` function receives information from the channel and prints `Mundo` and the value it has received from the channel.
+
+## Conclusions
+
+In this article we've seen how to use channels in Go, what they are and how they work. I hope you liked the article, and if you have any questions, you can leave a comment.

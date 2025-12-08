@@ -2,7 +2,8 @@ import styled from "styled-components";
 
 export const SocialShareContainer = styled.div`
   @media (max-width: 768px) {
-    background-color: #2d2e32;
+    background-color: #ffffff;
+    border-top: 1px solid #e5e7eb;
     position: fixed;
     display: flex;
     justify-content: space-between;
@@ -13,5 +14,6 @@ export const SocialShareContainer = styled.div`
     width: 100%;
     padding: 8px;
     align-items: center;
+    box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
   }
 `;

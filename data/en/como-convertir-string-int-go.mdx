@@ -1,0 +1,67 @@
+---
+title: "How to Convert String to Int in Go? 🔁"
+date: "July 12, 2022"
+published: "2022-07-12"
+abstract: " ✅ Go offers us different tools. In this article we'll specifically look at conversions from text strings to integers."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482737.png?alt=media&token=705f5ef8-da5e-4abd-9d17-a9d716b69be4"
+tag: "Go"
+author: "Carlos García"
+---
+# How to Convert String to Int in Go? 🔁
+
+<small>July 12, 2022</small> <EditPost path="como-convertir-string-int-go" />
+
+<img width="100%" alt="golang wallpaper" src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482737.png?alt=media&token=705f5ef8-da5e-4abd-9d17-a9d716b69be4" style={{borderRadius:"8px"}}/>
+
+One of the most important things in statically typed languages is performing type conversions. For this, Go offers us different tools. In this article we'll specifically look at conversions from text strings to integers in Go.
+
+
+## Convert String to Int in Go
+
+To convert from String to Int we'll use a native library from Go's packages: `strconv`.
+
+<CodeSnippet language={"go"} code={`
+import "strconv"
+
+i, err := strconv.Atoi("-42")
+if err != nil {
+  // Handle error
+}
+`} />
+
+
+## Convert String to Int64 in Go
+Another common conversion is from String to Int64. For this we'll use the same native Go library we already used.
+
+<CodeSnippet language={"go"} code={`
+import "strconv"
+
+i, err := strconv.ParseInt("-42",10,64)
+if err != nil {
+  // Handle error
+}
+`} />
+
+## Convert String to Int32 in Go
+Finally, we'll convert a String to Int32 using the same library.
+
+<CodeSnippet language={"go"} code={`
+import "strconv"
+
+i, err := strconv.ParseInt("-42",10,32)
+if err != nil {
+  // Handle error
+}
+`} />
+
+
+## Extra 👀
+
+Within this library we find many other types of conversions from strings to different data types, such as converting String to Boolean or String to Float. This library is a Swiss Army knife for String conversions. It's better to always have it at hand ✍️ when developing.
+
+<CodeSnippet language={"go"} code={`
+b, err := strconv.ParseBool("true")
+f, err := strconv.ParseFloat("3.1415", 64)
+i, err := strconv.ParseInt("-42", 10, 64)
+u, err := strconv.ParseUint("42", 10, 64)
+`} />
