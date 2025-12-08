@@ -1,0 +1,163 @@
+---
+title: "How to Create a Class in Go? 🏗"
+date: "July 17, 2022"
+published: "2022-07-17"
+abstract: "✅ For this blog we'll build a Go solution that allows us to get the behavior of a class from other programming languages. 🚀"
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482746.jpg?alt=media&token=510dd66e-15af-4292-b84d-795a267155c4"
+tag: "Go"
+author: "Carlos García"
+---
+
+# How to Create a Class in Go? 🏗
+
+<small>July 17, 2022</small> <EditPost path="como-crear-clase-go" />
+
+<img width="100%" alt="golang-wallpaper " src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482746.jpg?alt=media&token=510dd66e-15af-4292-b84d-795a267155c4" style={{borderRadius:"8px"}}/>
+
+When we're new to Go and come from programming languages like TypeScript, Java or Python, we'll be used to doing certain things using classes. In Go, classes don't exist. However, we can use Structs.
+
+Structs are data structures where we define a new type that can contain fields and methods thanks to another concept called receiver functions.
+
+For this blog we'll build a Go solution that allows us to get the behavior of a class from other programming languages.
+
+## Let's Get to Work
+
+As an example we'll create a data structure called User that will have different fields and methods.
+
+### 1. First we'll define our struct.
+
+It will be a public class. In Go, putting the first letter in uppercase on an entity denotes that it's public, meaning it can be imported and used anywhere in the program.
+
+<CodeSnippet language={"go"} code={`type User struct {}`} />
+
+
+### 2. Creating our fields.
+
+We'll create the following fields inside our user "class":
+
+- email: string
+- password: string
+- name: string 
+- id: uint
+
+<CodeSnippet language={"go"} code={`
+type User struct {
+  Email     string
+  Password  string
+  Name      string 
+  ID        uint
+}
+`} />
+
+In our case all our fields will be public. If we define a field with a lowercase letter at the start, it can't be accessed externally - it will be a private field.
+
+>  💡Tip: Always order your fields from heaviest to lightest.
+
+### 3. Adding the constructor
+
+Go doesn't have an explicit constructor for structs. The way to initialize the "class" would be by declaring it.
+
+<CodeSnippet language={"go"} noHeaders={true} code={`user := User{}`} />
+
+We'll simulate a constructor for our struct as follows.
+
+<CodeSnippet language={"go"} code={`
+type User struct {
+  Email     string
+  Password  string
+  Name      string 
+  ID        uint
+}
+
+func NewUser(email string, pwd string, name string, id uint) *User{
+  return &User{
+     Email: email,
+     Password: pwd,
+     Name: name,
+     ID: id,
+  }
+}
+`} />
+
+
+Now to create a "class" we would do it as follows.
+
+<CodeSnippet language={"go"} code={`
+user := NewUser(
+  "test@email.com",
+  "secret123",
+  "Juan Perez",
+  1,
+)
+`} />
+
+###  3. Creating methods for our user
+
+For our methods we'll use a Go tool called receiver functions that will allow us to execute functions by invoking them from our user "class" instance.
+
+<CodeSnippet language={"go"} code={`
+type User struct {
+  Email     string
+  Password  string
+  Name      string 
+  ID        uint
+}
+
+func NewUser(email string, pwd string, name string, id uint) *User{
+  return &User{
+     Email: email,
+     Password: pwd,
+     Name: name,
+     ID: id,
+  }
+}
+
+/*By convention, "this" is not usually used. The first 
+lowercase letter of the class name "u" is used, but to 
+make it clearer we'll leave it as "this"*/
+
+func (this *User) Congrats() {
+  fmt.Printf("Congrats %s", this.Name)
+}
+`} />
+
+Now we'll execute our method.
+
+<CodeSnippet language={"go"} code={`
+user := NewUser(
+  "test@email.com",
+  "secret123",
+  "Juan Perez",
+  1,
+)
+
+user.Congrats()
+
+// Congrats Juan Perez
+`} />
+
+
+Using this same method we can create Getters and Setters. I'm not a big fan but it's possible to do.
+
+### 4. Let's talk about inheritance
+
+In Go, the closest thing to inheritance we can achieve is to declare a struct inside another without assigning it a value.
+
+<CodeSnippet language={"go"} code={`
+type SuperHero struct {
+  User
+}
+
+superHero := SuperHero{
+  User{
+    ...
+  }
+}
+
+superHero.Congrats()
+`} />
+
+Personal advice: avoid inheritance and use composition.
+
+## In Conclusion
+With Go you can simulate the use of classes using Structs and it's a very common practice. With this we'll be able to implement many of the design patterns you know from object-oriented programming.
