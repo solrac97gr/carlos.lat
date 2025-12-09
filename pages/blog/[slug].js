@@ -59,13 +59,24 @@ export default function Post({ source: initialSource, frontmatter: initialFrontm
     const loadPostInLanguage = async () => {
       if (!router.query.slug) return;
       
+      // Don't reload if already in the correct language
+      if (language === frontmatter.lang) {
+        return;
+      }
+      
       setIsLoading(true);
       try {
         const response = await fetch(`/api/post?slug=${router.query.slug}&lang=${language}`);
         if (response.ok) {
           const data = await response.json();
-          setSource(data.source);
-          setFrontmatter(data.frontmatter);
+          // Only update if we actually got a different language
+          if (data.frontmatter.lang === language) {
+            setSource(data.source);
+            setFrontmatter(data.frontmatter);
+          }
+        } else {
+          // Translation doesn't exist, keep showing current version
+          console.log(`Translation not available in ${language}, keeping current version`);
         }
       } catch (error) {
         console.error('Error loading post:', error);
@@ -74,11 +85,8 @@ export default function Post({ source: initialSource, frontmatter: initialFrontm
       }
     };
 
-    // Only reload if the language differs from current post language
-    if (language !== frontmatter.lang) {
-      loadPostInLanguage();
-    }
-  }, [language, router.query.slug, frontmatter.lang]);
+    loadPostInLanguage();
+  }, [language, router.query.slug]);
   
   const articleSchema = getArticleSchema(frontmatter);
   const breadcrumbSchema = getBreadcrumbSchema([
