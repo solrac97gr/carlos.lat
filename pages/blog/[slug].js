@@ -1,4 +1,4 @@
-import { getFileBySlug, getFiles, getAvailableLanguages } from "../../lib/mdx";
+import { getFileBySlug } from "../../lib/mdx";
 import { MDXRemote } from "next-mdx-remote";
 import MDXComponents from "../../components/MDXComponents";
 import { BlogContainer } from "../../components/BlogContainer";
@@ -163,26 +163,10 @@ export default function Post({ source: initialSource, frontmatter: initialFrontm
                     : 'Este artículo solo está disponible en Español.'}
                 </div>
               )}
-              {frontmatter.title && <h1>{frontmatter.title}</h1>}
-              {frontmatter.date && (
-                <p style={{ 
-                  color: '#6b7280', 
-                  fontSize: '0.875rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  marginBottom: '1.5rem'
-                }}>
-                  {frontmatter.date}
-                  {frontmatter.readingTime && (
-                    <span> • {frontmatter.readingTime} min read</span>
-                  )}
-                </p>
-              )}
+              {/* Title and date are included in the MDX/Sanity content itself, not rendered by template */}
               <ErrorBoundary fallbackMessage="The blog content failed to render. Please try refreshing the page.">
                 <MDXRemote {...source} components={MDXComponents} />
               </ErrorBoundary>
-              <NewsletterSubscribe />
             </>
           )}
           <SocialShareButtons post={frontmatter}></SocialShareButtons>
@@ -225,16 +209,10 @@ export default function Post({ source: initialSource, frontmatter: initialFrontm
 }
 
 export async function getStaticProps({ params }) {
-  // Try to get the post in the user's preferred language, fallback to Spanish
-  let lang = "es";
-  const availableLanguages = getAvailableLanguages(params.slug);
+  // getFileBySlug will try both languages and return the best match
+  // It also includes availableLanguages in the frontmatter
+  const { source, frontmatter } = await getFileBySlug(params.slug, "es");
   
-  // If English version exists, prefer it (as it's now the primary language)
-  if (availableLanguages.includes("en")) {
-    lang = "en";
-  }
-  
-  const { source, frontmatter } = await getFileBySlug(params.slug, lang);
   return {
     props: {
       source,
@@ -244,17 +222,37 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
-  // Get all posts from both languages
+  const fs = require('fs');
+  const path = require('path');
+  
+  // Get MDX slugs
+  const { getFiles } = await import("../../lib/mdx");
   const enPosts = getFiles("en");
   const esPosts = getFiles("es");
-  
-  // Combine and deduplicate slugs
-  const allSlugs = new Set([
+  const mdxSlugs = [
     ...enPosts.map(post => post.replace(/\.mdx/, "")),
     ...esPosts.map(post => post.replace(/\.mdx/, ""))
-  ]);
+  ];
   
-  const paths = Array.from(allSlugs).map((slug) => ({
+  // Get Sanity slugs from pre-generated manifest
+  let sanitySlugs = [];
+  try {
+    const manifestPath = path.join(process.cwd(), '.sanity-manifest.json');
+    if (fs.existsSync(manifestPath)) {
+      const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+      sanitySlugs = manifest.slugs || [];
+      console.log(`📦 Loaded ${sanitySlugs.length} Sanity slugs from manifest`);
+    }
+  } catch (error) {
+    console.log('⚠️  No Sanity manifest found, using MDX only');
+  }
+  
+  // Combine and deduplicate
+  const allSlugs = Array.from(new Set([...mdxSlugs, ...sanitySlugs]));
+  
+  console.log(`📄 Generating static paths for ${allSlugs.length} posts (${mdxSlugs.length} MDX + ${sanitySlugs.length} Sanity)`);
+  
+  const paths = allSlugs.map((slug) => ({
     params: { slug },
   }));
 

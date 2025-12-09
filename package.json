@@ -6,6 +6,7 @@
     "preinstall": "npx only-allow pnpm",
     "dev": "next dev",
     "dev:all": "concurrently -n \"APP,STUDIO\" -c \"cyan,magenta\" \"pnpm run dev\" \"pnpm run studio\"",
+    "prebuild": "node scripts/generate-sanity-manifest.js",
     "build": "next build",
     "postbuild": "next-sitemap && node scripts/generate-rss.js",
     "start": "next start",
