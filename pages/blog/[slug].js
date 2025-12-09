@@ -15,6 +15,7 @@ import styled from "styled-components";
 import { getArticleSchema, getBreadcrumbSchema } from "../../lib/structuredData";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import { PortableTextRenderer } from "../../components/PortableTextRenderer";
+import { sanityClient } from "../../lib/sanity";
 
 /**
  * Bilingual Blog Post Component
@@ -47,7 +48,7 @@ const MainContent = styled.main`
   }
 `;
 
-export default function Post({ source: initialSource, frontmatter: initialFrontmatter }) {
+export default function Post({ source: initialSource, frontmatter: initialFrontmatter, allVersions }) {
   const { language } = useLanguage();
   const router = useRouter();
   const [source, setSource] = useState(initialSource);
@@ -55,30 +56,20 @@ export default function Post({ source: initialSource, frontmatter: initialFrontm
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // When language changes, reload the blog post in the new language
-    const loadPostInLanguage = async () => {
-      if (!router.query.slug) return;
-      
-      setIsLoading(true);
-      try {
-        const response = await fetch(`/api/post?slug=${router.query.slug}&lang=${language}`);
-        if (response.ok) {
-          const data = await response.json();
-          setSource(data.source);
-          setFrontmatter(data.frontmatter);
-        }
-      } catch (error) {
-        console.error('Error loading post:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    // Only reload if the language differs from current post language
-    if (language !== frontmatter.lang) {
-      loadPostInLanguage();
+    // Switch to the correct language version from pre-loaded data
+    if (!allVersions || language === frontmatter.lang) {
+      return;
     }
-  }, [language, router.query.slug, frontmatter.lang]);
+    
+    const versionInRequestedLang = allVersions.find(v => v.frontmatter.lang === language);
+    
+    if (versionInRequestedLang) {
+      setSource(versionInRequestedLang.source);
+      setFrontmatter(versionInRequestedLang.frontmatter);
+    } else {
+      console.log(`Translation not available in ${language}`);
+    }
+  }, [language, allVersions, frontmatter.lang]);
   
   const articleSchema = getArticleSchema(frontmatter);
   const breadcrumbSchema = getBreadcrumbSchema([
@@ -115,6 +106,15 @@ export default function Post({ source: initialSource, frontmatter: initialFrontm
         <meta name="twitter:description" content={metaDescription} />
         <meta name="twitter:image" content={frontmatter.image} />
         <meta name="twitter:card" content="summary_large_image" />
+        
+        {/* Hreflang tags for SEO - indicate available language versions */}
+        {frontmatter.availableLanguages?.includes('en') && (
+          <link rel="alternate" hrefLang="en" href={`${BLOG_URL}/${frontmatter.slug}`} />
+        )}
+        {frontmatter.availableLanguages?.includes('es') && (
+          <link rel="alternate" hrefLang="es" href={`${BLOG_URL}/${frontmatter.slug}`} />
+        )}
+        <link rel="alternate" hrefLang="x-default" href={`${BLOG_URL}/${frontmatter.slug}`} />
         
         {/* Structured Data */}
         <script
@@ -214,14 +214,37 @@ export default function Post({ source: initialSource, frontmatter: initialFrontm
 }
 
 export async function getStaticProps({ params }) {
-  // getFileBySlug will try both languages and return the best match
-  // It also includes availableLanguages in the frontmatter
-  const { source, frontmatter } = await getFileBySlug(params.slug, "es");
+  // Load all available language versions
+  const allVersions = [];
+  
+  // Try English
+  try {
+    const enVersion = await getFileBySlug(params.slug, "en");
+    allVersions.push(enVersion);
+  } catch (error) {
+    // English version doesn't exist
+  }
+  
+  // Try Spanish
+  try {
+    const esVersion = await getFileBySlug(params.slug, "es");
+    allVersions.push(esVersion);
+  } catch (error) {
+    // Spanish version doesn't exist
+  }
+  
+  if (allVersions.length === 0) {
+    throw new Error(`Post not found: ${params.slug}`);
+  }
+  
+  // Default to English if available, otherwise use first available
+  const defaultVersion = allVersions.find(v => v.frontmatter.lang === 'en') || allVersions[0];
   
   return {
     props: {
-      source,
-      frontmatter,
+      source: defaultVersion.source,
+      frontmatter: defaultVersion.frontmatter,
+      allVersions, // Pass all versions to the component
     },
   };
 }
