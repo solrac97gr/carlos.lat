@@ -107,6 +107,15 @@ export default function Post({ source: initialSource, frontmatter: initialFrontm
         <meta name="twitter:image" content={frontmatter.image} />
         <meta name="twitter:card" content="summary_large_image" />
         
+        {/* Hreflang tags for SEO - indicate available language versions */}
+        {frontmatter.availableLanguages?.includes('en') && (
+          <link rel="alternate" hrefLang="en" href={`${BLOG_URL}/${frontmatter.slug}`} />
+        )}
+        {frontmatter.availableLanguages?.includes('es') && (
+          <link rel="alternate" hrefLang="es" href={`${BLOG_URL}/${frontmatter.slug}`} />
+        )}
+        <link rel="alternate" hrefLang="x-default" href={`${BLOG_URL}/${frontmatter.slug}`} />
+        
         {/* Structured Data */}
         <script
           type="application/ld+json"
