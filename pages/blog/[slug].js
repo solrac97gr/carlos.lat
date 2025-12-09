@@ -214,9 +214,20 @@ export default function Post({ source: initialSource, frontmatter: initialFrontm
 }
 
 export async function getStaticProps({ params }) {
-  // getFileBySlug will try both languages and return the best match
-  // It also includes availableLanguages in the frontmatter
-  const { source, frontmatter } = await getFileBySlug(params.slug, "es");
+  // Default to English, fallback to Spanish if English doesn't exist
+  let source, frontmatter;
+  
+  try {
+    // Try English first
+    ({ source, frontmatter } = await getFileBySlug(params.slug, "en"));
+  } catch (error) {
+    // Fallback to Spanish if English doesn't exist
+    try {
+      ({ source, frontmatter } = await getFileBySlug(params.slug, "es"));
+    } catch (fallbackError) {
+      throw new Error(`Post not found: ${params.slug}`);
+    }
+  }
   
   return {
     props: {
