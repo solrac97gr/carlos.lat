@@ -66,8 +66,6 @@ export default function Post({ source: initialSource, frontmatter: initialFrontm
     if (versionInRequestedLang) {
       setSource(versionInRequestedLang.source);
       setFrontmatter(versionInRequestedLang.frontmatter);
-    } else {
-      console.log(`Translation not available in ${language}`);
     }
   }, [language, allVersions, frontmatter.lang]);
   
@@ -167,9 +165,19 @@ export default function Post({ source: initialSource, frontmatter: initialFrontm
               {/* Title and date are included in the MDX/Sanity content itself, not rendered by template */}
               <ErrorBoundary fallbackMessage="The blog content failed to render. Please try refreshing the page.">
                 {frontmatter.isPortableText ? (
-                  <PortableTextRenderer content={frontmatter.portableTextContent} />
-                ) : (
+                  frontmatter.portableTextContent ? (
+                    <PortableTextRenderer content={frontmatter.portableTextContent} />
+                  ) : (
+                    <div style={{ padding: '2rem', textAlign: 'center', color: '#dc2626' }}>
+                      Error: Portable Text content is missing
+                    </div>
+                  )
+                ) : source ? (
                   <MDXRemote {...source} components={MDXComponents} />
+                ) : (
+                  <div style={{ padding: '2rem', textAlign: 'center', color: '#dc2626' }}>
+                    Error: No content available
+                  </div>
                 )}
               </ErrorBoundary>
             </>
