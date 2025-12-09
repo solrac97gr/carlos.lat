@@ -15,6 +15,7 @@ import styled from "styled-components";
 import { getArticleSchema, getBreadcrumbSchema } from "../../lib/structuredData";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import { PortableTextRenderer } from "../../components/PortableTextRenderer";
+import { sanityClient } from "../../lib/sanity";
 
 /**
  * Bilingual Blog Post Component
@@ -47,7 +48,7 @@ const MainContent = styled.main`
   }
 `;
 
-export default function Post({ source: initialSource, frontmatter: initialFrontmatter }) {
+export default function Post({ source: initialSource, frontmatter: initialFrontmatter, allVersions }) {
   const { language } = useLanguage();
   const router = useRouter();
   const [source, setSource] = useState(initialSource);
@@ -55,38 +56,20 @@ export default function Post({ source: initialSource, frontmatter: initialFrontm
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // When language changes, reload the blog post in the new language
-    const loadPostInLanguage = async () => {
-      if (!router.query.slug) return;
-      
-      // Don't reload if already in the correct language
-      if (language === frontmatter.lang) {
-        return;
-      }
-      
-      setIsLoading(true);
-      try {
-        const response = await fetch(`/api/post?slug=${router.query.slug}&lang=${language}`);
-        if (response.ok) {
-          const data = await response.json();
-          // Only update if we actually got a different language
-          if (data.frontmatter.lang === language) {
-            setSource(data.source);
-            setFrontmatter(data.frontmatter);
-          }
-        } else {
-          // Translation doesn't exist, keep showing current version
-          console.log(`Translation not available in ${language}, keeping current version`);
-        }
-      } catch (error) {
-        console.error('Error loading post:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadPostInLanguage();
-  }, [language, router.query.slug]);
+    // Switch to the correct language version from pre-loaded data
+    if (!allVersions || language === frontmatter.lang) {
+      return;
+    }
+    
+    const versionInRequestedLang = allVersions.find(v => v.frontmatter.lang === language);
+    
+    if (versionInRequestedLang) {
+      setSource(versionInRequestedLang.source);
+      setFrontmatter(versionInRequestedLang.frontmatter);
+    } else {
+      console.log(`Translation not available in ${language}`);
+    }
+  }, [language, allVersions, frontmatter.lang]);
   
   const articleSchema = getArticleSchema(frontmatter);
   const breadcrumbSchema = getBreadcrumbSchema([
@@ -222,25 +205,37 @@ export default function Post({ source: initialSource, frontmatter: initialFrontm
 }
 
 export async function getStaticProps({ params }) {
-  // Default to English, fallback to Spanish if English doesn't exist
-  let source, frontmatter;
+  // Load all available language versions
+  const allVersions = [];
   
+  // Try English
   try {
-    // Try English first
-    ({ source, frontmatter } = await getFileBySlug(params.slug, "en"));
+    const enVersion = await getFileBySlug(params.slug, "en");
+    allVersions.push(enVersion);
   } catch (error) {
-    // Fallback to Spanish if English doesn't exist
-    try {
-      ({ source, frontmatter } = await getFileBySlug(params.slug, "es"));
-    } catch (fallbackError) {
-      throw new Error(`Post not found: ${params.slug}`);
-    }
+    // English version doesn't exist
   }
+  
+  // Try Spanish
+  try {
+    const esVersion = await getFileBySlug(params.slug, "es");
+    allVersions.push(esVersion);
+  } catch (error) {
+    // Spanish version doesn't exist
+  }
+  
+  if (allVersions.length === 0) {
+    throw new Error(`Post not found: ${params.slug}`);
+  }
+  
+  // Default to English if available, otherwise use first available
+  const defaultVersion = allVersions.find(v => v.frontmatter.lang === 'en') || allVersions[0];
   
   return {
     props: {
-      source,
-      frontmatter,
+      source: defaultVersion.source,
+      frontmatter: defaultVersion.frontmatter,
+      allVersions, // Pass all versions to the component
     },
   };
 }
