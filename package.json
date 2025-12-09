@@ -5,19 +5,26 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "next dev",
+    "dev:all": "concurrently -n \"APP,STUDIO\" -c \"cyan,magenta\" \"pnpm run dev\" \"pnpm run studio\"",
+    "prebuild": "node scripts/generate-sanity-manifest.js",
     "build": "next build",
     "postbuild": "next-sitemap && node scripts/generate-rss.js",
     "start": "next start",
     "lint": "next lint",
-    "ci": "pnpm install && pnpm run build && pnpm run postbuild"
+    "ci": "pnpm install && pnpm run build && pnpm run postbuild",
+    "studio": "cd studio && pnpm dev",
+    "studio:deploy": "cd studio && pnpm exec sanity deploy"
   },
   "dependencies": {
+    "@sanity/client": "^7.13.1",
+    "@sanity/image-url": "^2.0.2",
     "fs": "^0.0.1-security",
     "gray-matter": "^4.0.3",
     "html-entities": "^2.3.3",
     "mdx-prism": "^0.3.4",
     "next": "15.5.7",
     "next-mdx-remote": "^5.0.0",
+    "next-sanity": "^11.6.10",
     "next-sitemap": "^3.1.8",
     "parse-entities": "^4.0.0",
     "prettier": "^2.8.7",
@@ -34,6 +41,7 @@
   },
   "devDependencies": {
     "babel-plugin-styled-components": "^2.1.4",
+    "concurrently": "^9.2.1",
     "eslint": "8.18.0",
     "eslint-config-next": "12.2.0"
   }

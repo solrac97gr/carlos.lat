@@ -28,6 +28,9 @@ yarn-error.log*
 # local env files
 .env*.local
 
+# sanity manifest (generated at build time)
+.sanity-manifest.json
+
 # vercel
 .vercel
 .idea
