@@ -1,0 +1,58 @@
+name: Deploy Blog (Manual Trigger)
+
+on:
+  # Manual trigger - Click "Run workflow" button in GitHub Actions tab
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for deploy'
+        required: false
+        default: 'Manual deploy'
+  
+  # Or trigger on push to main (optional)
+  # push:
+  #   branches:
+  #     - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+      
+      - name: Install dependencies
+        run: |
+          pnpm install
+          cd studio && pnpm install
+      
+      - name: Build site
+        run: pnpm run ci
+      
+      - name: Deploy to Firebase
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PORTFOLIO_18CE8 }}'
+          channelId: live
+          projectId: portfolio-18ce8
+      
+      - name: Notify completion
+        run: |
+          echo "🚀 Deploy completed successfully!"
+          echo "Trigger: ${{ github.event_name }}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Reason: ${{ github.event.inputs.reason }}"
+          fi
