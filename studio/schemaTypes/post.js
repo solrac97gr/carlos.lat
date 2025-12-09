@@ -18,6 +18,7 @@ export default defineType({
       options: {
         source: 'title',
         maxLength: 96,
+        isUnique: () => true, // Disable uniqueness - allow same slug for different languages
       },
       validation: (Rule) => Rule.required(),
     }),
