@@ -149,6 +149,12 @@ export default defineType({
         {
           type: 'blogLink',
         },
+        {
+          type: 'folderStructure',
+        },
+        {
+          type: 'codeComparison',
+        },
       ],
       validation: (Rule) => Rule.required(),
     }),

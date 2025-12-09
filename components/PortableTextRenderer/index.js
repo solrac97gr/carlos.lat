@@ -1,6 +1,8 @@
 import { PortableText } from '@portabletext/react'
 import { CodeSnippet } from '../CodeSnipet'
 import { BlogLink } from '../BlogLink'
+import { FolderStructure } from '../FolderStructure'
+import { CodeComparition } from '../CodeComparition'
 import imageUrlBuilder from '@sanity/image-url'
 import { sanityClient } from '../../lib/sanity'
 
@@ -24,6 +26,17 @@ export const PortableTextRenderer = ({ content }) => {
       ),
       blogLink: ({ value }) => (
         <BlogLink url={value.url} content={value.content} />
+      ),
+      folderStructure: ({ value }) => (
+        <FolderStructure tree={value.tree} repo={value.repo} />
+      ),
+      codeComparison: ({ value }) => (
+        <CodeComparition
+          left={value.left}
+          rigth={value.rigth}
+          languageL={value.languageL}
+          languageR={value.languageR}
+        />
       ),
       image: ({ value }) => {
         if (!value?.asset?._ref) {
