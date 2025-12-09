@@ -14,6 +14,7 @@ import { Footer } from "../../components/Footer";
 import styled from "styled-components";
 import { getArticleSchema, getBreadcrumbSchema } from "../../lib/structuredData";
 import ErrorBoundary from "../../components/ErrorBoundary";
+import { PortableTextRenderer } from "../../components/PortableTextRenderer";
 
 /**
  * Bilingual Blog Post Component
@@ -165,7 +166,11 @@ export default function Post({ source: initialSource, frontmatter: initialFrontm
               )}
               {/* Title and date are included in the MDX/Sanity content itself, not rendered by template */}
               <ErrorBoundary fallbackMessage="The blog content failed to render. Please try refreshing the page.">
-                <MDXRemote {...source} components={MDXComponents} />
+                {frontmatter.isPortableText ? (
+                  <PortableTextRenderer content={frontmatter.portableTextContent} />
+                ) : (
+                  <MDXRemote {...source} components={MDXComponents} />
+                )}
               </ErrorBoundary>
             </>
           )}
