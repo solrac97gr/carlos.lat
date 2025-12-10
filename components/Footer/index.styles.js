@@ -81,9 +81,14 @@ export const FooterLink = styled.a`
   cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: center;
 
   &:hover {
     color: #ffffff;
+  }
+
+  @media (min-width: 768px) {
+    justify-content: flex-start;
   }
 `;
 
