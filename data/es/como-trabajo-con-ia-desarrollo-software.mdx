@@ -1,0 +1,291 @@
+---
+title: "Cómo trabajo con IA en el Desarrollo de Software 🤖"
+date: "05 de Enero del 2026"
+published: "2026-01-05"
+abstract: "✅ Mi metodología completa para desarrollar software usando agentes de IA, desde la planificación hasta la documentación."
+image: "https://miro.medium.com/max/1400/0*EODEF6xTWVm5hv-3"
+tag: "IA, Claude, Desarrollo"
+author: "Carlos García"
+---
+
+# Cómo trabajo con IA en el Desarrollo de Software 🤖
+
+<small>05 de Enero del 2026</small>
+<EditPost path="como-trabajo-con-ia-desarrollo-software" />
+
+<img
+  width="100%"
+  alt="AI Development Workflow"
+  src="https://miro.medium.com/max/1400/0*EODEF6xTWVm5hv-3"
+  style={{borderRadius:"8px"}}
+/>
+
+En los últimos años, la Inteligencia Artificial ha revolucionado la forma en que desarrollamos software. Hoy quiero compartir mi metodología completa de trabajo con IA, específicamente usando Claude Code y agentes especializados para desarrollar funcionalidades completas de manera eficiente y estructurada.
+
+## Mi Flujo de Trabajo con IA
+
+El desarrollo asistido por IA no se trata solo de pedirle a un modelo que escriba código. Se trata de orquestar múltiples agentes especializados que trabajan en conjunto siguiendo un proceso estructurado. A continuación te explico paso a paso cómo trabajo.
+
+## Paso 1: Entendiendo el Proyecto 🔍
+
+Todo comienza con la comprensión del proyecto. Para esto, utilizo Claude Code con el comando `init`:
+
+```bash
+claude init
+```
+
+Este comando me permite que Claude entienda:
+- La estructura del proyecto
+- Las tecnologías utilizadas
+- Los patrones de arquitectura implementados
+- Las dependencias y configuraciones
+
+**¿Por qué es importante este paso?**
+
+Antes de agregar cualquier funcionalidad, necesito que la IA tenga contexto completo del proyecto. Esto previene que se genere código incompatible con la arquitectura existente o que se dupliquen funcionalidades ya implementadas.
+
+## Paso 2: Definición de la Funcionalidad 📋
+
+Una vez que tengo el contexto del proyecto, recibo o defino una nueva funcionalidad. Por ejemplo:
+
+> "Los usuarios deberían poder suscribirse al RSS del blog"
+
+Aquí es donde utilizo la capacidad **ultra-think** de Claude. Le pido que:
+
+1. **Analice el estado actual del blog**
+2. **Identifique capacidades existentes** que puedan ser reutilizadas
+3. **Determine qué componentes necesitan ser creados o modificados**
+
+## Paso 3: Planificación Detallada 📝
+
+Nuevamente usando **ultra-think**, le pido a Claude que genere un plan detallado. Este plan debe incluir:
+
+### Plan de Implementación
+
+El plan contiene:
+- **Paso a paso de implementación**: Cada tarea específica que debe realizarse
+- **Stack tecnológico**: Las tecnologías y librerías que se utilizarán
+- **Conocimientos requeridos**: Los conceptos y patrones necesarios para ejecutar la tarea
+
+<FolderStructure
+  repo="https://github.com/solrac97gr/carlos.lat/"
+  tree={[
+    {
+      type: "folder",
+      name: "docs",
+      content: [
+        {
+          type: "folder",
+          name: "ai-context",
+          content: [
+            {
+              type: "folder",
+              name: "features",
+              content: [
+                {
+                  type: "file",
+                  name: "rss-subscription-plan.md",
+                },
+              ],
+            },
+            {
+              type: "folder",
+              name: "components",
+              content: [
+                {
+                  type: "file",
+                  name: "blog-architecture.md",
+                },
+                {
+                  type: "file",
+                  name: "component-patterns.md",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ]}
+/>
+
+Guardo estos documentos en ubicaciones específicas:
+- **docs/ai-context/features/**: Planes de implementación de funcionalidades
+- **docs/ai-context/components/**: Documentación de cómo funciona el blog y sus componentes
+
+## Paso 4: Creación de Agentes Especializados 🤖
+
+Aquí es donde la magia sucede. En lugar de tener un solo agente haciendo todo, creo **agentes especializados** según la naturaleza de la tarea.
+
+### Ejemplo de División de Agentes:
+
+<CodeSnippet language="markdown" route="docs/agents/agent-structure.md" code={`# Agentes Especializados
+
+## Frontend Agent
+- **Responsabilidad**: Implementar componentes UI, estilos, y lógica del cliente
+- **Skills**: React, TypeScript, CSS, Componentes
+- **Context**: Patrones de componentes del proyecto
+- **Tools**: Playwright MCP para testing
+
+## Backend Agent
+- **Responsabilidad**: Implementar endpoints, lógica de negocio, base de datos
+- **Skills**: Go, APIs REST, Bases de datos
+- **Context**: Arquitectura hexagonal del proyecto
+- **Tools**: Context7 MCP para documentación actualizada
+
+## Documentation Agent
+- **Responsabilidad**: Documentar la funcionalidad implementada
+- **Skills**: Markdown, Documentación técnica
+- **Template**: Template específico del proyecto`} />
+
+### ¿Por qué agentes especializados?
+
+1. **Enfoque**: Cada agente tiene un objetivo claro y específico
+2. **Expertise**: Cada agente tiene conocimientos profundos de su dominio
+3. **Paralelización**: Los agentes pueden trabajar en paralelo cuando sea posible
+4. **Calidad**: La especialización mejora la calidad del código generado
+
+## Paso 5: MCPs - Model Context Protocol 🔌
+
+Los agentes no trabajan solos. Les proporciono herramientas a través de MCPs (Model Context Protocol):
+
+### Context7 MCP
+Permite a los agentes acceder a documentación actualizada de:
+- Librerías y frameworks utilizados
+- APIs y servicios externos
+- Best practices actualizadas
+
+### Playwright MCP
+Para agentes de frontend, permite:
+- Testing automatizado de componentes
+- Validación de funcionalidades en navegador real
+- Screenshots y reportes de pruebas
+
+<CodeComparition
+  languageL={"markdown"}
+  languageR={"markdown"}
+  left={`# Sin MCPs
+
+El agente trabaja con:
+- Conocimiento base del modelo
+- Contexto del proyecto
+- Sin herramientas externas
+
+**Limitaciones:**
+- Documentación desactualizada
+- No puede validar el código
+- Depende solo de su training`}
+  rigth={`# Con MCPs
+
+El agente trabaja con:
+- Conocimiento base del modelo
+- Contexto del proyecto
+- Context7: Docs actualizadas
+- Playwright: Testing real
+
+**Ventajas:**
+- Información actualizada
+- Validación automática
+- Mayor precisión`}
+/>
+
+## Paso 6: Ejecución y Testing ✅
+
+Cada agente ejecuta su parte del plan:
+
+1. **Frontend Agent**:
+   - Crea componentes de suscripción RSS
+   - Implementa validación de formularios
+   - Ejecuta tests con Playwright
+   - Valida accesibilidad y UX
+
+2. **Backend Agent**:
+   - Implementa endpoint de suscripción
+   - Configura generación de RSS feed
+   - Prueba endpoints con curl/postman
+   - Valida almacenamiento de datos
+
+## Paso 7: Documentación 📚
+
+Finalmente, un agente especializado en documentación:
+
+1. **Lee el código implementado**
+2. **Sigue el template del proyecto**
+3. **Genera documentación en Español e Inglés**
+4. **Incluye ejemplos de uso**
+5. **Documenta decisiones arquitectónicas**
+
+## Ventajas de esta Metodología 🚀
+
+### 1. Escalabilidad
+Puedo agregar más agentes según la complejidad del proyecto sin perder organización.
+
+### 2. Calidad Consistente
+Cada agente sigue patrones establecidos y utiliza templates del proyecto.
+
+### 3. Documentación Automática
+La documentación se genera como parte del proceso, no como una tarea posterior.
+
+### 4. Testing Integrado
+Las pruebas no son opcionales, cada agente valida su trabajo.
+
+### 5. Conocimiento Actualizado
+Gracias a Context7 MCP, siempre trabajamos con documentación actualizada.
+
+## Desventajas y Consideraciones ⚠️
+
+### 1. Setup Inicial
+Requiere tiempo configurar los agentes y MCPs correctamente.
+
+### 2. Coordinación
+Necesitas entender bien la arquitectura para dividir tareas apropiadamente.
+
+### 3. Dependencia de Herramientas
+Si los MCPs fallan, los agentes pierden capacidades importantes.
+
+### 4. Curva de Aprendizaje
+Requiere entender prompting, orquestación de agentes y arquitectura del proyecto.
+
+## Consejos Prácticos 💡
+
+### 1. Mantén el Contexto Actualizado
+Los documentos en `docs/ai-context/` son críticos. Mantenlos actualizados.
+
+### 2. Templates Claros
+Crea templates específicos para documentación, código, y tests.
+
+### 3. Iteración es Clave
+Los primeros agentes no serán perfectos. Refina sus prompts basándote en resultados.
+
+### 4. Valida Siempre
+Aunque los agentes hacen testing, siempre revisa el código manualmente.
+
+### 5. Empieza Simple
+No necesitas 5 agentes para un proyecto pequeño. Empieza con 2-3 y escala según necesidad.
+
+## Herramientas que Utilizo 🛠️
+
+- **Claude Code**: CLI principal para interactuar con Claude
+- **Context7 MCP**: Documentación actualizada
+- **Playwright MCP**: Testing automatizado
+- **Git**: Control de versiones (cada agente hace commits descriptivos)
+- **VSCode**: Para revisión manual del código
+
+## Conclusión 🎯
+
+Esta metodología me ha permitido desarrollar funcionalidades completas de manera estructurada y eficiente. La clave está en:
+
+1. **Planificación detallada** antes de escribir código
+2. **Agentes especializados** en lugar de un agente generalista
+3. **MCPs** para acceso a herramientas y documentación
+4. **Testing integrado** como parte del flujo
+5. **Documentación automática** usando templates
+
+El desarrollo asistido por IA no reemplaza al desarrollador, pero sí amplifica su capacidad cuando se usa de manera estructurada y deliberada.
+
+Si tienes preguntas sobre cómo implementar esta metodología en tus proyectos, no dudes en contactarme. ¡Estaré encantado de ayudarte!
+
+<BlogLink
+  url={"https://github.com/solrac97gr"}
+  content={"Visita mi GitHub"}
+/>
