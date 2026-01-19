@@ -1,0 +1,1007 @@
+---
+title: "Arquitectura Event-Driven con AWS: DynamoDB Streams + Lambda 🚀"
+date: "19 de Enero del 2026"
+published: "2026-01-19"
+abstract: "✅ Aprende a construir microservicios escalables basados en eventos usando DynamoDB Streams y funciones Lambda con patrones y ejemplos del mundo real."
+image: "https://miro.medium.com/max/1400/1*5fHyVNyR5GqGq3xJJMJaGQ.png"
+tag: "AWS, Lambda, DynamoDB"
+author: "Carlos García"
+---
+
+# Arquitectura Event-Driven con AWS: DynamoDB Streams + Lambda 🚀
+
+<small>19 de Enero del 2026</small>
+<EditPost path="arquitectura-event-driven-aws-dynamodb-lambda" />
+
+<img
+  width="100%"
+  alt="AWS Event-Driven Architecture"
+  src="https://miro.medium.com/max/1400/1*5fHyVNyR5GqGq3xJJMJaGQ.png"
+  style={{borderRadius:"8px"}}
+/>
+
+La Arquitectura Basada en Eventos (Event-Driven Architecture - EDA) se ha convertido en uno de los patrones más populares para construir microservicios escalables y desacoplados. Cuando se combina con servicios de AWS como DynamoDB Streams y funciones Lambda, se convierte en una solución poderosa para el procesamiento de datos en tiempo real y sistemas reactivos.
+
+En este artículo, te mostraré cómo implementar una arquitectura completa basada en eventos usando servicios nativos de AWS, con ejemplos prácticos y mejores prácticas que he aprendido de entornos de producción.
+
+## ¿Qué es la Arquitectura Event-Driven? 📖
+
+La Arquitectura Basada en Eventos es un patrón de diseño donde los servicios se comunican a través de eventos en lugar de llamadas directas. Un evento representa un cambio de estado o una ocurrencia significativa en el sistema.
+
+**Conceptos Clave:**
+
+- **Event Producer**: Servicio que genera eventos (en nuestro caso, DynamoDB)
+- **Event Stream**: Canal que transporta eventos (DynamoDB Streams)
+- **Event Consumer**: Servicio que reacciona a eventos (funciones Lambda)
+- **Event**: Registro inmutable de algo que sucedió
+
+## ¿Por qué DynamoDB Streams + Lambda? 🤔
+
+Esta combinación ofrece múltiples ventajas:
+
+1. **Sin Gestión de Infraestructura**: Ambos son serverless
+2. **Escalado Automático**: Maneja cualquier volumen de eventos
+3. **Pago por Uso**: Solo pagas por lo que consumes
+4. **Integración Nativa**: AWS maneja la complejidad
+5. **Entrega Garantizada**: Los eventos se procesan al menos una vez
+
+## DynamoDB Streams Explicado 📊
+
+DynamoDB Streams captura una secuencia ordenada por tiempo de modificaciones a nivel de ítem en una tabla de DynamoDB. Cuando habilitas streams, DynamoDB captura:
+
+- **INSERT**: Nuevo ítem agregado
+- **MODIFY**: Ítem existente actualizado
+- **REMOVE**: Ítem eliminado
+
+Cada registro del stream contiene:
+- El tipo de cambio (INSERT, MODIFY, REMOVE)
+- La clave primaria del ítem modificado
+- Las imágenes antigua y nueva del ítem (configurable)
+
+## Vista General de la Arquitectura 🏗️
+
+Te mostraré un patrón arquitectónico típico:
+
+<FolderStructure
+  repo="https://github.com/solrac97gr/aws-event-driven-example/"
+  tree={[
+    {
+      type: "folder",
+      name: "services",
+      content: [
+        {
+          type: "folder",
+          name: "order-service",
+          content: [
+            {
+              type: "file",
+              name: "handler.go",
+            },
+            {
+              type: "file",
+              name: "serverless.yml",
+            },
+          ],
+        },
+        {
+          type: "folder",
+          name: "notification-service",
+          content: [
+            {
+              type: "file",
+              name: "handler.go",
+            },
+            {
+              type: "file",
+              name: "serverless.yml",
+            },
+          ],
+        },
+        {
+          type: "folder",
+          name: "analytics-service",
+          content: [
+            {
+              type: "file",
+              name: "handler.go",
+            },
+            {
+              type: "file",
+              name: "serverless.yml",
+            },
+          ],
+        },
+        {
+          type: "folder",
+          name: "inventory-service",
+          content: [
+            {
+              type: "file",
+              name: "handler.go",
+            },
+            {
+              type: "file",
+              name: "serverless.yml",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: "folder",
+      name: "infrastructure",
+      content: [
+        {
+          type: "file",
+          name: "dynamodb.yml",
+        },
+        {
+          type: "file",
+          name: "iam-roles.yml",
+        },
+      ],
+    },
+  ]}
+/>
+
+**Flujo:**
+1. Order Service escribe en DynamoDB (tabla Orders)
+2. DynamoDB Stream captura el cambio
+3. Múltiples funciones Lambda reaccionan al evento:
+   - Notification Service envía email
+   - Analytics Service actualiza métricas
+   - Inventory Service ajusta stock
+
+## Paso 1: Configurando DynamoDB con Streams 🗄️
+
+Primero, creemos una tabla DynamoDB con streams habilitados usando Serverless Framework:
+
+<CodeSnippet language="yaml" route="infrastructure/dynamodb.yml" code={`service: order-dynamodb
+
+provider:
+  name: aws
+  region: us-east-1
+  runtime: go1.x
+
+resources:
+  Resources:
+    OrdersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Orders
+        AttributeDefinitions:
+          - AttributeName: orderId
+            AttributeType: S
+          - AttributeName: customerId
+            AttributeType: S
+          - AttributeName: createdAt
+            AttributeType: N
+        KeySchema:
+          - AttributeName: orderId
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: CustomerIndex
+            KeySchema:
+              - AttributeName: customerId
+                KeyType: HASH
+              - AttributeName: createdAt
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 5
+              WriteCapacityUnits: 5
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+
+Outputs:
+  OrdersTableStreamArn:
+    Value: !GetAtt OrdersTable.StreamArn
+    Export:
+      Name: OrdersTableStreamArn`} />
+
+**Importante**: Opciones de `StreamViewType`:
+- `KEYS_ONLY`: Solo los atributos clave
+- `NEW_IMAGE`: El ítem completo después de la modificación
+- `OLD_IMAGE`: El ítem completo antes de la modificación
+- `NEW_AND_OLD_IMAGES`: Ambas imágenes nueva y antigua (más útil)
+
+## Paso 2: Creando el Order Service (Productor) 📝
+
+Este servicio escribe órdenes en DynamoDB, disparando eventos:
+
+<CodeSnippet language="go" route="services/order-service/handler.go" code={`package main
+
+import (
+	"context"
+	"encoding/json"
+	"time"
+
+	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
+	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
+	"github.com/google/uuid"
+)
+
+type Order struct {
+	OrderID    string    \`json:"orderId" dynamodbav:"orderId"\`
+	CustomerID string    \`json:"customerId" dynamodbav:"customerId"\`
+	Items      []Item    \`json:"items" dynamodbav:"items"\`
+	TotalPrice float64   \`json:"totalPrice" dynamodbav:"totalPrice"\`
+	Status     string    \`json:"status" dynamodbav:"status"\`
+	CreatedAt  int64     \`json:"createdAt" dynamodbav:"createdAt"\`
+}
+
+type Item struct {
+	ProductID string  \`json:"productId" dynamodbav:"productId"\`
+	Quantity  int     \`json:"quantity" dynamodbav:"quantity"\`
+	Price     float64 \`json:"price" dynamodbav:"price"\`
+}
+
+type CreateOrderRequest struct {
+	CustomerID string  \`json:"customerId"\`
+	Items      []Item  \`json:"items"\`
+}
+
+var dynamoClient *dynamodb.Client
+
+func init() {
+	cfg, err := config.LoadDefaultConfig(context.TODO())
+	if err != nil {
+		panic(err)
+	}
+	dynamoClient = dynamodb.NewFromConfig(cfg)
+}
+
+func handler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	var req CreateOrderRequest
+	if err := json.Unmarshal([]byte(request.Body), &req); err != nil {
+		return events.APIGatewayProxyResponse{
+			StatusCode: 400,
+			Body:       \`{"error": "Invalid request body"}\`,
+		}, nil
+	}
+
+	// Calcular precio total
+	var totalPrice float64
+	for _, item := range req.Items {
+		totalPrice += item.Price * float64(item.Quantity)
+	}
+
+	// Crear orden
+	order := Order{
+		OrderID:    uuid.New().String(),
+		CustomerID: req.CustomerID,
+		Items:      req.Items,
+		TotalPrice: totalPrice,
+		Status:     "PENDING",
+		CreatedAt:  time.Now().Unix(),
+	}
+
+	// Convertir a formato DynamoDB
+	av, err := attributevalue.MarshalMap(order)
+	if err != nil {
+		return events.APIGatewayProxyResponse{
+			StatusCode: 500,
+			Body:       \`{"error": "Failed to marshal order"}\`,
+		}, nil
+	}
+
+	// Poner ítem en DynamoDB (¡esto dispara el stream!)
+	_, err = dynamoClient.PutItem(ctx, &dynamodb.PutItemInput{
+		TableName: aws.String("Orders"),
+		Item:      av,
+	})
+	if err != nil {
+		return events.APIGatewayProxyResponse{
+			StatusCode: 500,
+			Body:       \`{"error": "Failed to create order"}\`,
+		}, nil
+	}
+
+	responseBody, _ := json.Marshal(order)
+	return events.APIGatewayProxyResponse{
+		StatusCode: 201,
+		Body:       string(responseBody),
+	}, nil
+}
+
+func main() {
+	lambda.Start(handler)
+}`} />
+
+<CodeSnippet language="yaml" route="services/order-service/serverless.yml" code={`service: order-service
+
+provider:
+  name: aws
+  runtime: go1.x
+  region: us-east-1
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+          Resource:
+            - arn:aws:dynamodb:us-east-1:*:table/Orders
+
+functions:
+  create:
+    handler: bin/handler
+    events:
+      - http:
+          path: orders
+          method: post
+          cors: true`} />
+
+## Paso 3: Creando Servicios Consumidores (Lambdas) 🎯
+
+Ahora creemos funciones Lambda que reaccionan a eventos del DynamoDB Stream:
+
+### Notification Service
+
+<CodeSnippet language="go" route="services/notification-service/handler.go" code={`package main
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"log"
+
+	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/ses"
+	"github.com/aws/aws-sdk-go-v2/service/ses/types"
+	"github.com/aws/aws-sdk-go-v2/aws"
+)
+
+var sesClient *ses.Client
+
+func init() {
+	cfg, err := config.LoadDefaultConfig(context.TODO())
+	if err != nil {
+		panic(err)
+	}
+	sesClient = ses.NewFromConfig(cfg)
+}
+
+func handler(ctx context.Context, event events.DynamoDBEvent) error {
+	for _, record := range event.Records {
+		// Solo procesar eventos INSERT (nuevas órdenes)
+		if record.EventName == "INSERT" {
+			if err := processNewOrder(ctx, record); err != nil {
+				log.Printf("Error procesando registro: %v", err)
+				// Continuar procesando otros registros
+				continue
+			}
+		}
+
+		// Procesar eventos MODIFY (cambios de estado de orden)
+		if record.EventName == "MODIFY" {
+			if err := processOrderUpdate(ctx, record); err != nil {
+				log.Printf("Error procesando actualización: %v", err)
+				continue
+			}
+		}
+	}
+	return nil
+}
+
+func processNewOrder(ctx context.Context, record events.DynamoDBEventRecord) error {
+	newImage := record.Change.NewImage
+
+	orderId := newImage["orderId"].String()
+	customerEmail := newImage["customerEmail"].String()
+	totalPrice := newImage["totalPrice"].Number()
+
+	log.Printf("Procesando nueva orden: %s para cliente: %s", orderId, customerEmail)
+
+	// Enviar notificación por email
+	subject := "Confirmación de Orden"
+	body := fmt.Sprintf(
+		"¡Gracias por tu orden!\\n\\nID de Orden: %s\\nTotal: $%s\\n\\nTe notificaremos cuando se envíe.",
+		orderId,
+		totalPrice,
+	)
+
+	return sendEmail(ctx, customerEmail, subject, body)
+}
+
+func processOrderUpdate(ctx context.Context, record events.DynamoDBEventRecord) error {
+	oldStatus := record.Change.OldImage["status"].String()
+	newStatus := record.Change.NewImage["status"].String()
+
+	// Solo enviar notificación si el estado cambió
+	if oldStatus == newStatus {
+		return nil
+	}
+
+	orderId := record.Change.NewImage["orderId"].String()
+	customerEmail := record.Change.NewImage["customerEmail"].String()
+
+	log.Printf("Orden %s cambió de estado: %s -> %s", orderId, oldStatus, newStatus)
+
+	subject := "Actualización de Estado de Orden"
+	body := fmt.Sprintf(
+		"¡El estado de tu orden ha sido actualizado!\\n\\nID de Orden: %s\\nNuevo Estado: %s",
+		orderId,
+		newStatus,
+	)
+
+	return sendEmail(ctx, customerEmail, subject, body)
+}
+
+func sendEmail(ctx context.Context, to, subject, body string) error {
+	input := &ses.SendEmailInput{
+		Source: aws.String("noreply@tuempresa.com"),
+		Destination: &types.Destination{
+			ToAddresses: []string{to},
+		},
+		Message: &types.Message{
+			Subject: &types.Content{
+				Data: aws.String(subject),
+			},
+			Body: &types.Body{
+				Text: &types.Content{
+					Data: aws.String(body),
+				},
+			},
+		},
+	}
+
+	_, err := sesClient.SendEmail(ctx, input)
+	return err
+}
+
+func main() {
+	lambda.Start(handler)
+}`} />
+
+<CodeSnippet language="yaml" route="services/notification-service/serverless.yml" code={`service: notification-service
+
+provider:
+  name: aws
+  runtime: go1.x
+  region: us-east-1
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - ses:SendEmail
+          Resource: "*"
+
+functions:
+  processOrder:
+    handler: bin/handler
+    events:
+      - stream:
+          type: dynamodb
+          arn:
+            Fn::ImportValue: OrdersTableStreamArn
+          batchSize: 10
+          startingPosition: LATEST
+          maximumRetryAttempts: 3
+          enabled: true
+          filterPatterns:
+            - eventName: [INSERT, MODIFY]`} />
+
+### Analytics Service
+
+<CodeSnippet language="go" route="services/analytics-service/handler.go" code={`package main
+
+import (
+	"context"
+	"encoding/json"
+	"log"
+	"time"
+
+	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
+	"github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
+)
+
+var cwClient *cloudwatch.Client
+
+func init() {
+	cfg, err := config.LoadDefaultConfig(context.TODO())
+	if err != nil {
+		panic(err)
+	}
+	cwClient = cloudwatch.NewFromConfig(cfg)
+}
+
+func handler(ctx context.Context, event events.DynamoDBEvent) error {
+	var totalRevenue float64
+	var orderCount int
+
+	for _, record := range event.Records {
+		if record.EventName == "INSERT" {
+			orderCount++
+
+			// Extraer precio total de la nueva imagen
+			if priceAttr, ok := record.Change.NewImage["totalPrice"]; ok {
+				var price float64
+				json.Unmarshal([]byte(priceAttr.Number()), &price)
+				totalRevenue += price
+			}
+		}
+	}
+
+	if orderCount > 0 {
+		// Enviar métricas a CloudWatch
+		if err := publishMetrics(ctx, orderCount, totalRevenue); err != nil {
+			log.Printf("Error publicando métricas: %v", err)
+			return err
+		}
+
+		log.Printf("Procesadas %d órdenes con ingresos totales: $%.2f", orderCount, totalRevenue)
+	}
+
+	return nil
+}
+
+func publishMetrics(ctx context.Context, orderCount int, totalRevenue float64) error {
+	timestamp := time.Now()
+
+	_, err := cwClient.PutMetricData(ctx, &cloudwatch.PutMetricDataInput{
+		Namespace: aws.String("OrderService"),
+		MetricData: []types.MetricDatum{
+			{
+				MetricName: aws.String("OrderCount"),
+				Value:      aws.Float64(float64(orderCount)),
+				Timestamp:  &timestamp,
+				Unit:       types.StandardUnitCount,
+			},
+			{
+				MetricName: aws.String("Revenue"),
+				Value:      aws.Float64(totalRevenue),
+				Timestamp:  &timestamp,
+				Unit:       types.StandardUnitNone,
+			},
+		},
+	})
+
+	return err
+}
+
+func main() {
+	lambda.Start(handler)
+}`} />
+
+### Inventory Service
+
+<CodeSnippet language="go" route="services/inventory-service/handler.go" code={`package main
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"log"
+	"time"
+
+	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
+	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
+)
+
+var dynamoClient *dynamodb.Client
+
+type OrderItem struct {
+	ProductID string  \`json:"productId"\`
+	Quantity  int     \`json:"quantity"\`
+}
+
+func init() {
+	cfg, err := config.LoadDefaultConfig(context.TODO())
+	if err != nil {
+		panic(err)
+	}
+	dynamoClient = dynamodb.NewFromConfig(cfg)
+}
+
+func handler(ctx context.Context, event events.DynamoDBEvent) error {
+	for _, record := range event.Records {
+		if record.EventName == "INSERT" {
+			if err := decrementInventory(ctx, record); err != nil {
+				log.Printf("Error decrementando inventario: %v", err)
+				// En producción, podrías enviar a DLQ aquí
+				continue
+			}
+		}
+
+		// Manejar cancelaciones de orden
+		if record.EventName == "MODIFY" {
+			oldStatus := record.Change.OldImage["status"].String()
+			newStatus := record.Change.NewImage["status"].String()
+
+			if newStatus == "CANCELLED" && oldStatus != "CANCELLED" {
+				if err := incrementInventory(ctx, record); err != nil {
+					log.Printf("Error incrementando inventario: %v", err)
+					continue
+				}
+			}
+		}
+	}
+	return nil
+}
+
+func decrementInventory(ctx context.Context, record events.DynamoDBEventRecord) error {
+	// Extraer ítems de la orden
+	itemsAttr := record.Change.NewImage["items"]
+	var items []OrderItem
+
+	// Parsear lista de ítems
+	if itemsAttr.DataType() == events.DataTypeList {
+		for _, item := range itemsAttr.List() {
+			var orderItem OrderItem
+			itemMap := item.Map()
+			orderItem.ProductID = itemMap["productId"].String()
+
+			var qty int
+			json.Unmarshal([]byte(itemMap["quantity"].Number()), &qty)
+			orderItem.Quantity = qty
+
+			items = append(items, orderItem)
+		}
+	}
+
+	// Actualizar inventario para cada ítem
+	for _, item := range items {
+		log.Printf("Decrementando inventario para producto %s en %d", item.ProductID, item.Quantity)
+
+		_, err := dynamoClient.UpdateItem(ctx, &dynamodb.UpdateItemInput{
+			TableName: aws.String("Inventory"),
+			Key: map[string]types.AttributeValue{
+				"productId": &types.AttributeValueMemberS{Value: item.ProductID},
+			},
+			UpdateExpression: aws.String("SET stock = stock - :qty, lastUpdated = :timestamp"),
+			ExpressionAttributeValues: map[string]types.AttributeValue{
+				":qty":       &types.AttributeValueMemberN{Value: fmt.Sprintf("%d", item.Quantity)},
+				":timestamp": &types.AttributeValueMemberN{Value: fmt.Sprintf("%d", time.Now().Unix())},
+			},
+			ConditionExpression: aws.String("stock >= :qty"), // Prevenir stock negativo
+		})
+
+		if err != nil {
+			return fmt.Errorf("falló actualizar inventario para producto %s: %w", item.ProductID, err)
+		}
+	}
+
+	return nil
+}
+
+func incrementInventory(ctx context.Context, record events.DynamoDBEventRecord) error {
+	// Lógica similar pero con ADD en lugar de restar
+	// Implementación dejada como ejercicio
+	return nil
+}
+
+func main() {
+	lambda.Start(handler)
+}`} />
+
+## Filtrado de Eventos y Procesamiento por Lotes ⚡
+
+Lambda te permite filtrar eventos antes de procesarlos:
+
+<CodeSnippet language="yaml" route="serverless.yml" code={`functions:
+  processHighValueOrders:
+    handler: bin/handler
+    events:
+      - stream:
+          type: dynamodb
+          arn: !GetAtt OrdersTable.StreamArn
+          batchSize: 100
+          maximumBatchingWindowInSeconds: 10
+          startingPosition: LATEST
+          filterPatterns:
+            # Solo procesar órdenes mayores a $100
+            - eventName: [INSERT]
+              dynamodb:
+                NewImage:
+                  totalPrice:
+                    N: [{ numeric: [">=", 100] }]`} />
+
+**Beneficios del Procesamiento por Lotes:**
+- Procesar múltiples eventos a la vez
+- Reducir invocaciones de Lambda (menor costo)
+- Ventana de lote permite acumulación de eventos
+
+## Manejo de Errores y Estrategia de Reintentos 🔄
+
+<CodeSnippet language="go" route="services/common/error-handler.go" code={`package common
+
+import (
+	"context"
+	"encoding/json"
+	"log"
+
+	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/sqs"
+)
+
+type ErrorHandler struct {
+	sqsClient *sqs.Client
+	dlqURL    string
+}
+
+func NewErrorHandler(sqsClient *sqs.Client, dlqURL string) *ErrorHandler {
+	return &ErrorHandler{
+		sqsClient: sqsClient,
+		dlqURL:    dlqURL,
+	}
+}
+
+// ProcessWithRetry procesa un registro con manejo de errores
+func (h *ErrorHandler) ProcessWithRetry(
+	ctx context.Context,
+	record events.DynamoDBEventRecord,
+	processor func(context.Context, events.DynamoDBEventRecord) error,
+) error {
+	err := processor(ctx, record)
+
+	if err != nil {
+		log.Printf("Error procesando registro: %v", err)
+
+		// Enviar a Dead Letter Queue para inspección manual
+		if dlqErr := h.sendToDLQ(ctx, record, err); dlqErr != nil {
+			log.Printf("Falló envío a DLQ: %v", dlqErr)
+		}
+
+		// Retornar error para activar mecanismo de reintento de Lambda
+		return err
+	}
+
+	return nil
+}
+
+func (h *ErrorHandler) sendToDLQ(ctx context.Context, record events.DynamoDBEventRecord, processingError error) error {
+	message := map[string]interface{}{
+		"record": record,
+		"error":  processingError.Error(),
+	}
+
+	messageBody, err := json.Marshal(message)
+	if err != nil {
+		return err
+	}
+
+	_, err = h.sqsClient.SendMessage(ctx, &sqs.SendMessageInput{
+		QueueUrl:    aws.String(h.dlqURL),
+		MessageBody: aws.String(string(messageBody)),
+	})
+
+	return err
+}`} />
+
+## Monitoreo y Observabilidad 📊
+
+Métricas clave para monitorear:
+
+<CodeSnippet language="yaml" route="infrastructure/alarms.yml" code={`resources:
+  HighErrorRateAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: NotificationService-HighErrorRate
+      AlarmDescription: Alertar cuando la tasa de error excede el umbral
+      MetricName: Errors
+      Namespace: AWS/Lambda
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 2
+      Threshold: 10
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref NotificationServiceFunction
+
+  StreamIteratorAgeAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: DynamoDB-StreamLag
+      AlarmDescription: Alertar cuando el procesamiento del stream está retrasado
+      MetricName: IteratorAge
+      Namespace: AWS/Lambda
+      Statistic: Maximum
+      Period: 60
+      EvaluationPeriods: 3
+      Threshold: 60000  # 1 minuto en milisegundos
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref NotificationServiceFunction`} />
+
+## Ventajas de este Patrón 🚀
+
+### 1. **Bajo Acoplamiento**
+Los servicios no se conocen entre sí. El order service no llama directamente a notification o inventory services.
+
+### 2. **Escalabilidad**
+Cada Lambda escala independientemente. Alta carga de notificaciones no afecta el procesamiento de inventario.
+
+### 3. **Confiabilidad**
+Mecanismo de reintento incorporado. Eventos fallidos se reintentan automáticamente con backoff exponencial.
+
+### 4. **Auditabilidad**
+DynamoDB Streams provee un log de auditoría completo de todos los cambios por 24 horas.
+
+### 5. **Costo-Efectivo**
+Solo pagas por lo que usas. Sin servidores inactivos esperando eventos.
+
+### 6. **Fácil de Extender**
+Agregar un nuevo consumidor es simple - solo crea una nueva suscripción Lambda al stream.
+
+## Desventajas y Consideraciones ⚠️
+
+### 1. **Consistencia Eventual**
+Los eventos se procesan asincrónicamente. Hay un retraso entre la escritura y el procesamiento del evento.
+
+### 2. **Desafíos de Ordenamiento**
+Aunque los eventos para la misma clave de partición están ordenados, procesarlos en orden requiere diseño cuidadoso.
+
+### 3. **Procesamiento Duplicado**
+Lambda garantiza entrega "al menos una vez". Tu código debe ser idempotente.
+
+### 4. **Retención de Stream de 24 Horas**
+DynamoDB Streams solo retiene datos por 24 horas. Si una Lambda está caída más tiempo, los eventos se pierden.
+
+### 5. **Cold Starts**
+Las funciones Lambda pueden experimentar cold starts, agregando latencia al procesamiento de eventos.
+
+### 6. **Complejidad de Depuración**
+El procesamiento de eventos distribuidos puede ser más difícil de depurar que llamadas síncronas.
+
+## Mejores Prácticas 💡
+
+### 1. Haz tus Handlers Idempotentes
+
+<CodeSnippet language="go" code={`// Mal: No idempotente
+func processOrder(orderId string) {
+    inventory.Decrement(productId, quantity)
+}
+
+// Bien: Idempotente con deduplicación
+func processOrder(orderId string, eventId string) {
+    if alreadyProcessed(eventId) {
+        log.Printf("Evento %s ya procesado, omitiendo", eventId)
+        return
+    }
+
+    inventory.Decrement(productId, quantity)
+    markAsProcessed(eventId)
+}`} />
+
+### 2. Usa Procesamiento por Lotes
+
+Procesa múltiples registros en una sola invocación para reducir costos y mejorar throughput.
+
+### 3. Implementa Dead Letter Queues
+
+Siempre configura una DLQ para capturar eventos que fallan repetidamente.
+
+### 4. Monitorea Iterator Age
+
+Iterator age alto significa que tus consumidores están quedándose atrás. Escala u optimiza tus Lambdas.
+
+### 5. Usa Filtrado de Eventos
+
+Filtra eventos en el origen para reducir invocaciones innecesarias de Lambda.
+
+### 6. Estructura bien tus Eventos
+
+Incluye todo el contexto necesario en el evento para evitar búsquedas adicionales en la base de datos.
+
+## Casos de Uso del Mundo Real 🌍
+
+### Procesamiento de Órdenes E-commerce
+- Orden creada → Múltiples servicios reaccionan (inventario, envío, notificaciones)
+- Estado de orden cambiado → Actualizar cliente, analytics, sistemas de almacén
+
+### Seguimiento de Actividad de Usuario
+- Acción de usuario → Actualizar recomendaciones, analytics, notificaciones
+- Perfil actualizado → Sincronizar entre sistemas, actualizar cachés
+
+### Transacciones Financieras
+- Transacción creada → Detección de fraude, contabilidad, notificaciones
+- Cuenta actualizada → Verificaciones de cumplimiento, reportes
+
+### Procesamiento de Datos IoT
+- Datos de sensor → Analytics en tiempo real, alertas, almacenamiento de datos
+- Cambio de estado de dispositivo → Monitoreo, programación de mantenimiento
+
+## Probando Sistemas Event-Driven 🧪
+
+<CodeSnippet language="go" route="handler_test.go" code={`package main
+
+import (
+	"context"
+	"testing"
+
+	"github.com/aws/aws-lambda-go/events"
+)
+
+func TestOrderEventProcessing(t *testing.T) {
+	// Crear un evento mock de DynamoDB
+	event := events.DynamoDBEvent{
+		Records: []events.DynamoDBEventRecord{
+			{
+				EventName: "INSERT",
+				Change: events.DynamoDBStreamRecord{
+					NewImage: map[string]events.DynamoDBAttributeValue{
+						"orderId":    events.NewStringAttribute("12345"),
+						"customerId": events.NewStringAttribute("customer-1"),
+						"totalPrice": events.NewNumberAttribute("99.99"),
+						"status":     events.NewStringAttribute("PENDING"),
+					},
+				},
+			},
+		},
+	}
+
+	// Probar el handler
+	err := handler(context.Background(), event)
+	if err != nil {
+		t.Errorf("Se esperaba sin error, obtuve %v", err)
+	}
+
+	// Verificar efectos secundarios esperados
+	// (verificar email enviado, inventario actualizado, etc.)
+}`} />
+
+## Despliegue 🚀
+
+Despliega todos los servicios a la vez:
+
+<CodeSnippet language="bash" code={`# Desplegar infraestructura primero
+cd infrastructure
+serverless deploy
+
+# Desplegar todos los servicios
+cd ../services
+for dir in */; do
+    cd "$dir"
+    GOOS=linux GOARCH=amd64 go build -o bin/handler handler.go
+    serverless deploy
+    cd ..
+done`} />
+
+## Conclusión 🎯
+
+La Arquitectura Event-Driven con DynamoDB Streams y Lambda proporciona un patrón poderoso y escalable para construir microservicios. Las ventajas clave son:
+
+1. **Servicios desacoplados** que pueden evolucionar independientemente
+2. **Escalado automático** sin gestión de infraestructura
+3. **Modelo de pago por uso** costo-efectivo
+4. **Confiabilidad incorporada** con reintentos y manejo de errores
+5. **Fácil de extender** con nuevos consumidores
+
+Sin embargo, recuerda los compromisos:
+- Consistencia eventual en lugar de inmediata
+- Requiere handlers idempotentes
+- Depuración más compleja
+- Necesidad de monitoreo apropiado
+
+Cuando se implementa correctamente con manejo de errores apropiado, monitoreo e idempotencia, este patrón permite construir sistemas altamente escalables y resilientes.
+
+Si tienes preguntas sobre implementar arquitecturas event-driven en tus proyectos, ¡no dudes en contactarme!
+
+<BlogLink
+  url={"https://github.com/solrac97gr"}
+  content={"Visita mi GitHub"}
+/>
