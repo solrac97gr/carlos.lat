@@ -14,6 +14,8 @@ import {
   MobileNavLink,
   MobileSocialIcons,
   MobileCTAButton,
+  MobileLanguageSelector,
+  MobileLanguageOption,
   LanguageDropdown,
   LanguageButton,
   LanguageMenu,
@@ -208,8 +210,23 @@ export const Navbar = () => {
           </SocialIcon>
         </MobileSocialIcons>
 
+        <MobileLanguageSelector>
+          <MobileLanguageOption
+            isActive={language === 'en'}
+            onClick={() => handleLanguageChange('en')}
+          >
+            EN
+          </MobileLanguageOption>
+          <MobileLanguageOption
+            isActive={language === 'es'}
+            onClick={() => handleLanguageChange('es')}
+          >
+            ES
+          </MobileLanguageOption>
+        </MobileLanguageSelector>
+
         <MobileCTAButton href="/#contact" onClick={(e) => scrollToSection(e, 'contact')}>
-          Comenzar
+          {t('nav.getStarted')}
         </MobileCTAButton>
       </MobileMenu>
     </NavbarContainer>
