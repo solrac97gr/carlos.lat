@@ -1,0 +1,464 @@
+---
+title: "Cómo Crear Módulos Profesionales de Terraform 🏗️"
+date: "January 29, 2026"
+published: "2026-01-29"
+abstract: "Aprende a crear módulos de Terraform listos para producción con las mejores prácticas, usando como ejemplo un módulo real de Azure OpenAI."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482746.jpg?alt=media&token=510dd66e-15af-4292-b84d-795a267155c4"
+tag: "Terraform"
+author: "Carlos García"
+---
+
+# Cómo Crear Módulos Profesionales de Terraform 🏗️
+
+<small>January 29, 2026</small>
+<EditPost path="como-crear-modulos-terraform" />
+
+<img
+  width="100%"
+  alt="terraform-modules"
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482746.jpg?alt=media&token=510dd66e-15af-4292-b84d-795a267155c4"
+  style={{ borderRadius: "8px" }}
+/>
+
+La Infraestructura como Código (IaC) se ha vuelto esencial en el desarrollo de software moderno, y Terraform es una de las herramientas más poderosas para gestionar infraestructura en la nube. Una de las mayores fortalezas de Terraform es su sistema de módulos, que te permite crear componentes de infraestructura reutilizables y mantenibles.
+
+En esta guía, te mostraré cómo crear módulos de Terraform listos para producción usando mi <BlogLink url="https://github.com/solrac97gr/terraform-azurerm-gpt" content="módulo terraform-azurerm-gpt"/> como ejemplo del mundo real.
+
+## ¿Qué es un Módulo de Terraform?
+
+Un módulo de Terraform es un contenedor para múltiples recursos que se utilizan juntos. Piénsalo como un bloque de construcción que encapsula lógica de infraestructura, haciéndola reutilizable en diferentes proyectos y equipos.
+
+**Beneficios de usar módulos:**
+- **Reutilización**: Escribe una vez, úsalo en todas partes
+- **Mantenibilidad**: Actualiza en un lugar, aplica en todos lados
+- **Estandarización**: Asegura patrones de infraestructura consistentes
+- **Abstracción**: Oculta la complejidad detrás de interfaces simples
+
+## Estructura del Módulo
+
+Un módulo de Terraform bien organizado sigue una estructura estándar. Aquí está la anatomía básica:
+
+<CodeSnippet language="bash" code={`terraform-azurerm-gpt/
+├── main.tf           # Definiciones de recursos principales
+├── variables.tf      # Declaraciones de variables de entrada
+├── outputs.tf        # Definiciones de salidas
+├── versions.tf       # Restricciones de versión del proveedor
+├── README.md         # Documentación del módulo
+├── CHANGELOG.md      # Historial de versiones
+└── examples/         # Ejemplos de uso
+    ├── basic/
+    ├── complete/
+    └── private-endpoint/`} />
+
+Exploremos cada componente en detalle.
+
+## 1. versions.tf - Gestión de Dependencias
+
+Comienza definiendo los requisitos de versión de Terraform y del proveedor. Esto previene incompatibilidades de versiones y asegura compatibilidad.
+
+<CodeSnippet language="hcl" route="versions.tf" code={`terraform {
+  required_version = ">= 1.5.0"
+
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = ">= 3.80.0"
+    }
+  }
+}`} />
+
+**Mejor Práctica**: Siempre especifica versiones mínimas para asegurar que tu módulo use características y correcciones de bugs de versiones específicas del proveedor.
+
+## 2. variables.tf - Configuración de Entrada
+
+Las variables son la interfaz de tu módulo. Diseñalas cuidadosamente para balancear simplicidad y flexibilidad.
+
+### Variables Básicas Requeridas
+
+<CodeSnippet language="hcl" route="variables.tf" code={`variable "name" {
+  description = "El nombre de la cuenta de Cognitive Services"
+  type        = string
+}
+
+variable "location" {
+  description = "La región de Azure donde se crearán los recursos"
+  type        = string
+}
+
+variable "resource_group_name" {
+  description = "El nombre del grupo de recursos"
+  type        = string
+}`} />
+
+### Variables con Valores por Defecto
+
+<CodeSnippet language="hcl" route="variables.tf" code={`variable "sku_name" {
+  description = "El nombre del SKU de la cuenta de Cognitive Services"
+  type        = string
+  default     = "S0"
+}
+
+variable "identity_type" {
+  description = "El tipo de identidad administrada (SystemAssigned, UserAssigned, o SystemAssigned, UserAssigned)"
+  type        = string
+  default     = "SystemAssigned"
+
+  validation {
+    condition     = can(regex("^(SystemAssigned|UserAssigned|SystemAssigned, UserAssigned)$", var.identity_type))
+    error_message = "El tipo de identidad debe ser SystemAssigned, UserAssigned, o SystemAssigned, UserAssigned."
+  }
+}`} />
+
+**Característica Clave**: La validación de entrada asegura que los usuarios proporcionen valores correctos antes de aplicar cambios.
+
+### Variables de Objetos Complejos
+
+Para configuraciones avanzadas, usa tipos de objetos complejos:
+
+<CodeSnippet language="hcl" route="variables.tf" code={`variable "deployments" {
+  description = "Lista de despliegues de modelos a crear"
+  type = list(object({
+    name            = string
+    model_format    = string
+    model_name      = string
+    model_version   = string
+    scale_type      = string
+    scale_capacity  = optional(number, 1)
+    rai_policy_name = optional(string, null)
+  }))
+  default = []
+}
+
+variable "network_acls" {
+  description = "Configuración de ACLs de red para la cuenta de Cognitive Services"
+  type = object({
+    default_action = string
+    ip_rules       = optional(list(string), [])
+    subnet_id      = optional(string, null)
+  })
+  default = null
+}`} />
+
+**Patrón Avanzado**: Usar `optional()` permite que los campos tengan valores por defecto, haciendo tu módulo compatible hacia atrás mientras agregas características.
+
+## 3. main.tf - Definiciones de Recursos
+
+Aquí es donde defines los recursos de infraestructura reales.
+
+### Recurso Principal
+
+<CodeSnippet language="hcl" route="main.tf" code={`resource "azurerm_cognitive_account" "openai" {
+  name                  = var.name
+  location              = var.location
+  resource_group_name   = var.resource_group_name
+  kind                  = "OpenAI"
+  sku_name              = var.sku_name
+  custom_subdomain_name = var.custom_subdomain != null ? var.custom_subdomain : var.name
+
+  identity {
+    type         = var.identity_type
+    identity_ids = var.identity_type != "SystemAssigned" ? var.identity_ids : null
+  }
+
+  tags = var.tags
+}`} />
+
+### Patrón de Bloques Dinámicos
+
+Usa bloques dinámicos para crear condicionalmente bloques de configuración anidados:
+
+<CodeSnippet language="hcl" route="main.tf" code={`resource "azurerm_cognitive_account" "openai" {
+  # ... otra configuración ...
+
+  dynamic "network_acls" {
+    for_each = var.network_acls != null ? [var.network_acls] : []
+
+    content {
+      default_action = network_acls.value.default_action
+      ip_rules       = network_acls.value.ip_rules
+
+      dynamic "virtual_network_rules" {
+        for_each = network_acls.value.subnet_id != null ? [network_acls.value.subnet_id] : []
+
+        content {
+          subnet_id                            = virtual_network_rules.value
+          ignore_missing_vnet_service_endpoint = true
+        }
+      }
+    }
+  }
+}`} />
+
+**Escenario del Mundo Real**: Este patrón permite a los usuarios configurar opcionalmente la seguridad de red sin requerir valores vacíos.
+
+### Patrón For-Each para Múltiples Recursos
+
+Crea múltiples recursos similares desde una lista:
+
+<CodeSnippet language="hcl" route="main.tf" code={`resource "azurerm_cognitive_deployment" "deployment" {
+  for_each = { for deployment in var.deployments : deployment.name => deployment }
+
+  name                 = each.value.name
+  cognitive_account_id = azurerm_cognitive_account.openai.id
+
+  model {
+    format  = each.value.model_format
+    name    = each.value.model_name
+    version = each.value.model_version
+  }
+
+  scale {
+    type     = each.value.scale_type
+    capacity = each.value.scale_capacity
+  }
+
+  rai_policy_name = each.value.rai_policy_name
+}`} />
+
+**Por Qué Funciona Este Patrón**:
+- Cada despliegue obtiene una clave única (el nombre del modelo)
+- Los recursos pueden ser apuntados individualmente: `terraform apply -target=module.openai.azurerm_cognitive_deployment.deployment["gpt-4"]`
+- Agregar o remover modelos no afecta otros despliegues
+
+### Creación Condicional de Recursos
+
+Usa `count` para recursos que pueden o no ser necesarios:
+
+<CodeSnippet language="hcl" route="main.tf" code={`resource "azurerm_private_endpoint" "openai" {
+  count = var.private_endpoint_enabled ? 1 : 0
+
+  name                = "\${var.name}-private-endpoint"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  subnet_id           = var.private_endpoint_subnet_id
+
+  private_service_connection {
+    name                           = "\${var.name}-privateserviceconnection"
+    private_connection_resource_id = azurerm_cognitive_account.openai.id
+    subresource_names              = ["account"]
+    is_manual_connection           = false
+  }
+
+  private_dns_zone_group {
+    name                 = "default"
+    private_dns_zone_ids = var.private_dns_zone_ids
+  }
+}`} />
+
+### Asignaciones de Roles RBAC
+
+Automatiza las asignaciones de roles usando `for_each` con conjuntos:
+
+<CodeSnippet language="hcl" route="main.tf" code={`resource "azurerm_role_assignment" "openai_user" {
+  for_each = toset(var.cognitive_services_openai_user_principals)
+
+  scope                = azurerm_cognitive_account.openai.id
+  role_definition_name = "Cognitive Services OpenAI User"
+  principal_id         = each.value
+}
+
+resource "azurerm_role_assignment" "openai_contributor" {
+  for_each = toset(var.cognitive_services_openai_contributor_principals)
+
+  scope                = azurerm_cognitive_account.openai.id
+  role_definition_name = "Cognitive Services OpenAI Contributor"
+  principal_id         = each.value
+}`} />
+
+**Mejor Práctica de Seguridad**: Usar `toset()` deduplica los IDs principales y previene asignaciones de roles duplicadas.
+
+## 4. outputs.tf - Exponiendo Recursos
+
+Las salidas permiten a los usuarios referenciar recursos creados y recuperar información importante:
+
+<CodeSnippet language="hcl" route="outputs.tf" code={`output "id" {
+  description = "El ID de la cuenta de Cognitive Services"
+  value       = azurerm_cognitive_account.openai.id
+}
+
+output "endpoint" {
+  description = "El endpoint usado para conectarse a la cuenta de Cognitive Services"
+  value       = azurerm_cognitive_account.openai.endpoint
+}
+
+output "primary_access_key" {
+  description = "La clave de acceso primaria para la cuenta de Cognitive Services"
+  value       = azurerm_cognitive_account.openai.primary_access_key
+  sensitive   = true
+}
+
+output "identity_principal_id" {
+  description = "El ID principal de la identidad administrada asignada por el sistema"
+  value       = var.identity_type == "SystemAssigned" || var.identity_type == "SystemAssigned, UserAssigned" ? azurerm_cognitive_account.openai.identity[0].principal_id : null
+}`} />
+
+**Patrón de Seguridad Crítico**: Marca las salidas sensibles con `sensitive = true` para prevenir exposición accidental en logs y salida de consola.
+
+## 5. Ejemplos de Uso
+
+Proporciona ejemplos mostrando cómo usar tu módulo. Comienza simple y muestra progresivamente escenarios más complejos.
+
+### Ejemplo Básico
+
+<CodeSnippet language="hcl" route="examples/basic/main.tf" code={`provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_resource_group" "example" {
+  name     = "rg-openai-example"
+  location = "East US"
+}
+
+module "openai" {
+  source = "github.com/solrac97gr/terraform-azurerm-gpt"
+
+  name                = "openai-example"
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
+
+  deployments = [
+    {
+      name           = "gpt-4o-mini"
+      model_format   = "OpenAI"
+      model_name     = "gpt-4o-mini"
+      model_version  = "2024-07-18"
+      scale_type     = "GlobalStandard"
+      scale_capacity = 1
+    }
+  ]
+}`} />
+
+### Ejemplo Completo con Networking
+
+<CodeSnippet language="hcl" route="examples/complete/main.tf" code={`module "openai" {
+  source = "github.com/solrac97gr/terraform-azurerm-gpt"
+
+  name                = "openai-complete"
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
+
+  # Configuración de identidad
+  identity_type = "SystemAssigned, UserAssigned"
+  identity_ids  = [azurerm_user_assigned_identity.example.id]
+
+  # Múltiples despliegues de modelos
+  deployments = [
+    {
+      name           = "gpt-4"
+      model_format   = "OpenAI"
+      model_name     = "gpt-4"
+      model_version  = "0613"
+      scale_type     = "Standard"
+      scale_capacity = 10
+    },
+    {
+      name           = "gpt-35-turbo"
+      model_format   = "OpenAI"
+      model_name     = "gpt-35-turbo"
+      model_version  = "0613"
+      scale_type     = "Standard"
+      scale_capacity = 10
+    }
+  ]
+
+  # Seguridad de red
+  network_acls = {
+    default_action = "Deny"
+    ip_rules       = ["203.0.113.0/24"]
+    subnet_id      = azurerm_subnet.example.id
+  }
+
+  # Asignaciones RBAC
+  cognitive_services_openai_user_principals = [
+    data.azurerm_client_config.current.object_id
+  ]
+
+  tags = {
+    Environment = "Production"
+    ManagedBy   = "Terraform"
+  }
+}`} />
+
+## Resumen de Mejores Prácticas
+
+1. **Restricciones de Versión**: Siempre especifica versiones mínimas del proveedor
+2. **Validación de Entrada**: Valida variables para detectar errores temprano
+3. **Parámetros Opcionales**: Usa `optional()` para compatibilidad hacia atrás
+4. **Datos Sensibles**: Marca salidas que contengan secretos como `sensitive = true`
+5. **Documentación**: Proporciona descripciones claras para todas las variables y salidas
+6. **Ejemplos**: Incluye ejemplos básicos, completos y de casos extremos
+7. **Bloques Dinámicos**: Usa para configuración anidada condicional
+8. **For-Each vs Count**: Usa `for_each` para recursos nombrados, `count` para creación condicional
+9. **Seguridad de Tipos**: Usa tipos de objetos específicos en lugar de `any`
+10. **Gestión de Estado**: Diseña para operaciones idempotentes
+
+## Publicando Tu Módulo
+
+Una vez que tu módulo esté listo, puedes publicarlo en:
+
+### Terraform Registry (Público)
+
+<CodeSnippet language="bash" code={`# 1. Crea un repositorio de GitHub llamado: terraform-<PROVEEDOR>-<NOMBRE>
+# Ejemplo: terraform-azurerm-gpt
+
+# 2. Etiqueta un release
+git tag v1.0.0
+git push origin v1.0.0
+
+# 3. Inicia sesión en registry.terraform.io y publica`} />
+
+### Registro de Módulos Privado
+
+<CodeSnippet language="hcl" code={`# Referencia desde Git
+module "openai" {
+  source = "git::https://github.com/your-org/terraform-azurerm-gpt.git?ref=v1.0.0"
+  # ...
+}
+
+# O usa el registro privado de Terraform Cloud/Enterprise
+module "openai" {
+  source  = "app.terraform.io/your-org/gpt/azurerm"
+  version = "1.0.0"
+  # ...
+}`} />
+
+## Probando Tu Módulo
+
+Crea pruebas automatizadas para asegurar que tu módulo funcione correctamente:
+
+<CodeSnippet language="bash" code={`# Inicializa el ejemplo
+cd examples/basic
+terraform init
+
+# Valida sintaxis
+terraform validate
+
+# Verifica formato
+terraform fmt -check -recursive
+
+# Planifica sin aplicar
+terraform plan
+
+# Aplica y prueba
+terraform apply -auto-approve
+terraform output
+
+# Limpia
+terraform destroy -auto-approve`} />
+
+## Conclusión
+
+Crear módulos profesionales de Terraform requiere diseño cuidadoso y atención a las mejores prácticas. Siguiendo los patrones demostrados en esta guía, puedes construir componentes de infraestructura reutilizables que:
+
+- Simplifiquen despliegues complejos
+- Aseguren consistencia entre entornos
+- Reduzcan duplicación y carga de mantenimiento
+- Permitan a los equipos moverse más rápido con confianza
+
+La clave es comenzar simple e iterar. Empieza con un módulo básico, recopila retroalimentación, y evoluciónalo basándote en uso del mundo real.
+
+Revisa el <BlogLink url="https://github.com/solrac97gr/terraform-azurerm-gpt" content="módulo completo terraform-azurerm-gpt en GitHub"/> para ver todos estos patrones en acción, y siéntete libre de usarlo como plantilla para tus propios módulos.
+
+---
+
+¡Gracias por leer! Si encontraste esto útil, compártelo con tu equipo y sígueme para más contenido sobre infraestructura como código e ingeniería en la nube.
