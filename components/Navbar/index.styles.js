@@ -178,6 +178,31 @@ export const MobileCTAButton = styled.a`
   }
 `;
 
+export const MobileLanguageSelector = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+`;
+
+export const MobileLanguageOption = styled.button`
+  padding: 0.4rem 1rem;
+  border-radius: 0.375rem;
+  border: 1px solid ${props => props.isActive ? '#3b82f6' : '#e5e7eb'};
+  background-color: ${props => props.isActive ? '#3b82f6' : 'white'};
+  color: ${props => props.isActive ? 'white' : '#4b5563'};
+  font-weight: ${props => props.isActive ? '600' : '400'};
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: ${props => props.isActive ? '#2563eb' : '#eff6ff'};
+    color: ${props => props.isActive ? 'white' : '#3b82f6'};
+  }
+`;
+
 export const LanguageDropdown = styled.div`
   position: relative;
 `;
