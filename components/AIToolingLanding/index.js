@@ -1,10 +1,6 @@
 import {
   Container,
-  SimpleHeader,
-  HeaderContent,
-  Logo,
-  LogoAccent,
-  LanguageSelector,
+  FloatingLanguageSwitch,
   LanguageButton,
   HeroSection,
   Badge,
@@ -47,7 +43,6 @@ import {
   CTAAlternative,
   SimpleFooter,
   FooterContent,
-  FooterLogo,
   FooterText,
   FooterLinks,
   FooterLink,
@@ -91,28 +86,22 @@ export const AIToolingLanding = () => {
 
   return (
     <Container>
-      {/* Simple Header */}
-      <SimpleHeader>
-        <HeaderContent>
-          <Logo href="/">
-            Carlos<LogoAccent> García</LogoAccent>
-          </Logo>
-          <LanguageSelector>
-            <LanguageButton
-              isActive={language === "en"}
-              onClick={() => handleLanguageChange("en")}
-            >
-              EN
-            </LanguageButton>
-            <LanguageButton
-              isActive={language === "es"}
-              onClick={() => handleLanguageChange("es")}
-            >
-              ES
-            </LanguageButton>
-          </LanguageSelector>
-        </HeaderContent>
-      </SimpleHeader>
+      {/* Floating Language Switcher */}
+      <FloatingLanguageSwitch>
+        <LanguageButton
+          isActive={language === "en"}
+          onClick={() => handleLanguageChange("en")}
+        >
+          EN
+        </LanguageButton>
+        <LanguageButton
+          isActive={language === "es"}
+          onClick={() => handleLanguageChange("es")}
+        >
+          ES
+        </LanguageButton>
+      </FloatingLanguageSwitch>
+
       {/* Hero Section */}
       <HeroSection>
         <Badge>{t("aiTooling.hero.badge")}</Badge>
@@ -396,9 +385,6 @@ export const AIToolingLanding = () => {
       {/* Simple Footer */}
       <SimpleFooter>
         <FooterContent>
-          <FooterLogo>
-            Carlos <LogoAccent>García</LogoAccent>
-          </FooterLogo>
           <FooterText>
             {language === "en"
               ? "AI Tooling & Developer Productivity Consulting"

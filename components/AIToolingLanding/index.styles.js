@@ -5,6 +5,20 @@ export const Container = styled.div`
   background: #ffffff;
 `;
 
+// Floating Language Switcher
+export const FloatingLanguageSwitch = styled.div`
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 50;
+  display: flex;
+  gap: 0.5rem;
+  background: white;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+`;
+
 // Simple Header
 export const SimpleHeader = styled.header`
   position: fixed;
@@ -122,17 +136,17 @@ export const Copyright = styled.p`
 
 // Hero Section
 export const HeroSection = styled.section`
-  padding: 10rem 2rem 4rem;
+  padding: 6rem 2rem 4rem;
   max-width: 1280px;
   margin: 0 auto;
   text-align: center;
 
   @media (min-width: 768px) {
-    padding: 12rem 3rem 5rem;
+    padding: 8rem 3rem 5rem;
   }
 
   @media (min-width: 1024px) {
-    padding: 14rem 4rem 6rem;
+    padding: 10rem 4rem 6rem;
   }
 `;
 
