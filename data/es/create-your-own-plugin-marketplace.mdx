@@ -1,0 +1,607 @@
+---
+title: "Crea Tu Propio Marketplace de Plugins para Claude Code 🚀"
+date: "February 03, 2026"
+published: "2026-02-03"
+abstract: "Aprende cómo crear y distribuir tu propio marketplace de plugins para Claude Code, extendiendo la IA con habilidades, agentes y herramientas personalizadas adaptadas a tu flujo de trabajo."
+image: "https://miro.medium.com/max/1400/0*EODEF6xTWVm5hv-3"
+tag: "Claude, AI, Plugins"
+author: "Carlos García"
+---
+
+# Crea Tu Propio Marketplace de Plugins para Claude Code 🚀
+
+<small>February 03, 2026</small>
+<EditPost path="create-your-own-plugin-marketplace" />
+
+<img
+  width="100%"
+  alt="Claude Code Plugin Marketplace"
+  src="https://miro.medium.com/max/1400/0*EODEF6xTWVm5hv-3"
+  style={{borderRadius:"8px"}}
+/>
+
+Claude Code ha revolucionado cómo interactuamos con la IA en el desarrollo de software. ¿Pero sabías que puedes crear tu propio marketplace de plugins para extender las capacidades de Claude con habilidades, agentes y herramientas personalizadas? En esta guía, te mostraré cómo construí mi propio marketplace de plugins y cómo tú puedes hacer lo mismo.
+
+## ¿Qué es un Marketplace de Plugins? 🤔
+
+Un marketplace de plugins es un catálogo centralizado que distribuye extensiones de Claude Code entre equipos y comunidades. Piénsalo como una tienda de aplicaciones para Claude Code, donde puedes:
+
+- **Compartir habilidades personalizadas** que automatizan tareas repetitivas
+- **Distribuir agentes especializados** para flujos de trabajo de desarrollo específicos
+- **Empaquetar servidores MCP** para integración con herramientas externas
+- **Control de versiones** de tus extensiones para fácil actualización
+
+## ¿Por Qué Crear Tu Propio Marketplace?
+
+Antes de entrar en los detalles técnicos, déjame compartir por qué creé mi propio marketplace:
+
+### Para Proyectos Personales
+- **Consistencia**: Reutiliza los mismos patrones de desarrollo en todos los proyectos
+- **Eficiencia**: Scaffolding de un comando para tareas comunes
+- **Mejores Prácticas**: Aplica tus estándares de código automáticamente
+
+### Para Equipos
+- **Onboarding**: Los nuevos miembros obtienen acceso instantáneo a las convenciones del equipo
+- **Estandarización**: Todos usan los mismos patrones de arquitectura
+- **Compartir Conocimiento**: Captura el conocimiento tribal en forma ejecutable
+
+### Para Open Source
+- **Construcción de Comunidad**: Comparte tus flujos de trabajo de desarrollo con otros
+- **Documentación**: Los plugins sirven como documentación viva
+- **Contribución**: Facilita que otros contribuyan a tus proyectos
+
+## Mi Marketplace de Plugins 📦
+
+Recientemente lancé mi propio marketplace en <BlogLink url="https://github.com/solrac97gr/marketplace-plugins" content="github.com/solrac97gr/marketplace-plugins"/>, que incluye tres plugins poderosos:
+
+### 1. go-dev: Kit de Desarrollo Backend
+
+Un conjunto de herramientas completo para desarrollo en Go con patrones de arquitectura de nivel empresarial.
+
+**Características:**
+- 7 skills listas para producción para scaffolding de proyectos
+- 9 agentes de IA para revisión de arquitectura y aseguramiento de calidad
+- 1 servidor MCP en Go para testing de arquitectura en tiempo real
+- Soporte para arquitectura hexagonal, DDD y TDD con Godog BDD
+
+<CodeSnippet language="bash" code={`# Inicializa un nuevo proyecto Go con arquitectura hexagonal
+/go-dev:start-project ecommerce-api
+
+# Crea una nueva feature siguiendo TDD
+/go-dev:new-feature user-authentication
+
+# Genera una entidad de dominio con interfaz de repositorio
+/go-dev:new-entity Product
+
+# Revisa el código para cumplimiento de arquitectura
+/go-dev:review-arch`} />
+
+### 2. react-dev: Suite de Desarrollo Frontend
+
+Kit de herramientas moderno para desarrollo React con énfasis en calidad, accesibilidad y rendimiento.
+
+**Características:**
+- 10 skills listas para producción para flujos de trabajo React
+- 10 agentes especializados (seguridad, rendimiento, accesibilidad)
+- 1 servidor MCP en Go para análisis de componentes
+- Integración con Vite, TypeScript, Tailwind CSS, Vitest y Storybook
+
+<CodeSnippet language="bash" code={`# Inicia un nuevo proyecto React con mejores prácticas
+/react-dev:start-project my-dashboard
+
+# Crea un componente con tests y Storybook
+/react-dev:new-component UserProfile
+
+# Crea un custom hook con tests comprehensivos
+/react-dev:new-hook useAuth
+
+# Revisa cumplimiento de accesibilidad
+/react-dev:review-a11y`} />
+
+### 3. plugin-helper: El Meta Plugin
+
+Este es mi favorito - ¡un plugin que genera plugins! Analiza tu codebase para identificar patrones y crea plugins personalizados adaptados a tu proyecto.
+
+**Características:**
+- Reconocimiento de patrones agnóstico al lenguaje
+- Generación automática de skills, agents, hooks y servidores MCP
+- Creación de documentación específica del proyecto
+- Extracción de templates desde código existente
+
+<CodeSnippet language="bash" code={`# Analiza tu proyecto para oportunidades de automatización
+/plugin-helper:analyze-project
+
+# Genera un plugin personalizado basado en tus patrones
+/plugin-helper:generate-plugin`} />
+
+## Cómo Crear Tu Propio Marketplace 🛠️
+
+Déjame guiarte paso a paso en la creación de un marketplace de plugins.
+
+### Paso 1: Entiende la Estructura
+
+Un marketplace es esencialmente un repositorio Git con una estructura específica:
+
+<CodeSnippet language="bash" code={`my-marketplace/
+├── .claude-plugin/
+│   └── marketplace.json      # Manifiesto del marketplace
+└── plugins/
+    ├── plugin-one/
+    │   ├── .claude-plugin/
+    │   │   └── plugin.json   # Manifiesto del plugin
+    │   ├── skills/           # Comandos invocados por usuario
+    │   ├── agents/           # Agentes IA especializados
+    │   ├── hooks/            # Manejadores de eventos
+    │   └── .mcp.json         # Configs de servidor MCP
+    └── plugin-two/
+        └── ...`} />
+
+### Paso 2: Crea el Manifiesto del Marketplace
+
+El archivo `marketplace.json` define la identidad de tu marketplace y lista los plugins disponibles.
+
+<CodeSnippet language="json" route=".claude-plugin/marketplace.json" code={`{
+  "name": "my-plugins",
+  "owner": {
+    "name": "Tu Nombre",
+    "email": "tu@email.com"
+  },
+  "metadata": {
+    "description": "Mis plugins personalizados de Claude Code",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "my-first-plugin",
+      "source": "./plugins/my-first-plugin",
+      "description": "Un plugin útil para mi flujo de trabajo",
+      "version": "1.0.0",
+      "author": {
+        "name": "Tu Nombre"
+      }
+    }
+  ]
+}`} />
+
+### Paso 3: Crea Tu Primer Plugin
+
+Vamos a crear un plugin simple con una skill personalizada:
+
+<CodeSnippet language="bash" code={`# Crea estructura del plugin
+mkdir -p plugins/code-reviewer/.claude-plugin
+mkdir -p plugins/code-reviewer/skills/review
+
+# Crea manifiesto del plugin
+cat > plugins/code-reviewer/.claude-plugin/plugin.json << 'EOF'
+{
+  "name": "code-reviewer",
+  "description": "Asistente de revisión de código con IA",
+  "version": "1.0.0"
+}
+EOF
+
+# Crea una skill
+cat > plugins/code-reviewer/skills/review/SKILL.md << 'EOF'
+---
+description: Revisa código para bugs, seguridad y mejores prácticas
+disable-model-invocation: true
+---
+
+Revisa el código seleccionado o los cambios recientes para:
+- Bugs potenciales o casos extremos
+- Vulnerabilidades de seguridad
+- Problemas de rendimiento
+- Estilo de código y legibilidad
+- Violaciones de mejores prácticas
+
+Proporciona feedback específico y accionable.
+EOF`} />
+
+### Paso 4: Agrega Características Avanzadas
+
+#### Agentes Personalizados
+
+Los agentes son asistentes de IA especializados que trabajan de forma autónoma. Aquí hay un ejemplo:
+
+<CodeSnippet language="markdown" route="plugins/code-reviewer/agents/security-reviewer.md" code={`---
+name: Security Reviewer
+description: Agente especializado en análisis de vulnerabilidades de seguridad
+---
+
+Eres un experto en seguridad especializado en identificar vulnerabilidades.
+
+Al revisar código:
+1. Verifica vulnerabilidades del OWASP Top 10
+2. Identifica problemas de validación de entrada
+3. Busca fallas de autenticación/autorización
+4. Revisa exposición de datos sensibles
+5. Verifica prácticas de comunicación segura
+
+Proporciona un puntaje de seguridad (1-10) y hallazgos detallados.`} />
+
+#### Servidores MCP
+
+Los servidores MCP (Model Context Protocol) dan a Claude acceso a herramientas externas. Así es como configurar uno:
+
+<CodeSnippet language="json" route="plugins/code-reviewer/.mcp.json" code={`{
+  "security-scanner": {
+    "command": "\${CLAUDE_PLUGIN_ROOT}/servers/security-scanner",
+    "args": ["--config", "\${CLAUDE_PLUGIN_ROOT}/config.json"],
+    "env": {
+      "SCANNER_MODE": "strict"
+    }
+  }
+}`} />
+
+#### Hooks
+
+Los hooks te permiten ejecutar código en respuesta a eventos. Ejemplo:
+
+<CodeSnippet language="json" route="plugins/code-reviewer/hooks/hooks.json" code={`{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path' | xargs eslint --fix"
+          }
+        ]
+      }
+    ]
+  }
+}`} />
+
+### Paso 5: Prueba Localmente
+
+Antes de publicar, prueba tu marketplace localmente:
+
+<CodeSnippet language="bash" code={`# Carga el marketplace
+claude --plugin-dir ./my-marketplace
+
+# O dentro de Claude Code
+/plugin marketplace add ./my-marketplace
+
+# Instala tu plugin
+/plugin install code-reviewer@my-plugins
+
+# Prueba tu skill
+/code-reviewer:review`} />
+
+### Paso 6: Publica en GitHub
+
+Una vez probado, publica tu marketplace:
+
+<CodeSnippet language="bash" code={`# Inicializa repositorio git
+git init
+git add .
+git commit -m "Initial marketplace release"
+
+# Crea repositorio GitHub y push
+gh repo create my-claude-plugins --public
+git remote add origin https://github.com/tuusuario/my-claude-plugins.git
+git push -u origin main
+
+# Etiqueta un release
+git tag v1.0.0
+git push origin v1.0.0`} />
+
+### Paso 7: Comparte con Otros
+
+Los usuarios ahora pueden instalar tu marketplace:
+
+<CodeSnippet language="bash" code={`# Agrega marketplace por repo GitHub
+/plugin marketplace add tuusuario/my-claude-plugins
+
+# Instala plugins específicos
+/plugin install code-reviewer@my-plugins
+
+# Actualiza marketplace
+/plugin marketplace update my-plugins`} />
+
+## Mejores Prácticas 💡
+
+### 1. Versiona Tus Plugins
+
+Usa versionado semántico para gestión clara de actualizaciones:
+
+<CodeSnippet language="json" code={`{
+  "name": "my-plugin",
+  "version": "1.2.3"
+  // Mayor.Menor.Parche
+  // 1: Cambios incompatibles
+  // 2: Nuevas características
+  // 3: Corrección de bugs
+}`} />
+
+### 2. Proporciona Documentación Clara
+
+Cada plugin debe tener un README completo:
+
+<CodeSnippet language="markdown" route="plugins/my-plugin/README.md" code={`# My Plugin
+
+## Descripción
+Qué hace este plugin y por qué es útil.
+
+## Instalación
+\`\`\`bash
+/plugin marketplace add owner/repo
+/plugin install my-plugin@marketplace-name
+\`\`\`
+
+## Skills
+- \`/my-plugin:skill1\` - Descripción
+- \`/my-plugin:skill2\` - Descripción
+
+## Ejemplos
+Ejemplos de uso concretos...`} />
+
+### 3. Mantén los Plugins Enfocados
+
+Cada plugin debe resolver un problema bien:
+
+<CodeComparition
+  languageL={"markdown"}
+  languageR={"markdown"}
+  left={`# ❌ Mal: Plugin Monolítico
+
+my-mega-plugin/
+├── frontend/
+├── backend/
+├── database/
+├── testing/
+├── deployment/
+└── docs/
+
+**Problema:**
+- Difícil de mantener
+- Usuarios instalan características innecesarias
+- Difícil de versionar`}
+  rigth={`# ✅ Bien: Plugins Enfocados
+
+marketplace/
+├── frontend-plugin/
+├── backend-plugin/
+├── db-plugin/
+├── testing-plugin/
+└── deploy-plugin/
+
+**Beneficios:**
+- Fácil de mantener
+- Usuarios eligen lo que necesitan
+- Versionado independiente`}
+/>
+
+### 4. Usa Variables de Plugin
+
+Aprovecha `${CLAUDE_PLUGIN_ROOT}` para rutas portables:
+
+<CodeSnippet language="json" code={`{
+  "mcpServers": {
+    "my-server": {
+      "command": "\${CLAUDE_PLUGIN_ROOT}/bin/server",
+      "args": ["--config", "\${CLAUDE_PLUGIN_ROOT}/config.json"]
+    }
+  }
+}`} />
+
+### 5. Prueba en Diferentes Proyectos
+
+Prueba tu marketplace en diferentes tipos de proyectos:
+
+<CodeSnippet language="bash" code={`# Prueba en un proyecto Go
+cd ~/projects/go-api
+claude --plugin-dir ~/my-marketplace
+
+# Prueba en un proyecto React
+cd ~/projects/react-app
+claude --plugin-dir ~/my-marketplace
+
+# Prueba en un monorepo
+cd ~/projects/monorepo
+claude --plugin-dir ~/my-marketplace`} />
+
+## Casos de Uso del Mundo Real 🎯
+
+### Marketplace de Equipo Empresarial
+
+<CodeSnippet language="json" route=".claude-plugin/marketplace.json" code={`{
+  "name": "acme-dev-tools",
+  "plugins": [
+    {
+      "name": "acme-api-generator",
+      "description": "Genera APIs siguiendo estándares ACME"
+    },
+    {
+      "name": "acme-security-scanner",
+      "description": "Escaneo de seguridad con políticas de la empresa"
+    },
+    {
+      "name": "acme-deployment",
+      "description": "Despliega en infraestructura ACME"
+    }
+  ]
+}`} />
+
+### Proyecto Open Source
+
+<CodeSnippet language="json" route=".claude-plugin/marketplace.json" code={`{
+  "name": "myproject-contrib",
+  "plugins": [
+    {
+      "name": "contribution-guide",
+      "description": "Ayuda a contribuidores a seguir convenciones del proyecto"
+    },
+    {
+      "name": "pr-reviewer",
+      "description": "Revisión automática de PR contra guías"
+    }
+  ]
+}`} />
+
+## Características Avanzadas 🚀
+
+### Marketplaces Privados
+
+Para uso interno, configura autenticación:
+
+<CodeSnippet language="bash" code={`# Configura token GitHub para repos privados
+export GITHUB_TOKEN=ghp_tu_token_aqui
+
+# Agrega marketplace privado
+/plugin marketplace add private-org/internal-plugins`} />
+
+### Restricciones de Marketplace
+
+Las organizaciones pueden forzar marketplaces aprobados:
+
+<CodeSnippet language="json" route="managed-settings.json" code={`{
+  "strictKnownMarketplaces": [
+    {
+      "source": "github",
+      "repo": "acme-corp/approved-plugins"
+    },
+    {
+      "source": "hostPattern",
+      "hostPattern": "^github\\\\.acme\\\\.com$"
+    }
+  ]
+}`} />
+
+## Estadísticas de Mi Marketplace 📊
+
+Después de lanzar mi marketplace, aquí hay algunas perspectivas:
+
+- **3 plugins** con propósitos complementarios
+- **19 skills** cubriendo Go, React y generación de plugins
+- **20 agentes especializados** para aseguramiento de calidad
+- **~30,000 líneas** de código listo para producción
+- **2 servidores MCP** para análisis en tiempo real
+
+El meta plugin **plugin-helper** ha sido particularmente útil - me ha ayudado a generar plugins personalizados para varios de mis proyectos, extrayendo patrones que seguía manualmente.
+
+## El Poder de Plugin-Helper 🎨
+
+Déjame destacar el plugin-helper porque es un cambio de juego para crear plugins personalizados:
+
+### Cómo Funciona
+
+1. **Fase de Análisis**: Escanea tu codebase para identificar patrones
+
+<CodeSnippet language="bash" code={`/plugin-helper:analyze-project
+
+# Salida:
+# ✓ Encontrados 15 patrones recurrentes
+# ✓ Identificados 8 flujos de trabajo manuales
+# ✓ Detectados 12 templates de código
+# ✓ Analizados 5 patrones de testing`} />
+
+2. **Fase de Generación**: Crea un plugin completo
+
+<CodeSnippet language="bash" code={`/plugin-helper:generate-plugin
+
+# Genera:
+# - Skills personalizadas para tus flujos de trabajo
+# - Agentes siguiendo tus patrones
+# - Hooks para tus convenciones
+# - Servidores MCP para tus herramientas
+# - Documentación completa`} />
+
+### Ejemplo Real
+
+Usé plugin-helper en uno de mis proyectos de microservicios:
+
+**Entrada**: Codebase con patrones API consistentes
+**Salida**: Un plugin con skills como:
+- `/myservice:new-endpoint` - Genera endpoints REST
+- `/myservice:add-middleware` - Agrega middleware de auth/logging
+- `/myservice:create-test` - Genera tests de integración
+
+¡Esto me ahorró horas de código repetitivo!
+
+## Solución de Problemas Comunes 🔧
+
+### Plugin No Carga
+
+<CodeSnippet language="bash" code={`# Valida estructura del marketplace
+claude plugin validate .
+
+# Verifica sintaxis de plugin.json
+cat .claude-plugin/plugin.json | jq .
+
+# Verifica permisos de archivo
+chmod +x hooks/*.sh
+chmod +x servers/*`} />
+
+### Skills No Aparecen
+
+<CodeSnippet language="bash" code={`# Asegura que SKILL.md tenga frontmatter apropiado
+head -n 5 skills/my-skill/SKILL.md
+
+# Debería mostrar:
+# ---
+# description: Descripción de la skill aquí
+# ---
+
+# Reinicia Claude Code
+/restart`} />
+
+### Servidor MCP Falla
+
+<CodeSnippet language="bash" code={`# Prueba servidor independientemente
+./servers/my-server --help
+
+# Verifica logs del servidor
+tail -f ~/.config/claude/logs/mcp-*.log
+
+# Verifica variables de entorno
+echo $CLAUDE_PLUGIN_ROOT`} />
+
+## Recursos y Siguientes Pasos 📚
+
+### Explora Mi Marketplace
+
+Revisa mi marketplace para inspiración:
+- **Repositorio**: <BlogLink url="https://github.com/solrac97gr/marketplace-plugins" content="solrac97gr/marketplace-plugins"/>
+- **Documentación**: Cada plugin tiene README detallado con ejemplos
+- **Ejemplos**: Uso en el mundo real en proyectos de producción
+
+### Documentación Oficial
+
+- <BlogLink url="https://code.claude.com/docs/en/plugins" content="Guía de Plugins de Claude Code"/>
+- <BlogLink url="https://code.claude.com/docs/en/plugin-marketplaces" content="Documentación de Marketplaces de Plugins"/>
+
+### Instalación
+
+<CodeSnippet language="bash" code={`# Agrega mi marketplace
+/plugin marketplace add solrac97gr/marketplace-plugins
+
+# Instala plugins
+/plugin install go-dev@marketplace-plugins
+/plugin install react-dev@marketplace-plugins
+/plugin install plugin-helper@marketplace-plugins`} />
+
+## Conclusión 🎉
+
+Crear tu propio marketplace de plugins es una de las mejores maneras de:
+
+- **Amplificar tu productividad** automatizando tareas repetitivas
+- **Compartir conocimiento** con tu equipo o la comunidad
+- **Aplicar mejores prácticas** automáticamente
+- **Construir una biblioteca** de flujos de trabajo de desarrollo reutilizables
+
+El meta plugin plugin-helper es especialmente poderoso - puede analizar cualquier codebase y generar plugins personalizados adaptados a tus patrones específicos. Esto significa que puedes capturar y compartir tu sabiduría de desarrollo sin crear manualmente cada plugin.
+
+Comienza pequeño con uno o dos plugins que resuelvan tus puntos de dolor más comunes, luego haz crecer tu marketplace a medida que identifiques más patrones que valga la pena automatizar.
+
+Si creas tu propio marketplace, ¡me encantaría saber de él! Comparte tu repositorio en los comentarios o contáctame.
+
+¡Feliz construcción de plugins! 🚀
+
+---
+
+<BlogLink
+  url={"https://github.com/solrac97gr/marketplace-plugins"}
+  content={"Revisa mi marketplace de plugins en GitHub"}
+/>
