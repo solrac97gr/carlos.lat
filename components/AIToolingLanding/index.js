@@ -36,6 +36,16 @@ import {
   ProcessPhase,
   PhaseTitle,
   PhaseDescription,
+  TestimonialsGrid,
+  TestimonialCard,
+  TestimonialHeader,
+  TestimonialAvatar,
+  TestimonialInfo,
+  TestimonialName,
+  TestimonialRole,
+  TestimonialCompany,
+  TestimonialStars,
+  TestimonialText,
   CTASection,
   CTATitle,
   CTASubtitle,
@@ -356,6 +366,52 @@ export const AIToolingLanding = () => {
             </PhaseDescription>
           </ProcessPhase>
         </ProcessTimeline>
+      </Section>
+
+      {/* Testimonials Section */}
+      <Section>
+        <SectionTitle>{t("aiTooling.testimonials.title")}</SectionTitle>
+        <SectionSubtitle>{t("aiTooling.testimonials.subtitle")}</SectionSubtitle>
+        <TestimonialsGrid>
+          {[1, 2, 3, 4, 5].map((num) => {
+            const testimonial = t(`aiTooling.testimonials.testimonial${num}`);
+            const initials = testimonial.name
+              .split(" ")
+              .map((n) => n[0])
+              .join("");
+            return (
+              <TestimonialCard key={num}>
+                <TestimonialHeader>
+                  <TestimonialAvatar>{initials}</TestimonialAvatar>
+                  <TestimonialInfo>
+                    <TestimonialName>{testimonial.name}</TestimonialName>
+                    <TestimonialRole>
+                      {testimonial.role} at{" "}
+                      <TestimonialCompany>
+                        {testimonial.company}
+                      </TestimonialCompany>
+                    </TestimonialRole>
+                  </TestimonialInfo>
+                </TestimonialHeader>
+                <TestimonialStars>
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <svg
+                      key={i}
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                    </svg>
+                  ))}
+                </TestimonialStars>
+                <TestimonialText>&ldquo;{testimonial.text}&rdquo;</TestimonialText>
+              </TestimonialCard>
+            );
+          })}
+        </TestimonialsGrid>
       </Section>
 
       {/* CTA Section */}

@@ -558,6 +558,93 @@ export const PhaseDescription = styled.p`
   line-height: 1.75;
 `;
 
+// Testimonials Section
+export const TestimonialsGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-top: 3rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+`;
+
+export const TestimonialCard = styled.div`
+  padding: 2rem;
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+export const TestimonialHeader = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+`;
+
+export const TestimonialAvatar = styled.div`
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1.125rem;
+  flex-shrink: 0;
+`;
+
+export const TestimonialInfo = styled.div`
+  flex: 1;
+`;
+
+export const TestimonialName = styled.h4`
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.25rem;
+`;
+
+export const TestimonialRole = styled.p`
+  font-size: 0.875rem;
+  color: #6b7280;
+`;
+
+export const TestimonialCompany = styled.span`
+  color: #3b82f6;
+  font-weight: 600;
+`;
+
+export const TestimonialStars = styled.div`
+  display: flex;
+  gap: 0.25rem;
+  color: #fbbf24;
+  margin-bottom: 0.5rem;
+`;
+
+export const TestimonialText = styled.p`
+  font-size: 0.9375rem;
+  color: #4b5563;
+  line-height: 1.625;
+  font-style: italic;
+`;
+
 // CTA Section
 export const CTASection = styled.section`
   padding: 5rem 2rem;
