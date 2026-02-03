@@ -99,6 +99,9 @@ export const Navbar = () => {
           <NavLink href="/blog" onClick={() => logEvent("Navigation", "Blog_Click")}>
             {t('nav.blog')}
           </NavLink>
+          <NavLink href="/ai-tooling" onClick={() => logEvent("Navigation", "AI_Tooling_Click")}>
+            {t('nav.aiTooling')}
+          </NavLink>
 
           <SocialIcons>
             <SocialIcon
@@ -185,6 +188,9 @@ export const Navbar = () => {
         </MobileNavLink>
         <MobileNavLink href="/blog">
           {t('nav.blog')}
+        </MobileNavLink>
+        <MobileNavLink href="/ai-tooling" onClick={() => setMobileMenuOpen(false)}>
+          {t('nav.aiTooling')}
         </MobileNavLink>
 
         <MobileSocialIcons>
