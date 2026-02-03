@@ -36,20 +36,28 @@ rm -rf .next out                # Clean build cache
 
 ## Architecture
 
-### Separate AI Tooling Landing Pages for Campaign Targeting
+### Landing Pages Architecture
 
-The AI Tooling offering has **separate landing pages** for Spanish and English campaigns:
+All landing pages (without navbar) are organized under the **`/landing/`** prefix:
 
-- **`/ai-tooling` (Spanish)**: Default AI tooling landing for Spanish-speaking audience
-- **`/en/ai-tooling` (English)**: English AI tooling landing for international campaigns
+**Current Landing Pages:**
+- **`/landing/ai-tooling` (Spanish)**: AI tooling landing for Spanish-speaking audience
+- **`/landing/en/ai-tooling` (English)**: AI tooling landing for international campaigns
 
-Both pages:
-- Use the same AIToolingLanding component with bilingual translations
-- Force their respective language via `useEffect` hook
-- Have unique meta tags and SEO optimization for their target audience
-- Include hreflang tags for proper SEO
+**Key Features:**
+- Any page under `/landing/*` automatically hides the navbar (configured in `_app.js`)
+- Each language version forces its language via `useEffect` hook
+- Language switcher component is hidden (via `hideLanguageSwitcher` prop)
+- Unique meta tags and SEO optimization per language
+- Hreflang tags for proper SEO
 
-**Why separate pages?**: Better campaign targeting (Google Ads, Facebook Ads), unique URLs for A/B testing, language-specific meta tags, and clearer analytics tracking per language.
+**Why this approach?**:
+- Clean, scalable pattern for adding new landing pages
+- Better campaign targeting (Google Ads, Facebook Ads)
+- Unique URLs for A/B testing
+- Language-specific meta tags
+- Clearer analytics tracking per language
+- No navbar clutter for conversion-focused pages
 
 ### Hybrid Content System
 
