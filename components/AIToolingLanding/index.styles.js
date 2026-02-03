@@ -5,19 +5,134 @@ export const Container = styled.div`
   background: #ffffff;
 `;
 
+// Simple Header
+export const SimpleHeader = styled.header`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #e5e7eb;
+`;
+
+export const HeaderContent = styled.div`
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const Logo = styled.a`
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #111827;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    color: #3b82f6;
+  }
+`;
+
+export const LogoAccent = styled.span`
+  color: #3b82f6;
+`;
+
+export const LanguageSelector = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+`;
+
+export const LanguageButton = styled.button`
+  padding: 0.5rem 1rem;
+  background: ${props => props.isActive ? '#3b82f6' : 'transparent'};
+  color: ${props => props.isActive ? 'white' : '#6b7280'};
+  border: 1px solid ${props => props.isActive ? '#3b82f6' : '#e5e7eb'};
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${props => props.isActive ? '#2563eb' : '#f3f4f6'};
+    border-color: ${props => props.isActive ? '#2563eb' : '#d1d5db'};
+  }
+`;
+
+// Simple Footer
+export const SimpleFooter = styled.footer`
+  background: #111827;
+  padding: 3rem 2rem;
+  text-align: center;
+`;
+
+export const FooterContent = styled.div`
+  max-width: 1280px;
+  margin: 0 auto;
+`;
+
+export const FooterLogo = styled.div`
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 1rem;
+`;
+
+export const FooterText = styled.p`
+  color: #9ca3af;
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+`;
+
+export const FooterLinks = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+
+  @media (min-width: 640px) {
+    flex-direction: row;
+    justify-content: center;
+    gap: 2rem;
+  }
+`;
+
+export const FooterLink = styled.a`
+  color: #d1d5db;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: white;
+  }
+`;
+
+export const Copyright = styled.p`
+  color: #6b7280;
+  font-size: 0.75rem;
+  margin-top: 2rem;
+`;
+
 // Hero Section
 export const HeroSection = styled.section`
-  padding: 8rem 2rem 4rem;
+  padding: 10rem 2rem 4rem;
   max-width: 1280px;
   margin: 0 auto;
   text-align: center;
 
   @media (min-width: 768px) {
-    padding: 10rem 3rem 5rem;
+    padding: 12rem 3rem 5rem;
   }
 
   @media (min-width: 1024px) {
-    padding: 12rem 4rem 6rem;
+    padding: 14rem 4rem 6rem;
   }
 `;
 

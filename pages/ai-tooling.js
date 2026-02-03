@@ -1,6 +1,5 @@
 import Head from "next/head";
 import { AIToolingLanding } from "../components/AIToolingLanding";
-import { Footer } from "../components/Footer";
 import { useLanguage } from "../lib/LanguageContext";
 import { PAGE_URL } from "../lib/consts";
 
@@ -44,7 +43,6 @@ export default function AIToolingPage() {
       <main>
         <AIToolingLanding />
       </main>
-      <Footer />
     </>
   );
 }

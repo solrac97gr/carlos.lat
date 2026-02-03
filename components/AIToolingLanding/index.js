@@ -1,5 +1,11 @@
 import {
   Container,
+  SimpleHeader,
+  HeaderContent,
+  Logo,
+  LogoAccent,
+  LanguageSelector,
+  LanguageButton,
   HeroSection,
   Badge,
   Title,
@@ -39,6 +45,13 @@ import {
   CTASubtitle,
   CTAButton,
   CTAAlternative,
+  SimpleFooter,
+  FooterContent,
+  FooterLogo,
+  FooterText,
+  FooterLinks,
+  FooterLink,
+  Copyright,
 } from "./index.styles";
 import { useLanguage } from "../../lib/LanguageContext";
 import { PHONE_NUMBER } from "../../lib/consts";
@@ -47,7 +60,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 export const AIToolingLanding = () => {
-  const { t, language } = useLanguage();
+  const { t, language, changeLanguage } = useLanguage();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -71,8 +84,35 @@ export const AIToolingLanding = () => {
     }
   };
 
+  const handleLanguageChange = (lang) => {
+    changeLanguage(lang);
+    logEvent("Language", "Change", lang);
+  };
+
   return (
     <Container>
+      {/* Simple Header */}
+      <SimpleHeader>
+        <HeaderContent>
+          <Logo href="/">
+            Carlos<LogoAccent> García</LogoAccent>
+          </Logo>
+          <LanguageSelector>
+            <LanguageButton
+              isActive={language === "en"}
+              onClick={() => handleLanguageChange("en")}
+            >
+              EN
+            </LanguageButton>
+            <LanguageButton
+              isActive={language === "es"}
+              onClick={() => handleLanguageChange("es")}
+            >
+              ES
+            </LanguageButton>
+          </LanguageSelector>
+        </HeaderContent>
+      </SimpleHeader>
       {/* Hero Section */}
       <HeroSection>
         <Badge>{t("aiTooling.hero.badge")}</Badge>
@@ -352,6 +392,37 @@ export const AIToolingLanding = () => {
           </a>
         </CTAAlternative>
       </CTASection>
+
+      {/* Simple Footer */}
+      <SimpleFooter>
+        <FooterContent>
+          <FooterLogo>
+            Carlos <LogoAccent>García</LogoAccent>
+          </FooterLogo>
+          <FooterText>
+            {language === "en"
+              ? "AI Tooling & Developer Productivity Consulting"
+              : "Consultoría en Herramientas de IA y Productividad"}
+          </FooterText>
+          <FooterLinks>
+            <FooterLink href={`https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${whatsappText}`} target="_blank">
+              WhatsApp
+            </FooterLink>
+            <FooterLink href="mailto:cgarciarosales97@gmail.com">
+              Email
+            </FooterLink>
+            <FooterLink href="https://www.linkedin.com/in/carlos97gr/" target="_blank" rel="noreferrer">
+              LinkedIn
+            </FooterLink>
+            <FooterLink href="https://github.com/solrac97gr" target="_blank" rel="noreferrer">
+              GitHub
+            </FooterLink>
+          </FooterLinks>
+          <Copyright>
+            © {new Date().getFullYear()} Carlos García. {language === "en" ? "All rights reserved." : "Todos los derechos reservados."}
+          </Copyright>
+        </FooterContent>
+      </SimpleFooter>
     </Container>
   );
 };

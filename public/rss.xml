@@ -5,7 +5,7 @@
     <description>Technical blog about Go, Backend Development, AI, and Software Engineering</description>
     <link>https://carlos.lat</link>
     <language>es</language>
-    <lastBuildDate>Tue, 09 Dec 2025 09:11:03 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 03 Feb 2026 21:16:48 GMT</lastBuildDate>
     <atom:link href="https://carlos.lat/rss-es.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://carlos.lat/logo.png</url>
@@ -13,6 +13,106 @@
       <link>https://carlos.lat</link>
     </image>
     
+    <item>
+      <title><![CDATA[Cómo Crear Módulos Profesionales de Terraform 🏗️]]></title>
+      <description><![CDATA[Aprende a crear módulos de Terraform listos para producción con las mejores prácticas, usando como ejemplo un módulo real de Azure OpenAI.]]></description>
+      <link>https://carlos.lat/blog/como-crear-modulos-terraform</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/como-crear-modulos-terraform</guid>
+      <pubDate>Thu, 29 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Terraform</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482746.jpg?alt=media&amp;token=510dd66e-15af-4292-b84d-795a267155c4" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[How to Create Professional Terraform Modules 🏗️]]></title>
+      <description><![CDATA[Learn how to create production-ready Terraform modules with best practices, using a real-world Azure OpenAI module as an example.]]></description>
+      <link>https://carlos.lat/blog/como-crear-modulos-terraform</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/como-crear-modulos-terraform</guid>
+      <pubDate>Thu, 29 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Terraform</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482746.jpg?alt=media&amp;token=510dd66e-15af-4292-b84d-795a267155c4" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[Construyendo Microservicios Event-Driven con NATS, Go Fiber y DDD 🚀]]></title>
+      <description><![CDATA[Aprende a construir un sistema de e-commerce escalable basado en eventos usando NATS como event store, Go Fiber para APIs, Domain-Driven Design, Event Sourcing y Cobra CLI - minimizando escrituras en base de datos aprovechando los eventos como fuente de verdad.]]></description>
+      <link>https://carlos.lat/blog/event-driven-ddd-nats-fiber-ecommerce</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/event-driven-ddd-nats-fiber-ecommerce</guid>
+      <pubDate>Fri, 23 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Go, NATS, DDD, Event-Sourcing</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fconcurrency-go-2.jpeg?alt=media&amp;token=0c8d51d9-5491-4928-8ff7-d8786be2d65b" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[Building Event-Driven Microservices with NATS, Go Fiber, and DDD 🚀]]></title>
+      <description><![CDATA[Learn how to build a scalable event-driven e-commerce system using NATS as an event store, Go Fiber for APIs, Domain-Driven Design, Event Sourcing, and Cobra CLI - minimizing database writes by leveraging events as the source of truth.]]></description>
+      <link>https://carlos.lat/blog/event-driven-ddd-nats-fiber-ecommerce</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/event-driven-ddd-nats-fiber-ecommerce</guid>
+      <pubDate>Fri, 23 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Go, NATS, DDD, Event-Sourcing</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fconcurrency-go-2.jpeg?alt=media&amp;token=0c8d51d9-5491-4928-8ff7-d8786be2d65b" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[Los 13 Secretos de Go: Preguntas que Separan a los Ingenieros de Go de Élite 🔥]]></title>
+      <description><![CDATA[Domina los conceptos profundos de Go que separan a los desarrolladores promedio de los ingenieros 10x en entrevistas de escalado - desde el runtime hasta sistemas distribuidos.]]></description>
+      <link>https://carlos.lat/blog/13-go-secrets-top-tier-engineers</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/13-go-secrets-top-tier-engineers</guid>
+      <pubDate>Thu, 22 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Go, Rendimiento, Escalado</category>
+      <author>Carlos García</author>
+      <enclosure url="https://miro.medium.com/max/1400/1*0xwMiyD3YFwIsfk-ZREGNQ.png" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[The 13 Go Secrets: Questions That Separate Top-Tier Go Engineers 🔥]]></title>
+      <description><![CDATA[Master the deep Go concepts that separate average developers from 10x engineers in scaling interviews - from runtime internals to distributed systems.]]></description>
+      <link>https://carlos.lat/blog/13-go-secrets-top-tier-engineers</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/13-go-secrets-top-tier-engineers</guid>
+      <pubDate>Thu, 22 Jan 2026 00:00:00 GMT</pubDate>
+      <category>Go, Performance, Scaling</category>
+      <author>Carlos García</author>
+      <enclosure url="https://miro.medium.com/max/1400/1*0xwMiyD3YFwIsfk-ZREGNQ.png" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[Arquitectura Event-Driven con AWS: DynamoDB Streams + Lambda 🚀]]></title>
+      <description><![CDATA[✅ Aprende a construir microservicios escalables basados en eventos usando DynamoDB Streams y funciones Lambda con patrones y ejemplos del mundo real.]]></description>
+      <link>https://carlos.lat/blog/event-driven-architecture-aws-dynamodb-lambda</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/event-driven-architecture-aws-dynamodb-lambda</guid>
+      <pubDate>Mon, 19 Jan 2026 00:00:00 GMT</pubDate>
+      <category>AWS, Lambda, DynamoDB</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fconcurrency-go-2.jpeg?alt=media&amp;token=0c8d51d9-5491-4928-8ff7-d8786be2d65b" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[Event-Driven Architecture with AWS: DynamoDB Streams + Lambda 🚀]]></title>
+      <description><![CDATA[✅ Learn how to build scalable event-driven microservices using DynamoDB Streams and Lambda functions with real-world patterns and examples.]]></description>
+      <link>https://carlos.lat/blog/event-driven-architecture-aws-dynamodb-lambda</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/event-driven-architecture-aws-dynamodb-lambda</guid>
+      <pubDate>Mon, 19 Jan 2026 00:00:00 GMT</pubDate>
+      <category>AWS, Lambda, DynamoDB</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fconcurrency-go-2.jpeg?alt=media&amp;token=0c8d51d9-5491-4928-8ff7-d8786be2d65b" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[Cómo trabajo con IA en el Desarrollo de Software 🤖]]></title>
+      <description><![CDATA[✅ Mi metodología completa para desarrollar software usando agentes de IA, desde la planificación hasta la documentación.]]></description>
+      <link>https://carlos.lat/blog/como-trabajo-con-ia-desarrollo-software</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/como-trabajo-con-ia-desarrollo-software</guid>
+      <pubDate>Mon, 05 Jan 2026 00:00:00 GMT</pubDate>
+      <category>IA, Claude, Desarrollo</category>
+      <author>Carlos García</author>
+      <enclosure url="https://miro.medium.com/max/1400/0*EODEF6xTWVm5hv-3" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[How I Work with AI in Software Development 🤖]]></title>
+      <description><![CDATA[✅ My complete methodology for developing software using AI agents, from planning to documentation.]]></description>
+      <link>https://carlos.lat/blog/como-trabajo-con-ia-desarrollo-software</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/como-trabajo-con-ia-desarrollo-software</guid>
+      <pubDate>Mon, 05 Jan 2026 00:00:00 GMT</pubDate>
+      <category>AI, Claude, Development</category>
+      <author>Carlos García</author>
+      <enclosure url="https://miro.medium.com/max/1400/0*EODEF6xTWVm5hv-3" type="image/jpeg" />
+    </item>
     <item>
       <title><![CDATA[NetArchTest para Go? GoArchTest: conserva tu arquitectura 🏗️]]></title>
       <description><![CDATA[Descubre cómo GoArchTest te ayuda a mantener una arquitectura sólida en Go, detectando violaciones que el compilador no puede encontrar.]]></description>
