@@ -373,7 +373,7 @@ export const AIToolingLanding = () => {
         <SectionTitle>{t("aiTooling.testimonials.title")}</SectionTitle>
         <SectionSubtitle>{t("aiTooling.testimonials.subtitle")}</SectionSubtitle>
         <TestimonialsGrid>
-          {[1, 2, 3, 4, 5].map((num) => {
+          {[1, 2, 3].map((num) => {
             const testimonial = t(`aiTooling.testimonials.testimonial${num}`);
             const initials = testimonial.name
               .split(" ")
