@@ -46,6 +46,22 @@ import {
   TestimonialCompany,
   TestimonialStars,
   TestimonialText,
+  PricingGrid,
+  PricingCard,
+  PricingBadge,
+  PricingHeader,
+  PricingName,
+  PricingPrice,
+  PricingIdeal,
+  PricingFeatures,
+  PricingFeature,
+  PricingROI,
+  PricingCTA,
+  PricingGuarantee,
+  FAQGrid,
+  FAQItem,
+  FAQQuestion,
+  FAQAnswer,
   CTASection,
   CTATitle,
   CTASubtitle,
@@ -138,6 +154,9 @@ export const AIToolingLanding = () => {
             {t("aiTooling.hero.ctaSecondary")}
           </SecondaryButton>
         </ButtonGroup>
+        <Description style={{ marginTop: '2rem', fontSize: '0.9rem', opacity: 0.8 }}>
+          {t("aiTooling.hero.trustBar")}
+        </Description>
       </HeroSection>
 
       {/* Problem Section */}
@@ -195,6 +214,15 @@ export const AIToolingLanding = () => {
               <StepTitle>{t("aiTooling.solution.step3Title")}</StepTitle>
               <StepDescription>
                 {t("aiTooling.solution.step3Desc")}
+              </StepDescription>
+            </StepContent>
+          </SolutionStep>
+          <SolutionStep>
+            <StepNumber>4</StepNumber>
+            <StepContent>
+              <StepTitle>{t("aiTooling.solution.step4Title")}</StepTitle>
+              <StepDescription>
+                {t("aiTooling.solution.step4Desc")}
               </StepDescription>
             </StepContent>
           </SolutionStep>
@@ -368,6 +396,102 @@ export const AIToolingLanding = () => {
         </ProcessTimeline>
       </Section>
 
+      {/* Pricing Section */}
+      <Section>
+        <SectionTitle>{t("aiTooling.pricing.title")}</SectionTitle>
+        <SectionSubtitle>{t("aiTooling.pricing.subtitle")}</SectionSubtitle>
+        <PricingGrid>
+          {/* Starter Package */}
+          <PricingCard>
+            <PricingHeader>
+              <PricingName>{t("aiTooling.pricing.starter.name")}</PricingName>
+              <PricingPrice>{t("aiTooling.pricing.starter.price")}</PricingPrice>
+              <PricingIdeal>{t("aiTooling.pricing.starter.ideal")}</PricingIdeal>
+            </PricingHeader>
+            <PricingFeatures>
+              {t("aiTooling.pricing.starter.features").map((feature, index) => (
+                <PricingFeature key={index}>{feature}</PricingFeature>
+              ))}
+            </PricingFeatures>
+            <PricingROI>{t("aiTooling.pricing.starter.roi")}</PricingROI>
+            <Link href={`https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${whatsappText}`} passHref>
+              <PricingCTA
+                onClick={handleCTAClick}
+                href={`https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${whatsappText}`}
+                target="_blank"
+              >
+                {t("aiTooling.pricing.starter.cta")}
+              </PricingCTA>
+            </Link>
+          </PricingCard>
+
+          {/* Pro Package (Featured) */}
+          <PricingCard featured>
+            <PricingBadge>{t("aiTooling.pricing.pro.badge")}</PricingBadge>
+            <PricingHeader>
+              <PricingName>{t("aiTooling.pricing.pro.name")}</PricingName>
+              <PricingPrice>{t("aiTooling.pricing.pro.price")}</PricingPrice>
+              <PricingIdeal>{t("aiTooling.pricing.pro.ideal")}</PricingIdeal>
+            </PricingHeader>
+            <PricingFeatures>
+              {t("aiTooling.pricing.pro.features").map((feature, index) => (
+                <PricingFeature key={index}>{feature}</PricingFeature>
+              ))}
+            </PricingFeatures>
+            <PricingROI>{t("aiTooling.pricing.pro.roi")}</PricingROI>
+            <Link href={`https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${whatsappText}`} passHref>
+              <PricingCTA
+                primary
+                onClick={handleCTAClick}
+                href={`https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${whatsappText}`}
+                target="_blank"
+              >
+                {t("aiTooling.pricing.pro.cta")}
+              </PricingCTA>
+            </Link>
+          </PricingCard>
+
+          {/* Enterprise Package */}
+          <PricingCard>
+            <PricingHeader>
+              <PricingName>{t("aiTooling.pricing.enterprise.name")}</PricingName>
+              <PricingPrice>{t("aiTooling.pricing.enterprise.price")}</PricingPrice>
+              <PricingIdeal>{t("aiTooling.pricing.enterprise.ideal")}</PricingIdeal>
+            </PricingHeader>
+            <PricingFeatures>
+              {t("aiTooling.pricing.enterprise.features").map((feature, index) => (
+                <PricingFeature key={index}>{feature}</PricingFeature>
+              ))}
+            </PricingFeatures>
+            <PricingROI>{t("aiTooling.pricing.enterprise.roi")}</PricingROI>
+            <Link href={`https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${whatsappText}`} passHref>
+              <PricingCTA
+                onClick={handleCTAClick}
+                href={`https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${whatsappText}`}
+                target="_blank"
+              >
+                {t("aiTooling.pricing.enterprise.cta")}
+              </PricingCTA>
+            </Link>
+          </PricingCard>
+        </PricingGrid>
+        <PricingGuarantee>{t("aiTooling.pricing.guarantee")}</PricingGuarantee>
+      </Section>
+
+      {/* FAQ Section */}
+      <Section style={{ background: "#f9fafb" }}>
+        <SectionTitle>{t("aiTooling.faq.title")}</SectionTitle>
+        <SectionSubtitle>{t("aiTooling.faq.subtitle")}</SectionSubtitle>
+        <FAQGrid>
+          {[1, 2, 3, 4, 5, 6].map((num) => (
+            <FAQItem key={num}>
+              <FAQQuestion>{t(`aiTooling.faq.question${num}`)}</FAQQuestion>
+              <FAQAnswer>{t(`aiTooling.faq.answer${num}`)}</FAQAnswer>
+            </FAQItem>
+          ))}
+        </FAQGrid>
+      </Section>
+
       {/* Testimonials Section */}
       <Section>
         <SectionTitle>{t("aiTooling.testimonials.title")}</SectionTitle>
@@ -418,6 +542,17 @@ export const AIToolingLanding = () => {
       <CTASection>
         <CTATitle>{t("aiTooling.cta.title")}</CTATitle>
         <CTASubtitle>{t("aiTooling.cta.subtitle")}</CTASubtitle>
+        <Description style={{ color: '#e0e7ff', maxWidth: '42rem', margin: '0 auto 2rem' }}>
+          <strong style={{ display: 'block', fontSize: '1.125rem', marginBottom: '1rem' }}>
+            {t("aiTooling.cta.assessmentBenefits")}
+          </strong>
+          <div style={{ textAlign: 'left', display: 'inline-block' }}>
+            <div style={{ marginBottom: '0.5rem' }}>✓ {t("aiTooling.cta.benefit1")}</div>
+            <div style={{ marginBottom: '0.5rem' }}>✓ {t("aiTooling.cta.benefit2")}</div>
+            <div style={{ marginBottom: '0.5rem' }}>✓ {t("aiTooling.cta.benefit3")}</div>
+            <div style={{ marginBottom: '0.5rem' }}>✓ {t("aiTooling.cta.benefit4")}</div>
+          </div>
+        </Description>
         <Link
           href={`https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${whatsappText}`}
           passHref
@@ -436,6 +571,12 @@ export const AIToolingLanding = () => {
             cgarciarosales97@gmail.com
           </a>
         </CTAAlternative>
+        <Description style={{ color: '#c7d2fe', fontSize: '0.875rem', marginTop: '1.5rem', fontStyle: 'italic' }}>
+          {t("aiTooling.cta.limited")}
+        </Description>
+        <Description style={{ color: '#fbbf24', fontSize: '1rem', marginTop: '1rem', fontWeight: '600' }}>
+          🔒 {t("aiTooling.cta.guarantee")}
+        </Description>
       </CTASection>
 
       {/* Simple Footer */}
