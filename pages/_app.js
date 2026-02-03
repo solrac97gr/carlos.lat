@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
-  const isLandingPage = router.pathname === '/ai-tooling';
+  const isLandingPage = router.pathname === '/ai-tooling' || router.pathname === '/en/ai-tooling';
 
   useEffect(() => {
     initGA()

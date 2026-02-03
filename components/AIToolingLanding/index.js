@@ -80,7 +80,7 @@ import { logEvent } from "../../lib/analytics";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
-export const AIToolingLanding = () => {
+export const AIToolingLanding = ({ hideLanguageSwitcher = false }) => {
   const { t, language, changeLanguage } = useLanguage();
   const [mounted, setMounted] = useState(false);
 
@@ -112,21 +112,23 @@ export const AIToolingLanding = () => {
 
   return (
     <Container>
-      {/* Floating Language Switcher */}
-      <FloatingLanguageSwitch>
-        <LanguageButton
-          isActive={language === "en"}
-          onClick={() => handleLanguageChange("en")}
-        >
-          EN
-        </LanguageButton>
-        <LanguageButton
-          isActive={language === "es"}
-          onClick={() => handleLanguageChange("es")}
-        >
-          ES
-        </LanguageButton>
-      </FloatingLanguageSwitch>
+      {/* Floating Language Switcher - Hidden when using separate language URLs */}
+      {!hideLanguageSwitcher && (
+        <FloatingLanguageSwitch>
+          <LanguageButton
+            isActive={language === "en"}
+            onClick={() => handleLanguageChange("en")}
+          >
+            EN
+          </LanguageButton>
+          <LanguageButton
+            isActive={language === "es"}
+            onClick={() => handleLanguageChange("es")}
+          >
+            ES
+          </LanguageButton>
+        </FloatingLanguageSwitch>
+      )}
 
       {/* Hero Section */}
       <HeroSection>
