@@ -5,9 +5,12 @@ import { useEffect } from "react";
 import { initGA, logEvent } from '../lib/analytics';
 import { LanguageProvider } from '../lib/LanguageContext';
 import ErrorBoundary from '../components/ErrorBoundary';
+import { useRouter } from 'next/router';
 
 
 function MyApp({ Component, pageProps }) {
+  const router = useRouter();
+  const isLandingPage = router.pathname === '/ai-tooling';
 
   useEffect(() => {
     initGA()
@@ -16,14 +19,20 @@ function MyApp({ Component, pageProps }) {
   return (
     <ErrorBoundary fallbackMessage="We're experiencing technical difficulties. Please refresh the page or try again later.">
       <LanguageProvider>
-        <Layout>
+        {isLandingPage ? (
           <ErrorBoundary fallbackMessage="This page content failed to load. Please try refreshing.">
             <Component {...pageProps} />
           </ErrorBoundary>
-        </Layout>
+        ) : (
+          <Layout>
+            <ErrorBoundary fallbackMessage="This page content failed to load. Please try refreshing.">
+              <Component {...pageProps} />
+            </ErrorBoundary>
+          </Layout>
+        )}
       </LanguageProvider>
     </ErrorBoundary>
-  
+
   )
 }
 

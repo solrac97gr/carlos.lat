@@ -9,8 +9,14 @@ import {
   IconWrapper,
   ServiceTitle,
   ServiceDescription,
+  HighlightSection,
+  HighlightBadge,
+  HighlightTitle,
+  HighlightDescription,
+  HighlightButton,
 } from "./index.styles";
 import { useLanguage } from "../../lib/LanguageContext";
+import Link from "next/link";
 
 export const Services = () => {
   const { t } = useLanguage();
@@ -107,6 +113,16 @@ export const Services = () => {
             </ServiceCard>
           ))}
         </Grid>
+        <HighlightSection>
+          <HighlightBadge>{t('services.highlight.badge')}</HighlightBadge>
+          <HighlightTitle>{t('services.highlight.title')}</HighlightTitle>
+          <HighlightDescription>{t('services.highlight.description')}</HighlightDescription>
+          <Link href="/ai-tooling" passHref>
+            <HighlightButton href="/ai-tooling">
+              {t('services.highlight.cta')}
+            </HighlightButton>
+          </Link>
+        </HighlightSection>
       </Container>
     </Section>
   );
