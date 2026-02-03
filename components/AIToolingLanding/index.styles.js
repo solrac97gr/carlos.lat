@@ -723,3 +723,177 @@ export const CTAAlternative = styled.p`
     }
   }
 `;
+
+// Pricing Section
+export const PricingGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-top: 3rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+`;
+
+export const PricingCard = styled.div`
+  padding: 2.5rem 2rem;
+  background: white;
+  border: ${props => props.featured ? '3px solid #3b82f6' : '2px solid #e5e7eb'};
+  border-radius: 1rem;
+  position: relative;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.3);
+    border-color: #3b82f6;
+  }
+`;
+
+export const PricingBadge = styled.div`
+  position: absolute;
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border-radius: 2rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  white-space: nowrap;
+`;
+
+export const PricingHeader = styled.div`
+  text-align: center;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid #e5e7eb;
+`;
+
+export const PricingName = styled.h3`
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 0.5rem;
+`;
+
+export const PricingPrice = styled.div`
+  font-size: 3rem;
+  font-weight: 800;
+  color: #3b82f6;
+  margin-bottom: 0.5rem;
+`;
+
+export const PricingIdeal = styled.p`
+  font-size: 0.9375rem;
+  color: #6b7280;
+  font-style: italic;
+`;
+
+export const PricingFeatures = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  flex-grow: 1;
+`;
+
+export const PricingFeature = styled.li`
+  display: flex;
+  align-items: start;
+  gap: 0.75rem;
+  font-size: 0.9375rem;
+  color: #4b5563;
+  line-height: 1.5;
+
+  &::before {
+    content: '✓';
+    color: #10b981;
+    font-weight: 700;
+    font-size: 1.125rem;
+    flex-shrink: 0;
+  }
+`;
+
+export const PricingROI = styled.div`
+  background: #eff6ff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  color: #1e40af;
+  font-weight: 600;
+  text-align: center;
+`;
+
+export const PricingCTA = styled.a`
+  display: block;
+  width: 100%;
+  background: ${props => props.primary ? 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)' : '#f3f4f6'};
+  color: ${props => props.primary ? 'white' : '#3b82f6'};
+  font-weight: 700;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px ${props => props.primary ? 'rgba(59, 130, 246, 0.3)' : 'rgba(0, 0, 0, 0.1)'};
+  }
+`;
+
+export const PricingGuarantee = styled.p`
+  text-align: center;
+  max-width: 48rem;
+  margin: 3rem auto 0;
+  padding: 1.5rem;
+  background: #fef3c7;
+  border-left: 4px solid #f59e0b;
+  border-radius: 0.5rem;
+  font-size: 0.9375rem;
+  color: #78350f;
+  font-weight: 600;
+`;
+
+// FAQ Section
+export const FAQGrid = styled.div`
+  max-width: 56rem;
+  margin: 3rem auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+`;
+
+export const FAQItem = styled.div`
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: #3b82f6;
+    box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1);
+  }
+`;
+
+export const FAQQuestion = styled.h3`
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.75rem;
+`;
+
+export const FAQAnswer = styled.p`
+  font-size: 1rem;
+  color: #4b5563;
+  line-height: 1.625;
+`;
