@@ -10,7 +10,8 @@ import { useRouter } from 'next/router';
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
-  const isLandingPage = router.pathname === '/ai-tooling';
+  // Hide navbar for all pages under /landing/*
+  const isLandingPage = router.pathname.startsWith('/landing/');
 
   useEffect(() => {
     initGA()

@@ -117,8 +117,8 @@ export const Services = () => {
           <HighlightBadge>{t('services.highlight.badge')}</HighlightBadge>
           <HighlightTitle>{t('services.highlight.title')}</HighlightTitle>
           <HighlightDescription>{t('services.highlight.description')}</HighlightDescription>
-          <Link href="/ai-tooling" passHref>
-            <HighlightButton href="/ai-tooling">
+          <Link href="/landing/ai-tooling" passHref>
+            <HighlightButton href="/landing/ai-tooling">
               {t('services.highlight.cta')}
             </HighlightButton>
           </Link>
