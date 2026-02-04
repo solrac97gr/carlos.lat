@@ -1,0 +1,889 @@
+---
+title: "Mastering Integration Testing in Go with Testcontainers"
+date: "February 4, 2026"
+published: "2026-02-04"
+abstract: "Learn how to write reliable integration tests in Go using Testcontainers. We'll explore how to test with real databases like PostgreSQL and Redis, eliminating the need for mocks and ensuring your tests reflect production behavior."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750690.jpg?alt=media&token=4dc9af5c-57f4-4c70-b47d-304771eab417"
+tag: "Go"
+author: "Carlos García"
+---
+# Mastering Integration Testing in Go with Testcontainers
+
+<small>February 4, 2026</small>
+<EditPost path="integration-testing-go-testcontainers" />
+
+<img
+  width="100%"
+  alt="testcontainers-go-wallpaper"
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750690.jpg?alt=media&token=4dc9af5c-57f4-4c70-b47d-304771eab417"
+  style={{ borderRadius: "8px" }}
+/>
+
+Integration tests are crucial for ensuring your application works correctly with external dependencies like databases, message queues, and caches. However, setting up and managing these dependencies for testing can be challenging. Testcontainers solves this problem by providing a clean API to run Docker containers as part of your test suite.
+
+In this article, we'll explore how to use Testcontainers for Go to write reliable integration tests that run real databases and services in isolated containers.
+
+## What is Testcontainers?
+
+Testcontainers is a library that provides lightweight, disposable instances of databases, message brokers, web browsers, or anything that can run in a Docker container. It's perfect for integration tests because:
+
+- **Real dependencies**: Test against actual databases, not mocks
+- **Isolation**: Each test can have its own container
+- **Automatic cleanup**: Containers are removed after tests complete
+- **Reproducibility**: Same environment every time
+- **CI/CD friendly**: Works seamlessly in containerized environments
+
+## Installation
+
+First, let's install the Testcontainers library:
+
+<CodeSnippet language={"bash"} code={`go get github.com/testcontainers/testcontainers-go`} />
+
+Make sure you have Docker running on your machine before running tests.
+
+## Basic Example: Testing with PostgreSQL
+
+Let's start with a practical example. We'll create a simple user repository that stores data in PostgreSQL and write integration tests for it.
+
+### Project Structure
+
+Our project will have the following structure:
+
+<FolderStructure
+  tree={[
+    {
+      type: "folder",
+      name: "internal",
+      content: [
+        {
+          type: "folder",
+          name: "repository",
+          content: [
+            {
+              type: "file",
+              name: "user.go",
+            },
+            {
+              type: "file",
+              name: "user_test.go",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: "file",
+      name: "go.mod",
+    },
+    {
+      type: "file",
+      name: "go.sum",
+    },
+  ]}
+/>
+
+### User Repository Implementation
+
+Let's create a simple user repository:
+
+<CodeSnippet route={"internal/repository/user.go"} language={"go"} code={`package repository
+
+import (
+	"context"
+	"database/sql"
+	"fmt"
+
+	_ "github.com/lib/pq"
+)
+
+type User struct {
+	ID    int
+	Name  string
+	Email string
+}
+
+type UserRepository struct {
+	db *sql.DB
+}
+
+func NewUserRepository(db *sql.DB) *UserRepository {
+	return &UserRepository{db: db}
+}
+
+func (r *UserRepository) Create(ctx context.Context, user *User) error {
+	query := \`INSERT INTO users (name, email) VALUES ($1, $2) RETURNING id\`
+	return r.db.QueryRowContext(ctx, query, user.Name, user.Email).Scan(&user.ID)
+}
+
+func (r *UserRepository) GetByID(ctx context.Context, id int) (*User, error) {
+	query := \`SELECT id, name, email FROM users WHERE id = $1\`
+	user := &User{}
+	err := r.db.QueryRowContext(ctx, query, id).Scan(&user.ID, &user.Name, &user.Email)
+	if err == sql.ErrNoRows {
+		return nil, fmt.Errorf("user not found")
+	}
+	return user, err
+}
+
+func (r *UserRepository) GetAll(ctx context.Context) ([]*User, error) {
+	query := \`SELECT id, name, email FROM users ORDER BY id\`
+	rows, err := r.db.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var users []*User
+	for rows.Next() {
+		user := &User{}
+		if err := rows.Scan(&user.ID, &user.Name, &user.Email); err != nil {
+			return nil, err
+		}
+		users = append(users, user)
+	}
+	return users, rows.Err()
+}
+
+func (r *UserRepository) Delete(ctx context.Context, id int) error {
+	query := \`DELETE FROM users WHERE id = $1\`
+	result, err := r.db.ExecContext(ctx, query, id)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return fmt.Errorf("user not found")
+	}
+
+	return nil
+}`} />
+
+### Integration Tests with Testcontainers
+
+Now let's write integration tests using Testcontainers. We'll create a PostgreSQL container and run our tests against it:
+
+<CodeSnippet route={"internal/repository/user_test.go"} language={"go"} code={`package repository
+
+import (
+	"context"
+	"database/sql"
+	"fmt"
+	"testing"
+	"time"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+	"github.com/testcontainers/testcontainers-go"
+	"github.com/testcontainers/testcontainers-go/wait"
+)
+
+func setupPostgresContainer(t *testing.T) (*sql.DB, func()) {
+	ctx := context.Background()
+
+	// Create PostgreSQL container
+	req := testcontainers.ContainerRequest{
+		Image:        "postgres:15-alpine",
+		ExposedPorts: []string{"5432/tcp"},
+		Env: map[string]string{
+			"POSTGRES_USER":     "testuser",
+			"POSTGRES_PASSWORD": "testpass",
+			"POSTGRES_DB":       "testdb",
+		},
+		WaitingFor: wait.ForLog("database system is ready to accept connections").
+			WithOccurrence(2).
+			WithStartupTimeout(60 * time.Second),
+	}
+
+	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
+		ContainerRequest: req,
+		Started:          true,
+	})
+	require.NoError(t, err)
+
+	// Get connection details
+	host, err := container.Host(ctx)
+	require.NoError(t, err)
+
+	port, err := container.MappedPort(ctx, "5432")
+	require.NoError(t, err)
+
+	// Connect to database
+	dsn := fmt.Sprintf("postgres://testuser:testpass@%s:%s/testdb?sslmode=disable",
+		host, port.Port())
+
+	db, err := sql.Open("postgres", dsn)
+	require.NoError(t, err)
+	require.NoError(t, db.Ping())
+
+	// Create schema
+	_, err = db.Exec(\`
+		CREATE TABLE IF NOT EXISTS users (
+			id SERIAL PRIMARY KEY,
+			name VARCHAR(255) NOT NULL,
+			email VARCHAR(255) UNIQUE NOT NULL
+		)
+	\`)
+	require.NoError(t, err)
+
+	// Return cleanup function
+	cleanup := func() {
+		db.Close()
+		container.Terminate(ctx)
+	}
+
+	return db, cleanup
+}
+
+func TestUserRepository_Create(t *testing.T) {
+	db, cleanup := setupPostgresContainer(t)
+	defer cleanup()
+
+	repo := NewUserRepository(db)
+	ctx := context.Background()
+
+	tests := map[string]struct {
+		user        *User
+		expectError bool
+	}{
+		"successful creation": {
+			user: &User{
+				Name:  "John Doe",
+				Email: "john@example.com",
+			},
+			expectError: false,
+		},
+		"duplicate email": {
+			user: &User{
+				Name:  "Jane Doe",
+				Email: "john@example.com", // Same email as previous test
+			},
+			expectError: true,
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			err := repo.Create(ctx, tc.user)
+
+			if tc.expectError {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+				assert.NotZero(t, tc.user.ID)
+			}
+		})
+	}
+}
+
+func TestUserRepository_GetByID(t *testing.T) {
+	db, cleanup := setupPostgresContainer(t)
+	defer cleanup()
+
+	repo := NewUserRepository(db)
+	ctx := context.Background()
+
+	// Create a test user
+	testUser := &User{
+		Name:  "Test User",
+		Email: "test@example.com",
+	}
+	err := repo.Create(ctx, testUser)
+	require.NoError(t, err)
+
+	tests := map[string]struct {
+		userID      int
+		expectError bool
+		checkUser   func(*testing.T, *User)
+	}{
+		"existing user": {
+			userID:      testUser.ID,
+			expectError: false,
+			checkUser: func(t *testing.T, user *User) {
+				assert.Equal(t, testUser.ID, user.ID)
+				assert.Equal(t, testUser.Name, user.Name)
+				assert.Equal(t, testUser.Email, user.Email)
+			},
+		},
+		"non-existing user": {
+			userID:      99999,
+			expectError: true,
+			checkUser:   nil,
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			user, err := repo.GetByID(ctx, tc.userID)
+
+			if tc.expectError {
+				assert.Error(t, err)
+				assert.Nil(t, user)
+			} else {
+				assert.NoError(t, err)
+				assert.NotNil(t, user)
+				if tc.checkUser != nil {
+					tc.checkUser(t, user)
+				}
+			}
+		})
+	}
+}
+
+func TestUserRepository_GetAll(t *testing.T) {
+	db, cleanup := setupPostgresContainer(t)
+	defer cleanup()
+
+	repo := NewUserRepository(db)
+	ctx := context.Background()
+
+	// Create test users
+	users := []*User{
+		{Name: "User 1", Email: "user1@example.com"},
+		{Name: "User 2", Email: "user2@example.com"},
+		{Name: "User 3", Email: "user3@example.com"},
+	}
+
+	for _, user := range users {
+		err := repo.Create(ctx, user)
+		require.NoError(t, err)
+	}
+
+	// Get all users
+	result, err := repo.GetAll(ctx)
+	assert.NoError(t, err)
+	assert.Len(t, result, 3)
+
+	// Verify order and content
+	for i, user := range result {
+		assert.Equal(t, users[i].Name, user.Name)
+		assert.Equal(t, users[i].Email, user.Email)
+	}
+}
+
+func TestUserRepository_Delete(t *testing.T) {
+	db, cleanup := setupPostgresContainer(t)
+	defer cleanup()
+
+	repo := NewUserRepository(db)
+	ctx := context.Background()
+
+	// Create a test user
+	testUser := &User{
+		Name:  "Delete Me",
+		Email: "delete@example.com",
+	}
+	err := repo.Create(ctx, testUser)
+	require.NoError(t, err)
+
+	tests := map[string]struct {
+		userID      int
+		expectError bool
+	}{
+		"delete existing user": {
+			userID:      testUser.ID,
+			expectError: false,
+		},
+		"delete non-existing user": {
+			userID:      99999,
+			expectError: true,
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			err := repo.Delete(ctx, tc.userID)
+
+			if tc.expectError {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+
+				// Verify user is deleted
+				_, err := repo.GetByID(ctx, tc.userID)
+				assert.Error(t, err)
+			}
+		})
+	}
+}`} />
+
+## Advanced Example: Testing with Redis
+
+Let's add another example using Redis for caching. This demonstrates how to use multiple containers in your tests.
+
+<CodeSnippet route={"internal/cache/cache.go"} language={"go"} code={`package cache
+
+import (
+	"context"
+	"encoding/json"
+	"time"
+
+	"github.com/redis/go-redis/v9"
+)
+
+type Cache struct {
+	client *redis.Client
+}
+
+func NewCache(client *redis.Client) *Cache {
+	return &Cache{client: client}
+}
+
+func (c *Cache) Set(ctx context.Context, key string, value interface{}, expiration time.Duration) error {
+	data, err := json.Marshal(value)
+	if err != nil {
+		return err
+	}
+	return c.client.Set(ctx, key, data, expiration).Err()
+}
+
+func (c *Cache) Get(ctx context.Context, key string, dest interface{}) error {
+	data, err := c.client.Get(ctx, key).Bytes()
+	if err != nil {
+		return err
+	}
+	return json.Unmarshal(data, dest)
+}
+
+func (c *Cache) Delete(ctx context.Context, key string) error {
+	return c.client.Del(ctx, key).Err()
+}
+
+func (c *Cache) Exists(ctx context.Context, key string) (bool, error) {
+	count, err := c.client.Exists(ctx, key).Result()
+	return count > 0, err
+}`} />
+
+<CodeSnippet route={"internal/cache/cache_test.go"} language={"go"} code={`package cache
+
+import (
+	"context"
+	"testing"
+	"time"
+
+	"github.com/redis/go-redis/v9"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+	"github.com/testcontainers/testcontainers-go"
+	"github.com/testcontainers/testcontainers-go/wait"
+)
+
+type TestData struct {
+	ID   int    \`json:"id"\`
+	Name string \`json:"name"\`
+}
+
+func setupRedisContainer(t *testing.T) (*redis.Client, func()) {
+	ctx := context.Background()
+
+	req := testcontainers.ContainerRequest{
+		Image:        "redis:7-alpine",
+		ExposedPorts: []string{"6379/tcp"},
+		WaitingFor:   wait.ForLog("Ready to accept connections"),
+	}
+
+	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
+		ContainerRequest: req,
+		Started:          true,
+	})
+	require.NoError(t, err)
+
+	host, err := container.Host(ctx)
+	require.NoError(t, err)
+
+	port, err := container.MappedPort(ctx, "6379")
+	require.NoError(t, err)
+
+	client := redis.NewClient(&redis.Options{
+		Addr: host + ":" + port.Port(),
+	})
+
+	require.NoError(t, client.Ping(ctx).Err())
+
+	cleanup := func() {
+		client.Close()
+		container.Terminate(ctx)
+	}
+
+	return client, cleanup
+}
+
+func TestCache_SetAndGet(t *testing.T) {
+	client, cleanup := setupRedisContainer(t)
+	defer cleanup()
+
+	cache := NewCache(client)
+	ctx := context.Background()
+
+	testData := TestData{
+		ID:   1,
+		Name: "Test Item",
+	}
+
+	// Set value
+	err := cache.Set(ctx, "test:1", testData, 5*time.Minute)
+	assert.NoError(t, err)
+
+	// Get value
+	var result TestData
+	err = cache.Get(ctx, "test:1", &result)
+	assert.NoError(t, err)
+	assert.Equal(t, testData.ID, result.ID)
+	assert.Equal(t, testData.Name, result.Name)
+}
+
+func TestCache_Expiration(t *testing.T) {
+	client, cleanup := setupRedisContainer(t)
+	defer cleanup()
+
+	cache := NewCache(client)
+	ctx := context.Background()
+
+	testData := TestData{ID: 1, Name: "Expire Me"}
+
+	// Set with short expiration
+	err := cache.Set(ctx, "test:expire", testData, 1*time.Second)
+	assert.NoError(t, err)
+
+	// Verify it exists
+	exists, err := cache.Exists(ctx, "test:expire")
+	assert.NoError(t, err)
+	assert.True(t, exists)
+
+	// Wait for expiration
+	time.Sleep(2 * time.Second)
+
+	// Verify it's gone
+	exists, err = cache.Exists(ctx, "test:expire")
+	assert.NoError(t, err)
+	assert.False(t, exists)
+}
+
+func TestCache_Delete(t *testing.T) {
+	client, cleanup := setupRedisContainer(t)
+	defer cleanup()
+
+	cache := NewCache(client)
+	ctx := context.Background()
+
+	testData := TestData{ID: 1, Name: "Delete Me"}
+
+	// Set value
+	err := cache.Set(ctx, "test:delete", testData, 5*time.Minute)
+	assert.NoError(t, err)
+
+	// Delete value
+	err = cache.Delete(ctx, "test:delete")
+	assert.NoError(t, err)
+
+	// Verify it's gone
+	exists, err := cache.Exists(ctx, "test:delete")
+	assert.NoError(t, err)
+	assert.False(t, exists)
+}`} />
+
+## Best Practices
+
+### 1. Use Wait Strategies
+
+Always use appropriate wait strategies to ensure containers are ready before running tests:
+
+<CodeSnippet language={"go"} code={`// Wait for specific log message
+WaitingFor: wait.ForLog("database system is ready").
+	WithOccurrence(2).
+	WithStartupTimeout(60 * time.Second)
+
+// Wait for HTTP endpoint
+WaitingFor: wait.ForHTTP("/health").
+	WithPort("8080/tcp").
+	WithStartupTimeout(30 * time.Second)
+
+// Wait for listening port
+WaitingFor: wait.ForListeningPort("5432/tcp")`} />
+
+### 2. Proper Cleanup
+
+Always ensure containers are terminated after tests:
+
+<CodeSnippet language={"go"} code={`func setupContainer(t *testing.T) (*sql.DB, func()) {
+	// ... setup code ...
+
+	cleanup := func() {
+		db.Close()
+		if err := container.Terminate(context.Background()); err != nil {
+			t.Logf("failed to terminate container: %v", err)
+		}
+	}
+
+	return db, cleanup
+}
+
+func TestSomething(t *testing.T) {
+	db, cleanup := setupContainer(t)
+	defer cleanup() // Always defer cleanup
+
+	// ... test code ...
+}`} />
+
+### 3. Reuse Containers for Test Suites
+
+For faster test execution, you can reuse containers across multiple tests:
+
+<CodeSnippet language={"go"} code={`var (
+	testDB      *sql.DB
+	testCleanup func()
+)
+
+func TestMain(m *testing.M) {
+	// Setup
+	testDB, testCleanup = setupPostgresContainer(nil)
+
+	// Run tests
+	code := m.Run()
+
+	// Cleanup
+	testCleanup()
+
+	os.Exit(code)
+}
+
+func TestFunction1(t *testing.T) {
+	// Clean database before test
+	_, err := testDB.Exec("TRUNCATE TABLE users")
+	require.NoError(t, err)
+
+	// Use testDB...
+}
+
+func TestFunction2(t *testing.T) {
+	// Clean database before test
+	_, err := testDB.Exec("TRUNCATE TABLE users")
+	require.NoError(t, err)
+
+	// Use testDB...
+}`} />
+
+### 4. Use Parallel Tests with Caution
+
+When running tests in parallel with shared containers, ensure proper isolation:
+
+<CodeSnippet language={"go"} code={`func TestParallel(t *testing.T) {
+	t.Run("Test1", func(t *testing.T) {
+		t.Parallel()
+		db, cleanup := setupPostgresContainer(t)
+		defer cleanup()
+
+		// Test with isolated container...
+	})
+
+	t.Run("Test2", func(t *testing.T) {
+		t.Parallel()
+		db, cleanup := setupPostgresContainer(t)
+		defer cleanup()
+
+		// Test with isolated container...
+	})
+}`} />
+
+### 5. Environment Variables for Configuration
+
+Make your tests flexible by using environment variables:
+
+<CodeSnippet language={"go"} code={`func getPostgresImage() string {
+	image := os.Getenv("POSTGRES_IMAGE")
+	if image == "" {
+		return "postgres:15-alpine"
+	}
+	return image
+}
+
+func setupPostgresContainer(t *testing.T) (*sql.DB, func()) {
+	req := testcontainers.ContainerRequest{
+		Image: getPostgresImage(),
+		// ... rest of configuration
+	}
+	// ...
+}`} />
+
+## Running Tests in CI/CD
+
+Testcontainers works seamlessly in CI/CD pipelines. Here's an example GitHub Actions workflow:
+
+<CodeSnippet language={"yaml"} code={`name: Integration Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.22'
+
+      - name: Run integration tests
+        run: go test -v ./...
+        env:
+          TESTCONTAINERS_RYUK_DISABLED: false`} />
+
+## Performance Considerations
+
+### 1. Container Startup Time
+
+Container startup can be slow. Consider these optimizations:
+
+- Use Alpine-based images when possible
+- Pull images before running tests
+- Reuse containers across tests when appropriate
+
+### 2. Parallel Execution
+
+For large test suites, run tests in parallel:
+
+<CodeSnippet language={"bash"} code={`# Run tests in parallel with 4 workers
+go test -v -parallel 4 ./...`} />
+
+### 3. Skip in Short Mode
+
+Allow developers to skip integration tests for faster feedback:
+
+<CodeSnippet language={"go"} code={`func TestIntegration(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping integration test in short mode")
+	}
+
+	// ... rest of test
+}
+
+// Run: go test -short  # Skips integration tests
+// Run: go test          # Runs all tests`} />
+
+## Common Patterns
+
+### Testing Database Migrations
+
+<CodeSnippet language={"go"} code={`func TestMigrations(t *testing.T) {
+	db, cleanup := setupPostgresContainer(t)
+	defer cleanup()
+
+	// Apply migrations
+	err := applyMigrations(db)
+	require.NoError(t, err)
+
+	// Verify schema
+	var tableExists bool
+	err = db.QueryRow(\`
+		SELECT EXISTS (
+			SELECT FROM information_schema.tables
+			WHERE table_name = 'users'
+		)
+	\`).Scan(&tableExists)
+
+	require.NoError(t, err)
+	assert.True(t, tableExists)
+}`} />
+
+### Testing Transaction Rollbacks
+
+<CodeSnippet language={"go"} code={`func TestTransactionRollback(t *testing.T) {
+	db, cleanup := setupPostgresContainer(t)
+	defer cleanup()
+
+	repo := NewUserRepository(db)
+	ctx := context.Background()
+
+	// Start transaction
+	tx, err := db.BeginTx(ctx, nil)
+	require.NoError(t, err)
+
+	// Create user in transaction
+	user := &User{Name: "Test", Email: "test@example.com"}
+	err = repo.CreateWithTx(ctx, tx, user)
+	require.NoError(t, err)
+
+	// Rollback
+	err = tx.Rollback()
+	require.NoError(t, err)
+
+	// Verify user doesn't exist
+	_, err = repo.GetByID(ctx, user.ID)
+	assert.Error(t, err)
+}`} />
+
+## Debugging Tips
+
+### 1. Keep Containers Running
+
+For debugging, you can keep containers running after tests fail:
+
+<CodeSnippet language={"go"} code={`cleanup := func() {
+	if t.Failed() {
+		t.Logf("Test failed, keeping container running")
+		t.Logf("Container ID: %s", container.GetContainerID())
+		return
+	}
+	db.Close()
+	container.Terminate(ctx)
+}`} />
+
+### 2. View Container Logs
+
+Access container logs for debugging:
+
+<CodeSnippet language={"go"} code={`func setupWithLogs(t *testing.T) (*sql.DB, func()) {
+	// ... setup container ...
+
+	if t.Failed() {
+		logs, err := container.Logs(context.Background())
+		if err == nil {
+			defer logs.Close()
+			logBytes, _ := io.ReadAll(logs)
+			t.Logf("Container logs:\n%s", logBytes)
+		}
+	}
+
+	// ...
+}`} />
+
+### 3. Execute Commands in Containers
+
+Run commands inside containers for debugging:
+
+<CodeSnippet language={"go"} code={`// Execute psql command
+exitCode, reader, err := container.Exec(ctx, []string{
+	"psql", "-U", "testuser", "-d", "testdb",
+	"-c", "SELECT * FROM users",
+})
+require.NoError(t, err)
+require.Equal(t, 0, exitCode)
+
+output, _ := io.ReadAll(reader)
+t.Logf("Query result:\n%s", output)`} />
+
+## Conclusion
+
+Testcontainers for Go is a powerful tool that brings the reliability of integration testing to a new level. By testing against real databases and services, you can catch issues that mocks would miss, leading to more robust applications.
+
+Key takeaways:
+
+- **Use real dependencies** instead of mocks for integration tests
+- **Automatic cleanup** ensures no leftover containers
+- **CI/CD friendly** with minimal configuration
+- **Flexible** - supports any Docker container
+- **Reliable** - tests behave the same everywhere
+
+While integration tests with Testcontainers are slower than unit tests, they provide invaluable confidence that your application works correctly with real infrastructure. Use them strategically for critical paths and combine them with unit tests for comprehensive coverage.
+
+The examples in this article provide a solid foundation for implementing integration tests in your Go projects. Start small, add integration tests for your most critical components, and gradually expand your test coverage.
+
+Happy testing!
+
+<NewsletterSubscribe />
