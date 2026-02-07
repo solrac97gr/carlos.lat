@@ -227,19 +227,12 @@ After the PR is merged, an AI agent tests the released feature in a semi-product
 
 MCP (Model Context Protocol) servers are what make this methodology possible. Without them, agents would rely solely on their training data — which is stale and generic. With MCPs, agents get live, project-specific context.
 
-<CodeSnippet language="markdown" route="mcp-overview.md" code={`MCP Server          │ Used By                    │ Provides
-────────────────────┼────────────────────────────┼─────────────────────────────
-Notion MCP          │ Almost all agents          │ Business docs, code standards,
-                    │                            │ tech docs, PRD, templates
-────────────────────┼────────────────────────────┼─────────────────────────────
-Context7            │ Implementation agent       │ Up-to-date library and
-                    │                            │ framework documentation
-────────────────────┼────────────────────────────┼─────────────────────────────
-Playwright MCP      │ QA agent                   │ Real browser testing,
-                    │                            │ screenshots, test reports
-────────────────────┼────────────────────────────┼─────────────────────────────
-GitHub MCP          │ Release testing agent      │ Issue creation, PR management,
-                    │                            │ repository operations`} />
+| MCP Server | Used By | Provides |
+|---|---|---|
+| Notion MCP | Almost all agents | Business docs, code standards, tech docs, PRD, templates |
+| Context7 | Implementation agent | Up-to-date library and framework documentation |
+| Playwright MCP | QA agent | Real browser testing, screenshots, test reports |
+| GitHub MCP | Release testing agent | Issue creation, PR management, repository operations |
 
 ### Why Notion MCP is central
 

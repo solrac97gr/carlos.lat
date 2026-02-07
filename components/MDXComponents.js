@@ -8,7 +8,7 @@ import { NewsletterSubscribe } from "./NewsletterSubscribe";
 import { CodeSnippet } from "./CodeSnipet";
 import { PromoBanner } from "./PromoBanner";
 import {CodeComparition} from "./CodeComparition"
-import { Table, Thead, Th, Td, Tr } from "./Table";
+import { Table, Thead, Tbody, Th, Td, Tr } from "./Table";
 import Image from "next/image";
 
 const components = {
@@ -24,6 +24,7 @@ const components = {
   CodeComparition,
   table: Table,
   thead: Thead,
+  tbody: Tbody,
   th: Th,
   td: Td,
   tr: Tr,

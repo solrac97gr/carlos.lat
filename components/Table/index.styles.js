@@ -28,6 +28,8 @@ export const StyledTd = styled.td`
   color: #d6deeb;
 `;
 
+export const StyledTbody = styled.tbody``;
+
 export const StyledTr = styled.tr`
   background-color: #011627;
 

@@ -227,20 +227,12 @@ Después de que el PR es mergeado, un agente de IA prueba la feature en un entor
 
 Los servidores MCP (Model Context Protocol) son lo que hace posible esta metodología. Sin ellos, los agentes dependerían únicamente de sus datos de entrenamiento — que son obsoletos y genéricos. Con MCPs, los agentes obtienen contexto en vivo y específico del proyecto.
 
-<CodeSnippet language="markdown" route="mcp-resumen.md" code={`Servidor MCP         │ Usado Por                  │ Provee
-─────────────────────┼────────────────────────────┼─────────────────────────────
-Notion MCP           │ Casi todos los agentes     │ Docs de negocio, estándares
-                     │                            │ de código, docs técnicos,
-                     │                            │ PRD, plantillas
-─────────────────────┼────────────────────────────┼─────────────────────────────
-Context7             │ Agente de implementación   │ Documentación actualizada
-                     │                            │ de librerías y frameworks
-─────────────────────┼────────────────────────────┼─────────────────────────────
-Playwright MCP       │ Agente de QA               │ Testing en navegador real,
-                     │                            │ screenshots, reportes
-─────────────────────┼────────────────────────────┼─────────────────────────────
-GitHub MCP           │ Agente de testing release  │ Creación de issues, gestión
-                     │                            │ de PRs, operaciones de repo`} />
+| Servidor MCP | Usado Por | Provee |
+|---|---|---|
+| Notion MCP | Casi todos los agentes | Docs de negocio, estándares de código, docs técnicos, PRD, plantillas |
+| Context7 | Agente de implementación | Documentación actualizada de librerías y frameworks |
+| Playwright MCP | Agente de QA | Testing en navegador real, screenshots, reportes |
+| GitHub MCP | Agente de testing release | Creación de issues, gestión de PRs, operaciones de repo |
 
 ### Por qué Notion MCP es central
 
