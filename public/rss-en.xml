@@ -5,7 +5,7 @@
     <description>Technical blog about Go, Backend Development, AI, and Software Engineering</description>
     <link>https://carlos.lat</link>
     <language>en</language>
-    <lastBuildDate>Tue, 03 Feb 2026 22:48:00 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 07 Feb 2026 13:07:32 GMT</lastBuildDate>
     <atom:link href="https://carlos.lat/rss-en.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://carlos.lat/logo.png</url>
@@ -13,6 +13,36 @@
       <link>https://carlos.lat</link>
     </image>
     
+    <item>
+      <title><![CDATA[AI-Driven Development: A Methodology for Teams 🏭]]></title>
+      <description><![CDATA[A structured methodology that integrates AI agents into the software development lifecycle — from PRD to production — keeping humans in strategic roles while agents handle implementation, testing, and documentation.]]></description>
+      <link>https://carlos.lat/blog/ai-driven-development-methodology</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/ai-driven-development-methodology</guid>
+      <pubDate>Sat, 07 Feb 2026 00:00:00 GMT</pubDate>
+      <category>AI, Development, Methodology</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482746.jpg?alt=media&amp;token=510dd66e-15af-4292-b84d-795a267155c4" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[Mastering Integration Testing in Go with Testcontainers]]></title>
+      <description><![CDATA[Learn how to write reliable integration tests in Go using Testcontainers. We'll explore how to test with real databases like PostgreSQL and Redis, eliminating the need for mocks and ensuring your tests reflect production behavior.]]></description>
+      <link>https://carlos.lat/blog/integration-testing-go-testcontainers</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/integration-testing-go-testcontainers</guid>
+      <pubDate>Wed, 04 Feb 2026 00:00:00 GMT</pubDate>
+      <category>Go</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750690.jpg?alt=media&amp;token=4dc9af5c-57f4-4c70-b47d-304771eab417" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[Create Your Own Plugin Marketplace for Claude Code 🚀]]></title>
+      <description><![CDATA[Learn how to create and distribute your own plugin marketplace for Claude Code, extending the AI with custom skills, agents, and tools tailored to your workflow.]]></description>
+      <link>https://carlos.lat/blog/create-your-own-plugin-marketplace</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/create-your-own-plugin-marketplace</guid>
+      <pubDate>Tue, 03 Feb 2026 00:00:00 GMT</pubDate>
+      <category>Claude, AI, Plugins</category>
+      <author>Carlos García</author>
+      <enclosure url="https://miro.medium.com/max/1400/0*EODEF6xTWVm5hv-3" type="image/jpeg" />
+    </item>
     <item>
       <title><![CDATA[How to Create Professional Terraform Modules 🏗️]]></title>
       <description><![CDATA[Learn how to create production-ready Terraform modules with best practices, using a real-world Azure OpenAI module as an example.]]></description>
@@ -108,7 +138,7 @@
       <description><![CDATA[Boost your productivity with Go Katana, a powerful VSCode extension. This tool uses code snippets to easily generate code for Hexagonal Architecture modules and packages, streamlining your development process.]]></description>
       <link>https://carlos.lat/blog/agiliza-desarrollo-go-katana</link>
       <guid isPermaLink="true">https://carlos.lat/blog/agiliza-desarrollo-go-katana</guid>
-      <pubDate>Mon, 03 Jul 2023 22:00:00 GMT</pubDate>
+      <pubDate>Tue, 04 Jul 2023 00:00:00 GMT</pubDate>
       <category>Go, Extension, go-katana</category>
       <author>Carlos García</author>
       <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-katana.jpeg?alt=media&amp;token=39e519ab-b60b-4a70-b292-5f1345d88f52" type="image/jpeg" />

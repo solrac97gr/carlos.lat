@@ -1,0 +1,360 @@
+---
+title: "Desarrollo Guiado por IA: Una Metodología para Equipos 🏭"
+date: "07 de Febrero del 2026"
+published: "2026-02-07"
+abstract: "Una metodología estructurada que integra agentes de IA en el ciclo de desarrollo de software — desde el PRD hasta producción — manteniendo a los humanos en roles estratégicos mientras los agentes manejan implementación, testing y documentación."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482746.jpg?alt=media&token=510dd66e-15af-4292-b84d-795a267155c4"
+tag: "IA, Desarrollo, Metodología"
+author: "Carlos García"
+---
+
+# Desarrollo Guiado por IA: Una Metodología para Equipos 🏭
+
+<small>07 de Febrero del 2026</small>
+<EditPost path="ai-driven-development-methodology" />
+
+<img
+  width="100%"
+  alt="Metodología de Desarrollo Guiado por IA"
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482746.jpg?alt=media&token=510dd66e-15af-4292-b84d-795a267155c4"
+  style={{borderRadius:"8px"}}
+/>
+
+En un artículo anterior, compartí cómo trabajo personalmente con IA en el desarrollo de software. Desde entonces, he estado refinando y formalizando ese enfoque en algo más grande: una **metodología completa** que los equipos pueden adoptar para integrar agentes de IA en todo el ciclo de vida del desarrollo de software.
+
+No se trata de reemplazar desarrolladores. Se trata de crear un pipeline estructurado donde los humanos toman decisiones estratégicas y los agentes de IA ejecutan el trabajo repetitivo y bien definido — con el contexto correcto, en el momento correcto.
+
+## La Idea Central 💡
+
+La metodología se basa en tres principios:
+
+1. **Los humanos se mantienen en roles estratégicos**: Los Product Owners definen *qué* construir. Los Ingenieros Senior deciden *cómo* dividirlo. Los desarrolladores revisan el resultado final.
+2. **Los agentes de IA tienen roles enfocados y de propósito único**: Cada agente hace una sola cosa bien — escribir specs Gherkin, generar tests, implementar features, ejecutar QA, o crear documentación.
+3. **Los servidores MCP proveen el contexto que los agentes necesitan**: En lugar de depender de los datos de entrenamiento del agente, les alimentamos contexto en vivo desde Notion, Playwright, GitHub y Context7.
+
+## Vista General del Pipeline 🔄
+
+La metodología tiene cuatro fases. Cada fase tiene una propiedad clara — ya sea humana, de agente IA, o una colaboración de ambos.
+
+<CodeSnippet language="markdown" route="metodologia-overview.md" code={`Fase 1: Requisitos y Planificación ........... [HUMANO]
+  → Product Owner crea el PRD
+  → CTO/Staff/Sr Engineer divide las features
+
+Fase 2: Especificación y Testing ............. [AGENTE IA]
+  → Agente convierte features del PRD en specs Gherkin
+  → Agente genera archivos de test desde Gherkin
+
+Fase 3: Implementación ....................... [AGENTE IA]
+  → Agente implementa features (test-first)
+  → Agente ejecuta revisión QA y corrige issues
+  → Agente crea PR y documentación
+
+Fase 4: Revisión y Release ................... [HUMANO + IA]
+  → Humano + Agente realizan code review asistido
+  → Agente prueba features en semi-producción
+  → Agente crea issues en GitHub si encuentra errores`} />
+
+Veamos cada fase en detalle.
+
+## Fase 1: Requisitos y Planificación 📋
+
+Esta fase es completamente guiada por humanos. No hay agentes de IA involucrados aquí, y por buena razón — definir *qué* construir y *cómo* descomponerlo requiere contexto de negocio, pensamiento estratégico y juicio humano.
+
+### Paso 1: Creación del PRD (Product Owner)
+
+El Product Owner crea un Documento de Requisitos del Producto (PRD). Este es la fuente única de verdad sobre lo que se debe construir. El PRD debe estar almacenado en un lugar accesible — en nuestro caso, Notion.
+
+### Paso 2: División de Features (CTO/Staff/Sr Engineer)
+
+Una persona técnica senior toma el PRD y lo descompone en features discretas e implementables. Este es un paso crítico — la calidad de la división de features determina directamente qué tan bien los agentes de IA pueden hacer su trabajo.
+
+**Por qué los humanos hacen este paso**: La descomposición de features requiere entender la arquitectura del sistema, la capacidad del equipo, la deuda técnica y las preocupaciones transversales. Los agentes de IA carecen del contexto organizacional y arquitectónico para tomar estas decisiones correctamente.
+
+> El PRD y la división de features se almacenan en Notion, que se convierte en la fuente de verdad a la que los agentes de IA acceden a través del Notion MCP.
+
+## Fase 2: Especificación y Testing 🧪
+
+Aquí es donde los agentes de IA entran en escena. El objetivo: transformar requisitos humanos en especificaciones y tests legibles por máquinas *antes* de que comience cualquier implementación.
+
+### Paso 3: PRD a Gherkin (Agente IA)
+
+El primer agente de IA toma una feature de la división y genera **especificaciones Gherkin** — archivos de Desarrollo Guiado por Comportamiento (BDD) que describen el comportamiento esperado en un formato estructurado.
+
+<CodeSnippet language="gherkin" route="features/suscripcion-usuario.feature" code={`Feature: Suscripción RSS de Usuario
+  Como lector del blog
+  Quiero suscribirme al feed RSS
+  Para recibir actualizaciones cuando se publiquen nuevos posts
+
+  Scenario: Suscripción exitosa
+    Given estoy en la página principal del blog
+    When hago clic en el botón "Suscribirse"
+    And ingreso mi email "usuario@ejemplo.com"
+    And confirmo la suscripción
+    Then debería ver un mensaje de confirmación
+    And mi email debería agregarse a la lista de suscriptores
+
+  Scenario: Email inválido
+    Given estoy en el formulario de suscripción
+    When ingreso un email inválido "no-es-un-email"
+    And confirmo la suscripción
+    Then debería ver un mensaje de error "Por favor ingresa un email válido"`} />
+
+**Fuentes de contexto**: Este agente usa el **Notion MCP** para acceder a la documentación de negocio — el PRD, criterios de aceptación y cualquier regla específica del dominio.
+
+**¿Por qué Gherkin?** Sirve como puente entre los requisitos humanos y las pruebas automatizadas. Es legible por Product Owners y procesable por frameworks de testing.
+
+### Paso 4: Gherkin a Archivo de Test (Agente IA)
+
+Un segundo agente toma las specs de Gherkin y genera archivos de test reales en el framework de testing del proyecto.
+
+<CodeSnippet language="javascript" route="tests/suscripcion-usuario.test.js" code={`describe("Suscripción RSS de Usuario", () => {
+  describe("Suscripción exitosa", () => {
+    it("debería mostrar confirmación después de enviar email válido", async () => {
+      // Given estoy en la página principal del blog
+      await page.goto("/");
+
+      // When hago clic en el botón "Suscribirse"
+      await page.click('[data-testid="subscribe-btn"]');
+
+      // And ingreso mi email
+      await page.fill('[data-testid="email-input"]', "usuario@ejemplo.com");
+
+      // And confirmo la suscripción
+      await page.click('[data-testid="confirm-btn"]');
+
+      // Then debería ver un mensaje de confirmación
+      const message = await page.textContent('[data-testid="confirmation"]');
+      expect(message).toContain("Suscripción exitosa");
+    });
+  });
+
+  describe("Email inválido", () => {
+    it("debería mostrar error para formato de email inválido", async () => {
+      await page.goto("/subscribe");
+      await page.fill('[data-testid="email-input"]', "no-es-un-email");
+      await page.click('[data-testid="confirm-btn"]');
+
+      const error = await page.textContent('[data-testid="error-message"]');
+      expect(error).toContain("Por favor ingresa un email válido");
+    });
+  });
+});`} />
+
+La idea clave aquí: **los tests existen antes de cualquier implementación**. Este es un enfoque test-driven impuesto por la estructura misma del pipeline.
+
+## Fase 3: Implementación 🔨
+
+Con los tests en su lugar, los agentes de IA ahora implementan la feature real. Esta fase tiene tres pasos distintos, cada uno manejado por un agente especializado.
+
+### Paso 5: Archivo de Test a Implementación (Agente IA)
+
+Este agente lee los archivos de test e implementa la feature para que todos los tests pasen. Tiene acceso a:
+
+- **Context7 MCP**: Para documentación actualizada de librerías y frameworks
+- **Notion MCP**: Para documentación técnica (decisiones de arquitectura, patrones de código, contratos de API)
+
+<CodeComparition
+  languageL={"markdown"}
+  languageR={"markdown"}
+  left={`# Input del Agente
+
+- Archivos de test (del Paso 4)
+- Codebase del proyecto
+- Context7: Docs de librerías
+- Notion: Documentación técnica
+
+El agente lee los tests
+e implementa código para
+que todos los tests pasen.`}
+  rigth={`# Output del Agente
+
+- Archivos de código fuente
+- Configuraciones actualizadas
+- Todos los tests pasando
+
+La implementación sigue
+los patrones existentes de
+la documentación técnica.`}
+/>
+
+### Paso 6: Revisión QA y Corrección (Agente IA)
+
+Un agente separado revisa la implementación contra los estándares de código del proyecto. Este agente usa:
+
+- **Playwright MCP**: Para ejecutar pruebas automatizadas en un entorno de navegador real
+- **Notion MCP**: Para acceder a la documentación de estándares de código del equipo
+
+Este paso detecta problemas como:
+- Violaciones de estilo de código
+- Patrones de manejo de errores faltantes requeridos por el equipo
+- Problemas de accesibilidad
+- Regresiones de rendimiento
+
+El agente no solo señala problemas — los **corrige** y vuelve a ejecutar los tests.
+
+### Paso 7: Creación de PR y Documentación (Agente IA)
+
+El agente final de implementación crea:
+
+1. Un **Pull Request** con una descripción clara de los cambios
+2. **Documentación** cubriendo la nueva feature
+3. Entradas actualizadas del **changelog** si aplica
+
+Este agente accede a Notion para seguir las plantillas de documentación y convenciones de PR del equipo.
+
+## Fase 4: Revisión y Release 🚀
+
+La fase final trae a los humanos de vuelta al ciclo para aseguramiento de calidad y release.
+
+### Paso 8: Code Review Asistido (Humano + IA)
+
+Este es un paso colaborativo. El code review sucede en GitHub (o GitLab/Bitbucket) donde:
+
+- **El revisor humano** verifica decisiones arquitectónicas, corrección de lógica de negocio y casos edge
+- **El agente de IA** verifica consistencia con documentación de negocio, estándares de código y documentación técnica (todo vía Notion MCP)
+
+Esta combinación es poderosa porque los humanos detectan lo que los agentes no ven (intención, contexto de negocio) y los agentes detectan lo que los humanos no ven (consistencia, cumplimiento de estándares a lo largo de cientos de líneas).
+
+### Paso 9: Testing en Semi-Producción (Agente IA)
+
+Después de que el PR es mergeado, un agente de IA prueba la feature en un entorno de semi-producción. Si se encuentran errores:
+
+- El agente crea **Issues en GitHub** automáticamente (vía GitHub MCP)
+- Cada issue incluye pasos de reproducción, comportamiento esperado y comportamiento actual
+- Los issues alimentan de vuelta el pipeline como nuevas features a corregir
+
+## El Rol de los Servidores MCP 🔌
+
+Los servidores MCP (Model Context Protocol) son lo que hace posible esta metodología. Sin ellos, los agentes dependerían únicamente de sus datos de entrenamiento — que son obsoletos y genéricos. Con MCPs, los agentes obtienen contexto en vivo y específico del proyecto.
+
+| Servidor MCP | Usado Por | Provee |
+|---|---|---|
+| Notion MCP | Casi todos los agentes | Docs de negocio, estándares de código, docs técnicos, PRD, plantillas |
+| Context7 | Agente de implementación | Documentación actualizada de librerías y frameworks |
+| Playwright MCP | Agente de QA | Testing en navegador real, screenshots, reportes |
+| GitHub MCP | Agente de testing release | Creación de issues, gestión de PRs, operaciones de repo |
+
+### Por qué Notion MCP es central
+
+Notion actúa como el **centro de conocimiento**. Contiene tres tipos de contexto:
+
+1. **Docs de Negocio**: PRDs, criterios de aceptación, reglas de dominio
+2. **Estándares de Código**: Convenciones de nombres, patrones, reglas de linting, decisiones de arquitectura
+3. **Docs Técnicos**: Contratos de API, esquemas de base de datos, detalles de infraestructura
+
+Al centralizar el contexto en Notion y exponerlo a través de MCP, cada agente tiene acceso a la misma fuente de verdad — la misma fuente que usan los humanos.
+
+## Por Qué Este Enfoque Funciona 🎯
+
+### Test-Driven por Diseño
+
+Los tests se crean *antes* de la implementación — no porque impongamos una disciplina, sino porque la estructura del pipeline lo hace el único flujo posible. El agente de implementación literalmente recibe archivos de test como su input.
+
+### Límites Claros Humano/IA
+
+Los humanos toman decisiones que requieren juicio: qué construir, cómo descomponerlo, y si el resultado final es correcto. Los agentes de IA manejan la ejecución: escribir specs, tests, código y documentación.
+
+<CodeComparition
+  languageL={"markdown"}
+  languageR={"markdown"}
+  left={`# Responsabilidades Humanas
+
+✅ Crear PRD
+✅ Dividir features
+✅ Code review
+✅ Aprobación de release
+
+Decisiones que necesitan:
+- Contexto de negocio
+- Pensamiento estratégico
+- Juicio arquitectónico
+- Expertise de dominio`}
+  rigth={`# Responsabilidades de Agentes IA
+
+✅ Escribir specs Gherkin
+✅ Generar archivos de test
+✅ Implementar features
+✅ Revisión QA y corrección
+✅ Crear PR y documentación
+✅ Testing semi-producción
+
+Tareas que necesitan:
+- Consistencia
+- Velocidad
+- Seguir patrones
+- Acceso a documentación`}
+/>
+
+### Cada Agente Tiene Un Solo Trabajo
+
+Un agente generalista que hace todo, hará todo mal. Al darle a cada agente una responsabilidad única y enfocada, obtenemos:
+
+- **Mejor calidad**: El prompt y contexto del agente están optimizados para una tarea
+- **Debugging más fácil**: Si la implementación está mal, sabes qué agente arreglar
+- **Paralelización**: Agentes independientes pueden ejecutarse simultáneamente
+
+### El Contexto No Es Opcional
+
+El mayor modo de fallo en el desarrollo asistido por IA es contexto insuficiente. Los servidores MCP resuelven esto dándole a los agentes acceso directo a la documentación del proyecto, no solo a sus datos de entrenamiento.
+
+## Cómo Empezar 🛠️
+
+No necesitas implementar las cuatro fases de una vez. Aquí hay un camino pragmático de adopción:
+
+### Nivel 1: Empieza con la Fase 3
+
+Usa agentes de IA para implementación con contexto MCP. Esto te da el valor más inmediato con el menor setup.
+
+### Nivel 2: Agrega la Fase 2
+
+Introduce generación de specs Gherkin y creación de tests. Esto impone desarrollo test-driven y mejora la calidad de implementación.
+
+### Nivel 3: Agrega la Fase 4
+
+Configura code review asistido y testing en semi-producción. Esto cierra el ciclo de feedback.
+
+### Nivel 4: Pipeline Completo
+
+Una vez que todas las fases funcionan, tienes un pipeline completo de desarrollo guiado por IA desde PRD hasta producción.
+
+**Herramientas que necesitarás:**
+- Un asistente de código IA que soporte MCP (ej. Claude Code)
+- Notion (o equivalente) para documentación centralizada
+- Un pipeline CI/CD para testing automatizado
+- GitHub/GitLab/Bitbucket para code review
+
+## Diferencias Clave con Mi Enfoque Anterior 🔄
+
+En mi post anterior, describí un flujo de trabajo personal. Esta metodología evoluciona eso en un proceso listo para equipos:
+
+| Enfoque Anterior | Esta Metodología |
+|---|---|
+| Flujo individual | Pipeline de equipo |
+| Creación ad-hoc de agentes | Roles de agentes predefinidos |
+| Escritura manual de tests | Auto-generados desde Gherkin |
+| Implementación primero | Test-first (impuesto) |
+| Documentación opcional | Documentación como paso del pipeline |
+| Sin ciclo formal de revisión | Revisión asistida + testing semi-prod |
+
+## Conclusión 🎯
+
+Esta metodología representa un cambio de *usar IA como herramienta* a *integrar IA en un proceso estructurado*. Los puntos clave:
+
+1. **Mantener a los humanos en roles estratégicos** — creación de PRD, descomposición de features y code review
+2. **Darle a cada agente de IA una responsabilidad única y clara** — desde specs Gherkin hasta testing en semi-producción
+3. **Usar servidores MCP** para alimentar a los agentes con contexto en vivo y específico del proyecto
+4. **Imponer desarrollo test-driven** estructurando el pipeline para que los tests vengan antes de la implementación
+5. **Cerrar el ciclo de feedback** con code review asistido y testing automatizado en semi-producción
+
+El objetivo no es remover humanos del proceso. Es dejar que los humanos se enfoquen en lo que hacen mejor — tomar decisiones — mientras los agentes de IA manejan la ejecución con velocidad y escala.
+
+Si quieres discutir esta metodología o necesitas ayuda implementándola en tu equipo, no dudes en contactarme.
+
+---
+
+¡Gracias por leer! Puedes encontrar más sobre mi trabajo y proyectos en mi GitHub.
+
+<BlogLink
+  url={"https://github.com/solrac97gr"}
+  content={"Visita mi GitHub"}
+/>

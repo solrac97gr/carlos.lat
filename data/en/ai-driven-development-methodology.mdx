@@ -1,0 +1,360 @@
+---
+title: "AI-Driven Development: A Methodology for Teams 🏭"
+date: "February 07, 2026"
+published: "2026-02-07"
+abstract: "A structured methodology that integrates AI agents into the software development lifecycle — from PRD to production — keeping humans in strategic roles while agents handle implementation, testing, and documentation."
+image: "https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482746.jpg?alt=media&token=510dd66e-15af-4292-b84d-795a267155c4"
+tag: "AI, Development, Methodology"
+author: "Carlos García"
+---
+
+# AI-Driven Development: A Methodology for Teams 🏭
+
+<small>February 07, 2026</small>
+<EditPost path="ai-driven-development-methodology" />
+
+<img
+  width="100%"
+  alt="AI-Driven Development Methodology"
+  src="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482746.jpg?alt=media&token=510dd66e-15af-4292-b84d-795a267155c4"
+  style={{borderRadius:"8px"}}
+/>
+
+In a previous post, I shared how I personally work with AI in software development. Since then, I've been refining and formalizing that approach into something bigger: a **complete methodology** that teams can adopt to integrate AI agents across the entire software development lifecycle.
+
+This isn't about replacing developers. It's about creating a structured pipeline where humans make strategic decisions and AI agents execute the repetitive, well-defined work — with the right context, at the right time.
+
+## The Core Idea 💡
+
+The methodology is built on three principles:
+
+1. **Humans stay in strategic roles**: Product Owners define *what* to build. Senior Engineers decide *how* to split it. Developers review the final output.
+2. **AI agents have focused, single-purpose roles**: Each agent does one thing well — write Gherkin specs, generate tests, implement features, run QA, or create documentation.
+3. **MCP servers provide the context agents need**: Instead of relying on an agent's training data, we feed them live context from Notion, Playwright, GitHub, and Context7.
+
+## The Pipeline Overview 🔄
+
+The methodology has four phases. Each phase has clear ownership — either human, AI agent, or a collaboration of both.
+
+<CodeSnippet language="markdown" route="methodology-overview.md" code={`Phase 1: Requirements & Planning ........... [HUMAN]
+  → Product Owner creates PRD
+  → CTO/Staff/Sr Engineer splits features
+
+Phase 2: Specification & Testing ........... [AI AGENT]
+  → Agent converts PRD features into Gherkin specs
+  → Agent generates test files from Gherkin
+
+Phase 3: Implementation .................... [AI AGENT]
+  → Agent implements features (test-first)
+  → Agent runs QA review and fixes issues
+  → Agent creates PR and documentation
+
+Phase 4: Review & Release .................. [HUMAN + AI]
+  → Human + Agent perform assisted code review
+  → Agent tests released features in semi-prod
+  → Agent creates GitHub issues if errors found`} />
+
+Let me walk through each phase in detail.
+
+## Phase 1: Requirements & Planning 📋
+
+This phase is entirely human-driven. No AI agents are involved here, and for good reason — defining *what* to build and *how* to decompose it requires business context, strategic thinking, and human judgment.
+
+### Step 1: Human PRD Creation (Product Owner)
+
+The Product Owner creates a Product Requirements Document. This is the single source of truth for what needs to be built. The PRD should be stored somewhere accessible — in our case, Notion.
+
+### Step 2: Feature Split (CTO/Staff/Sr Engineer)
+
+A senior technical person takes the PRD and breaks it down into discrete, implementable features. This is a critical step — the quality of the feature split directly determines how well the AI agents can do their job.
+
+**Why humans do this step**: Feature decomposition requires understanding system architecture, team capacity, technical debt, and cross-cutting concerns. AI agents lack the organizational and architectural context to make these decisions well.
+
+> The PRD and feature split are stored in Notion, which becomes the source of truth that AI agents access through the Notion MCP.
+
+## Phase 2: Specification & Testing 🧪
+
+This is where AI agents enter the picture. The goal: transform human requirements into machine-readable specifications and tests *before* any implementation begins.
+
+### Step 3: PRD to Gherkin (AI Agent)
+
+The first AI agent takes a feature from the split and generates **Gherkin specifications** — Behavior-Driven Development (BDD) files that describe the expected behavior in a structured format.
+
+<CodeSnippet language="gherkin" route="features/user-subscription.feature" code={`Feature: User RSS Subscription
+  As a blog reader
+  I want to subscribe to the RSS feed
+  So that I receive updates when new posts are published
+
+  Scenario: Successful subscription
+    Given I am on the blog homepage
+    When I click the "Subscribe" button
+    And I enter my email "user@example.com"
+    And I confirm the subscription
+    Then I should see a confirmation message
+    And my email should be added to the subscriber list
+
+  Scenario: Invalid email
+    Given I am on the subscription form
+    When I enter an invalid email "not-an-email"
+    And I confirm the subscription
+    Then I should see an error message "Please enter a valid email"`} />
+
+**Context sources**: This agent uses the **Notion MCP** to access business documentation — the PRD, acceptance criteria, and any domain-specific rules.
+
+**Why Gherkin?** It serves as a bridge between human requirements and automated tests. It's readable by Product Owners and parseable by test frameworks.
+
+### Step 4: Gherkin to Test File (AI Agent)
+
+A second agent takes the Gherkin specs and generates actual test files in the project's testing framework.
+
+<CodeSnippet language="javascript" route="tests/user-subscription.test.js" code={`describe("User RSS Subscription", () => {
+  describe("Successful subscription", () => {
+    it("should show confirmation after valid email submission", async () => {
+      // Given I am on the blog homepage
+      await page.goto("/");
+
+      // When I click the "Subscribe" button
+      await page.click('[data-testid="subscribe-btn"]');
+
+      // And I enter my email
+      await page.fill('[data-testid="email-input"]', "user@example.com");
+
+      // And I confirm the subscription
+      await page.click('[data-testid="confirm-btn"]');
+
+      // Then I should see a confirmation message
+      const message = await page.textContent('[data-testid="confirmation"]');
+      expect(message).toContain("Successfully subscribed");
+    });
+  });
+
+  describe("Invalid email", () => {
+    it("should show error for invalid email format", async () => {
+      await page.goto("/subscribe");
+      await page.fill('[data-testid="email-input"]', "not-an-email");
+      await page.click('[data-testid="confirm-btn"]');
+
+      const error = await page.textContent('[data-testid="error-message"]');
+      expect(error).toContain("Please enter a valid email");
+    });
+  });
+});`} />
+
+The key insight here: **tests exist before any implementation**. This is a test-driven approach enforced by the pipeline structure itself.
+
+## Phase 3: Implementation 🔨
+
+With tests in place, AI agents now implement the actual feature. This phase has three distinct steps, each handled by a specialized agent.
+
+### Step 5: Test File to Implementation (AI Agent)
+
+This agent reads the test files and implements the feature to make all tests pass. It has access to:
+
+- **Context7 MCP**: For up-to-date documentation of libraries and frameworks
+- **Notion MCP**: For technical documentation (architecture decisions, code patterns, API contracts)
+
+<CodeComparition
+  languageL={"markdown"}
+  languageR={"markdown"}
+  left={`# Agent Input
+
+- Test files (from Step 4)
+- Project codebase
+- Context7: Library docs
+- Notion: Tech documentation
+
+The agent reads the tests
+and implements code to make
+all tests pass.`}
+  rigth={`# Agent Output
+
+- Source code files
+- Updated configurations
+- All tests passing
+
+The implementation follows
+existing patterns from the
+project's technical docs.`}
+/>
+
+### Step 6: QA Review and Fix (AI Agent)
+
+A separate agent reviews the implementation against the project's code standards. This agent uses:
+
+- **Playwright MCP**: To run automated tests in a real browser environment
+- **Notion MCP**: To access the team's code standards documentation
+
+This step catches issues like:
+- Code style violations
+- Missing error handling patterns required by the team
+- Accessibility issues
+- Performance regressions
+
+The agent doesn't just flag problems — it **fixes them** and re-runs the tests.
+
+### Step 7: PR and Documentation Creation (AI Agent)
+
+The final implementation agent creates:
+
+1. A **Pull Request** with a clear description of changes
+2. **Documentation** covering the new feature
+3. Updated **changelog** entries if applicable
+
+This agent accesses Notion to follow the team's documentation templates and PR conventions.
+
+## Phase 4: Review & Release 🚀
+
+The final phase brings humans back into the loop for quality assurance and release.
+
+### Step 8: Assisted Code Review (Human + AI)
+
+This is a collaborative step. The code review happens on GitHub (or GitLab/Bitbucket) where:
+
+- **The human reviewer** checks architectural decisions, business logic correctness, and edge cases
+- **The AI agent** checks for consistency with business docs, code standards, and tech docs (all via Notion MCP)
+
+This combination is powerful because humans catch what agents miss (intent, business context) and agents catch what humans miss (consistency, standard compliance across hundreds of lines).
+
+### Step 9: Semi-Production Testing (AI Agent)
+
+After the PR is merged, an AI agent tests the released feature in a semi-production environment. If errors are found:
+
+- The agent creates **GitHub Issues** automatically (via GitHub MCP)
+- Each issue includes reproduction steps, expected behavior, and actual behavior
+- The issues feed back into the pipeline as new features to fix
+
+## The Role of MCP Servers 🔌
+
+MCP (Model Context Protocol) servers are what make this methodology possible. Without them, agents would rely solely on their training data — which is stale and generic. With MCPs, agents get live, project-specific context.
+
+| MCP Server | Used By | Provides |
+|---|---|---|
+| Notion MCP | Almost all agents | Business docs, code standards, tech docs, PRD, templates |
+| Context7 | Implementation agent | Up-to-date library and framework documentation |
+| Playwright MCP | QA agent | Real browser testing, screenshots, test reports |
+| GitHub MCP | Release testing agent | Issue creation, PR management, repository operations |
+
+### Why Notion MCP is central
+
+Notion acts as the **knowledge hub**. It contains three types of context:
+
+1. **Business Docs**: PRDs, acceptance criteria, domain rules
+2. **Code Standards**: Naming conventions, patterns, linting rules, architecture decisions
+3. **Tech Docs**: API contracts, database schemas, infrastructure details
+
+By centralizing context in Notion and exposing it through MCP, every agent has access to the same source of truth — the same source humans use.
+
+## Why This Approach Works 🎯
+
+### Test-Driven by Design
+
+Tests are created *before* implementation — not because we enforce a discipline, but because the pipeline structure makes it the only possible flow. The implementation agent literally receives test files as its input.
+
+### Clear Human/AI Boundaries
+
+Humans make decisions that require judgment: what to build, how to decompose it, and whether the final result is correct. AI agents handle execution: writing specs, tests, code, and documentation.
+
+<CodeComparition
+  languageL={"markdown"}
+  languageR={"markdown"}
+  left={`# Human Responsibilities
+
+✅ Create PRD
+✅ Split features
+✅ Code review
+✅ Release approval
+
+Decisions that need:
+- Business context
+- Strategic thinking
+- Architectural judgment
+- Domain expertise`}
+  rigth={`# AI Agent Responsibilities
+
+✅ Write Gherkin specs
+✅ Generate test files
+✅ Implement features
+✅ QA review and fix
+✅ Create PR and docs
+✅ Semi-prod testing
+
+Tasks that need:
+- Consistency
+- Speed
+- Pattern following
+- Documentation access`}
+/>
+
+### Each Agent Has One Job
+
+A generalist agent that does everything will do everything poorly. By giving each agent a single, focused responsibility, we get:
+
+- **Better quality**: The agent's prompt and context are optimized for one task
+- **Easier debugging**: If the implementation is wrong, you know which agent to fix
+- **Parallelization**: Independent agents can run simultaneously
+
+### Context is Not Optional
+
+The biggest failure mode in AI-assisted development is insufficient context. MCP servers solve this by giving agents direct access to project documentation, not just their training data.
+
+## Getting Started 🛠️
+
+You don't need to implement all four phases at once. Here's a pragmatic adoption path:
+
+### Level 1: Start with Phase 3
+
+Use AI agents for implementation with MCP context. This gives you the most immediate value with the least setup.
+
+### Level 2: Add Phase 2
+
+Introduce Gherkin spec generation and test creation. This enforces test-driven development and improves implementation quality.
+
+### Level 3: Add Phase 4
+
+Set up assisted code review and semi-production testing. This closes the feedback loop.
+
+### Level 4: Full Pipeline
+
+Once all phases are working, you have a complete AI-driven development pipeline from PRD to production.
+
+**Tools you'll need:**
+- An AI coding assistant that supports MCP (e.g., Claude Code)
+- Notion (or equivalent) for centralized documentation
+- A CI/CD pipeline for automated testing
+- GitHub/GitLab/Bitbucket for code review
+
+## Key Differences from My Previous Approach 🔄
+
+In my previous post, I described a personal workflow. This methodology evolves that into a team-ready process:
+
+| Previous Approach | This Methodology |
+|---|---|
+| Individual workflow | Team pipeline |
+| Ad-hoc agent creation | Predefined agent roles |
+| Manual test writing | Auto-generated from Gherkin |
+| Implementation-first | Test-first (enforced) |
+| Optional documentation | Documentation as pipeline step |
+| No formal review loop | Assisted review + semi-prod testing |
+
+## Conclusion 🎯
+
+This methodology represents a shift from *using AI as a tool* to *integrating AI into a structured process*. The key takeaways:
+
+1. **Keep humans in strategic roles** — PRD creation, feature decomposition, and code review
+2. **Give each AI agent a single, clear responsibility** — from Gherkin specs to semi-prod testing
+3. **Use MCP servers** to feed agents live, project-specific context
+4. **Enforce test-driven development** by structuring the pipeline so tests come before implementation
+5. **Close the feedback loop** with assisted code review and automated semi-prod testing
+
+The goal isn't to remove humans from the process. It's to let humans focus on what they do best — making decisions — while AI agents handle the execution at speed and scale.
+
+If you want to discuss this methodology or need help implementing it in your team, feel free to reach out.
+
+---
+
+Thanks for reading! You can find more about my work and projects on my GitHub.
+
+<BlogLink
+  url={"https://github.com/solrac97gr"}
+  content={"Visit my GitHub"}
+/>

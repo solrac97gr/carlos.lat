@@ -5,7 +5,7 @@
     <description>Technical blog about Go, Backend Development, AI, and Software Engineering</description>
     <link>https://carlos.lat</link>
     <language>es</language>
-    <lastBuildDate>Tue, 03 Feb 2026 22:48:00 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 07 Feb 2026 13:07:32 GMT</lastBuildDate>
     <atom:link href="https://carlos.lat/rss-es.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://carlos.lat/logo.png</url>
@@ -13,6 +13,36 @@
       <link>https://carlos.lat</link>
     </image>
     
+    <item>
+      <title><![CDATA[Desarrollo Guiado por IA: Una Metodología para Equipos 🏭]]></title>
+      <description><![CDATA[Una metodología estructurada que integra agentes de IA en el ciclo de desarrollo de software — desde el PRD hasta producción — manteniendo a los humanos en roles estratégicos mientras los agentes manejan implementación, testing y documentación.]]></description>
+      <link>https://carlos.lat/blog/ai-driven-development-methodology</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/ai-driven-development-methodology</guid>
+      <pubDate>Sat, 07 Feb 2026 00:00:00 GMT</pubDate>
+      <category>IA, Desarrollo, Metodología</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F4482746.jpg?alt=media&amp;token=510dd66e-15af-4292-b84d-795a267155c4" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[Dominando las Pruebas de Integración en Go con Testcontainers]]></title>
+      <description><![CDATA[Aprende a escribir pruebas de integración confiables en Go usando Testcontainers. Exploraremos cómo probar con bases de datos reales como PostgreSQL y Redis, eliminando la necesidad de mocks y asegurando que tus pruebas reflejen el comportamiento de producción.]]></description>
+      <link>https://carlos.lat/blog/integration-testing-go-testcontainers</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/integration-testing-go-testcontainers</guid>
+      <pubDate>Wed, 04 Feb 2026 00:00:00 GMT</pubDate>
+      <category>Go</category>
+      <author>Carlos García</author>
+      <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2F5750690.jpg?alt=media&amp;token=4dc9af5c-57f4-4c70-b47d-304771eab417" type="image/jpeg" />
+    </item>
+    <item>
+      <title><![CDATA[Crea Tu Propio Marketplace de Plugins para Claude Code 🚀]]></title>
+      <description><![CDATA[Aprende cómo crear y distribuir tu propio marketplace de plugins para Claude Code, extendiendo la IA con habilidades, agentes y herramientas personalizadas adaptadas a tu flujo de trabajo.]]></description>
+      <link>https://carlos.lat/blog/create-your-own-plugin-marketplace</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/create-your-own-plugin-marketplace</guid>
+      <pubDate>Tue, 03 Feb 2026 00:00:00 GMT</pubDate>
+      <category>Claude, AI, Plugins</category>
+      <author>Carlos García</author>
+      <enclosure url="https://miro.medium.com/max/1400/0*EODEF6xTWVm5hv-3" type="image/jpeg" />
+    </item>
     <item>
       <title><![CDATA[Cómo Crear Módulos Profesionales de Terraform 🏗️]]></title>
       <description><![CDATA[Aprende a crear módulos de Terraform listos para producción con las mejores prácticas, usando como ejemplo un módulo real de Azure OpenAI.]]></description>
@@ -108,7 +138,7 @@
       <description><![CDATA[Aumenta tu productividad con Go Katana, una potente extensión para VSCode. Esta herramienta utiliza fragmentos de código para generar de manera sencilla código para módulos y paquetes de Arquitectura Hexagonal, agilizando tu proceso de desarrollo.]]></description>
       <link>https://carlos.lat/blog/agiliza-desarrollo-go-katana</link>
       <guid isPermaLink="true">https://carlos.lat/blog/agiliza-desarrollo-go-katana</guid>
-      <pubDate>Mon, 03 Jul 2023 22:00:00 GMT</pubDate>
+      <pubDate>Tue, 04 Jul 2023 00:00:00 GMT</pubDate>
       <category>Go, Extension, go-katana</category>
       <author>Carlos García</author>
       <enclosure url="https://firebasestorage.googleapis.com/v0/b/portfolio-18ce8.appspot.com/o/images%2Fgo-katana.jpeg?alt=media&amp;token=39e519ab-b60b-4a70-b292-5f1345d88f52" type="image/jpeg" />
