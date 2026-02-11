@@ -36,23 +36,80 @@ La metodología se basa en tres principios:
 
 La metodología tiene cuatro fases. Cada fase tiene una propiedad clara — ya sea humana, de agente IA, o una colaboración de ambos.
 
-<CodeSnippet language="markdown" route="metodologia-overview.md" code={`Fase 1: Requisitos y Planificación ........... [HUMANO]
-  → Product Owner crea el PRD
-  → CTO/Staff/Sr Engineer divide las features
+<MermaidDiagram code={`
+flowchart TD
+    Start([🚀 INICIO: Nueva Feature])
 
-Fase 2: Especificación y Testing ............. [AGENTE IA]
-  → Agente convierte features del PRD en specs Gherkin
-  → Agente genera archivos de test desde Gherkin
+    Start ==>|Paso 1| Phase1Start
 
-Fase 3: Implementación ....................... [AGENTE IA]
-  → Agente implementa features (test-first)
-  → Agente ejecuta revisión QA y corrige issues
-  → Agente crea PR y documentación
+    subgraph Phase1["📋 FASE 1: Requisitos y Planificación - HUMANO"]
+        direction TB
+        Phase1Start[" "]
+        PRD[Product Owner<br/>Crea PRD]
+        Split[Ingeniero Senior<br/>Divide Features]
+        Phase1Start ~~~ PRD
+        PRD --> Split
+        Split --> Phase1End[" "]
+    end
 
-Fase 4: Revisión y Release ................... [HUMANO + IA]
-  → Humano + Agente realizan code review asistido
-  → Agente prueba features en semi-producción
-  → Agente crea issues en GitHub si encuentra errores`} />
+    Phase1End ==>|Paso 2| Phase2Start
+
+    subgraph Phase2["🧪 FASE 2: Especificación y Testing - AGENTE IA"]
+        direction TB
+        Phase2Start[" "]
+        Gherkin[Agente: PRD a<br/>Specs Gherkin]
+        Tests[Agente: Gherkin a<br/>Archivos de Test]
+        Phase2Start ~~~ Gherkin
+        Gherkin --> Tests
+        Tests --> Phase2End[" "]
+    end
+
+    Phase2End ==>|Paso 3| Phase3Start
+
+    subgraph Phase3["🔨 FASE 3: Implementación - AGENTE IA"]
+        direction TB
+        Phase3Start[" "]
+        Implement[Agente: Tests a<br/>Implementación]
+        QA[Agente: Revisión QA<br/>& Corrección]
+        PR[Agente: Crear PR<br/>& Documentación]
+        Phase3Start ~~~ Implement
+        Implement --> QA --> PR
+        PR --> Phase3End[" "]
+    end
+
+    Phase3End ==>|Paso 4| Phase4Start
+
+    subgraph Phase4["🚀 FASE 4: Revisión y Release - HUMANO + IA"]
+        direction TB
+        Phase4Start[" "]
+        Review[Humano + Agente:<br/>Code Review]
+        SemiProd[Agente: Testing<br/>Semi-Producción]
+        Issues[Agente: Crear<br/>Issues en GitHub]
+        Phase4Start ~~~ Review
+        Review --> SemiProd
+        SemiProd -->|Errores| Issues
+        SemiProd -->|Todo Bien| Phase4End[" "]
+    end
+
+    Phase4End ==> Deploy([✅ DEPLOY A PRODUCCIÓN])
+    Issues -.->|Correcciones| Phase2Start
+
+    style Phase1 fill:#e3f2fd,stroke:#1976d2,stroke-width:4px
+    style Phase2 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:4px
+    style Phase3 fill:#fff3e0,stroke:#f57c00,stroke-width:4px
+    style Phase4 fill:#e8f5e9,stroke:#388e3c,stroke-width:4px
+    style Start fill:#fce4ec,stroke:#c2185b,stroke-width:3px
+    style Deploy fill:#c8e6c9,stroke:#2e7d32,stroke-width:4px
+
+    style Phase1Start fill:transparent,stroke:none
+    style Phase1End fill:transparent,stroke:none
+    style Phase2Start fill:transparent,stroke:none
+    style Phase2End fill:transparent,stroke:none
+    style Phase3Start fill:transparent,stroke:none
+    style Phase3End fill:transparent,stroke:none
+    style Phase4Start fill:transparent,stroke:none
+    style Phase4End fill:transparent,stroke:none
+`}/>
 
 Veamos cada fase en detalle.
 
@@ -75,6 +132,33 @@ Una persona técnica senior toma el PRD y lo descompone en features discretas e 
 ## Fase 2: Especificación y Testing 🧪
 
 Aquí es donde los agentes de IA entran en escena. El objetivo: transformar requisitos humanos en especificaciones y tests legibles por máquinas *antes* de que comience cualquier implementación.
+
+<MermaidDiagram code={`
+flowchart LR
+    PRD["📄 Feature del PRD<br/>(desde Notion)"]
+    Agent1["🤖 Agente 1:<br/>PRD → Gherkin"]
+    Gherkin["📝 Spec Gherkin<br/>(archivo .feature)"]
+    Agent2["🤖 Agente 2:<br/>Gherkin → Tests"]
+    Tests["✅ Archivos de Test<br/>(.test.js)"]
+
+    NotionMCP[(Notion MCP<br/>Contexto de Negocio)]
+
+    PRD --> Agent1
+    NotionMCP -.->|Contexto| Agent1
+    Agent1 --> Gherkin
+    Gherkin --> Agent2
+    NotionMCP -.->|Plantillas| Agent2
+    Agent2 --> Tests
+
+    Tests -.->|Listo para<br/>Implementación| Phase3[Fase 3]
+
+    style PRD fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style Gherkin fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style Tests fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style Agent1 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style Agent2 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style Phase3 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+`}/>
 
 ### Paso 3: PRD a Gherkin (Agente IA)
 
@@ -227,6 +311,51 @@ Después de que el PR es mergeado, un agente de IA prueba la feature en un entor
 
 Los servidores MCP (Model Context Protocol) son lo que hace posible esta metodología. Sin ellos, los agentes dependerían únicamente de sus datos de entrenamiento — que son obsoletos y genéricos. Con MCPs, los agentes obtienen contexto en vivo y específico del proyecto.
 
+<MermaidDiagram code={`
+graph TB
+    subgraph Sources["📚 Fuentes de Conocimiento"]
+        Notion[(Notion<br/>Docs de Negocio<br/>Estándares de Código<br/>Docs Técnicos)]
+        Context7[(Context7<br/>Docs de Librerías<br/>Docs de Frameworks)]
+        Playwright[(Playwright<br/>Testing en Navegador<br/>Screenshots)]
+        GitHub[(GitHub<br/>Issues & PRs<br/>Repositorio)]
+    end
+
+    subgraph MCPs["🔌 Servidores MCP"]
+        NotionMCP[Notion MCP]
+        Context7MCP[Context7 MCP]
+        PlaywrightMCP[Playwright MCP]
+        GitHubMCP[GitHub MCP]
+    end
+
+    subgraph Agents["🤖 Agentes IA"]
+        GherkinAgent[Agente de<br/>Specs Gherkin]
+        TestAgent[Agente de<br/>Generación Tests]
+        ImplAgent[Agente de<br/>Implementación]
+        QAAgent[Agente de<br/>Revisión QA]
+        PRAgent[Agente de<br/>PR & Docs]
+        ReleaseAgent[Agente de<br/>Testing Release]
+    end
+
+    Notion -->|Contexto en Vivo| NotionMCP
+    Context7 -->|Docs Actualizados| Context7MCP
+    Playwright -->|Interfaz Testing| PlaywrightMCP
+    GitHub -->|Acceso Repositorio| GitHubMCP
+
+    NotionMCP -.->|PRD, Reglas Negocio| GherkinAgent
+    NotionMCP -.->|Plantillas| TestAgent
+    NotionMCP -.->|Docs Técnicos| ImplAgent
+    Context7MCP -.->|Docs Librerías| ImplAgent
+    NotionMCP -.->|Estándares Código| QAAgent
+    PlaywrightMCP -.->|Tests Navegador| QAAgent
+    NotionMCP -.->|Plantillas PR| PRAgent
+    GitHubMCP -.->|Creación Issues| ReleaseAgent
+
+    style Notion fill:#fff3e0,stroke:#f57c00
+    style Context7 fill:#e3f2fd,stroke:#1976d2
+    style Playwright fill:#f3e5f5,stroke:#7b1fa2
+    style GitHub fill:#e8f5e9,stroke:#388e3c
+`}/>
+
 | Servidor MCP | Usado Por | Provee |
 |---|---|---|
 | Notion MCP | Casi todos los agentes | Docs de negocio, estándares de código, docs técnicos, PRD, plantillas |
@@ -300,6 +429,23 @@ El mayor modo de fallo en el desarrollo asistido por IA es contexto insuficiente
 ## Cómo Empezar 🛠️
 
 No necesitas implementar las cuatro fases de una vez. Aquí hay un camino pragmático de adopción:
+
+<MermaidDiagram code={`
+graph LR
+    Level1["🎯 Nivel 1<br/>Solo Fase 3<br/><br/>✅ Implementación IA<br/>✅ Contexto MCP<br/>⏱️ Resultados Rápidos"]
+    Level2["🎯 Nivel 2<br/>+ Fase 2<br/><br/>✅ Specs Gherkin<br/>✅ Generación Tests<br/>✅ TDD Impuesto"]
+    Level3["🎯 Nivel 3<br/>+ Fase 4<br/><br/>✅ Revisión Asistida<br/>✅ Testing Semi-Prod<br/>✅ Ciclo de Feedback"]
+    Level4["🎯 Nivel 4<br/>+ Fase 1<br/><br/>✅ Pipeline Completo<br/>✅ PRD a Producción<br/>🚀 Flujo Completo"]
+
+    Level1 -->|Agregar Especificación| Level2
+    Level2 -->|Agregar Revisión & Release| Level3
+    Level3 -->|Agregar Requisitos| Level4
+
+    style Level1 fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style Level2 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style Level3 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style Level4 fill:#c8e6c9,stroke:#2e7d32,stroke-width:3px
+`}/>
 
 ### Nivel 1: Empieza con la Fase 3
 

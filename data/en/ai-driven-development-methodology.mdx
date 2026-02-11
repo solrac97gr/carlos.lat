@@ -36,23 +36,80 @@ The methodology is built on three principles:
 
 The methodology has four phases. Each phase has clear ownership — either human, AI agent, or a collaboration of both.
 
-<CodeSnippet language="markdown" route="methodology-overview.md" code={`Phase 1: Requirements & Planning ........... [HUMAN]
-  → Product Owner creates PRD
-  → CTO/Staff/Sr Engineer splits features
+<MermaidDiagram code={`
+flowchart TD
+    Start([🚀 START: New Feature Request])
 
-Phase 2: Specification & Testing ........... [AI AGENT]
-  → Agent converts PRD features into Gherkin specs
-  → Agent generates test files from Gherkin
+    Start ==>|Step 1| Phase1Start
 
-Phase 3: Implementation .................... [AI AGENT]
-  → Agent implements features (test-first)
-  → Agent runs QA review and fixes issues
-  → Agent creates PR and documentation
+    subgraph Phase1["📋 PHASE 1: Requirements & Planning - HUMAN"]
+        direction TB
+        Phase1Start[" "]
+        PRD[Product Owner<br/>Creates PRD]
+        Split[Senior Engineer<br/>Splits Features]
+        Phase1Start ~~~ PRD
+        PRD --> Split
+        Split --> Phase1End[" "]
+    end
 
-Phase 4: Review & Release .................. [HUMAN + AI]
-  → Human + Agent perform assisted code review
-  → Agent tests released features in semi-prod
-  → Agent creates GitHub issues if errors found`} />
+    Phase1End ==>|Step 2| Phase2Start
+
+    subgraph Phase2["🧪 PHASE 2: Specification & Testing - AI AGENT"]
+        direction TB
+        Phase2Start[" "]
+        Gherkin[Agent: PRD to<br/>Gherkin Specs]
+        Tests[Agent: Gherkin to<br/>Test Files]
+        Phase2Start ~~~ Gherkin
+        Gherkin --> Tests
+        Tests --> Phase2End[" "]
+    end
+
+    Phase2End ==>|Step 3| Phase3Start
+
+    subgraph Phase3["🔨 PHASE 3: Implementation - AI AGENT"]
+        direction TB
+        Phase3Start[" "]
+        Implement[Agent: Tests to<br/>Implementation]
+        QA[Agent: QA Review<br/>& Fix Issues]
+        PR[Agent: Create PR<br/>& Documentation]
+        Phase3Start ~~~ Implement
+        Implement --> QA --> PR
+        PR --> Phase3End[" "]
+    end
+
+    Phase3End ==>|Step 4| Phase4Start
+
+    subgraph Phase4["🚀 PHASE 4: Review & Release - HUMAN + AI"]
+        direction TB
+        Phase4Start[" "]
+        Review[Human + Agent:<br/>Code Review]
+        SemiProd[Agent: Semi-Prod<br/>Testing]
+        Issues[Agent: Create<br/>GitHub Issues]
+        Phase4Start ~~~ Review
+        Review --> SemiProd
+        SemiProd -->|Errors Found| Issues
+        SemiProd -->|All Good| Phase4End[" "]
+    end
+
+    Phase4End ==> Deploy([✅ DEPLOY TO PRODUCTION])
+    Issues -.->|Bug Fixes| Phase2Start
+
+    style Phase1 fill:#e3f2fd,stroke:#1976d2,stroke-width:4px
+    style Phase2 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:4px
+    style Phase3 fill:#fff3e0,stroke:#f57c00,stroke-width:4px
+    style Phase4 fill:#e8f5e9,stroke:#388e3c,stroke-width:4px
+    style Start fill:#fce4ec,stroke:#c2185b,stroke-width:3px
+    style Deploy fill:#c8e6c9,stroke:#2e7d32,stroke-width:4px
+
+    style Phase1Start fill:transparent,stroke:none
+    style Phase1End fill:transparent,stroke:none
+    style Phase2Start fill:transparent,stroke:none
+    style Phase2End fill:transparent,stroke:none
+    style Phase3Start fill:transparent,stroke:none
+    style Phase3End fill:transparent,stroke:none
+    style Phase4Start fill:transparent,stroke:none
+    style Phase4End fill:transparent,stroke:none
+`}/>
 
 Let me walk through each phase in detail.
 
@@ -75,6 +132,33 @@ A senior technical person takes the PRD and breaks it down into discrete, implem
 ## Phase 2: Specification & Testing 🧪
 
 This is where AI agents enter the picture. The goal: transform human requirements into machine-readable specifications and tests *before* any implementation begins.
+
+<MermaidDiagram code={`
+flowchart LR
+    PRD["📄 PRD Feature<br/>(from Notion)"]
+    Agent1["🤖 Agent 1:<br/>PRD → Gherkin"]
+    Gherkin["📝 Gherkin Spec<br/>(.feature file)"]
+    Agent2["🤖 Agent 2:<br/>Gherkin → Tests"]
+    Tests["✅ Test Files<br/>(.test.js)"]
+
+    NotionMCP[(Notion MCP<br/>Business Context)]
+
+    PRD --> Agent1
+    NotionMCP -.->|Context| Agent1
+    Agent1 --> Gherkin
+    Gherkin --> Agent2
+    NotionMCP -.->|Templates| Agent2
+    Agent2 --> Tests
+
+    Tests -.->|Ready for<br/>Implementation| Phase3[Phase 3]
+
+    style PRD fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style Gherkin fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style Tests fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style Agent1 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style Agent2 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style Phase3 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+`}/>
 
 ### Step 3: PRD to Gherkin (AI Agent)
 
@@ -227,6 +311,51 @@ After the PR is merged, an AI agent tests the released feature in a semi-product
 
 MCP (Model Context Protocol) servers are what make this methodology possible. Without them, agents would rely solely on their training data — which is stale and generic. With MCPs, agents get live, project-specific context.
 
+<MermaidDiagram code={`
+graph TB
+    subgraph Sources["📚 Knowledge Sources"]
+        Notion[(Notion<br/>Business Docs<br/>Code Standards<br/>Tech Docs)]
+        Context7[(Context7<br/>Library Docs<br/>Framework Docs)]
+        Playwright[(Playwright<br/>Browser Testing<br/>Screenshots)]
+        GitHub[(GitHub<br/>Issues & PRs<br/>Repository)]
+    end
+
+    subgraph MCPs["🔌 MCP Servers"]
+        NotionMCP[Notion MCP]
+        Context7MCP[Context7 MCP]
+        PlaywrightMCP[Playwright MCP]
+        GitHubMCP[GitHub MCP]
+    end
+
+    subgraph Agents["🤖 AI Agents"]
+        GherkinAgent[Gherkin<br/>Spec Agent]
+        TestAgent[Test<br/>Generation Agent]
+        ImplAgent[Implementation<br/>Agent]
+        QAAgent[QA Review<br/>Agent]
+        PRAgent[PR & Docs<br/>Agent]
+        ReleaseAgent[Release Testing<br/>Agent]
+    end
+
+    Notion -->|Live Context| NotionMCP
+    Context7 -->|Up-to-date Docs| Context7MCP
+    Playwright -->|Testing Interface| PlaywrightMCP
+    GitHub -->|Repository Access| GitHubMCP
+
+    NotionMCP -.->|PRD, Business Rules| GherkinAgent
+    NotionMCP -.->|Templates| TestAgent
+    NotionMCP -.->|Tech Docs| ImplAgent
+    Context7MCP -.->|Library Docs| ImplAgent
+    NotionMCP -.->|Code Standards| QAAgent
+    PlaywrightMCP -.->|Browser Tests| QAAgent
+    NotionMCP -.->|PR Templates| PRAgent
+    GitHubMCP -.->|Issue Creation| ReleaseAgent
+
+    style Notion fill:#fff3e0,stroke:#f57c00
+    style Context7 fill:#e3f2fd,stroke:#1976d2
+    style Playwright fill:#f3e5f5,stroke:#7b1fa2
+    style GitHub fill:#e8f5e9,stroke:#388e3c
+`}/>
+
 | MCP Server | Used By | Provides |
 |---|---|---|
 | Notion MCP | Almost all agents | Business docs, code standards, tech docs, PRD, templates |
@@ -300,6 +429,23 @@ The biggest failure mode in AI-assisted development is insufficient context. MCP
 ## Getting Started 🛠️
 
 You don't need to implement all four phases at once. Here's a pragmatic adoption path:
+
+<MermaidDiagram code={`
+graph LR
+    Level1["🎯 Level 1<br/>Phase 3 Only<br/><br/>✅ AI Implementation<br/>✅ MCP Context<br/>⏱️ Quick Wins"]
+    Level2["🎯 Level 2<br/>+ Phase 2<br/><br/>✅ Gherkin Specs<br/>✅ Test Generation<br/>✅ TDD Enforced"]
+    Level3["🎯 Level 3<br/>+ Phase 4<br/><br/>✅ Assisted Review<br/>✅ Semi-Prod Testing<br/>✅ Feedback Loop"]
+    Level4["🎯 Level 4<br/>+ Phase 1<br/><br/>✅ Full Pipeline<br/>✅ PRD to Production<br/>🚀 Complete Flow"]
+
+    Level1 -->|Add Specification| Level2
+    Level2 -->|Add Review & Release| Level3
+    Level3 -->|Add Requirements| Level4
+
+    style Level1 fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style Level2 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style Level3 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style Level4 fill:#c8e6c9,stroke:#2e7d32,stroke-width:3px
+`}/>
 
 ### Level 1: Start with Phase 3
 
