@@ -23,6 +23,7 @@
     "gray-matter": "^4.0.3",
     "html-entities": "^2.3.3",
     "mdx-prism": "^0.3.4",
+    "mermaid": "^11.12.2",
     "next": "15.5.7",
     "next-mdx-remote": "^5.0.0",
     "next-sanity": "^11.6.10",
