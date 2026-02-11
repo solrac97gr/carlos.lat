@@ -164,6 +164,93 @@ For displaying file/folder trees:
 />
 ```
 
+#### MermaidDiagram Component
+For creating interactive diagrams, flowcharts, and visualizations:
+
+```jsx
+<MermaidDiagram code={`
+flowchart TD
+    Start[Start] --> Process[Process Data]
+    Process --> Decision{Success?}
+    Decision -->|Yes| End[Done]
+    Decision -->|No| Error[Handle Error]
+    Error --> Process
+`}/>
+```
+
+**Supported Diagram Types:**
+- **Flowcharts**: `flowchart TD`, `flowchart LR`
+- **Sequence Diagrams**: `sequenceDiagram`
+- **Class Diagrams**: `classDiagram`
+- **State Diagrams**: `stateDiagram-v2`
+- **ER Diagrams**: `erDiagram`
+- **Git Graphs**: `gitGraph`
+- **Gantt Charts**: `gantt`
+- **Pie Charts**: `pie`
+
+**Features:**
+- ✅ Interactive zoom (50%-300%)
+- ✅ Pan/drag functionality
+- ✅ Download as SVG or PNG
+- ✅ Copy Mermaid code
+- ✅ Mobile-friendly (auto-hiding controls)
+- ✅ Responsive design
+
+**When to Use:**
+- Architecture diagrams
+- Process flows and workflows
+- Data flow diagrams
+- State machines
+- System relationships
+- Git branching strategies
+- Project timelines
+
+**Example - Architecture Diagram:**
+```jsx
+<MermaidDiagram code={`
+graph TB
+    subgraph Frontend
+        React[React App]
+        Redux[Redux Store]
+    end
+
+    subgraph Backend
+        API[REST API]
+        DB[(Database)]
+    end
+
+    React --> API
+    API --> DB
+    Redux -.->|State| React
+`}/>
+```
+
+**Example - Sequence Diagram:**
+```jsx
+<MermaidDiagram code={`
+sequenceDiagram
+    participant User
+    participant Frontend
+    participant API
+    participant Database
+
+    User->>Frontend: Click Button
+    Frontend->>API: POST /api/data
+    API->>Database: Query
+    Database-->>API: Results
+    API-->>Frontend: JSON Response
+    Frontend-->>User: Display Data
+`}/>
+```
+
+**Tips:**
+- Test diagrams at [Mermaid Live Editor](https://mermaid.live/) first
+- Use descriptive node names for clarity
+- Add colors with `style NodeName fill:#color`
+- Keep diagrams focused - split complex diagrams into multiple
+- On mobile, users tap to show zoom controls
+- Use subgraphs to group related elements
+
 ### 5. Image Guidelines
 
 **Finding Images:**
