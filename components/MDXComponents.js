@@ -7,7 +7,7 @@ import { SocialShareButtons } from "./SocialShareButtons";
 import { NewsletterSubscribe } from "./NewsletterSubscribe";
 import { CodeSnippet } from "./CodeSnipet";
 import { PromoBanner } from "./PromoBanner";
-import {CodeComparition} from "./CodeComparition"
+import {CodeComparison} from "./CodeComparison"
 import { MermaidDiagram } from "./MermaidDiagram";
 import { Table, Thead, Tbody, Th, Td, Tr } from "./Table";
 import Image from "next/image";
@@ -23,7 +23,7 @@ const components = {
   BlogLink,
   Podcast,
   Gist,
-  CodeComparition,
+  CodeComparison,
   table: Table,
   thead: Thead,
   tbody: Tbody,

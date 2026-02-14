@@ -5,7 +5,7 @@
     <description>Technical blog about Go, Backend Development, AI, and Software Engineering</description>
     <link>https://carlos.lat</link>
     <language>es</language>
-    <lastBuildDate>Sat, 07 Feb 2026 13:07:32 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 14 Feb 2026 22:42:49 GMT</lastBuildDate>
     <atom:link href="https://carlos.lat/rss-es.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://carlos.lat/logo.png</url>
@@ -13,6 +13,16 @@
       <link>https://carlos.lat</link>
     </image>
     
+    <item>
+      <title><![CDATA[Modelos Thinking de Claude: Cuándo Usar Extended Thinking vs Modo Estándar 🧠]]></title>
+      <description><![CDATA[Comprende las diferencias entre los modelos thinking y no-thinking de Claude, aprende cuándo usar cada modo, y descubre cómo optimizar el rendimiento con presupuestos de thinking y razonamiento adaptativo.]]></description>
+      <link>https://carlos.lat/blog/claude-thinking-models-guide</link>
+      <guid isPermaLink="true">https://carlos.lat/blog/claude-thinking-models-guide</guid>
+      <pubDate>Sat, 14 Feb 2026 00:00:00 GMT</pubDate>
+      <category>AI, Claude, Desarrollo</category>
+      <author>Carlos García</author>
+      <enclosure url="https://miro.medium.com/max/1400/0*EODEF6xTWVm5hv-3" type="image/jpeg" />
+    </item>
     <item>
       <title><![CDATA[Desarrollo Guiado por IA: Una Metodología para Equipos 🏭]]></title>
       <description><![CDATA[Una metodología estructurada que integra agentes de IA en el ciclo de desarrollo de software — desde el PRD hasta producción — manteniendo a los humanos en roles estratégicos mientras los agentes manejan implementación, testing y documentación.]]></description>
