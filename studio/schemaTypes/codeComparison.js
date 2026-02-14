@@ -33,7 +33,7 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     },
     {
-      name: 'rigth',
+      name: 'right',
       title: 'Right Code',
       type: 'text',
       rows: 10,

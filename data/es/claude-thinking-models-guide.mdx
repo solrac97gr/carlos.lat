@@ -359,8 +359,8 @@ extended_cost = (extended_input_tokens * 0.015/1000) +
                 (extended_thinking_tokens * 0.015/1000) +
                 (extended_output_tokens * 0.075/1000)
 
-print(f"Modo estándar: ${standard_cost:.4f}")
-print(f"Extended thinking: ${extended_cost:.4f}")
+print(f"Modo estándar: \${standard_cost:.4f}")
+print(f"Extended thinking: \${extended_cost:.4f}")
 print(f"Incremento de costo: {(extended_cost/standard_cost - 1) * 100:.1f}%")`}
 />
 
@@ -443,7 +443,7 @@ flowchart TD
 
 Déjame mostrarte un ejemplo práctico comparando ambos modos:
 
-<CodeComparition
+<CodeComparison
   languageL="python"
   languageR="python"
   left={`# Modo estándar
@@ -458,7 +458,7 @@ response = client.messages.create(
 )
 # Tiempo de respuesta: ~2 segundos
 # Encuentra: 3 bugs obvios`}
-  rigth={`# Modo extended thinking
+  right={`# Modo extended thinking
 # Más lento pero más exhaustivo
 response = client.messages.create(
     model="claude-3-7-sonnet-20250219",
