@@ -1,0 +1,510 @@
+---
+title: "Modelos Thinking de Claude: Cuándo Usar Extended Thinking vs Modo Estándar 🧠"
+date: "14 de Febrero del 2026"
+published: "2026-02-14"
+abstract: "Comprende las diferencias entre los modelos thinking y no-thinking de Claude, aprende cuándo usar cada modo, y descubre cómo optimizar el rendimiento con presupuestos de thinking y razonamiento adaptativo."
+image: "https://miro.medium.com/max/1400/0*EODEF6xTWVm5hv-3"
+tag: "AI, Claude, Desarrollo"
+author: "Carlos García"
+---
+
+# Modelos Thinking de Claude: Cuándo Usar Extended Thinking vs Modo Estándar 🧠
+
+<small>14 de Febrero del 2026</small>
+<EditPost path="claude-thinking-models-guide" />
+
+<img
+  width="100%"
+  alt="modelos-ai-claude-razonamiento-extendido"
+  src="https://miro.medium.com/max/1400/0*EODEF6xTWVm5hv-3"
+  style={{borderRadius:"8px"}}
+/>
+
+Si has estado trabajando con Claude, es posible que hayas notado que algunos modelos ofrecen capacidades de "extended thinking" (pensamiento extendido) mientras que otros operan en modo estándar. ¿Pero cuál es la diferencia? Y más importante aún, ¿cuándo deberías usar cada uno?
+
+En esta guía, voy a desglosar todo lo que necesitas saber sobre los modelos thinking de Claude, te ayudaré a entender cuándo habilitar el pensamiento extendido, y te mostraré cómo optimizar el rendimiento y el costo según tu caso de uso específico.
+
+## ¿Qué es Extended Thinking?
+
+Extended thinking es una funcionalidad que le da a Claude capacidades de razonamiento mejoradas para tareas complejas. Cuando está habilitado, Claude no salta directamente a una respuesta. En su lugar, crea un proceso de pensamiento visible donde puedes ver su razonamiento paso a paso antes de entregar la respuesta final.
+
+Piénsalo así: el modo estándar es como hacerle una pregunta rápida a alguien y obtener una respuesta inmediata. Extended thinking es como ver a alguien trabajar a través de un problema en una pizarra, mostrando todo su trabajo antes de llegar a la solución.
+
+<CodeSnippet
+  language="python"
+  route="example.py"
+  code={`import anthropic
+
+client = anthropic.Anthropic()
+
+response = client.messages.create(
+    model="claude-3-7-sonnet-20250219",
+    max_tokens=16000,
+    thinking={
+        "type": "enabled",
+        "budget_tokens": 10000
+    },
+    messages=[{
+        "role": "user",
+        "content": "Resuelve este problema matemático complejo: ..."
+    }]
+)
+
+# La respuesta incluye bloques de pensamiento
+for block in response.content:
+    if block.type == "thinking":
+        print(f"Razonamiento de Claude: {block.thinking}")
+    elif block.type == "text":
+        print(f"Respuesta final: {block.text}")`}
+/>
+
+## Cómo Funciona Extended Thinking
+
+Cuando Claude usa extended thinking, se beneficia de lo que se llama "serial test-time compute" (cómputo serial en tiempo de prueba). Esto significa que usa múltiples pasos de razonamiento secuenciales antes de producir la salida final, añadiendo más recursos computacionales mientras procesa el problema.
+
+La mejora es predecible: la precisión de Claude en tareas como problemas matemáticos mejora logarítmicamente con el número de "thinking tokens" (tokens de pensamiento) que se le permite usar.
+
+### Diferencias Clave Entre Modelos
+
+Diferentes modelos de Claude manejan el extended thinking de manera diferente:
+
+- **Claude 3.7 Sonnet**: Retorna la salida completa de pensamiento, mostrándote cada paso del proceso de razonamiento de Claude
+- **Modelos Claude 4** (Opus 4.6, Sonnet 4.5): Retorna una versión resumida del proceso de pensamiento de Claude. Aún obtienes los beneficios de inteligencia sin exponer el razonamiento interno completo
+- **Adaptive Thinking** (Opus 4.6): El modelo puede decidir automáticamente cuándo un razonamiento más profundo sería útil
+
+<MermaidDiagram code={`
+flowchart TD
+    Start[Consulta del Usuario] --> Decision{¿Tarea Compleja?}
+    Decision -->|Sí| Extended[Modo Extended Thinking]
+    Decision -->|No| Standard[Modo Estándar]
+
+    Extended --> Think[Pasos de Razonamiento Secuencial]
+    Think --> Budget{¿Dentro del Presupuesto?}
+    Budget -->|Sí| MoreThinking[Continuar Pensando]
+    Budget -->|No| Response[Generar Respuesta]
+    MoreThinking --> Think
+
+    Standard --> QuickResponse[Respuesta Directa]
+
+    Response --> User[Retornar al Usuario]
+    QuickResponse --> User
+
+    style Extended fill:#4A90E2
+    style Standard fill:#50C878
+    style Think fill:#FFB84D
+`}/>
+
+## Cuándo Usar Extended Thinking
+
+Extended thinking brilla en escenarios que requieren razonamiento profundo, paso a paso. Aquí están los casos de uso ideales:
+
+### 1. Problemas STEM Complejos
+
+Matemáticas, física, química, o cualquier problema que requiera construir modelos mentales y aplicar conocimiento especializado.
+
+<CodeSnippet
+  language="python"
+  code={`# Ejemplo: Problema complejo de cálculo
+response = client.messages.create(
+    model="claude-3-7-sonnet-20250219",
+    max_tokens=16000,
+    thinking={
+        "type": "enabled",
+        "budget_tokens": 8000  # Darle a Claude espacio para pensar
+    },
+    messages=[{
+        "role": "user",
+        "content": """
+        Resuelve la siguiente ecuación diferencial:
+        d²y/dx² + 4y = sin(2x)
+        con condiciones iniciales y(0) = 1 y y'(0) = 0
+        """
+    }]
+)`}
+/>
+
+### 2. Proyectos Grandes de Ingeniería
+
+Cuando necesitas desglosar tareas complejas en hitos más pequeños, tales como:
+- Planificar un release de software con múltiples dependencias
+- Delinear un plan de sprint Agile con priorización del backlog
+- Mapear un proyecto de investigación con múltiples etapas
+- Arquitecturar un sistema de microservicios
+
+### 3. Código con Verificación de Tests
+
+Tareas donde Claude necesita escribir código, verificarlo contra casos de prueba, e iterativamente mejorar la solución.
+
+<CodeSnippet
+  language="typescript"
+  code={`// Ejemplo de prompt para tarea de código compleja
+const prompt = \`
+Crea una implementación en TypeScript de una estructura de datos B-tree
+con los siguientes requisitos:
+1. Soporte para operaciones de inserción, eliminación y búsqueda
+2. Mecanismo de auto-balanceo
+3. Soporte para tipos genéricos
+4. Tests unitarios comprehensivos
+5. Complejidad de tiempo O(log n) para todas las operaciones
+
+Por favor piensa cuidadosamente el diseño antes de implementar.
+\`;`}
+/>
+
+### 4. Análisis Multi-Paso
+
+Tareas que requieren analizar datos desde múltiples ángulos, considerar varios factores, y sintetizar insights.
+
+## Cuándo Usar Modo Estándar
+
+El modo estándar (thinking deshabilitado) es perfecto para:
+
+### 1. Tareas Rápidas y Directas
+
+Cuando necesitas respuestas rápidas sin razonamiento profundo:
+- Completado simple de código
+- Respuesta básica a preguntas
+- Formateo de contenido
+- Traducciones directas
+
+### 2. Requisitos de Baja Latencia
+
+Cuando el tiempo de respuesta es crítico y la tarea no se beneficia del razonamiento extendido.
+
+<CodeSnippet
+  language="javascript"
+  code={`// Modo estándar para respuestas rápidas
+const response = await client.messages.create({
+    model: "claude-sonnet-4-5-20250929",
+    max_tokens: 1024,
+    // Sin parámetro thinking = modo estándar
+    messages: [{
+        role: "user",
+        content: "Convierte este JavaScript a TypeScript: const x = 5;"
+    }]
+});`}
+/>
+
+### 3. Aplicaciones Conscientes del Presupuesto
+
+Cuando necesitas minimizar costos y la tarea no requiere razonamiento profundo.
+
+### 4. Tareas Bajo 1024 Thinking Tokens
+
+Si necesitas thinking por debajo del presupuesto mínimo (1024 tokens), usa el modo estándar con prompting tradicional de cadena de pensamiento:
+
+<CodeSnippet
+  language="python"
+  code={`# Prompting de cadena de pensamiento en modo estándar
+response = client.messages.create(
+    model="claude-sonnet-4-5-20250929",
+    max_tokens=2048,
+    messages=[{
+        "role": "user",
+        "content": """
+        <thinking>
+        Déjame trabajar esto paso a paso:
+        1. Primero, analizaré los requisitos
+        2. Luego, consideraré casos límite
+        3. Finalmente, proporcionaré la solución
+        </thinking>
+
+        Calcula el interés compuesto para...
+        """
+    }]
+)`}
+/>
+
+## Thinking Budget: Encontrando el Punto Óptimo
+
+El presupuesto de thinking determina cuántos tokens puede usar Claude para su razonamiento interno. Aquí está cómo optimizarlo:
+
+### Punto de Partida
+
+- **Presupuesto mínimo**: 1024 tokens (impuesto por la API)
+- **Enfoque recomendado**: Empieza con 1024 y aumenta incrementalmente según los resultados
+- **Tareas complejas**: Empieza con 16,000+ tokens
+- **Tareas muy complejas**: 32,000+ tokens (usa procesamiento por lotes para evitar timeouts)
+
+<CodeSnippet
+  language="python"
+  code={`# Prueba progresiva de presupuesto
+budgets = [1024, 2048, 4096, 8192, 16384]
+
+for budget in budgets:
+    response = client.messages.create(
+        model="claude-3-7-sonnet-20250219",
+        max_tokens=16000,
+        thinking={
+            "type": "enabled",
+            "budget_tokens": budget
+        },
+        messages=[{"role": "user", "content": problema_complejo}]
+    )
+
+    # Analiza el trade-off calidad vs costo
+    evaluate_response_quality(response, budget)`}
+/>
+
+### Guías de Presupuesto
+
+| Complejidad de Tarea | Presupuesto Recomendado | Caso de Uso |
+|----------------------|------------------------|-------------|
+| Razonamiento simple | 1024-2048 tokens | Lógica básica, matemáticas simples |
+| Complejidad moderada | 4096-8192 tokens | Problemas multi-paso, revisión de código |
+| Tareas complejas | 16384+ tokens | Diseño de arquitectura, planeación de investigación |
+| Muy complejo | 32768+ tokens | STEM avanzado, diseño de sistemas grandes |
+
+## Adaptive Thinking: La Elección Inteligente
+
+Con Claude Opus 4.6 (lanzado en 2026), Anthropic introdujo **adaptive thinking**. Esta funcionalidad permite a Claude decidir automáticamente cuándo un razonamiento más profundo sería útil.
+
+### Cuatro Niveles de Esfuerzo
+
+- **Low**: Pensamiento mínimo, prioriza velocidad
+- **Medium**: Enfoque balanceado
+- **High** (predeterminado): Usa extended thinking cuando es útil
+- **Max**: Máximo esfuerzo de razonamiento para tareas críticas
+
+<CodeSnippet
+  language="python"
+  route="adaptive_thinking.py"
+  code={`import anthropic
+
+client = anthropic.Anthropic()
+
+# Adaptive thinking con alto esfuerzo (predeterminado)
+response = client.messages.create(
+    model="claude-opus-4-6-20260205",
+    max_tokens=16000,
+    thinking={
+        "type": "enabled",
+        "budget_tokens": 10000,
+        "effort": "high"  # low, medium, high, max
+    },
+    messages=[{
+        "role": "user",
+        "content": "Diseña una arquitectura de microservicios escalable para..."
+    }]
+)
+
+# Claude decide cuándo usar extended thinking
+# Obtienes lo mejor de ambos mundos: velocidad cuando es posible,
+# razonamiento profundo cuando es necesario`}
+/>
+
+### Cuándo Usar Cada Nivel de Esfuerzo
+
+- **Low**: APIs de producción donde la velocidad es crítica, tareas simples
+- **Medium**: Aplicaciones de propósito general, rendimiento balanceado
+- **High**: Recomendación predeterminada para la mayoría de casos de uso
+- **Max**: Decisiones críticas, análisis complejo, sistemas críticos de seguridad
+
+## Trade-offs a Considerar
+
+### Rendimiento vs Costo
+
+Extended thinking proporciona respuestas más completas pero viene con trade-offs:
+
+**Pros:**
+- Resultados más precisos en problemas complejos
+- Proceso de razonamiento visible (transparencia)
+- Mejor manejo de casos límite
+- Consistencia lógica mejorada
+
+**Contras:**
+- Latencia aumentada (toma más tiempo responder)
+- Costos más altos (más tokens consumidos)
+- Puede ser excesivo para tareas simples
+
+<MermaidDiagram code={`
+graph LR
+    A[Extended Thinking] --> B[Mayor Precisión]
+    A --> C[Más Tokens]
+    A --> D[Mayor Latencia]
+
+    E[Modo Estándar] --> F[Respuesta Rápida]
+    E --> G[Menor Costo]
+    E --> H[Suficiente para Tareas Simples]
+
+    style A fill:#4A90E2
+    style E fill:#50C878
+    style B fill:#90EE90
+    style C fill:#FFB84D
+    style D fill:#FFB84D
+    style F fill:#90EE90
+    style G fill:#90EE90
+`}/>
+
+### Análisis Práctico de Costos
+
+Desglosemos las implicaciones de costo:
+
+<CodeSnippet
+  language="python"
+  code={`# Ejemplo de comparación de costos
+# Asumiendo precios de Claude Opus 4.6 (tarifas de ejemplo)
+
+# Modo estándar
+standard_input_tokens = 1000
+standard_output_tokens = 500
+standard_cost = (standard_input_tokens * 0.015/1000) +
+                (standard_output_tokens * 0.075/1000)
+
+# Modo extended thinking
+extended_input_tokens = 1000
+extended_thinking_tokens = 8000
+extended_output_tokens = 500
+extended_cost = (extended_input_tokens * 0.015/1000) +
+                (extended_thinking_tokens * 0.015/1000) +
+                (extended_output_tokens * 0.075/1000)
+
+print(f"Modo estándar: \${standard_cost:.4f}")
+print(f"Extended thinking: \${extended_cost:.4f}")
+print(f"Incremento de costo: {(extended_cost/standard_cost - 1) * 100:.1f}%")`}
+/>
+
+## Mejores Prácticas y Recomendaciones
+
+Basado en mi experiencia trabajando con los modelos thinking de Claude, aquí están mis mejores recomendaciones:
+
+### 1. Comienza Conservador, Escala Hacia Arriba
+
+Empieza con modo estándar o presupuestos mínimos de thinking. Solo incrementa cuando veas mejoras de calidad que justifiquen el costo.
+
+### 2. Usa Adaptive Thinking Cuando Sea Posible
+
+Si estás en Claude Opus 4.6, aprovecha adaptive thinking con el nivel de esfuerzo "high". Deja que el modelo decida cuándo pensar profundamente.
+
+### 3. Benchmarkea Tus Casos de Uso
+
+Crea una suite de pruebas de tareas representativas y mide calidad vs costo a través de diferentes modos y presupuestos.
+
+<CodeSnippet
+  language="python"
+  code={`# Ejemplo de enfoque de benchmarking
+test_cases = [
+    ("consulta_simple", "¿Cuánto es 2+2?"),
+    ("tarea_moderada", "Refactoriza este código para usar async/await"),
+    ("problema_complejo", "Diseña un sistema distribuido tolerante a fallos")
+]
+
+configs = [
+    {"mode": "standard"},
+    {"mode": "thinking", "budget": 2048},
+    {"mode": "thinking", "budget": 8192},
+]
+
+for name, query in test_cases:
+    for config in configs:
+        result = run_test(query, config)
+        log_metrics(name, config, result)`}
+/>
+
+### 4. Monitorea el Uso de Thinking Tokens
+
+Rastrea cuántos thinking tokens se usan realmente vs los presupuestados. Esto ayuda a optimizar tus presupuestos.
+
+### 5. Considera Procesamiento por Lotes para Presupuestos Grandes
+
+Para presupuestos de thinking superiores a 32K tokens, usa procesamiento por lotes para evitar problemas de timeout.
+
+### 6. Empareja el Modo con el Tipo de Tarea
+
+Crea una matriz de decisión para tu equipo:
+
+<MermaidDiagram code={`
+flowchart TD
+    Start[Nueva Tarea] --> Q1{¿Requiere razonamiento multi-paso?}
+    Q1 -->|No| Standard[Usar Modo Estándar]
+    Q1 -->|Sí| Q2{¿Sensible al tiempo?}
+
+    Q2 -->|Sí| Q3{¿Se necesita precisión crítica?}
+    Q2 -->|No| Extended[Usar Extended Thinking]
+
+    Q3 -->|Sí| Extended
+    Q3 -->|No| Standard
+
+    Extended --> Q4{¿Complejidad de tarea?}
+    Q4 -->|Simple| Budget1[1024-2048 tokens]
+    Q4 -->|Moderada| Budget2[4096-8192 tokens]
+    Q4 -->|Compleja| Budget3[16384+ tokens]
+
+    Standard --> Done[Ejecutar]
+    Budget1 --> Done
+    Budget2 --> Done
+    Budget3 --> Done
+
+    style Extended fill:#4A90E2
+    style Standard fill:#50C878
+`}/>
+
+## Ejemplo del Mundo Real: Revisión de Arquitectura de Código
+
+Déjame mostrarte un ejemplo práctico comparando ambos modos:
+
+<CodeComparison
+  languageL="python"
+  languageR="python"
+  left={`# Modo estándar
+# Rápido pero podría perder casos límite
+response = client.messages.create(
+    model="claude-sonnet-4-5-20250929",
+    max_tokens=2048,
+    messages=[{
+        "role": "user",
+        "content": "Revisa este código por problemas"
+    }]
+)
+# Tiempo de respuesta: ~2 segundos
+# Encuentra: 3 bugs obvios`}
+  right={`# Modo extended thinking
+# Más lento pero más exhaustivo
+response = client.messages.create(
+    model="claude-3-7-sonnet-20250219",
+    max_tokens=8000,
+    thinking={
+        "type": "enabled",
+        "budget_tokens": 4096
+    },
+    messages=[{
+        "role": "user",
+        "content": "Revisa este código por problemas"
+    }]
+)
+# Tiempo de respuesta: ~8 segundos
+# Encuentra: 3 bugs + 2 casos límite +
+#           1 preocupación arquitectónica`}
+/>
+
+## Conclusión
+
+Elegir entre los modelos thinking y no-thinking de Claude no se trata de que uno sea mejor que el otro—se trata de emparejar la herramienta correcta con el trabajo.
+
+**Usa Extended Thinking cuando:**
+- La tarea requiere razonamiento multi-paso
+- La precisión es más importante que la velocidad
+- Estás trabajando en problemas complejos de STEM, ingeniería o analíticos
+- El trade-off de costo está justificado por la mejora de calidad
+
+**Usa Modo Estándar cuando:**
+- Necesitas respuestas rápidas
+- La tarea es directa
+- La optimización de costos es una prioridad
+- La latencia es un factor crítico
+
+**Usa Adaptive Thinking cuando:**
+- Quieres que el modelo decida automáticamente
+- Estás usando Claude Opus 4.6
+- Quieres un enfoque balanceado a través de tareas variadas
+
+La belleza de la oferta actual de Claude es la flexibilidad. Comienza conservador, mide resultados, y optimiza basado en tu caso de uso específico. Con la configuración correcta, puedes lograr el balance perfecto de rendimiento, costo y calidad.
+
+---
+
+¡Gracias por leer! ¿Has experimentado con el extended thinking de Claude? Me encantaría escuchar sobre tus experiencias y qué presupuestos de thinking funcionan mejor para tus casos de uso.
+
+<BlogLink
+  url="https://docs.anthropic.com/en/docs/build-with-claude/extended-thinking"
+  content="Lee la documentación oficial de extended thinking de Claude"
+/>

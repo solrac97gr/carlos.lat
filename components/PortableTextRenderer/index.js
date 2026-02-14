@@ -2,7 +2,7 @@ import { PortableText } from '@portabletext/react'
 import { CodeSnippet } from '../CodeSnipet'
 import { BlogLink } from '../BlogLink'
 import { FolderStructure } from '../FolderStructure'
-import { CodeComparition } from '../CodeComparition'
+import { CodeComparison } from '../CodeComparison'
 import imageUrlBuilder from '@sanity/image-url'
 import { sanityClient } from '../../lib/sanity'
 
@@ -31,9 +31,9 @@ export const PortableTextRenderer = ({ content }) => {
         <FolderStructure tree={value.tree} repo={value.repo} />
       ),
       codeComparison: ({ value }) => (
-        <CodeComparition
+        <CodeComparison
           left={value.left}
-          rigth={value.rigth}
+          right={value.right}
           languageL={value.languageL}
           languageR={value.languageR}
         />

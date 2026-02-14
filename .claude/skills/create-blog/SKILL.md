@@ -119,19 +119,18 @@ For code blocks with syntax highlighting:
 - `markdown`, `mdx`
 - `hcl` (for Terraform)
 
-#### CodeComparition Component
+#### CodeComparison Component
 For side-by-side code comparison:
 
 ```jsx
-<CodeComparition
+<CodeComparison
   languageL="javascript"
   languageR="typescript"
   left={`const bad = "example";`}
-  rigth={`const good: string = "example";`}
+  right={`const good: string = "example";`}
 />
 ```
 
-**Note:** The prop is `rigth` (not `right`) - this is a typo in the component but must be used as-is.
 
 #### FolderStructure Component
 For displaying file/folder trees:
@@ -287,7 +286,7 @@ sequenceDiagram
    - Provide context before and after code
 
 4. **Visual Elements**
-   - Use `<CodeComparition>` for before/after
+   - Use `<CodeComparison>` for before/after
    - Use `<FolderStructure>` for project layouts
    - Break up long text sections with visuals
 
@@ -527,8 +526,8 @@ Installation and usage instructions...
 6. ❌ Inconsistent content between languages
    ✅ Ensure both versions cover the same material
 
-7. ❌ Wrong prop name in CodeComparition
-   ✅ Use `rigth` (not `right`) - it's a typo in the component
+7. ❌ Wrong prop name in CodeComparison
+   ✅ Use `right` (not `right`) - it's a typo in the component
 
 8. ❌ Forgetting `<EditPost>` component
    ✅ Always include it in the header

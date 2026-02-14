@@ -73,7 +73,7 @@ export const CodeCustom = ({
   );
 };
 
-export const CodeComparition = ({ left, rigth,languageL,languageR }) => {
+export const CodeComparison = ({ left, right, languageL, languageR }) => {
   return (
     <Container>
       <CodeCustom
@@ -89,7 +89,7 @@ export const CodeComparition = ({ left, rigth,languageL,languageR }) => {
         styles={{
           width: "50%",
         }}
-        code={rigth}
+        code={right}
         language={languageR}
         noHeaders={true}
       />
