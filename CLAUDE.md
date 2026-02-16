@@ -122,6 +122,224 @@ Since Next.js static export can't fetch data at runtime:
 - `scripts/generate-sanity-manifest.js`: Pre-build Sanity slug fetcher
 - `scripts/generate-rss.js`: Post-build RSS feed generator
 
+## MDX Components Reference
+
+All components listed below are globally available in MDX files (registered in `components/MDXComponents.js`) and do not require imports. Components marked with (Portable Text) are also available as Sanity custom blocks via `components/PortableTextRenderer.js`.
+
+### CodeSnippet (Portable Text)
+
+**File**: `components/CodeSnipet/index.js`
+
+Renders syntax-highlighted code blocks using Prism.js.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `code` | string | required | The code to display |
+| `language` | string | required | Language for highlighting: `go`, `rust`, `bash`, `docker`, `json`, `yaml`, `typescript`, `javascript`, `css`, `toml`, `makefile` |
+| `route` | string | `"~"` | File path shown in the header bar |
+| `noHeaders` | boolean | `false` | Hides the header (file path + copy button) |
+| `output` | string | `""` | Terminal output displayed below the code block |
+
+```jsx
+<CodeSnippet language="go" route="main.go" code={`
+package main
+
+func main() {
+    fmt.Println("Hello World")
+}
+`}/>
+
+<CodeSnippet language="bash" code={`go run main.go`} output={`Hello World`}/>
+```
+
+**Note**: Use `code={backtick...backtick}` syntax, never triple-backtick markdown fences. For `<-` operators in inline code, use `&lt;-`.
+
+### CodeComparison (Portable Text)
+
+**File**: `components/CodeComparison/index.js`
+
+Side-by-side code comparison with independent syntax highlighting per panel.
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `left` | string | Code for the left panel |
+| `right` | string | Code for the right panel |
+| `languageL` | string | Language for the left panel |
+| `languageR` | string | Language for the right panel |
+
+```jsx
+<CodeComparison
+  languageL="go"
+  languageR="rust"
+  left={`func main() {
+    fmt.Println("Hello")
+}`}
+  right={`fn main() {
+    println!("Hello");
+}`}
+/>
+```
+
+### MermaidDiagram
+
+**File**: `components/MermaidDiagram/index.js`
+
+Interactive Mermaid diagrams with zoom, pan, and export capabilities.
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `code` | string | Mermaid diagram definition (flowchart, sequence, class, state, etc.) |
+
+**Features**: Zoom in/out (50%-300%), drag to pan, download as SVG/PNG, copy code, mobile touch support with auto-hiding controls.
+
+```jsx
+<MermaidDiagram code={`
+flowchart TD
+    A[Start] --> B{Decision}
+    B -->|Yes| C[Action]
+    B -->|No| D[End]
+`}/>
+```
+
+### FolderStructure (Portable Text)
+
+**File**: `components/FolderStructure/index.js`
+
+Interactive collapsible file tree with language-specific icons and a copy/fork button.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `tree` | array | required | Nested structure of `{ type: "file"\|"folder", name: string, content?: array }` |
+| `repo` | string | `""` | GitHub repo URL. If set, shows a "Fork" button instead of "Copy" |
+
+**Supported file icons**: `.go`, `.js`, `.html`, `.css`, `.json`, `.yaml`, `.rs`, `.csv`, `.md`, `.sh`, `dockerfile`, `.gitignore`
+
+```jsx
+<FolderStructure
+  repo="https://github.com/solrac97gr/go-project"
+  tree={[
+    { type: "folder", name: "cmd", content: [
+      { type: "file", name: "main.go" }
+    ]},
+    { type: "folder", name: "internal", content: [
+      { type: "file", name: "handler.go" },
+      { type: "file", name: "service.go" }
+    ]},
+    { type: "file", name: "go.mod" },
+    { type: "file", name: "Dockerfile" }
+  ]}
+/>
+```
+
+The "Copy" button generates shell commands (`mkdir`/`touch`) to recreate the structure.
+
+### BlogLink (Portable Text)
+
+**File**: `components/BlogLink/index.js`
+
+Styled external/internal link with analytics tracking.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `url` | string | required | URL to link to |
+| `content` | string | URL value | Display text for the link |
+
+```jsx
+<BlogLink url="https://go.dev/doc/" content="Go documentation" />
+```
+
+Opens in a new tab. Tracks click events via Google Analytics.
+
+### EditPost
+
+**File**: `components/EditPost/index.js`
+
+Link to edit the current MDX post on GitHub. Displays "¿Ves algún error? Corregir artículo".
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `path` | string | Post slug (without `.mdx` extension). Maps to `data/{path}.mdx` on GitHub |
+
+```jsx
+<EditPost path="es/mi-post" />
+```
+
+### NewsletterSubscribe
+
+**File**: `components/NewsletterSubscribe/index.js`
+
+Mailchimp newsletter subscription form. No props — self-contained. Displays a Spanish-language form ("Conviértete en un Go Ninja") with email validation, status messages, and analytics tracking.
+
+```jsx
+<NewsletterSubscribe />
+```
+
+### SocialShareButtons
+
+**File**: `components/SocialShareButtons/index.js`
+
+Social media sharing buttons (Facebook, Twitter, Telegram, WhatsApp, LinkedIn, Email).
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `post` | object | `{ slug, title, abstract, tag }` — post metadata for share URLs and text |
+
+```jsx
+<SocialShareButtons post={{
+  slug: "my-post-slug",
+  title: "Post Title",
+  abstract: "Brief description",
+  tag: "Go,Tutorial"
+}} />
+```
+
+### Podcast
+
+**File**: `components/Podcast/index.js`
+
+Embedded Spotify podcast player.
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `episode` | string | Spotify episode ID |
+
+```jsx
+<Podcast episode="4rOoJ6Egrf8K2IrywzwOMk" />
+```
+
+### Gist
+
+**File**: `components/Gist/index.js`
+
+Embeds a GitHub Gist via the `next/script` component.
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `url` | string | GitHub Gist embed URL (`.js` script URL) |
+
+```jsx
+<Gist url="https://gist.github.com/user/gistid.js" />
+```
+
+### PromoBanner
+
+**File**: `components/PromoBanner/index.js`
+
+Placeholder component. Currently returns `null` (disabled). No props.
+
+### Table Overrides
+
+**File**: `components/Table/index.js`
+
+Styled replacements for HTML table elements. These override default markdown table rendering — no manual usage needed. Components: `Table`, `Thead`, `Tbody`, `Th`, `Td`, `Tr`.
+
+### Element Overrides (MDXComponents.js)
+
+These override default HTML elements in all MDX content:
+
+- **`img`**: Wrapped with `next/image`, adds `border-radius: 5px`
+- **`p`**: Adds `text-align: justify` for readable paragraph alignment
+
 ## Important Patterns
 
 ### Adding New Blog Posts
