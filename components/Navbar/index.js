@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import {
   NavbarContainer,
   NavbarContent,
   Logo,
-  LogoAccent,
   DesktopNav,
   NavLink,
   SocialIcons,
@@ -83,7 +83,7 @@ export const Navbar = () => {
     <NavbarContainer>
       <NavbarContent>
         <Logo href="/">
-          Carlos<LogoAccent> García</LogoAccent>
+          <Image src="/lockup.svg" alt="carlos.lat" width={160} height={37} priority />
         </Logo>
 
         <DesktopNav>

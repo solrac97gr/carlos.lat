@@ -33,7 +33,7 @@ export default function Home({ posts }) {
         <meta property="og:url" content={PAGE_URL} />
         <meta
           property="og:image"
-          content="https://miro.medium.com/max/1400/1*xofqkz49chC9XliDAuH1Qw.png"
+          content="https://carlos.lat/og-image.png"
         />
         <meta
           property="og:description"
@@ -49,10 +49,13 @@ export default function Home({ posts }) {
         />
         <meta
           name="twitter:image"
-          content="https://miro.medium.com/max/1400/1*xofqkz49chC9XliDAuH1Qw.png"
+          content="https://carlos.lat/og-image.png"
         />
         <meta name="twitter:card" content="summary_large_image" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+        <link rel="icon" type="image/svg+xml" href="/mark.svg" />
 
         {/* Structured Data */}
         <script

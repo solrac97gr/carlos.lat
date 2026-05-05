@@ -1,10 +1,10 @@
+import Image from "next/image";
 import {
   FooterContainer,
   FooterContent,
   FooterGrid,
   FooterColumn,
   FooterLogo,
-  LogoAccent,
   FooterTagline,
   ColumnTitle,
   LinkList,
@@ -34,7 +34,7 @@ export const Footer = () => {
         <FooterGrid>
           <FooterColumn>
             <FooterLogo>
-              Carlos<LogoAccent> García</LogoAccent>
+              <Image src="/lockup-on-dark.svg" alt="carlos.lat" width={160} height={37} />
             </FooterLogo>
             <FooterTagline>
               {t('footer.tagline')}

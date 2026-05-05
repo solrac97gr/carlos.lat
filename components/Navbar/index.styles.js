@@ -30,10 +30,8 @@ export const NavbarContent = styled.div`
 `;
 
 export const Logo = styled.a`
-  font-size: ${theme.fontSize.xl};
-  font-weight: ${theme.fontWeight.bold};
-  color: ${theme.colors.text};
-  letter-spacing: -0.025em;
+  display: flex;
+  align-items: center;
   text-decoration: none;
   cursor: pointer;
   transition: opacity ${theme.transitions.fast};
@@ -41,10 +39,6 @@ export const Logo = styled.a`
   &:hover {
     opacity: 0.8;
   }
-`;
-
-export const LogoAccent = styled.span`
-  color: ${theme.colors.primary};
 `;
 
 export const DesktopNav = styled.nav`

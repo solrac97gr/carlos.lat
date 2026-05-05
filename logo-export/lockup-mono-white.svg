@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="56" viewBox="0 0 240 56" role="img" aria-label="carlos.lat">
+  <rect x="0" y="0" width="56" height="56" rx="12" fill="#fff"></rect>
+  <circle cx="38.5" cy="38.5" r="6" fill="#111827"></circle>
+  <text x="72" y="40" font-family="Inter, -apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, Roboto, sans-serif" font-weight="800" font-size="34" letter-spacing="-1.2" fill="#fff">carlos<tspan fill="rgba(255,255,255,0.55)" font-weight="500">.lat</tspan></text>
+</svg>
