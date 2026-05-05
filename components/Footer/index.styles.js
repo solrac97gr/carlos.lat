@@ -41,14 +41,10 @@ export const FooterColumn = styled.div`
   flex-direction: column;
 `;
 
-export const FooterLogo = styled.h3`
-  font-size: 1.25rem;
-  font-weight: 700;
+export const FooterLogo = styled.div`
+  display: flex;
+  align-items: center;
   margin-bottom: 1rem;
-`;
-
-export const LogoAccent = styled.span`
-  color: #60a5fa;
 `;
 
 export const FooterTagline = styled.p`

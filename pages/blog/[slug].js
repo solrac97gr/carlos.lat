@@ -113,7 +113,11 @@ export default function Post({ source: initialSource, frontmatter: initialFrontm
           <link rel="alternate" hrefLang="es" href={`${BLOG_URL}/${frontmatter.slug}`} />
         )}
         <link rel="alternate" hrefLang="x-default" href={`${BLOG_URL}/${frontmatter.slug}`} />
-        
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+        <link rel="icon" type="image/svg+xml" href="/mark.svg" />
+
         {/* Structured Data */}
         <script
           type="application/ld+json"
