@@ -569,8 +569,8 @@ export const AIToolingLanding = ({ hideLanguageSwitcher = false }) => {
         </Link>
         <CTAAlternative>
           {t("aiTooling.cta.alternative")}{" "}
-          <a href="mailto:cgarciarosales97@gmail.com">
-            cgarciarosales97@gmail.com
+          <a href="mailto:c.garcia@carlos.lat">
+            c.garcia@carlos.lat
           </a>
         </CTAAlternative>
         <Description style={{ color: '#c7d2fe', fontSize: '0.875rem', marginTop: '1.5rem', fontStyle: 'italic' }}>
@@ -593,7 +593,7 @@ export const AIToolingLanding = ({ hideLanguageSwitcher = false }) => {
             <FooterLink href={`https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${whatsappText}`} target="_blank">
               WhatsApp
             </FooterLink>
-            <FooterLink href="mailto:cgarciarosales97@gmail.com">
+            <FooterLink href="mailto:c.garcia@carlos.lat">
               Email
             </FooterLink>
             <FooterLink href="https://www.linkedin.com/in/carlos97gr/" target="_blank" rel="noreferrer">
